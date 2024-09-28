@@ -1,0 +1,13 @@
+using System;
+using DDDSample1.Domain.User;
+
+namespace DDDSample1.Domain.User
+{
+
+    public class UserMapper
+    {
+
+    }
+
+
+}
