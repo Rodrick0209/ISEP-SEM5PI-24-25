@@ -1,0 +1,88 @@
+27-09-2024
+Q: What project management tools should we use?
+A: You are free to choose your tools. Options include GitHub, Bitbucket, and Jira, but you can pick anything that works best for your team.
+
+
+Q: Do professors need access to our repositories?
+A: Only the AP5 professor needs access to monitor the project. Other professors might ask for access, but it's mostly optional.
+
+Q: Can a user have both patient and healthcare staff profiles?
+A: No, a user cannot have both profiles. Staff and patients have separate identifications.
+
+Q: Do nurses have specializations like doctors?
+A: Yes, nurses can have specializations, which are important for specific surgeries.
+
+Q: How should the capacity of a surgery room be interpreted?
+A: The capacity refers to the number of staff in the room, not patients.
+
+Q: How are duplicate patient profiles handled when registered by both the patient and admin?
+A: The system checks the email for uniqueness. The admin must first create the patient record, and then the patient can register using the same email.
+
+Q: What factors should be considered for surgery scheduling?
+A: A combination of professional seniority, surgery duration, and urgency will be considered. Scheduling will occur in the second sprint.
+
+Q: Is it mandatory for patients to have a user account to schedule a surgery?
+A: No, patients are not required to have a user account. The system administrator creates patient profiles.
+
+Q; Are healthcare staff IDs unique across roles?
+A: Yes, staff IDs are unique and not role-specific (e.g., a doctor and nurse can share the same ID format).
+
+Q: What is the difference between appointment, surgery, and operation?
+A: Surgery is a medical procedure (e.g., hip surgery), while an operation request is when a doctor schedules that surgery for a patient. An appointment is the scheduled date for the operation, determined by the planning module.
+
+Q: Can surgeries be rescheduled?
+A: Yes, surgeries can be rescheduled due to various reasons like emergencies or changes in staff availability.
+
+Q: Who has the authority to schedule or reschedule surgeries?
+A: The planning module automatically handles the scheduling, though administrators may trigger a manual update.
+
+Q: Will there be a list of specializations in the system?
+A: Yes, a predefined list of specializations will be provided, but the system should allow for future additions.
+
+Q: What happens to patient data after the profile is deleted?
+A: Patient data must be retained for a legally mandated period before being anonymized or deleted.
+
+Q: Can the same doctor who requests a surgery perform it?
+A: Not necessarily. The planning module may assign different doctors based on availability and optimization.
+
+Q: Can users hold multiple roles?
+A: No, each user can have only one role.
+
+
+28-09-2024
+
+ Therefore, we will focus on a small part, which is the part of surgery requests and, then, the planning of these surgeries, essentially. So, if you want to think about it, we will have the following operation here, the workflow between the modules. Basically, the back-office module will allow doctors to request a surgery, therefore, the surgeries where it is categorized, to indicate for a given surgery which specialists are needed. Let's suppose that for an ANCA surgery, an orthopedic doctor is needed, two specialized nurses are needed and another anesthesiologist.
+
+So, this is the characterization of the surgery. The doctor then makes the request for a surgery for a specific patient and, then, basically, the system has a second module, which is the planning module, which will collect all these requests and will then, yes, schedule the surgeries in the different operating rooms that the hospital has. And it is this information, this flow of information that is important between the back-office module and the planning module.
+
+After planning has scheduled surgeries, this information must be returned to the back-office module. Why? Because patients and doctors themselves will want to check when the surgery was actually scheduled. This also involves information being returned from the planning module to the back-office module, which will also be used in the 3D visualization mode, in which we want to render, in three dimensions, the layout of the hospital and information related to whether the rooms are occupied, if they are not, and what is occupied in this room. This is the main mechanism and the main means of communication between the different modules.
+
+Q: What factors should be considered for surgery scheduling?
+A: A combination of professional seniority, surgery duration, and urgency will be considered. Scheduling will occur in the second sprint.
+
+Q: Is it mandatory for patients to have a user account to schedule a surgery?
+A: No, patients are not required to have a user account. The system administrator creates patient profiles.
+
+Q; Are healthcare staff IDs unique across roles?
+A: Yes, staff IDs are unique and not role-specific (e.g., a doctor and nurse can share the same ID format).
+
+Q: What is the difference between appointment, surgery, and operation?
+A: Surgery is a medical procedure (e.g., hip surgery), while an operation request is when a doctor schedules that surgery for a patient. An appointment is the scheduled date for the operation, determined by the planning module.
+
+Q: Can surgeries be rescheduled?
+A: Yes, surgeries can be rescheduled due to various reasons like emergencies or changes in staff availability.
+
+Q: Who has the authority to schedule or reschedule surgeries?
+A: The planning module automatically handles the scheduling, though administrators may trigger a manual update.
+
+Q: Will there be a list of specializations in the system?
+A: Yes, a predefined list of specializations will be provided, but the system should allow for future additions.
+
+Q: What happens to patient data after the profile is deleted?
+A: Patient data must be retained for a legally mandated period before being anonymized or deleted.
+
+Q: Can the same doctor who requests a surgery perform it?
+A: Not necessarily. The planning module may assign different doctors based on availability and optimization.
+
+Q: Can users hold multiple roles?
+A: No, each user can have only one role.
