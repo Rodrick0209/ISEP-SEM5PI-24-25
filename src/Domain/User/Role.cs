@@ -7,12 +7,12 @@ namespace DDDSample1.Domain.User{
 
     public class Role : IValueObject{
 
-        public string userRole { get; private set; }
+        public string role  { get; private set; }
 
 
         public Role(string role){
             validateUserRole(role);
-            this.userRole = role;
+            this.role = role;
         }
 
 

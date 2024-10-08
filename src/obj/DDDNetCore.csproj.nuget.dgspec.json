@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/miguel/Desktop/sem5pi_g55_24_25/src/DDDNetCore.csproj": {}
+    "C:\\Users\\rodri\\Documents\\sem5pi_g55_24_25\\src\\DDDNetCore.csproj": {}
   },
   "projects": {
-    "/Users/miguel/Desktop/sem5pi_g55_24_25/src/DDDNetCore.csproj": {
+    "C:\\Users\\rodri\\Documents\\sem5pi_g55_24_25\\src\\DDDNetCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/miguel/Desktop/sem5pi_g55_24_25/src/DDDNetCore.csproj",
+        "projectUniqueName": "C:\\Users\\rodri\\Documents\\sem5pi_g55_24_25\\src\\DDDNetCore.csproj",
         "projectName": "DDDNetCore",
-        "projectPath": "/Users/miguel/Desktop/sem5pi_g55_24_25/src/DDDNetCore.csproj",
-        "packagesPath": "/Users/miguel/.nuget/packages/",
-        "outputPath": "/Users/miguel/Desktop/sem5pi_g55_24_25/src/obj/",
+        "projectPath": "C:\\Users\\rodri\\Documents\\sem5pi_g55_24_25\\src\\DDDNetCore.csproj",
+        "packagesPath": "C:\\Users\\rodri\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\rodri\\Documents\\sem5pi_g55_24_25\\src\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/miguel/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\rodri\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -62,6 +62,10 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.8.1, )"
             }
           },
           "imports": [
@@ -83,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
