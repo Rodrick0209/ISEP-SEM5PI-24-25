@@ -55,7 +55,7 @@ namespace DDDSample1.Controllers
 
         // GET: api/user
         [HttpGet("Get user")]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<List<UserDTO>> GetAllAsync()
         {
 

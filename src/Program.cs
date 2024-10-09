@@ -28,23 +28,18 @@ using Microsoft.AspNetCore.Http;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options => 
 {
-    c.CustomSchemaIds(id => id.FullName.Replace('+','-'));
-
-    var securityScheme = new OpenApiSecurityScheme
+    options.AddSecurityDefinition(name : JwtBearerDefaults.AuthenticationScheme,
+    securityScheme : new OpenApiSecurityScheme
     {
-            Name = "JWT Authentication",
-            Description = "Enter your JWT token in this field",
-            In = ParameterLocation.Header,
-            Type = SecuritySchemeType.Http,
-            Scheme = JwtBearerDefaults.AuthenticationScheme,
-            BearerFormat = "JWT"
-    };
-
-    c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme,securityScheme);
-
-    var securityRequirement = new OpenApiSecurityRequirement
+        Name = "Authorization",
+        Description = "Enter the Bearer Authorization : 'Bearer Generated-JWT-Tplen'",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -55,9 +50,12 @@ builder.Services.AddSwaggerGen(c =>
                     Id = JwtBearerDefaults.AuthenticationScheme
                 }
             },
-            []
+            new string[] {}
         }
-    };
+    });
+
+
+
 
 });
 
@@ -164,6 +162,8 @@ else
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseMiddleware<CustomExceptionMiddleware>();
 
 app.UseAuthentication();
 

@@ -23,6 +23,7 @@ namespace DDDSample1.Infrastructure.Users
                 [
                     new Claim(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
                     new Claim(JwtRegisteredClaimNames.Email,user.email.email),
+                    new Claim("role",user.role.role),
                 ]),
                 Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = credentials,
