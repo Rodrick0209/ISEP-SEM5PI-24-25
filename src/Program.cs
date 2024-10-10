@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using DDDSample1.Infrastructure;
 using DDDSample1.Infrastructure.Categories;
@@ -61,18 +62,12 @@ builder.Services.AddSwaggerGen(options =>
 
 
 
-
+//CRIAR INTERFACE PARA TOKEN PROVIDER
 builder.Services.AddSingleton<TokenProvider>(); 
 // Add services to the container.
 builder.Services.AddDbContext<DDDSample1DbContext>(opt =>
     opt.UseInMemoryDatabase("DDDSample1DB")
     .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
-
-Console.WriteLine("SECRET KEY 2-"+builder.Configuration["Jwt:SecretKey"]);
-Console.WriteLine("ISSUER 2 "+builder.Configuration["Jwt:Issuer"] );
-Console.WriteLine("AUdience 2 "+builder.Configuration["Jwt:Audience"] );
-
-
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -112,28 +107,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("SendGrid"));
 
 
-/*
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters    
-                {    
-                    ValidateIssuer = true,    
-                    ValidateAudience = true,    
-                    ValidateLifetime = true,    
-                    ValidateIssuerSigningKey = true,    
-                    ValidIssuer = Configuration["JwtAuth:Issuer"],    
-                    ValidAudience = Configuration["JwtAuth:Issuer"],    
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtAuth:Key"])) ,
-                    ClockSkew = TimeSpan.Zero   
-                };   
-                services.AddCors();
-            });
-
-*/
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 
@@ -176,7 +152,8 @@ app.Run();
 void ConfigureMyServices(IServiceCollection services)
 {
     services.AddTransient<IUnitOfWork, UnitOfWork>();
-
+    services.AddTransient<DDDSample1.Domain.User.IEmailSender, EmailSender>();
+    
     services.AddTransient<ICategoryRepository, CategoryRepository>();
     services.AddTransient<CategoryService>();
 

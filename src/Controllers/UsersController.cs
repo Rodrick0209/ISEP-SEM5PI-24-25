@@ -26,6 +26,7 @@ namespace DDDSample1.Controllers
 
 
 
+
         // POST: api/user
         [HttpPost("Create user")]
         public async Task<ActionResult<UserDTO>> Create(UserDTO dto)
@@ -36,19 +37,16 @@ namespace DDDSample1.Controllers
                 if (!ModelState.IsValid) return BadRequest(ModelState);
                                 
                 var user = await _service.AddAsync(UserMapper.ToDomain(dto));
-                
-                Console.WriteLine($"User created with ID: {user.Id}");
+            
                 return UserMapper.ToDto(user);
 
             }
             catch (BusinessRuleValidationException ex)
             {
-                Console.WriteLine($"Validation error: {ex.Message}");
                 return Conflict(new { Message = ex.Message });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Unexpected error: {ex}");
                 return BadRequest(new { Message = ex.ToString() });
             }
         }
@@ -64,6 +62,71 @@ namespace DDDSample1.Controllers
                 UserMapper.ToDto(User));
 
             return listDto;
+        }
+
+        
+        [Route("Forgot Password")]
+        [HttpPost]
+        public async Task<ActionResult> ForgotPassword(RequestForgotPasswordDto dto)
+        {
+            
+            
+            if (ModelState.IsValid) 
+            {
+                var user = await _service.GetByEmailAsync(dto.Email);
+                
+                if (user == null)
+                {
+                    return BadRequest("Invalid payload");
+                }
+                
+                var token =  _service.GenerateResetPasswordToken(user);
+
+                if (token == null)
+                    return BadRequest("Something went wrong");
+
+                
+                
+                string callbackUrl = $"http://localhost:9999/resetpassword?code={token}&Email={user.email.email}";
+
+                await _service.sendEmail(user.email.email, callbackUrl);
+                Console.WriteLine("Parte do email passada"); 
+
+                return Ok(new
+                {
+                    token = token,
+                    email = user.email.email,
+                });
+
+
+
+            }return BadRequest(ModelState);
+
+
+
+        }
+
+        [Route("Reset Password")]
+        [HttpPost]
+        public async Task<ActionResult> ResetPassword(ResetPasswordRequestDto dto)
+        {
+            if (!ModelState.IsValid)
+            return BadRequest("Invalid payload");
+
+            var user = await _service.GetByEmailAsync(dto.Email);
+            if (user == null)
+            {
+                return BadRequest("Invalid payload");
+            }
+
+            var result = await _service.ResetPassword(user, dto.NewPassword,dto.Token);
+            
+            if(result.Equals("Success"))
+                return Ok("Password reset successful");
+
+
+            return BadRequest("Something went wrong");    
+
         }
 
 

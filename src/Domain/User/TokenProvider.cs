@@ -41,6 +41,32 @@ namespace DDDSample1.Infrastructure.Users
     
     
         }
+
+        public string CreatePasswordResetToken(User user)
+        {
+            string secretKey = configuration["Jwt:SecretKey"];
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, user.email.email),
+                    new Claim("purpose", "password_reset") 
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(2), // Expira em 24 horas
+                SigningCredentials = credentials,
+                Issuer = configuration["Jwt:Issuer"],
+                Audience = configuration["Jwt:Audience"]
+            };
+
+            var handler = new JsonWebTokenHandler();
+            string token = handler.CreateToken(tokenDescriptor);
+
+            return token;
+        }
     
 
     }

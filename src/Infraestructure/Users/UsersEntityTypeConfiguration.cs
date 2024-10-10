@@ -14,6 +14,8 @@ namespace DDDSample1.Infrastructure.Users
             builder.OwnsOne(b => b.password);
             builder.OwnsOne(b => b.role);
             builder.OwnsOne(b => b.email);
+            builder.OwnsOne(b => b.resetPasswordToken);
+            builder.OwnsOne(b => b.resetPasswordTokenExpiration);
 
         }
     }

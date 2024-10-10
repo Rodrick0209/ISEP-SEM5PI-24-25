@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using DDDSample1.Domain.User;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace DDDSample1.Domain.User
 {
@@ -21,19 +22,18 @@ public  class UserService
     private readonly IUserRepository _repo;
 
     private readonly IConfiguration _configuration;
+    
+    private readonly IEmailSender _emailSender;
+    
 
-    public UserService(IUnitOfWork unitOfWork, IUserRepository repo,IConfiguration configuration)
+    public UserService(IUnitOfWork unitOfWork, IUserRepository repo,IConfiguration configuration,IEmailSender emailSender)
     {
         _unitOfWork = unitOfWork;
         _repo = repo;
         _configuration = configuration;
+        _emailSender = emailSender;
     }
 
-    public UserService(IUnitOfWork unitOfWork, IUserRepository repo)
-    {
-        _unitOfWork = unitOfWork;
-        _repo = repo;
-    }
     
 
     public async Task<string> GetLogToken(LoginRequest request)
@@ -89,6 +89,59 @@ public  class UserService
     public async Task<List<User>> GetAllAsync()
     {                   
             return await _repo.GetAllAsync();
+    }
+
+    public async Task<User> GetByEmailAsync(string email)
+    {
+        return await _repo.GetByEmailAsync(email);
+    }
+
+    public async Task<string> GenerateResetPasswordToken(User user)
+    {
+        TokenProvider tokenProvider = new TokenProvider(_configuration);
+        string token = tokenProvider.CreatePasswordResetToken(user);
+        
+        //definir o tempo de expiração do token num config file 
+        user.SetResetPasswordToken(token, DateTime.UtcNow.AddHours(24));
+        await this._unitOfWork.CommitAsync();
+        
+        return token;
+
+    }
+
+
+    public async Task<string> ResetPassword (User user,string newPassword, string token)
+    {
+
+        if (!user.resetPasswordToken.resetPasswordToken.Equals( token))
+        {
+            throw new Exception("Invalid token");
+        }
+
+        //FALTA VERIFICAR SE O TOKEN AINDA É VALIDO EM TEMPO ?
+        
+        //DEFINIR O PASSWORD HASHER COM O AWAIT qnd tiver tempo
+        PasswordHasher passwordHasher = new PasswordHasher();
+        string newPasswordHash =  passwordHasher.HashPassword(newPassword);
+        user.SetPassword(passwordHasher.HashPassword(newPassword));
+        
+        user.ClearResetPasswordToken();
+
+        await this._unitOfWork.CommitAsync();
+
+        return "Success"; ;
+
+    }
+
+
+    public async Task<string> sendEmail(string email, string url)
+    {
+        await _emailSender.SendEmailAsync($"Please reset your password by clicking here: <a href='{url}'>link</a>",email,"ResetPassword");
+        
+        
+        Console.WriteLine("Email sent no controller");
+        return "Email sent";
+
     }
 
 

@@ -13,6 +13,9 @@ namespace DDDSample1.Domain.User
 
         public Password password { get; private set; }
 
+        public ResetPasswordToken ? resetPasswordToken { get; private set; }
+        public ResetPasswordTokenExpiration ? resetPasswordTokenExpiration { get; private set; }
+
         private User()
         {
         }
@@ -32,9 +35,23 @@ namespace DDDSample1.Domain.User
             this.password = new Password(password);
         }
 
+        public void SetResetPasswordToken(string resetPasswordToken, DateTime expirationDate)
+        {
+            this.resetPasswordToken = new ResetPasswordToken(resetPasswordToken);
+            this.resetPasswordTokenExpiration = new ResetPasswordTokenExpiration(expirationDate);
+        }
 
+        public void ClearResetPasswordToken()
+        {
+            this.resetPasswordToken = null;
+            this.resetPasswordTokenExpiration = null;
+        }
+
+        public int compareExpirationToken()
+        {
+            return DateTime.Compare(this.resetPasswordTokenExpiration.resetPasswordTokenExpiration, DateTime.UtcNow);
+        }
     }
-
 
 
 }

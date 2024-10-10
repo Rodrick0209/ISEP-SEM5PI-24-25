@@ -17,11 +17,9 @@ namespace DDDSample1.Controllers
     {
         private readonly UserService _userService;
 
-        private readonly IConfiguration _config;
 
-        public LoginController(IConfiguration config,UserService service)
+        public LoginController(UserService service)
         {
-            _config = config;
             _userService = service;
         }
 
