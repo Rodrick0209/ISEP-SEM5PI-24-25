@@ -1,0 +1,26 @@
+```plantuml
+@startuml Process_View
+participant PatientController as Controller <<Controller>>
+participant CreatePatientProfileDTO as DTO <<DTO>>
+participant PatientService as Service <<Service>>
+participant PatientRepository as Repository <<Repository>>
+participant Patient as Domain <<Domain>>
+participant PatientMapper as Mapper <<Domain>>
+[o-> Controller: POST(json)
+Controller -> DTO** : recieve requestBody info
+Controller -> Service : createPatientProfile(creatingPatientProfileDTO)
+activate Service
+Service -> Patient : create(createPatientProfileDTO)
+activate Patient
+return patient
+Service -> Repository : save(patient)
+Service -> Mapper : toDTO(patient)
+activate Mapper
+return patientDTO
+Service --> Controller : patientDTO
+deactivate Service
+<-- Controller : Success
+deactivate Controller
+
+@enduml
+```

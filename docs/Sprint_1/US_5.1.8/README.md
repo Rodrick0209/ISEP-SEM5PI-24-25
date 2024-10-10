@@ -27,14 +27,15 @@ To create a new patient profile, the admin must register:
 - Full Name
 - Date of Birth
 - Gender
-- Contact Information (email, phone)
+- Email
+- Phone
 - Emergency Contact
 
 When the content is registered, a **Medical Record Number** will be generated.
 
 The patient's email and phone number needs to be **unique** in system.
 
-The system should store the created profile **securely** in system.
+The system should store the created profile **securely**.
 
 ### 3.1. Client-relevant questions
 
@@ -43,3 +44,20 @@ Do they also input the omitted information (gender, emergency contact and allerg
 Additionally, does the medical history that the admin inputs refer to the patient's medical record, or is it referring to the appointment history?
 
 **R:** the admin can not input medical history nor allergies. they can however input gender and emergency contact
+
+ ## 4. Design
+
+ ### Logical View
+
+ ### Logical Process
+
+ #### Level 1
+ ![Process View - Level 1](L1/Process_View.svg)
+
+ #### Level 2
+ ![Process View - Level 2](L2/Process_View.svg)
+
+ #### Level 3
+ ![]()
+
+ ### Implementation View

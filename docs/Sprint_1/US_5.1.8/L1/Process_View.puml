@@ -1,0 +1,16 @@
+
+```plantuml
+@startuml Process_View
+actor Admin 
+participant System <<System>>
+
+activate Admin
+
+Admin -> System: Create a new patient profile and inputs information\n(First Name, Last Name, Full Name, Date of Birth, Gender,\nEmail, Phone Number, Emergency Contact)
+activate System
+System --> Admin : Sucessfully created the new patient profile
+deactivate System
+deactivate Admin
+
+@enduml
+```
