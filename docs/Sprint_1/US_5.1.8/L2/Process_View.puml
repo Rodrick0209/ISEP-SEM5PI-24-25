@@ -3,9 +3,10 @@
 @startuml Process_View
 participant "Back-end" as BE <<Container>>
 
-[o-> BE: Create a new patient profile and inputs information\n(First Name, Last Name, Full Name, Date of Birth, Gender,\nEmail, Phone Number, Emergency Contact)
+[o-> BE: POST (/api/patients)
 activate BE
-<-- BE: Sucessfully created the new patient profile
+BE -> BE: receive request body info,\ncreates patient profile\nand saves in DB
+<-- BE: response
 deactivate BE
 @enduml
 ```

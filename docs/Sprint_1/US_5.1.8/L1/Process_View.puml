@@ -6,9 +6,11 @@ participant System <<System>>
 
 activate Admin
 
-Admin -> System: Create a new patient profile and inputs information\n(First Name, Last Name, Full Name, Date of Birth, Gender,\nEmail, Phone Number, Emergency Contact)
+Admin -> System: Make a request to create a new patient profile
 activate System
-System --> Admin : Sucessfully created the new patient profile
+System --> Admin : Asks the necessary information
+Admin -> System: Provides the necessary information
+System --> Admin : Success/Error message
 deactivate System
 deactivate Admin
 
