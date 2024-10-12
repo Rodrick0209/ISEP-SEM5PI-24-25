@@ -23,6 +23,8 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
+using DDDSample1.Domain.OperationRequest;
+using DDDSample1.Infrastructure.OperationRequests;
 
 
 
@@ -165,4 +167,7 @@ void ConfigureMyServices(IServiceCollection services)
 
     services.AddTransient<IUserRepository, UserRepository>();
     services.AddTransient<UserService>();
+
+    services.AddTransient<IOperationRequestRepository, OperationRequestRepository>();
+    services.AddTransient<OperationRequestService>();
 }

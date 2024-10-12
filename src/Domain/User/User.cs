@@ -20,6 +20,7 @@ namespace DDDSample1.Domain.User
         {
         }
 
+        //falta o code aqui para o construtor
         public User (string email, string role)
         {
             this.Id = new UserId(Guid.NewGuid());
