@@ -25,6 +25,8 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Infrastructure.OperationRequests;
+using DDDSample1.Domain.OperationType;
+using DDDSample1.Infrastructure.OperationTypes;
 
 
 
@@ -109,10 +111,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("SendGrid"));
-
-
-
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 
@@ -170,4 +168,7 @@ void ConfigureMyServices(IServiceCollection services)
 
     services.AddTransient<IOperationRequestRepository, OperationRequestRepository>();
     services.AddTransient<OperationRequestService>();
+
+    services.AddTransient<IOperationTypeRepository, OperationTypeRepository>();
+
 }

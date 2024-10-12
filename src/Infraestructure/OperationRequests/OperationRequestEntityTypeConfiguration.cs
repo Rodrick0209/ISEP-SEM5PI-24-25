@@ -13,7 +13,8 @@ namespace DDDSample1.Infrastructure.OperationRequests
         public void Configure(EntityTypeBuilder<OperationRequest> builder)
         {
             builder.HasKey(b => b.Id);
-        
+            builder.OwnsOne(b => b.deadLineDate).Property(d => d.deadLineDate);
+            builder.OwnsOne(b => b.priority).Property(p => p.priority);        
         }
 
 

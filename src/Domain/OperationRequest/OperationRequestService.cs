@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Infrastructure.Families;
+using DDDSample1.Domain.OperationType;
 
 
 
@@ -13,6 +14,20 @@ namespace DDDSample1.Domain.OperationRequest
 
     private readonly IOperationRequestRepository _repo;
 
+
+   // private readonly IOperationTypeRepository  _operationTypeRepository;
+
+    //private readonly IStaffRepository _staffRepository; 
+/*
+    public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository repo,IOperationTypeRepository operationTypeRepository, IStaffRepository staffRepository)
+    {
+        this._unitOfWork = unitOfWork;
+        this._repo = repo;
+        this._operationTypeRepository = operationTypeRepository;
+        this._staffRepository = staffRepository;
+    }
+
+*/
     public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository repo)
     {
         this._unitOfWork = unitOfWork;
@@ -22,6 +37,9 @@ namespace DDDSample1.Domain.OperationRequest
 
     public async Task<OperationRequest> AddAsync(OperationRequest operationRequest)
     {
+      //  await checkOperationTypeIdAsync(operationRequest.OperationTypeId);
+       // await checkDoctorIdAsync(operationRequest.DoctorId);
+
         await this._repo.AddAsync(operationRequest);
 
         await this._unitOfWork.CommitAsync();
@@ -33,6 +51,7 @@ namespace DDDSample1.Domain.OperationRequest
 
     public async Task<OperationRequest> GetByIdAsync(OperationRequestId id)
     {
+        
         var op = await this._repo.GetByIdAsync(id);
         if (op == null)
             return null;
@@ -40,6 +59,34 @@ namespace DDDSample1.Domain.OperationRequest
         return op;
 
     }
+
+ /*   public async Task checkOperationTypeIdAsync(OperationTypeId operationTypeId)
+    {
+
+        var opType = await this._operationTypeRepository.GetByIdAsync(operationTypeId);
+        if (opType == null)
+        {
+            throw new BusinessRuleValidationException("Operation Type not found");
+        }
+    }
+*/
+ 
+ 
+    /*
+    public async Task checkDoctorIdAsync(StaffId doctorId)
+    {
+
+        var doctor = await this._staffRepository.GetDoctorById(doctorId);
+        if(doctor == null)
+        {
+            throw new BusinessRuleValidationException("Doctor invalid");
+        }
+
+
+    }
+
+    */
+
 
 }
 }

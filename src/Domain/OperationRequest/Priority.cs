@@ -11,18 +11,18 @@ namespace DDDSample1.Domain.OperationRequest
     {
 
 
-        public string _priority { get; private set; }
+        public string priority { get; private set; }
 
         public Priority(string priority)
         {
             validatePriority(priority);
-            _priority = priority;
+            this.priority = priority;
         }
 
         private void validatePriority(string priority){
             List<string> priorities = new List<string> {"eletric", "urgency", "emergency"};
             if(string.IsNullOrEmpty(priority) || !priorities.Contains(priority)){
-                throw new ArgumentNullException("Invalid role");
+                throw new ArgumentNullException("Invalid priority");
             }
         }
 

@@ -15,7 +15,7 @@ namespace DDDSample1.Domain.Patient
         {
         }
 
-        public Guid Value => AsGuid(); // Propriedade de acesso público para EF
+      //  public Guid Value => AsGuid(); // Propriedade de acesso público para EF
 
 
         override

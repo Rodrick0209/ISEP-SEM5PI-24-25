@@ -8,6 +8,8 @@ using DDDSample1.Domain.User;
 using DDDSample1.Infrastructure.Users;
 using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Infrastructure.OperationRequests;
+using DDDSample1.Domain.OperationType;
+using DDDSample1.Infrastructure.OperationTypes;
 
 namespace DDDSample1.Infrastructure
 {
@@ -22,7 +24,8 @@ namespace DDDSample1.Infrastructure
         public DbSet<User> Users { get; set; }
 
         public DbSet<OperationRequest> OperationRequests { get; set; }
-        
+
+        public DbSet<OperationType> OperationTypes { get; set; }    
 
         public DDDSample1DbContext(DbContextOptions options) : base(options)
         {
@@ -36,6 +39,7 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new FamilyEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRequestEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OperationTypeEntityTypeConfiguration());
         }
     }
 }
