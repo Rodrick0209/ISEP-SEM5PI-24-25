@@ -32,7 +32,7 @@ namespace DDDSample1.Domain.Patient
                 throw new BusinessRuleValidationException("First name and last name must be contained in full name");
             }
 
-            Patient lastPatientInMonth = await _patientRepository.GetLastPatientInMonthAsync(DateTime.Now);
+            var lastPatientInMonth = await _patientRepository.GetLastPatientInMonthAsync(DateTime.Now);
 
             var patient = new Patient(
                 new FullName(dto.FullName),
