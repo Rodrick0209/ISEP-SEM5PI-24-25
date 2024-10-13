@@ -74,6 +74,31 @@ namespace DDDSample1.Controllers
         }
 
 
+        [HttpDelete("{id}")]
+
+        public async Task<ActionResult<OperationRequestDto>> Delete(Guid id)
+        {
+            try
+            {
+                var op = await _service.DeleteAsync(new OperationRequestId(id));
+                if (op == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(OperationRequestMapper.toDTO(op));
+
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+
+
+
+        }
+
+
 
 
     }

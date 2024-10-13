@@ -14,6 +14,8 @@ namespace DDDSample1.Domain.OperationRequest
 
     private readonly IOperationRequestRepository _repo;
 
+    
+    //private readonly IAppointmentRepository _appointmentRepository;
 
    // private readonly IOperationTypeRepository  _operationTypeRepository;
 
@@ -25,6 +27,7 @@ namespace DDDSample1.Domain.OperationRequest
         this._repo = repo;
         this._operationTypeRepository = operationTypeRepository;
         this._staffRepository = staffRepository;
+        this._appointmentRepository = appointmentRepository;
     }
 
 */
@@ -72,6 +75,25 @@ namespace DDDSample1.Domain.OperationRequest
     }
 
 
+    public async Task<OperationRequest> DeleteAsync(OperationRequestId id)
+    {
+        //var appointment = checkOperationRequestIsAppointementAsync
+        // if (appointment == null)
+        //     throw new BusinessRuleValidationException("Operation Request is an appointment");
+
+        var op = await this._repo.GetByIdAsync(id);
+
+        if (op == null)
+            return null;
+
+        this._repo.Remove(op);
+        await this._unitOfWork.CommitAsync();
+
+        return op;    
+
+    }
+
+
 
     
 
@@ -85,6 +107,10 @@ namespace DDDSample1.Domain.OperationRequest
         return op;
 
     }
+
+
+
+
 
  /*   public async Task checkOperationTypeIdAsync(OperationTypeId operationTypeId)
     {
@@ -110,6 +136,16 @@ namespace DDDSample1.Domain.OperationRequest
 
 
     }
+
+    public async Task checkOperationRequestIsAppointementAsync(OperationRequestId id)
+    {
+        var appointment = await this._appointmentRepository.GetByOperationRequestId(id);
+        if(appointment != null)
+           return appointment;           
+    }
+
+
+
 
     */
 
