@@ -1,7 +1,8 @@
 using System;
 using DDDSample1.Domain.OperationType;
 using DDDSample1.Domain.Patient;
-using DDDSample1.Domain.Shared; 
+using DDDSample1.Domain.Shared;
+using Domain.Staff;
 
 
 
@@ -18,26 +19,48 @@ namespace DDDSample1.Domain.OperationRequest
 
         public OperationTypeId operationTypeId { get; private set; }   
 
+        public StaffId doctorId { get; private set; }
 
         private OperationRequest()
         {
         }
 
-        public OperationRequest(string deadLineDate, string priority, PatientId patientId, OperationTypeId operationTypeId)
+        public OperationRequest(string deadLineDate, string priority, PatientId patientId, OperationTypeId operationTypeId, StaffId doctorId)
         {
             this.Id = new OperationRequestId(Guid.NewGuid());
             this.priority = new Priority(priority);
             this.deadLineDate = new DeadLineDate(deadLineDate);
             this.patientId = patientId;
             this.operationTypeId = operationTypeId;
-
+            this.doctorId = doctorId;
         }
 
 
+        public void ChangeDeadLineDate(string deadLineDate)
+        {
+            this.deadLineDate = new DeadLineDate(deadLineDate);
+        }
 
 
+        public void ChangePriority(string priority)
+        {
+            this.priority = new Priority(priority);
+        }
 
+        public void ChangePatientId(PatientId patientId)
+        {       
+            this.patientId = patientId;
+        }
 
+        public void ChangeOperationTypeId(OperationTypeId operationTypeId)
+        {
+            this.operationTypeId = operationTypeId;
+        }
+
+        public void ChangeDoctorId(StaffId doctorId)
+        {
+            this.doctorId = doctorId;
+        }
 
 
     }

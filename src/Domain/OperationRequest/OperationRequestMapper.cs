@@ -11,12 +11,12 @@ namespace DDDSample1.Domain.OperationRequest
 
         public static OperationRequestDto toDTO(OperationRequest obj)
         {
-            return new OperationRequestDto (obj.Id.AsGuid(), obj.deadLineDate.ToString(), obj.priority.ToString(), obj.patientId, obj.operationTypeId);
+            return new OperationRequestDto (obj.Id.AsGuid(), obj.deadLineDate.ToString(), obj.priority.ToString(), obj.patientId, obj.operationTypeId, obj.doctorId);
         }
 
         public static OperationRequest toDomain(OperationRequestDto obj)
         {
-            return new OperationRequest(obj.DeadLineDate, obj.Priority, obj.PatientId, obj.OperationTypeId);
+            return new OperationRequest(obj.DeadLineDate, obj.Priority, obj.PatientId, obj.OperationTypeId, obj.DoctorId);
         }
 
 

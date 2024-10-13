@@ -92,7 +92,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     };
         
         
-
         // Personalização de erro 401
         options.Events = new JwtBearerEvents
         {

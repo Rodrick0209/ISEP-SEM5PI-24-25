@@ -47,6 +47,30 @@ namespace DDDSample1.Domain.OperationRequest
         return operationRequest;
 
     }
+
+    public async Task<OperationRequest> UpdateAsync(OperationRequestDto dto)
+    {
+      //  await checkOperationTypeIdAsync(dto.OperationTypeId);
+      //  await checkDoctorIdAsync(dto.DoctorId);
+    
+        var op = await this._repo.GetByIdAsync(new OperationRequestId(dto.Id));
+        if (op == null)
+            return null;
+
+            op.ChangeOperationTypeId(dto.OperationTypeId);
+            op.ChangeDoctorId(dto.DoctorId);
+            op.ChangePriority(dto.Priority);
+            op.ChangeDeadLineDate(dto.DeadLineDate);
+            op.ChangePatientId(dto.PatientId);
+
+            await this._unitOfWork.CommitAsync();
+
+            return op;
+
+    }
+
+
+
     
 
     public async Task<OperationRequest> GetByIdAsync(OperationRequestId id)

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using DDDSample1.Domain.OperationRequest;
+using DDDSample1.Domain.Shared;
 
 
 
@@ -47,6 +48,31 @@ namespace DDDSample1.Controllers
             }
             return OperationRequestMapper.toDTO(op);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<OperationRequestDto>> Update(Guid id, OperationRequestDto dto)
+        {
+            if (id != dto.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var op = await _service.UpdateAsync(dto);
+                if (op == null)
+                {
+                    return NotFound();
+                }
+                return Ok(OperationRequestMapper.toDTO(op));
+
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
 
 
 
