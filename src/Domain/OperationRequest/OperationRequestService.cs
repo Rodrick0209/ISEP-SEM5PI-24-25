@@ -37,8 +37,10 @@ namespace DDDSample1.Domain.OperationRequest
 
     public async Task<OperationRequest> AddAsync(OperationRequest operationRequest)
     {
-      //  await checkOperationTypeIdAsync(operationRequest.OperationTypeId);
-       // await checkDoctorIdAsync(operationRequest.DoctorId);
+        // await checkOperationTypeIdAsync(operationRequest.OperationTypeId);
+        // await checkDoctorIdAsync(operationRequest.DoctorId);
+        // falta adicionar o operation request ao medical history
+
 
         await this._repo.AddAsync(operationRequest);
 
