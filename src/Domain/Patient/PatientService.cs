@@ -26,20 +26,14 @@ namespace DDDSample1.Domain.Patient
                 throw new BusinessRuleValidationException("Email or Phone Number already exists");
             }
 
-            bool firstNameAndLastNameContainsInFullName = await ValidateFullNameContainsFirstNameAndLastName(dto.FullName, dto.FirstName, dto.LastName);
-            if (!firstNameAndLastNameContainsInFullName)
-            {
-                throw new BusinessRuleValidationException("First name and last name must be contained in full name");
-            }
-
             var lastPatientInMonth = await _patientRepository.GetLastPatientInMonthAsync(DateTime.Now);
 
             var patient = new Patient(
                 new FullName(dto.FullName),
-                new DateOfBirth(DateTime.Parse(dto.DateOfBirth)), 
-                new Email(dto.Email), 
-                new PhoneNumber(dto.PhoneNumber), 
-                new MedicalRecordNumber(MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(DateTime.Now,lastPatientInMonth)), 
+                new DateOfBirth(DateTime.Parse(dto.DateOfBirth)),
+                new Email(dto.Email),
+                new PhoneNumber(dto.PhoneNumber),
+                new MedicalRecordNumber(MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(DateTime.Now, lastPatientInMonth)),
                 new EmergencyContact(dto.EmergencyContact)
             );
 
@@ -67,14 +61,9 @@ namespace DDDSample1.Domain.Patient
             {
                 return false;
             }
-            return true;;
+            return true;
         }
 
-        private Task<bool> ValidateFullNameContainsFirstNameAndLastName(string fullName, string firstName, string lastName)
-        {
-            return Task.FromResult(fullName.Contains(firstName) && fullName.Contains(lastName));
-        }
 
-    
     }
 }
