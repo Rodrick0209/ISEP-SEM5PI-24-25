@@ -1,0 +1,18 @@
+
+```plantuml
+@startuml Process_View
+actor Admin 
+participant System <<System>>
+
+activate Admin
+
+Admin -> System: Make a request to create a new Operation Type
+activate System
+System --> Admin : Asks the necessary information
+Admin -> System: Provides the necessary information
+System --> Admin : Success/Error message
+deactivate System
+deactivate Admin
+
+@enduml
+```
