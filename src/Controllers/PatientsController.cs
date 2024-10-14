@@ -10,7 +10,7 @@ namespace DDDSample1.Controllers
     
     public class PatientsController : ControllerBase
     {
-        private readonly PatientService _service;
+        private readonly IPatientService _service;
 
         public PatientsController(PatientService service)
         {

@@ -17,4 +17,20 @@ This US creates the functionality to edit a patient profile.
 
 ### 2.2. User Story Dependencies
 
-**US 5.1.9** - The patient profile must be created on the system
+**US 5.1.8** - The patient profile must be created on the system
+**US 5.1.11** - The admin must select the patient by a type of data
+
+## 3. Analysis
+
+The admin should select the patient by **unique** data.
+
+This is the following fields that can be edited:
+- Full Name
+- Email
+- Phone
+- Medical History
+- Medical Conditions
+
+When the Sensitive Content (for example, the Email and Phone Number) is edited, the system should send an **email notification** with the the notification of Email and/or Phone Number edited. 
+
+Changes in Patient Profile **must be logged** for auditing purpose.
