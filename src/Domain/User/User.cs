@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.Utils;
 using Microsoft.AspNetCore.Identity;
 
 namespace DDDSample1.Domain.User

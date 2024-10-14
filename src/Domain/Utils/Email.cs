@@ -2,7 +2,7 @@ using System;
 using DDDSample1.Domain.Shared;
 using System.Text.RegularExpressions;
 
-namespace DDDSample1.Domain.User
+namespace DDDSample1.Domain.Utils
 {
 
     public class Email : IValueObject
