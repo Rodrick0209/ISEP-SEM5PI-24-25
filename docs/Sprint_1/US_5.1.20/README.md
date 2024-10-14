@@ -18,6 +18,18 @@ The goal of this User Story (US) is to allow the system administrator to add new
   * Surgery
   * Cleaning
 
+
+### Given Information to be Processed for Business Needs
+
+The client has provided the following information regarding the attributes of an operation type. These attributes must be properly managed and treated in the system to meet the business objectives of adding and maintaining new surgical operations:
+
+- **ID:** A unique identifier for each operation type.
+- **Name:** The name of the operation type (e.g., appendectomy, heart bypass).
+- **Required Staff by Specialization:** A list of essential medical staff required to perform the operation, categorized by specialization (e.g., surgeon, anesthesiologist).
+- **Estimated Duration:** The total estimated time for the operation, including preparation, surgery, and cleaning phases.
+
+This information will be processed and handled as part of the functional and business logic when implementing the feature to add new operation types.
+
 ### Stakeholders
 
 * **Administrator:** Manages the list of available operations.
@@ -30,6 +42,7 @@ The goal of this User Story (US) is to allow the system administrator to add new
 * The administrator must be authenticated in the system.
 * The new operation type name must not already exist in the system.
 
+
 ### Postconditions
 
 * The new operation type is added to the system and is available for future surgeries, as long as it is active.
@@ -37,7 +50,26 @@ The goal of this User Story (US) is to allow the system administrator to add new
 
 <br>
 
+
+
 ## 2. Design
+
+
+### Domain Model
+![DM](DM/dm.png)
+
+### High-Level Process View (L1)
+![N1_VP_US20](L1/Process_View.svg)
+
+### Detailed Process View (L2)
+![N2_VP_US18](L2/Process_View.svg)
+
+
+### Code Examples (L3)
+![N3_VP_US16](L3/Process_View.svg)
+
+
+<br>
 
 ### Patterns Applied
 
@@ -46,22 +78,8 @@ The goal of this User Story (US) is to allow the system administrator to add new
 * **SOLID Principles:** These design principles (Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, Dependency Inversion) are the foundation of object-oriented software design.
 * **DTO (Data Transfer Object):** Used to create simple data structures that do not contain business logic.
 
-
-<br>
-
 ## 3. Implementation
 
-### High-Level Process View (L1)
-![N1_VP_US20](L1/Process_View.svg)
-
-### Detailed Process View (L2)
-![N2_VP_US18](L2/Process_View.svg)
-
-### Domain Model
-![DM](DM/dm.png)
-
-### Code Examples (L3)
-![N3_VP_US16](L3/Process_View.svg)
 
 
 
