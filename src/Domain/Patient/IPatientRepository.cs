@@ -9,5 +9,6 @@ namespace DDDSample1.Domain.Patient
         Task<Patient> GetByEmailAsync(string email);
         Task<Patient> GetByPhoneNumberAsync(string phoneNumber);
         Task<Patient> GetLastPatientInMonthAsync(DateTime now);
+        Task<Patient> GetByMedicalRecordNumberAsync(string medicalRecordNumber);
     }
 }

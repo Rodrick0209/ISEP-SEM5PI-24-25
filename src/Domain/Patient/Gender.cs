@@ -14,7 +14,7 @@ namespace DDDSample1.Domain.Patient
             this.gender = gender;
         }
 
-        private void validateGender(String gender)
+        private void validateGender(string gender)
         {
             List<string> genders = new List<string> { "male", "female" };
             if (string.IsNullOrEmpty(gender) || !genders.Contains(gender))

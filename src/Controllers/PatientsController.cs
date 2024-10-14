@@ -7,7 +7,7 @@ namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+
     public class PatientsController : ControllerBase
     {
         private readonly IPatientService _service;
@@ -18,7 +18,7 @@ namespace DDDSample1.Controllers
         }
 
         // POST: api/Patients
-        [HttpPost("Create patient profile")]
+        [HttpPost]
         public async Task<ActionResult<PatientDto>> Create(CreatingPatientProfileDto dto)
         {
             try
@@ -27,10 +27,32 @@ namespace DDDSample1.Controllers
 
                 return Ok(patient);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return BadRequest(new {Message = ex.Message});
+                return BadRequest(new { Message = ex.Message });
             }
         }
+
+        // PUT: api/Patients
+        [HttpPut("{medicalRecordNumber}")]
+        public async Task<ActionResult<PatientDto>> Update(string medicalRecordNumber, EditingPatientProfileDto dto)
+        {
+            if (medicalRecordNumber != dto.MedicalRecordNumber)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var patient = await _service.UpdateAsync(dto);
+
+                return Ok(patient);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
     }
 }

@@ -1,8 +1,9 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Utils;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging.Configuration;
 
 namespace DDDSample1.Domain.Patient
 {
@@ -10,7 +11,7 @@ namespace DDDSample1.Domain.Patient
     {
         public PatientId Id { get; private set; }
         public FullName FullName { get; private set; }
-        
+
         public DateOfBirth DateOfBirth { get; private set; }
         public Email Email { get; private set; }
         public PhoneNumber PhoneNumber { get; private set; }
@@ -30,9 +31,26 @@ namespace DDDSample1.Domain.Patient
             this.MedicalRecordNumber = medicalRecordNumber;
         }
 
-        public void AssociateUser(User.User? user){
+        public void AssociateUser(User.User user)
+        {
             this.User = user;
         }
+
+        public void ChangeFullName(FullName fullName)
+        {
+            this.FullName = fullName;
+        }
+
+        public void ChangeEmail(Email email)
+        {
+            this.Email = email;
+        }
+
+        public void ChangePhoneNumber(PhoneNumber phoneNumber)
+        {
+            this.PhoneNumber = phoneNumber;
+        }
+        
     }
 }
 

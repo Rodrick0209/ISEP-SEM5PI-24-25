@@ -21,6 +21,11 @@ namespace DDDSample1.Infrastructure.Patients
             return await this.context.Patients.FirstOrDefaultAsync(p => p.Email.email == email);
         }
 
+        public Task<Patient> GetByMedicalRecordNumberAsync(string medicalRecordNumber)
+        {
+            return this.context.Patients.FirstOrDefaultAsync(p => p.MedicalRecordNumber._medicalRecordNumber == medicalRecordNumber);
+        }
+
         public Task<Patient> GetByPhoneNumberAsync(string phoneNumber)
         {
             return this.context.Patients.FirstOrDefaultAsync(p => p.PhoneNumber.phoneNumber == phoneNumber);
