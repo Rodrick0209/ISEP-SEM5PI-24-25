@@ -1,0 +1,24 @@
+
+```plantuml
+@startuml Process_View
+actor Admin 
+participant UI  as UI
+participant Backend as backend
+
+activate Admin
+
+Admin -> UI: Make a request to create a new Operation Type
+activate UI
+UI --> Admin : Asks the necessary information
+Admin -> UI: Provides the necessary information
+UI -> backend : requests an http POST
+activate backend
+backend -> backend : receive request body info,\ncreates the new operation Type\nand saves in DB
+backend --> UI : response
+deactivate backend
+UI --> Admin : Success/Error message
+deactivate UI
+deactivate Admin
+
+@enduml
+```
