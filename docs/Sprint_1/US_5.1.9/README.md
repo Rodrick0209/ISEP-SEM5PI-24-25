@@ -34,3 +34,24 @@ This is the following fields that can be edited:
 When the Sensitive Content (for example, the Email and Phone Number) is edited, the system should send an **email notification** with the the notification of Email and/or Phone Number edited. 
 
 Changes in Patient Profile **must be logged** for auditing purpose.
+
+### 3.1. Client-relevant questions
+
+**Q:** When one of the contents that administrator edits is a sensitive content (eg. email), the notification is sent for what patient's email, the email in patient account, the old email of patient or the new email of patient?
+
+**R:** if the email is changed, the notification should be sent to the "old" email
+
+### 3.2. Domain model apperance
+
+![DM](DM/DM.png)
+
+## 4. Design - Process View
+
+#### Level 1
+![Process View - Level 1](L1/Process_View.svg)
+
+#### Level 2
+![Process View - Level 2](L2/Process_View.svg)
+
+#### Level 3
+![Process View - Level 3](L3/Process_View.svg)

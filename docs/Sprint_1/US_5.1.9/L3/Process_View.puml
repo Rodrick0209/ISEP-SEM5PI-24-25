@@ -1,0 +1,40 @@
+```plantuml
+@startuml Process_View
+participant PatientRoute as Route <<Route>>
+participant PatientController as Controller <<Controller>>
+participant EditingPatientDTO as DTO <<DTO>>
+participant PatientService as Service <<Service>>
+participant EmailService as EmailService <<Service>>
+participant PatientRepository as Repository <<Repository>>
+participant Patient as Domain <<Domain>>
+participant PatientMapper as Mapper <<Mapper>>
+[o-> Route: PUT (/api/patients/{id})
+activate Route
+Route -> Controller : PUT
+activate Controller
+Controller -> DTO** : recieves request body info
+Controller -> Service : editPatient(id, editingPatientDTO)
+activate Service
+Service -> Repository : findById(id)
+activate Repository
+return patient
+Service -> Domain : changeName(newName)
+Service -> Domain : changeEmail(newEmail)
+Service -> Domain : changePhoneNumber(newPhoneNumber)
+Service -> Domain : changeMedicalConditions(newMedicalConditions)
+Service -> Domain : logChanges()
+Service -> Repository : save(patient)
+alt content editable contains sensitive info
+    Service -> EmailService : sendEmail(email)
+end
+Service -> Mapper : toDTO(patient)
+activate Mapper
+return patientDTO
+Service --> Controller : patientDTO
+deactivate Service
+Controller --> Route : response
+deactivate Controller
+<-- Route : response
+
+@enduml
+```

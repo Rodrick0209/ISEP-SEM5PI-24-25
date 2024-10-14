@@ -1,0 +1,11 @@
+```plantuml
+@startuml Process_View
+participant "Back-end" as BE <<Container>>
+
+[o-> BE: PUT (/api/patients/{id})
+activate BE
+BE -> BE: receive request body info,\nedits patient profile\nand saves in DB
+<-- BE: response
+deactivate BE
+@enduml
+```
