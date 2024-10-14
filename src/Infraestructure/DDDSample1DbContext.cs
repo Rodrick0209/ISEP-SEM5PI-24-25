@@ -10,6 +10,7 @@ using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Infrastructure.OperationRequests;
 using DDDSample1.Domain.OperationType;
 using DDDSample1.Infrastructure.OperationTypes;
+using DDDSample1.Domain.Patient;
 
 namespace DDDSample1.Infrastructure
 {
@@ -25,7 +26,9 @@ namespace DDDSample1.Infrastructure
 
         public DbSet<OperationRequest> OperationRequests { get; set; }
 
-        public DbSet<OperationType> OperationTypes { get; set; }    
+        public DbSet<OperationType> OperationTypes { get; set; }
+
+        public DbSet<Patient> Patients { get; set; }    
 
         public DDDSample1DbContext(DbContextOptions options) : base(options)
         {
