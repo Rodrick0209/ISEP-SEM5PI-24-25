@@ -6,7 +6,7 @@ using DDDSample1.Infrastructure;
 
 namespace DDDSample1.Domain.Patient
 {
-    public class PatientService
+    public class PatientService : IPatientService
     {
         private readonly UnitOfWork _unitOfWork;
         private readonly IPatientRepository _patientRepository;
