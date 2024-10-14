@@ -84,7 +84,7 @@ namespace DDDSample1.Controllers
 
                 if (token == null)
                     return BadRequest("Something went wrong");
-
+    
                 
                 
                 string callbackUrl = $"http://localhost:9999/resetpassword?code={token}&Email={user.email.email}";
