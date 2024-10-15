@@ -8,7 +8,7 @@ namespace DDDSample1.Domain.Patient
                 patient.Id.AsGuid(),
                 patient.FullName.fullName,
                 patient.DateOfBirth.dateOfBirth.ToString(),
-                patient.Email.email,
+                // patient.Email.email,
                 patient.PhoneNumber.phoneNumber,
                 patient.MedicalRecordNumber._medicalRecordNumber,
                 patient.EmergencyContact.emergencyContact

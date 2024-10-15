@@ -9,7 +9,6 @@ namespace DDDSample1.Domain.Patient
 {
     public class Patient : Entity<PatientId>, IAggregateRoot
     {
-        public PatientId Id { get; private set; }
         public FullName FullName { get; private set; }
 
         public DateOfBirth DateOfBirth { get; private set; }
@@ -19,6 +18,14 @@ namespace DDDSample1.Domain.Patient
         public MedicalRecordNumber MedicalRecordNumber { get; private set; }
         public User.User? User { get; private set; }
 
+        private Patient()
+        {
+            this.FullName = default!;
+            this.DateOfBirth = default!;
+            this.Email = default!;
+            this.PhoneNumber = default!;
+            this.MedicalRecordNumber = default!;
+        }
 
         public Patient(FullName fullName, DateOfBirth dateOfBirth, Email email, PhoneNumber phoneNumber, MedicalRecordNumber medicalRecordNumber, EmergencyContact? emergencyContact = null)
         {

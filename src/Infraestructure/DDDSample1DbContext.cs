@@ -11,6 +11,7 @@ using DDDSample1.Infrastructure.OperationRequests;
 using DDDSample1.Domain.OperationType;
 using DDDSample1.Infrastructure.OperationTypes;
 using DDDSample1.Domain.Patient;
+using DDDSample1.Infrastructure.Patients;
 
 namespace DDDSample1.Infrastructure
 {
@@ -43,6 +44,7 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRequestEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationTypeEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new PatientEntityTypeConfiguration());
         }
     }
 }

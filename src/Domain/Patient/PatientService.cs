@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DDDSample1.Domain.Patient
 {
-    public class PatientService : IPatientService
+    public class PatientService
     {
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IPatientRepository _patientRepository;
         private readonly IEmailSender _emailSender;
 
-        public PatientService(UnitOfWork unitOfWork, IPatientRepository patientRepository, IEmailSender emailSender)
+        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, IEmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
             _patientRepository = patientRepository;
