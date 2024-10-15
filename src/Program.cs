@@ -27,6 +27,7 @@ using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Infrastructure.OperationRequests;
 using DDDSample1.Domain.OperationType;
 using DDDSample1.Infrastructure.OperationTypes;
+using Domain.Staff;
 
 
 
@@ -121,6 +122,8 @@ ConfigureMyServices(builder.Services);
 
 var app = builder.Build();
 
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -169,5 +172,6 @@ void ConfigureMyServices(IServiceCollection services)
     services.AddTransient<OperationRequestService>();
 
     services.AddTransient<IOperationTypeRepository, OperationTypeRepository>();
+    services.AddTransient<OperationTypeService>();
 
 }

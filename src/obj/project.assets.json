@@ -1895,19 +1895,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\rodri\\.nuget\\packages\\": {}
+    "/Users/miguel/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rodri\\Documents\\sem5pi_g55_24_25\\src\\DDDNetCore.csproj",
+      "projectUniqueName": "/Users/miguel/Desktop/sem5pi_g55_24_25/src/DDDNetCore.csproj",
       "projectName": "DDDNetCore",
-      "projectPath": "C:\\Users\\rodri\\Documents\\sem5pi_g55_24_25\\src\\DDDNetCore.csproj",
-      "packagesPath": "C:\\Users\\rodri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rodri\\Documents\\sem5pi_g55_24_25\\src\\obj\\",
+      "projectPath": "/Users/miguel/Desktop/sem5pi_g55_24_25/src/DDDNetCore.csproj",
+      "packagesPath": "/Users/miguel/.nuget/packages/",
+      "outputPath": "/Users/miguel/Desktop/sem5pi_g55_24_25/src/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\rodri\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/miguel/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -1996,7 +1996,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

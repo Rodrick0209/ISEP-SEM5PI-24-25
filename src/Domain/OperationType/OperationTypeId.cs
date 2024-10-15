@@ -9,32 +9,19 @@ namespace DDDSample1.Domain.OperationType
     public class OperationTypeId : EntityId
     {
 
-        [JsonConstructor]
-        public OperationTypeId(Guid value) : base(value)
+        public OperationTypeId(String value):base(value)
         {
+
         }
 
-        public OperationTypeId(String value) : base(value)
-        {
-        }
-
-      //  public Guid Value => AsGuid(); // Propriedade de acesso público para EF
         override
         protected  Object createFromString(String text){
-            return new Guid(text);
+            return text;
         }
-        
         override
         public String AsString(){
-            Guid obj = (Guid) base.ObjValue;
-            return obj.ToString();
+            return (String) base.Value;
         }
-        public Guid AsGuid(){
-            return (Guid) base.ObjValue;
-        }
-
-
-
 
     }
 

@@ -45,6 +45,13 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new OperationRequestEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationTypeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PatientEntityTypeConfiguration());
+
+            modelBuilder.Entity<OperationType>(entity =>
+            {
+                entity.OwnsOne(o => o.preparationPhase);
+                entity.OwnsOne(o => o.surgeryPhase);
+                entity.OwnsOne(o => o.cleaningPhase);
+            });
         }
     }
 }
