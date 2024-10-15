@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using System;
 using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Domain.Shared;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 
 
@@ -98,6 +100,21 @@ namespace DDDSample1.Controllers
 
         }
 
+
+        [HttpGet]
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> GetOperationRequests([FromQuery] OperationRequestFilterDto filters)
+        {
+        var doctorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (doctorId == null)
+        {
+            return Unauthorized();
+        }
+
+        var operationRequests = await _service.GetOperationRequestsWithFilters(filters, doctorId);
+        return Ok(operationRequests);
+    }
 
 
 
