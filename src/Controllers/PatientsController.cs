@@ -19,14 +19,14 @@ namespace DDDSample1.Controllers
         }
 
         // POST: api/Patients
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<PatientDto>> Create(CreatingPatientProfileDto dto)
         {
             try
             {
                 var patient = await _service.CreateAsync(dto);
 
-                return Ok(patient);
+                return CreatedAtAction(nameof(GetByMedicalRecordNumber), new { medicalRecordNumber = patient.MedicalRecordNumber }, patient);
             }
             catch (Exception ex)
             {
@@ -58,16 +58,33 @@ namespace DDDSample1.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PatientDto>>> GetAllAsync()
         {
-            try
-            {
-                var patients = await _service.GetAllAsync();
+            return await _service.GetAllAsync();
+        }
 
-                return Ok(patients);
-            }
-            catch (Exception ex)
+        [HttpGet("MedicalRecordNumber/{medicalRecordNumber}")]
+        public async Task<ActionResult<PatientDto>> GetByMedicalRecordNumber(string medicalRecordNumber)
+        {
+            var patient = await _service.GetByMedicalRecordNumberAsync(medicalRecordNumber);
+
+            if (patient == null)
             {
-                return BadRequest(new { Message = ex.Message });
+                return NotFound();
             }
+
+            return patient;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PatientDto>> GetById(string id)
+        {
+            var patient = await _service.GetByIdAsync(id);
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            return patient;
         }
 
     }

@@ -132,6 +132,20 @@ namespace DDDSample1.Domain.Patient
             return listDto;
         }
 
+        public async Task<PatientDto> GetByMedicalRecordNumberAsync(string medicalRecordNumber)
+        {
+            var patient = await _patientRepository.GetByMedicalRecordNumberAsync(medicalRecordNumber);
+
+            return patient == null ? null : PatientMapper.ToDto(patient);
+        }
+
+        public async Task<PatientDto> GetByIdAsync(string id)
+        {
+            var patient = await _patientRepository.GetByIdAsync(new PatientId(id));
+
+            return patient == null ? null : PatientMapper.ToDto(patient);
+        }
+
         private async Task<bool> ValidateEmailIsUnique(string email)
         {
             var existingPatient = await _patientRepository.GetByEmailAsync(email);
