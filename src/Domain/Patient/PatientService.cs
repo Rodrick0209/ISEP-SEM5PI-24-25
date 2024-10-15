@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
 using DDDSample1.Domain.Utils;
 using DDDSample1.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DDDSample1.Domain.Patient
@@ -23,30 +26,52 @@ namespace DDDSample1.Domain.Patient
 
         public async Task<PatientDto> CreateAsync(CreatingPatientProfileDto dto)
         {
+
+            if (string.IsNullOrWhiteSpace(dto.FirstName))
+            {
+                throw new BusinessRuleValidationException("Invalid first name");
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.LastName))
+            {
+                throw new BusinessRuleValidationException("Invalid last name");
+            }
+
             bool emailIsUnique = await ValidateEmailIsUnique(dto.Email);
             bool phoneNumberIsUnique = await ValidatePhoneNumberIsUnique(dto.PhoneNumber);
             if (!emailIsUnique || !phoneNumberIsUnique)
             {
-                throw new BusinessRuleValidationException("Email or Phone Number already exists");
+                throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
             }
 
-            var lastPatientInMonth = await _patientRepository.GetLastPatientInMonthAsync(DateTime.Now);
+            FullName fullName = new FullName(dto.FullName);
+            DateOfBirth dateOfBirth = new DateOfBirth(DateTime.Parse(dto.DateOfBirth));
+            Email email = new Email(dto.Email);
+            PhoneNumber phoneNumber = new PhoneNumber(dto.PhoneNumber);
+
+            EmergencyContact emergencyContact = null;
+            if (!string.IsNullOrWhiteSpace(dto.EmergencyContact))
+            {
+                emergencyContact = new EmergencyContact(dto.EmergencyContact);
+            }
+
+            MedicalRecordNumber medicalRecordNumber = MedicalRecordNumberGenerator.GenerateMedicalRecordNumber();
 
             var patient = new Patient(
-                new FullName(dto.FullName),
-                new DateOfBirth(DateTime.Parse(dto.DateOfBirth)),
-                new Email(dto.Email),
-                new PhoneNumber(dto.PhoneNumber),
-                new MedicalRecordNumber(MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(DateTime.Now, lastPatientInMonth)),
-                new EmergencyContact(dto.EmergencyContact)
+                fullName,
+                dateOfBirth,
+                email,
+                phoneNumber,
+                emergencyContact,
+                medicalRecordNumber
             );
 
             await _patientRepository.AddAsync(patient);
-
             await _unitOfWork.CommitAsync();
 
             return PatientMapper.ToDto(patient);
         }
+
 
         public async Task<PatientDto> UpdateAsync(EditingPatientProfileDto dto)
         {
@@ -61,7 +86,8 @@ namespace DDDSample1.Domain.Patient
 
             if (dto.FullName != null)
             {
-                patient.ChangeFullName(new FullName(dto.FullName));
+                FullName fullName = new FullName(dto.FullName);
+                patient.ChangeFullName(fullName);
             }
 
             if (dto.Email != null)
@@ -71,7 +97,8 @@ namespace DDDSample1.Domain.Patient
                 {
                     throw new BusinessRuleValidationException("Email already exists");
                 }
-                patient.ChangeEmail(new Email(dto.Email));
+                Email newEmail = new Email(dto.Email);
+                patient.ChangeEmail(newEmail);
             }
 
             if (dto.PhoneNumber != null)
@@ -81,7 +108,8 @@ namespace DDDSample1.Domain.Patient
                 {
                     throw new BusinessRuleValidationException("Phone Number already exists");
                 }
-                patient.ChangePhoneNumber(new PhoneNumber(dto.PhoneNumber));
+                PhoneNumber phoneNumber = new PhoneNumber(dto.PhoneNumber);
+                patient.ChangePhoneNumber(phoneNumber);
             }
 
             await _unitOfWork.CommitAsync();
@@ -92,6 +120,16 @@ namespace DDDSample1.Domain.Patient
             }
 
             return PatientMapper.ToDto(patient);
+        }
+
+
+        public async Task<List<PatientDto>> GetAllAsync()
+        {
+            var list = await _patientRepository.GetAllAsync();
+
+            List<PatientDto> listDto = list.ConvertAll<PatientDto>(pat => PatientMapper.ToDto(pat));
+
+            return listDto;
         }
 
         private async Task<bool> ValidateEmailIsUnique(string email)

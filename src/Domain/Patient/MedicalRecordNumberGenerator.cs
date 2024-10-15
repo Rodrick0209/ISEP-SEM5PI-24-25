@@ -4,22 +4,14 @@ namespace DDDSample1.Domain.Patient
 {
     public class MedicalRecordNumberGenerator
     {
+        private static int lastSequentialNumber = 0;
 
-        public static string GenerateMedicalRecordNumber(DateTime registrationDate, Patient lastPatientInMonth)
+        public static MedicalRecordNumber GenerateMedicalRecordNumber()
         {
-            string yearMonth = registrationDate.ToString("yyyyMM");
-            int nextNumber = 1;
+            string yearMonth = DateTime.Now.ToString("yyyyMM");
+            lastSequentialNumber++;
 
-            if (lastPatientInMonth != null)
-            {
-                string lastNumberStr = lastPatientInMonth.MedicalRecordNumber.ToString().Substring(6);
-                if (int.TryParse(lastNumberStr, out int lastNumber))
-                {
-                    nextNumber = lastNumber + 1;
-                }
-            }
-
-            return $"{yearMonth}{nextNumber:D6}";
+            return new MedicalRecordNumber($"{yearMonth}{lastSequentialNumber:D6}");
         }
     }
 }

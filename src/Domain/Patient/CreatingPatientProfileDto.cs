@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Runtime.CompilerServices;
 
 namespace DDDSample1.Domain.Patient
