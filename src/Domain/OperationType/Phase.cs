@@ -11,6 +11,8 @@ namespace DDDSample1.Domain.OperationType
 
         //public Dictionary<Specialization,int> specializations { get; private set; }
 
+        private Phase() { }
+
         public Phase(int duration, Dictionary<Specialization,int> specializations)
         {
             this.duration = duration;
