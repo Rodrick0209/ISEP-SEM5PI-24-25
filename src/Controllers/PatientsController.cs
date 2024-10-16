@@ -26,7 +26,7 @@ namespace DDDSample1.Controllers
             {
                 var patient = await _service.CreateAsync(dto);
 
-                return CreatedAtAction(nameof(GetByMedicalRecordNumber), new { medicalRecordNumber = patient.MedicalRecordNumber }, patient);
+                return CreatedAtAction(nameof(GetByMedicalRecordNumberAsync), new { medicalRecordNumber = patient.MedicalRecordNumber }, patient);
             }
             catch (Exception ex)
             {
@@ -34,9 +34,31 @@ namespace DDDSample1.Controllers
             }
         }
 
-        // PUT: api/Patients
-        [HttpPut("{medicalRecordNumber}")]
-        public async Task<ActionResult<PatientDto>> Update(string medicalRecordNumber, EditingPatientProfileDto dto)
+        // PUT: api/Patients/{medicalRecordNumber}
+       /* [HttpPut("{medicalRecordNumber}")]
+        public async Task<ActionResult<PatientDto>> Replace(string medicalRecordNumber, ReplacingPatientProfileDto dto)
+        {
+            if (medicalRecordNumber != dto.MedicalRecordNumber)
+            {
+            return BadRequest();
+            }
+
+            try
+            {
+            var patient = await _service.ReplaceAsync(dto);
+
+            return Ok(patient);
+            }
+            catch (Exception ex)
+            {
+            return BadRequest(new { Message = ex.Message });
+            }
+        }
+        */
+
+        // PATCH: api/Patients/{medicalRecordNumber}
+        [HttpPatch("{medicalRecordNumber}")]
+        public async Task<ActionResult<PatientDto>> UpdateAsync(string medicalRecordNumber, EditingPatientProfileDto dto)
         {
             if (medicalRecordNumber != dto.MedicalRecordNumber)
             {
@@ -55,14 +77,16 @@ namespace DDDSample1.Controllers
             }
         }
 
+        // GET: api/Patients
         [HttpGet]
         public async Task<ActionResult<List<PatientDto>>> GetAllAsync()
         {
             return await _service.GetAllAsync();
         }
 
+        // GET: api/Patients/MedicalRecordNumber/{medicalRecordNumber}
         [HttpGet("MedicalRecordNumber/{medicalRecordNumber}")]
-        public async Task<ActionResult<PatientDto>> GetByMedicalRecordNumber(string medicalRecordNumber)
+        public async Task<ActionResult<PatientDto>> GetByMedicalRecordNumberAsync(string medicalRecordNumber)
         {
             var patient = await _service.GetByMedicalRecordNumberAsync(medicalRecordNumber);
 
@@ -74,6 +98,7 @@ namespace DDDSample1.Controllers
             return patient;
         }
 
+        // GET: api/Patients/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<PatientDto>> GetById(string id)
         {
