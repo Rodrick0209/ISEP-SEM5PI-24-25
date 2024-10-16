@@ -28,7 +28,7 @@ namespace DDDSample1.Domain.Patient
             this.MedicalRecordNumber = default!;
         }
 
-        public Patient(FullName fullName, DateOfBirth dateOfBirth, Email email, PhoneNumber phoneNumber, EmergencyContact emergencyContact, MedicalRecordNumber medicalRecordNumber)
+        public Patient(FullName fullName, DateOfBirth dateOfBirth, Email email, PhoneNumber phoneNumber, EmergencyContact? emergencyContact, MedicalRecordNumber medicalRecordNumber)
         {
             this.Id = new PatientId(Guid.NewGuid());
             this.FullName = fullName;

@@ -4,20 +4,20 @@ using DDDSample1.Domain.Patient;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Utils;
 
-namespace Tests.UnitTests.Domain.Patient
+namespace UnitTest.Domain.Patient
 {
     public class PatientTest
     {
         [Fact]
-        public void CreatePatient_ShouldCreatePatientWithValidData()
+        public void TestPatientCreation()
         {
             // Arrange
             var fullName = new FullName("John Doe");
             var dateOfBirth = new DateOfBirth(new DateTime(1990, 1, 1));
             var email = new Email("john.doe@example.com");
-            var phoneNumber = new PhoneNumber("123456789");
-            var emergencyContact = new EmergencyContact("Jane Doe");
-            var medicalRecordNumber = new MedicalRecordNumber("202310000012");
+            var phoneNumber = new PhoneNumber("1234567890");
+            var emergencyContact = new EmergencyContact("0987654321");
+            var medicalRecordNumber = new MedicalRecordNumber("202410000001");
 
             // Act
             var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, emergencyContact, medicalRecordNumber);
@@ -33,16 +33,17 @@ namespace Tests.UnitTests.Domain.Patient
         }
 
         [Fact]
-        public void ChangeFullName_ShouldUpdateFullName()
+        public void TestChangeFullName()
         {
             // Arrange
             var fullName = new FullName("John Doe");
             var dateOfBirth = new DateOfBirth(new DateTime(1990, 1, 1));
             var email = new Email("john.doe@example.com");
-            var phoneNumber = new PhoneNumber("123456789");
-            var emergencyContact = new EmergencyContact("Jane Doe");
-            var medicalRecordNumber = new MedicalRecordNumber("202310000012");
+            var phoneNumber = new PhoneNumber("1234567890");
+            var emergencyContact = new EmergencyContact("0987654321");
+            var medicalRecordNumber = new MedicalRecordNumber("202410000001");
             var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, emergencyContact, medicalRecordNumber);
+
             var newFullName = new FullName("John Smith");
 
             // Act
@@ -53,16 +54,17 @@ namespace Tests.UnitTests.Domain.Patient
         }
 
         [Fact]
-        public void ChangeEmail_ShouldUpdateEmail()
+        public void TestChangeEmail()
         {
             // Arrange
             var fullName = new FullName("John Doe");
             var dateOfBirth = new DateOfBirth(new DateTime(1990, 1, 1));
             var email = new Email("john.doe@example.com");
-            var phoneNumber = new PhoneNumber("123456789");
-            var emergencyContact = new EmergencyContact("987654321");
-            var medicalRecordNumber = new MedicalRecordNumber("202310000012");
+            var phoneNumber = new PhoneNumber("1234567890");
+            var emergencyContact = new EmergencyContact("0987654321");
+            var medicalRecordNumber = new MedicalRecordNumber("202410000001");
             var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, emergencyContact, medicalRecordNumber);
+
             var newEmail = new Email("john.smith@example.com");
 
             // Act
@@ -73,17 +75,18 @@ namespace Tests.UnitTests.Domain.Patient
         }
 
         [Fact]
-        public void ChangePhoneNumber_ShouldUpdatePhoneNumber()
+        public void TestChangePhoneNumber()
         {
             // Arrange
             var fullName = new FullName("John Doe");
             var dateOfBirth = new DateOfBirth(new DateTime(1990, 1, 1));
             var email = new Email("john.doe@example.com");
-            var phoneNumber = new PhoneNumber("123456789");
-            var emergencyContact = new EmergencyContact("987654321");
-            var medicalRecordNumber = new MedicalRecordNumber("202310000012");
+            var phoneNumber = new PhoneNumber("1234567890");
+            var emergencyContact = new EmergencyContact("0987654321");
+            var medicalRecordNumber = new MedicalRecordNumber("202410000001");
             var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, emergencyContact, medicalRecordNumber);
-            var newPhoneNumber = new PhoneNumber("987654321");
+
+            var newPhoneNumber = new PhoneNumber("0987654321");
 
             // Act
             patient.ChangePhoneNumber(newPhoneNumber);
@@ -93,16 +96,17 @@ namespace Tests.UnitTests.Domain.Patient
         }
 
         [Fact]
-        public void ChangeMedicalConditions_ShouldUpdateMedicalConditions()
+        public void TestChangeMedicalConditions()
         {
             // Arrange
             var fullName = new FullName("John Doe");
             var dateOfBirth = new DateOfBirth(new DateTime(1990, 1, 1));
             var email = new Email("john.doe@example.com");
-            var phoneNumber = new PhoneNumber("123456789");
-            var emergencyContact = new EmergencyContact("987654321");
-            var medicalRecordNumber = new MedicalRecordNumber("202310000012");
+            var phoneNumber = new PhoneNumber("1234567890");
+            var emergencyContact = new EmergencyContact("0987654321");
+            var medicalRecordNumber = new MedicalRecordNumber("202410000001");
             var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, emergencyContact, medicalRecordNumber);
+
             var medicalConditions = new MedicalConditions("Diabetes");
 
             // Act
