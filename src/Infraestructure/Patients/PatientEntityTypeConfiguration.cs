@@ -15,6 +15,7 @@ namespace DDDSample1.Infrastructure.Patients
             builder.OwnsOne(b => b.FullName);
             builder.OwnsOne(b => b.PhoneNumber).HasIndex(p => p.phoneNumber).IsUnique();
             builder.OwnsOne(b => b.MedicalRecordNumber);
+            builder.OwnsOne(b => b.MedicalConditions).Property(m => m.medicalConditions).IsRequired(false);
         }
     }
 }
