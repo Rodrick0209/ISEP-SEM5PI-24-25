@@ -10,15 +10,18 @@ namespace DDDSample1.Domain.Utils
         public PhoneNumber(string phoneNumber)
         {
             validatePhoneNumber(phoneNumber);
+            phoneNumber.Trim();
             this.phoneNumber = phoneNumber;
         }
 
         private void validatePhoneNumber(string phoneNumber)
         {
-            if (string.IsNullOrEmpty(phoneNumber))
+            if (string.IsNullOrWhiteSpace(phoneNumber))
             {
                 throw new ArgumentNullException("Invalid phone number");
             }
         }
+
+
     }
 }

@@ -16,6 +16,8 @@ namespace DDDSample1.Infrastructure.Users
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
             var credentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256);
+            double expirationTime = Convert.ToDouble(configuration["Jwt:ExpirationTime"]);
+
 
             var tokerDescriptor = new SecurityTokenDescriptor
             {
@@ -25,10 +27,9 @@ namespace DDDSample1.Infrastructure.Users
                     new Claim(JwtRegisteredClaimNames.Email,user.email.email),
                     new Claim("role",user.role.role),
                 ]),
-                Expires = DateTime.UtcNow.AddMinutes(60),
+                Expires = DateTime.UtcNow.AddMinutes(expirationTime),
                 SigningCredentials = credentials,
-                Issuer = configuration["Jwt:Issuer"],
-                
+                Issuer = configuration["Jwt:Issuer"],                
                 Audience = configuration["Jwt:Audience"]
             
             };

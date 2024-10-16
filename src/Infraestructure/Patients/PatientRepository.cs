@@ -21,22 +21,14 @@ namespace DDDSample1.Infrastructure.Patients
             return await this.context.Patients.FirstOrDefaultAsync(p => p.Email.email == email);
         }
 
-        public Task<Patient> GetByMedicalRecordNumberAsync(string medicalRecordNumber)
+        public async Task<Patient> GetByMedicalRecordNumberAsync(string medicalRecordNumber)
         {
-            return this.context.Patients.FirstOrDefaultAsync(p => p.MedicalRecordNumber._medicalRecordNumber == medicalRecordNumber);
+            return await this.context.Patients.FirstOrDefaultAsync(p => p.MedicalRecordNumber._medicalRecordNumber == medicalRecordNumber);
         }
 
-        public Task<Patient> GetByPhoneNumberAsync(string phoneNumber)
+        public async Task<Patient> GetByPhoneNumberAsync(string phoneNumber)
         {
-            return this.context.Patients.FirstOrDefaultAsync(p => p.PhoneNumber.phoneNumber == phoneNumber);
-        }
-
-        public async Task<Patient> GetLastPatientInMonthAsync(DateTime now)
-        {
-            return await this.context.Patients
-                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Contains(now.ToString("yyyyMM")))
-                .OrderByDescending(p => int.Parse(p.MedicalRecordNumber._medicalRecordNumber))
-                .FirstOrDefaultAsync();
+            return await this.context.Patients.FirstOrDefaultAsync(p => p.PhoneNumber.phoneNumber == phoneNumber);
         }
     }
 }

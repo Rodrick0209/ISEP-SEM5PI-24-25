@@ -13,7 +13,7 @@ namespace DDDSample1.Domain.Patient
         public string PhoneNumber { get; set; }
         public string? EmergencyContact { get; set; }
         public string MedicalRecordNumber { get; set; }
-
+            
         public PatientDto(Guid id, string fullName, string dateOfBirth, string email, string phoneNumber, string medicalRecordNumber, string? emergencyContact = null)
         {
             this.Id = id;

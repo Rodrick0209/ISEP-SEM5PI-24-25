@@ -7,11 +7,11 @@ namespace DDDSample1.Domain.Patient
             return new PatientDto(
                 patient.Id.AsGuid(),
                 patient.FullName.fullName,
-                patient.DateOfBirth.dateOfBirth.ToString(),
-                // patient.Email.email,
+                patient.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd"),
+                patient.Email.email,
                 patient.PhoneNumber.phoneNumber,
                 patient.MedicalRecordNumber._medicalRecordNumber,
-                patient.EmergencyContact.emergencyContact
+                patient.EmergencyContact?.emergencyContact ?? null
             );
         }
     }

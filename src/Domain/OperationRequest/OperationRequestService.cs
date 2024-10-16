@@ -108,6 +108,11 @@ namespace DDDSample1.Domain.OperationRequest
 
     }
 
+    public async Task<List<OperationRequest>> GetOperationRequestsWithFilters(OperationRequestFilterDto filters, string doctorId)
+    {
+            return await this._repo.GetOperationRequestsWithFilters(filters, doctorId);
+    }
+
 
 
 
