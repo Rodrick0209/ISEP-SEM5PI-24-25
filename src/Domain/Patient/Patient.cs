@@ -38,12 +38,7 @@ namespace DDDSample1.Domain.Patient
             this.EmergencyContact = emergencyContact;
             this.MedicalRecordNumber = medicalRecordNumber;
         }
-
-        public void AssociateUser(User.User user)
-        {
-            this.User = user;
-        }
-
+        
         public void ChangeFullName(FullName fullName)
         {
             this.FullName = fullName;

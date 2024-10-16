@@ -145,9 +145,9 @@ namespace DDDSample1.Domain.Patient
             return patient == null ? null : PatientMapper.ToDto(patient);
         }
 
-        public async Task<PatientDto> GetByIdAsync(string id)
+        public async Task<PatientDto> GetByIdAsync(PatientId id)
         {
-            var patient = await _patientRepository.GetByIdAsync(new PatientId(id));
+            var patient = await _patientRepository.GetByIdAsync(id);
 
             return patient == null ? null : PatientMapper.ToDto(patient);
         }
