@@ -112,6 +112,12 @@ namespace DDDSample1.Domain.Patient
                 patient.ChangePhoneNumber(phoneNumber);
             }
 
+            if (dto.MedicalConditions != null)
+            {
+                MedicalConditions medicalConditions = new MedicalConditions(dto.MedicalConditions);
+                patient.ChangeMedicalConditions(medicalConditions);
+            }
+
             await _unitOfWork.CommitAsync();
 
             if (dto.Email != null || dto.PhoneNumber != null)
