@@ -49,6 +49,12 @@ namespace DDDSample1.Domain.Patient
             Email email = new Email(dto.Email);
             PhoneNumber phoneNumber = new PhoneNumber(dto.PhoneNumber);
 
+            Gender gender = null;
+            if (!string.IsNullOrWhiteSpace(dto.Gender))
+            {
+                gender = new Gender(dto.Gender);
+            }
+
             EmergencyContact emergencyContact = null;
             if (!string.IsNullOrWhiteSpace(dto.EmergencyContact))
             {
@@ -62,6 +68,7 @@ namespace DDDSample1.Domain.Patient
                 dateOfBirth,
                 email,
                 phoneNumber,
+                gender,
                 emergencyContact,
                 medicalRecordNumber
             );

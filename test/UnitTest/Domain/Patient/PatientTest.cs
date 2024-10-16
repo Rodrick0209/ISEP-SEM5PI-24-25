@@ -16,11 +16,12 @@ namespace UnitTest.Domain.Patient
             var dateOfBirth = new DateOfBirth(new DateTime(1990, 1, 1));
             var email = new Email("john.doe@example.com");
             var phoneNumber = new PhoneNumber("1234567890");
+            var gender = new Gender("male");
             var emergencyContact = new EmergencyContact("0987654321");
             var medicalRecordNumber = new MedicalRecordNumber("202410000001");
 
             // Act
-            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, emergencyContact, medicalRecordNumber);
+            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, gender, emergencyContact, medicalRecordNumber);
 
             // Assert
             Assert.NotNull(patient.Id);
@@ -40,9 +41,10 @@ namespace UnitTest.Domain.Patient
             var dateOfBirth = new DateOfBirth(new DateTime(1990, 1, 1));
             var email = new Email("john.doe@example.com");
             var phoneNumber = new PhoneNumber("1234567890");
+            var gender = new Gender("male");
             var emergencyContact = new EmergencyContact("0987654321");
             var medicalRecordNumber = new MedicalRecordNumber("202410000001");
-            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, emergencyContact, medicalRecordNumber);
+            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, gender, emergencyContact, medicalRecordNumber);
 
             var newFullName = new FullName("John Smith");
 
@@ -61,9 +63,10 @@ namespace UnitTest.Domain.Patient
             var dateOfBirth = new DateOfBirth(new DateTime(1990, 1, 1));
             var email = new Email("john.doe@example.com");
             var phoneNumber = new PhoneNumber("1234567890");
+            var gender = new Gender("male");
             var emergencyContact = new EmergencyContact("0987654321");
             var medicalRecordNumber = new MedicalRecordNumber("202410000001");
-            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, emergencyContact, medicalRecordNumber);
+            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, gender, emergencyContact, medicalRecordNumber);
 
             var newEmail = new Email("john.smith@example.com");
 
@@ -82,9 +85,10 @@ namespace UnitTest.Domain.Patient
             var dateOfBirth = new DateOfBirth(new DateTime(1990, 1, 1));
             var email = new Email("john.doe@example.com");
             var phoneNumber = new PhoneNumber("1234567890");
+            var gender = new Gender("male");
             var emergencyContact = new EmergencyContact("0987654321");
             var medicalRecordNumber = new MedicalRecordNumber("202410000001");
-            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, emergencyContact, medicalRecordNumber);
+            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, gender, emergencyContact, medicalRecordNumber);
 
             var newPhoneNumber = new PhoneNumber("0987654321");
 
@@ -103,9 +107,10 @@ namespace UnitTest.Domain.Patient
             var dateOfBirth = new DateOfBirth(new DateTime(1990, 1, 1));
             var email = new Email("john.doe@example.com");
             var phoneNumber = new PhoneNumber("1234567890");
+            var gender = new Gender("male");
             var emergencyContact = new EmergencyContact("0987654321");
             var medicalRecordNumber = new MedicalRecordNumber("202410000001");
-            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, emergencyContact, medicalRecordNumber);
+            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, gender, emergencyContact, medicalRecordNumber);
 
             var medicalConditions = new MedicalConditions("Diabetes");
 

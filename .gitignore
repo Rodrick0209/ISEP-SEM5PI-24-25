@@ -1,4 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/c,dotnetcore
+
+# Ignore GitHub folder
+.github/
+# Ignore Visual Studio Code settings folder
+.vscode/
 # Edit at https://www.toptal.com/developers/gitignore?templates=c,dotnetcore
 
 ### C ###
