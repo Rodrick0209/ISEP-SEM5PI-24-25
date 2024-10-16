@@ -1,0 +1,50 @@
+@startuml Process_View
+actor Admin 
+participant UI  as UI
+participant OperationTypeController as ctrl <<Controller>>
+participant OperationTypeId as id <<Domain>>
+participant OperationTypeService as service <<Service>>
+participant OperationTypeRepository as repository <<Repository>>
+participant OperationType as domain <<Domain>>
+participant UnitOfWork
+
+activate Admin
+
+Admin -> UI: Request to list Operation Types
+activate UI
+UI -> ctrl: requests HTTP GET for Operation Types
+activate ctrl
+note over ctrl : US 5.1.23
+
+ctrl --> UI: display list of Operation Types
+deactivate ctrl
+
+Admin -> UI: Select an Operation Type to deactivate
+UI -> Admin: Show confirmation prompt
+Admin -> UI: Confirm deactivation
+UI -> ctrl: requests HTTP POST to deactivate Operation Type
+activate ctrl
+ctrl-> id**: creates
+ctrl -> service: deactivateOperationType(OperationTypeId)
+activate service
+service -> repository: findById(OperationTypeId)
+activate repository
+repository --> service: return Operation Type
+deactivate repository
+service -> domain: deactivate()
+activate domain
+domain --> service: return success/error status
+deactivate domain
+service -> UnitOfWork: commitAsync()
+activate UnitOfWork
+deactivate UnitOfWork
+service --> ctrl: return success/error status
+deactivate service
+
+ctrl --> UI: response
+deactivate ctrl
+UI --> Admin: Display success/error message
+deactivate UI
+deactivate Admin
+
+@enduml
