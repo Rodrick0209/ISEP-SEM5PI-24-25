@@ -53,7 +53,6 @@ namespace DDDSample1.Controllers
 
         // GET: api/user
         [HttpGet("Get user")]
-        [Authorize(Roles = "admin")]
         public async Task<List<UserDTO>> GetAllAsync()
         {
 
@@ -89,7 +88,7 @@ namespace DDDSample1.Controllers
                 
                 string callbackUrl = $"http://localhost:9999/resetpassword?code={token}&Email={user.email.email}";
 
-                await _service.sendEmail(user.email.email, callbackUrl);
+                await _service.sendEmailWithUrlResetPassword(user.email.email, callbackUrl);
                 Console.WriteLine("Parte do email passada"); 
 
                 return Ok(new

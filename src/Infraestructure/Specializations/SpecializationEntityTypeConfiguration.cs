@@ -13,7 +13,6 @@ namespace DDDSample1.Infrastructure.Specializations
         public void Configure(EntityTypeBuilder<Specialization> builder)
         {
             builder.HasKey(b => b.Id);
-            builder.Property(b => b.Name).HasField("_name");
         }
     }
 

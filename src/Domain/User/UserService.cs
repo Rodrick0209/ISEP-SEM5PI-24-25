@@ -36,38 +36,58 @@ public  class UserService
 
     
 
-    public async Task<string> GetLogToken(LoginRequest request)
+   public async Task<string> GetLogToken(LoginRequest request)
+{
+    if (request == null)
     {
-        if (request == null)
-        {
         throw new Exception("Login request is null");
-        }
-        User? user = await _repo.GetByEmailAsync(request.Email);
-        if (user == null)
-        {
-            throw new Exception("User not found");
-        }
-        
-        PasswordHasher passwordHasher = new();
-        var result  = passwordHasher.VerifyPassword(user.password.password, request.Password);
+    }
+    Console.WriteLine("TRACK ERROR 1");
 
+    User? user = await _repo.GetByEmailAsync(request.Email);
+    if (user == null)
+    {
+        throw new Exception("User not found");
+    }
 
-        if (!result)
-        {
-            throw new Exception("Invalid password");
-        }
+    bool result2 = user.checkIfAccountIsBlocked();
+    Console.WriteLine("TRACK ERROR 2--- resultado > " + result2);
 
-
-        TokenProvider tokenProvider = new TokenProvider(_configuration);
-        string token = tokenProvider.Create(user);
-
-
-
-
-        return token; // Retorna apenas o token
+  
+    if (result2)
+    {
+        throw new Exception("Account blocked, please wait or contact the admin");
     }
 
 
+    PasswordHasher passwordHasher = new();
+    var result = passwordHasher.VerifyPassword(user.password.password, request.Password);
+
+    if (!result)
+    {
+        int maxAllowedFailCounter = int.Parse(_configuration["Auth:MaxAllowedFailCounter"]);
+        int lockoutTime = int.Parse(_configuration["Auth:LockoutTime"]);
+        int failsLeft = maxAllowedFailCounter - user.loginFailCounter.loginFailCounter - 1;
+        user.IncreaseFailCounter(maxAllowedFailCounter, lockoutTime);
+        await this._unitOfWork.CommitAsync();
+
+        if(failsLeft == 0)
+        {
+            await this.SendEmailForAbusiveAccountAccess(user.email.email);
+            throw new Exception("Account blocked, please wait or contact the admin");
+
+        }
+        throw new Exception("Invalid password you have " + failsLeft + " attempts left");
+    }
+    
+    
+    //Falta apenas notificar o admin que a conta bloqueou
+
+    TokenProvider tokenProvider = new TokenProvider(_configuration);
+    string token = tokenProvider.Create(user);
+
+    return token; 
+}
 
 
     //Metodo do serviço para registar o user no sistema
@@ -109,6 +129,14 @@ public  class UserService
 
     }
 
+    public async Task<string> SendEmailForAbusiveAccountAccess(string accountBlockedEmail)
+    {   
+        await _emailSender.SendEmailAsync("Account with username "+ accountBlockedEmail +" has been blocked due to abusive access / failing consequitive logins",( _configuration["Admin:Email"]),"Account Blocked");
+        return "Email sent";
+    }
+
+
+
 
     public async Task<string> ResetPassword (User user,string newPassword, string token)
     {
@@ -134,12 +162,10 @@ public  class UserService
     }
 
 
-    public async Task<string> sendEmail(string email, string url)
+    public async Task<string> sendEmailWithUrlResetPassword(string email, string url)
     {
         await _emailSender.SendEmailAsync($"Please reset your password by clicking here: <a href='{url}'>link</a>",email,"ResetPassword");
         
-        
-        Console.WriteLine("Email sent no controller");
         return "Email sent";
 
     }
