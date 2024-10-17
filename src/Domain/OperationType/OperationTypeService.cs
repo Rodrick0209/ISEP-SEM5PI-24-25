@@ -50,5 +50,21 @@ namespace DDDSample1.Domain.OperationType
             return op;
 
         }
+
+
+        public async Task<OperationType> Deactivate(OperationTypeId id)
+        {
+            
+            var op = await this._repo.GetByIdAsync(id);
+            if (op == null)
+                return null;
+
+            op.Deactivate();
+
+            await this._unitOfWork.CommitAsync();
+
+            return op;
+
+        }
     }
 }

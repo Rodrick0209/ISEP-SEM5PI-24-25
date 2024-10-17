@@ -31,6 +31,11 @@ namespace DDDSample1.Domain.OperationType
         }
 
 
+        public void Deactivate()
+        {
+            this.status = false;
+        }
+
 
     }
 

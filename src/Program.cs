@@ -124,7 +124,7 @@ ConfigureMyServices(builder.Services);
 
 var app = builder.Build();
 
-
+DataSeeder.Seed(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -142,6 +142,7 @@ else
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
 
 app.UseMiddleware<CustomExceptionMiddleware>();
 
