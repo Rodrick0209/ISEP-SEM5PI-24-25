@@ -12,7 +12,7 @@ namespace DDDSample1.Infrastructure.Specializations
     {
         public void Configure(EntityTypeBuilder<Specialization> builder)
         {
-            builder.HasKey(b => b.Id);
+            builder.HasKey(b => b.Id);<<<<<<< HEAD
         }
     }
 
