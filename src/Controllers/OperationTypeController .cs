@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DDDSample1.Controllers
@@ -24,12 +25,12 @@ namespace DDDSample1.Controllers
             var objDomain = OperationTypeMapper.toDomain(dto);
             var op = await _service.CreateAsync(objDomain);
             var op2 = OperationTypeMapper.ToDto(op);
-            return CreatedAtAction(nameof(GetGetById), new { id = op2.Id }, op2);
+            return CreatedAtAction(nameof(GetById), new { id = op2.Id }, op2);
 
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<OperationTypeDto>> GetGetById(String id)
+        public async Task<ActionResult<OperationTypeDto>> GetById(String id)
         {
             var op = await _service.GetByIdAsync(new OperationTypeId(id));
             if (op == null)
@@ -38,5 +39,26 @@ namespace DDDSample1.Controllers
             }
             return OperationTypeMapper.ToDto(op);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<OperationTypeDto>> Inactivate(string id)
+        {
+
+            try
+            {
+                var op = await _service.Deactivate(new OperationTypeId(id));
+                if (op == null)
+                {
+                    return NotFound();
+                }
+                return Ok(OperationTypeMapper.ToDto(op));
+
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+        
     }
 }

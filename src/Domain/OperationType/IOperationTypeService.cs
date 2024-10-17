@@ -8,5 +8,7 @@ namespace DDDSample1.Domain.OperationType
         Task<OperationType> CreateAsync(OperationType obj);
 
         Task<OperationType> GetByIdAsync(OperationTypeId id);
+
+        Task<OperationType> Deactivate(OperationTypeId id);
     }
 }

@@ -11,6 +11,7 @@ namespace DDDSample1.Domain.Patient
                 patient.Email.email,
                 patient.PhoneNumber.phoneNumber,
                 patient.MedicalRecordNumber._medicalRecordNumber,
+                patient.Gender?.gender ?? null,
                 patient.EmergencyContact?.emergencyContact ?? null
             );
         }
