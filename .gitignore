@@ -75,3 +75,7 @@ src/obj/DDDNetCore.csproj.nuget.g.props
 src/obj/DDDNetCore.csproj.nuget.g.targets
 src/obj/project.assets.json
 src/obj/project.nuget.cache
+
+### PlantUML ###
+# PlantUML generated files
+out/
