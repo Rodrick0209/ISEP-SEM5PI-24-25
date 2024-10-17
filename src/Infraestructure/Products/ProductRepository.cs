@@ -7,7 +7,7 @@ namespace DDDSample1.Infrastructure.Products
     {
         public ProductRepository(DDDSample1DbContext context):base(context.Products)
         {
-           
         }
+    
     }
 }

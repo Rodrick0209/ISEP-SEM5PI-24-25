@@ -30,6 +30,11 @@ using DDDSample1.Infrastructure.OperationTypes;
 using Domain.Staff;
 using DDDSample1.Domain.Patient;
 using DDDSample1.Infrastructure.Patients;
+using DDDSample1.Infrastructure.Specializations;
+using DDDSample1.Domain.Specializations;
+using DDDSample1.Domain.OperationRequestLoggers;
+using DDDSample1.Infrastructure.OperationRequestLoggers;
+
 
 
 
@@ -178,5 +183,10 @@ void ConfigureMyServices(IServiceCollection services)
 
     services.AddTransient<IPatientRepository, PatientRepository>();
     services.AddTransient<PatientService>();
+
+    services.AddTransient<ISpecializationRepository, SpecializationRepository>();
+
+    services.AddTransient<IOperationRequestLoggerRepository, OperationRequestLoggerRepository>();
+
 
 }

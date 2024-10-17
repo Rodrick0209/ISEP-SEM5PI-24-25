@@ -16,6 +16,7 @@ namespace DDDSample1.Domain.User
 
         public ResetPasswordToken ? resetPasswordToken { get; private set; }
         public ResetPasswordTokenExpiration ? resetPasswordTokenExpiration { get; private set; }
+        
 
         private User()
         {
