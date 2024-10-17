@@ -27,7 +27,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"fullName\": \"John Doe\",\r\n  \"dateOfBirth\": \"1990-01-01\",\r\n  \"email\": \"john.doing@gmail.com\",\r\n  \"phoneNumber\": \"123456789\",\r\n  \"gender\": \"\",\r\n  \"emergencyContact\": \"923765912\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -56,7 +56,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"fullName\": \"John Doe\",\r\n  \"dateOfBirth\": \"1990-01-01\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"phoneNumber\": \"123456789\",\r\n  \"gender\" : \"male\",\r\n  \"emergencyContact\": \"934212346\"\r\n}",
+							"raw": "{\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"fullName\": \"John Doe\",\r\n  \"dateOfBirth\": \"1990-01-01\",\r\n  \"gender\" : \"male\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"phoneNumber\": \"123456789\",\r\n  \"emergencyContact\": \"934212346\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -81,15 +81,100 @@
 					"header": null,
 					"cookie": [],
 					"body": null
-				},
+				}
+			]
+		},
+		{
+			"name": "Edit Patient",
+			"event": [
 				{
-					"name": "Create Patient Example 2",
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "payload",
+							"value": "{}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/Patients/202410000001",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Patients",
+						"202410000001"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Edit Patient Example 1",
 					"originalRequest": {
-						"method": "POST",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"fullName\": \"John Doe\",\r\n  \"dateOfBirth\": \"1990-01-01\",\r\n  \"email\": \"john.doing@example.com\",\r\n  \"phoneNumber\": \"123456734\",\r\n  \"gender\" : \"\",\r\n  \"emergencyContact\": \"934212346\"\r\n}",
+							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000001\",\r\n  \"fullName\": \"John Doing\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -97,7 +182,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/Patients/Create",
+							"raw": "https://localhost:5001/api/Patients/202410000001",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -106,7 +191,7 @@
 							"path": [
 								"api",
 								"Patients",
-								"Create"
+								"202410000001"
 							]
 						}
 					},
@@ -116,13 +201,13 @@
 					"body": null
 				},
 				{
-					"name": "Create Patient Example 3",
+					"name": "Edit Patient Example 2",
 					"originalRequest": {
-						"method": "POST",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"firstName\": \"Mariah\",\r\n  \"lastName\": \"Carey\",\r\n  \"fullName\": \"Mariah Carey\",\r\n  \"dateOfBirth\": \"1990-01-01\",\r\n  \"email\": \"mariah.carey@example.com\",\r\n  \"phoneNumber\": \"123445231\",\r\n  \"gender\" : \"female\",\r\n  \"emergencyContact\": \"\"\r\n}",
+							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000001\",\r\n  \"email\": \"1221083@isep.ipp.pt\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -130,7 +215,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/Patients/Create",
+							"raw": "https://localhost:5001/api/Patients/202410000001",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -139,7 +224,106 @@
 							"path": [
 								"api",
 								"Patients",
-								"Create"
+								"202410000001"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Edit Patient Example 3",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000001\",\r\n  \"phoneNumber\": \"987654321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/Patients/202410000001",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"Patients",
+								"202410000001"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Edit Patient Example 4",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000001\",\r\n  \"medicalConditions\": \"Diabetes\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/Patients/202410000001",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"Patients",
+								"202410000001"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Edit Patient Example 5",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000001\",\r\n  \"fullName\": \"John Doe\",\r\n  \"email\": \"rodrigopontescardoso@gmail.com\",\r\n  \"phoneNumber\": \"123456789\",\r\n  \"medicalConditions\": \"AIDS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/Patients/202410000001",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"Patients",
+								"202410000001"
 							]
 						}
 					},

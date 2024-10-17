@@ -21,7 +21,7 @@ namespace UnitTest.Domain.Patient
             var medicalRecordNumber = new MedicalRecordNumber("202410000001");
 
             // Act
-            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, gender, emergencyContact, medicalRecordNumber);
+            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, gender, email, phoneNumber, emergencyContact, medicalRecordNumber);
 
             // Assert
             Assert.NotNull(patient.Id);
@@ -44,7 +44,7 @@ namespace UnitTest.Domain.Patient
             var gender = new Gender("male");
             var emergencyContact = new EmergencyContact("0987654321");
             var medicalRecordNumber = new MedicalRecordNumber("202410000001");
-            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, gender, emergencyContact, medicalRecordNumber);
+            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, gender, email, phoneNumber, emergencyContact, medicalRecordNumber);
 
             var newFullName = new FullName("John Smith");
 
@@ -66,7 +66,7 @@ namespace UnitTest.Domain.Patient
             var gender = new Gender("male");
             var emergencyContact = new EmergencyContact("0987654321");
             var medicalRecordNumber = new MedicalRecordNumber("202410000001");
-            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, gender, emergencyContact, medicalRecordNumber);
+            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, gender, email, phoneNumber, emergencyContact, medicalRecordNumber);
 
             var newEmail = new Email("john.smith@example.com");
 
@@ -88,7 +88,7 @@ namespace UnitTest.Domain.Patient
             var gender = new Gender("male");
             var emergencyContact = new EmergencyContact("0987654321");
             var medicalRecordNumber = new MedicalRecordNumber("202410000001");
-            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, gender, emergencyContact, medicalRecordNumber);
+            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, gender, email, phoneNumber, emergencyContact, medicalRecordNumber);
 
             var newPhoneNumber = new PhoneNumber("0987654321");
 
@@ -110,7 +110,7 @@ namespace UnitTest.Domain.Patient
             var gender = new Gender("male");
             var emergencyContact = new EmergencyContact("0987654321");
             var medicalRecordNumber = new MedicalRecordNumber("202410000001");
-            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, email, phoneNumber, gender, emergencyContact, medicalRecordNumber);
+            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, gender, email, phoneNumber, emergencyContact, medicalRecordNumber);
 
             var medicalConditions = new MedicalConditions("Diabetes");
 

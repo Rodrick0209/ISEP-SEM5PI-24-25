@@ -8,11 +8,12 @@ namespace DDDSample1.Domain.Patient
                 patient.Id.AsGuid(),
                 patient.FullName.fullName,
                 patient.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd"),
+                patient.Gender.gender,
                 patient.Email.email,
                 patient.PhoneNumber.phoneNumber,
                 patient.MedicalRecordNumber._medicalRecordNumber,
-                patient.Gender?.gender ?? null,
-                patient.EmergencyContact?.emergencyContact ?? null
+                patient.EmergencyContact.emergencyContact,
+                patient.MedicalConditions?.medicalConditions ?? null
             );
         }
     }
