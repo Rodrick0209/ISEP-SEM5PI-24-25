@@ -41,5 +41,4 @@ Filters are avaiable to refine the search results
 
 ### 3.2. Domain model references
 
-![DM](DM/DM.png)
-
+N/A
