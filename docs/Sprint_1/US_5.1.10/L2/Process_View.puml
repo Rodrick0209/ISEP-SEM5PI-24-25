@@ -1,0 +1,11 @@
+```plantuml
+@startuml Process_View
+participant "MastersData" as BE <<Container (C4)>>
+
+[o-> BE: DELETE (/api/patients/{medicalRecordNumber})
+activate BE
+BE -> BE: receive request body info,\n and deletes patient profile
+<-- BE: response
+deactivate BE
+@enduml
+```
