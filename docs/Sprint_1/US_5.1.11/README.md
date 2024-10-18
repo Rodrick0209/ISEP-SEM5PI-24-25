@@ -19,7 +19,7 @@ This US creates the functionality to list or search patient profiles by differen
 
 N/A
 
-## 2. Analysis
+## 3. Analysis
 
 Admins can search patients profiles by the following fields:
 - Name
@@ -33,13 +33,13 @@ Afterwards, the admins can select one of the patients to view, edit or delete th
 
 Filters are avaiable to refine the search results
 
-### 2.1. Client-relevant questions
+### 3.1. Client-relevant questions
 
 **Q:** What types of filters can be applied when searching for profiles?
 
 **R:** Filters can include doctor specialization, name, or email to refine search results.
 
-### 2.2. Domain model references
+### 3.2. Domain model references
 
 ![DM](DM/DM.png)
 
