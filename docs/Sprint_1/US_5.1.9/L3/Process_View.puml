@@ -7,6 +7,7 @@ participant PatientService as Service <<Service>>
 participant EmailService as EmailService <<Service>>
 participant PatientRepository as Repository <<Repository>>
 participant Patient as Domain <<Domain>>
+participant PatientLogger as Logger <<Logger>>
 participant PatientMapper as Mapper <<Mapper>>
 [o-> Route: PATCH (/api/patients/{medicalRecordNumber})
 activate Route
@@ -22,7 +23,7 @@ Service -> Domain : changeName(newName)
 Service -> Domain : changeEmail(newEmail)
 Service -> Domain : changePhoneNumber(newPhoneNumber)
 Service -> Domain : changeMedicalConditions(newMedicalConditions)
-Service -> Domain : logChanges()
+Service -> Logger : logChanges(patient)
 Service -> Repository : save(patient)
 alt content editable contains sensitive info
     Service -> EmailService : sendEmail(email)
