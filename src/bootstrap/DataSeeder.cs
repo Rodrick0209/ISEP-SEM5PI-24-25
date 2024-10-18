@@ -28,7 +28,7 @@ public static class DataSeeder
     
     
     
-    SeedOperationType(context,new OperationType("1","New Operation Type",true,new Phase("1"),new Phase("2"),new Phase("3"),new Specialization("Ortopedia")));
+    //SeedOperationType(context,new OperationType("1","New Operation Type",true,new Phase("1"),new Phase("2"),new Phase("3"),new Specialization("Ortopedia")));
     
     context.SaveChanges();
   }
