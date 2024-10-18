@@ -17,5 +17,29 @@ This US creates the functionality to list or search patient profiles by differen
 
 ### 2.2. User Story Dependencies
 
-**US 5.1.8** - The patient profile must be created on the system
-**US 5.1.11** - The admin must select the patient by a type of data
+N/A
+
+## 2. Analysis
+
+Admins can search patients profiles by the following fields:
+- Name
+- Email
+- Date Of Birth
+- Medical Record Number
+
+The system will display search result in view with key information: Medical Record Number, Full Name, Email and Date of birth
+
+Afterwards, the admins can select one of the patients to view, edit or delete the patient profile.
+
+Filters are avaiable to refine the search results
+
+### 2.1. Client-relevant questions
+
+**Q:** What types of filters can be applied when searching for profiles?
+
+**R:** Filters can include doctor specialization, name, or email to refine search results.
+
+### 2.2. Domain model references
+
+![DM](DM/DM.png)
+
