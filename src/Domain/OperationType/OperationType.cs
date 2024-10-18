@@ -1,5 +1,6 @@
 using System;
 using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.Specializations;
 
 namespace DDDSample1.Domain.OperationType
 {
@@ -17,10 +18,12 @@ namespace DDDSample1.Domain.OperationType
         public Phase surgeryPhase { get; private set; }
         public Phase cleaningPhase { get; private set; }
 
+        public Specialization specialization {get; private set;}
+
         private OperationType() { }
 
 
-        public OperationType(string id,string name, bool status, Phase preparationPhase, Phase surgeryPhase, Phase cleaningPhase)
+        public OperationType(string id,string name, bool status, Phase preparationPhase, Phase surgeryPhase, Phase cleaningPhase, Specialization specialization)
         {
             this.Id = new OperationTypeId(id);
             this.name = name;
@@ -28,6 +31,7 @@ namespace DDDSample1.Domain.OperationType
             this.preparationPhase = preparationPhase;
             this.surgeryPhase = surgeryPhase;
             this.cleaningPhase = cleaningPhase;
+            this.specialization= specialization;
         }
 
 
