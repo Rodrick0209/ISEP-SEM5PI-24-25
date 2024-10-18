@@ -1,3 +1,6 @@
+using DDDSample1.Application.Dtos;
+using DDDSample1.Domain.Specializations;
+
 namespace DDDSample1.Domain.OperationType
 {
     public class OperationTypeDto
@@ -9,7 +12,7 @@ namespace DDDSample1.Domain.OperationType
         public PhaseDto SurgeryPhase { get; set; }
         public PhaseDto CleaningPhase { get; set; }
 
-        public SpecializationDto CleaningPhase { get; set; }
+        public Specialization specialization { get; set; }
 
         public OperationTypeDto(string operationTypeId, string name, string status, PhaseDto preparationPhase, PhaseDto surgeryPhase, PhaseDto cleaningPhase)
         {

@@ -26,7 +26,8 @@ namespace DDDSample1.Domain.OperationType
                 operationTypeDto.Status == "active", // Mapping string status back to boolean
                 ToPhaseEntity(operationTypeDto.PreparationPhase),
                 ToPhaseEntity(operationTypeDto.SurgeryPhase),
-                ToPhaseEntity(operationTypeDto.CleaningPhase)
+                ToPhaseEntity(operationTypeDto.CleaningPhase),
+                null
             );
         }
 
