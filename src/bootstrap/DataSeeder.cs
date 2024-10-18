@@ -2,8 +2,10 @@ using System;
 using System.Linq;
 using DDDSample1.Domain.Families;
 using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.User;
+using DDDSample1.Domain.Utils;
 using DDDSample1.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +27,16 @@ public static class DataSeeder
     }
 
     SeedUsers(context,new User("admin@teste.com","admin"),"password");
+
+    SeedPatients(context, new Patient(
+      new FullName("John Cena"),
+      new DateOfBirth(new DateTime(2022, 10, 1)),
+      new Gender("male"),
+      new Email("john.cena@example.com"),
+      new PhoneNumber("123456123"),
+      new EmergencyContact("945123111"),
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber()
+    ));
     
     
     
@@ -50,6 +62,12 @@ public static class DataSeeder
     if (!context.OperationTypes.Any())
     {
       context.OperationTypes.Add(operationType);
+    }
+  }
+
+  private static void SeedPatients(DDDSample1DbContext context, Patient patient){
+    if(!context.Patients.Any()){
+      context.Patients.Add(patient);
     }
   }
 }

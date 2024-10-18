@@ -19,7 +19,7 @@ namespace DDDSample1.Domain.PatientLoggers
         public string? MedicalConditions { get; private set; }
         public DateTime ModificationDate { get; private set; }
 
-        private PatientLogger(Patients.PatientId id)
+        private PatientLogger()
         {
             PatientId = default!;
             FullName = default!;
