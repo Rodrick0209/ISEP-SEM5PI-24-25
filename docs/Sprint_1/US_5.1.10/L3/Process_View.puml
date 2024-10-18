@@ -25,7 +25,7 @@ alt the period mandated of data retention has expired
     activate LoggerRepository
     return logs
     loop through logs
-        Service -> LoggerRepository: delete(log)
+        Service -> LoggerRepository: delete(logs)
     end
 end
 deactivate Repository

@@ -37,3 +37,14 @@ The patient data will be stored in a logger for audit, GDPR compilance purpose a
 ### 3.2. Domain Model references
 
 N/A
+
+## 4. Design - Process View
+
+#### Level 1
+![Process View - Level 1](L1/Process_View.svg)
+
+#### Level 2
+![Process View - Level 2](L2/Process_View.svg)
+
+#### Level 3
+![Process View - Level 3](L3/Process_View.svg)
