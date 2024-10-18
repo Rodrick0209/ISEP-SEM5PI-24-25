@@ -62,8 +62,10 @@ dkms.conf
 
 ### DotnetCore ###
 # .NET Core build folders
-bin/
-obj/
+MastersData/bin/
+MastersData/obj/
+MastersDataTest/bin/
+MastersDataTest/obj/
 
 # Common node modules locations
 /node_modules

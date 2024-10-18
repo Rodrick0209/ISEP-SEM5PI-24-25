@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\DDDNetCore.csproj" />
+    <ProjectReference Include="..\MastersData\DDDNetCore.csproj" />
   </ItemGroup>
 
 </Project>
