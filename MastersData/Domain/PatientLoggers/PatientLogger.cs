@@ -33,6 +33,7 @@ namespace DDDSample1.Domain.PatientLoggers
 
         public PatientLogger(PatientId patientId, string fullName, string dateOfBirth, string gender, string email, string phoneNumber,  string emergencyContact, string medicalRecordNumber, string? medicalConditions, DateTime modificiationDate)
         {
+            this.Id = new PatientLoggerId(Guid.NewGuid());
             this.PatientId = patientId;
             this.FullName = fullName;
             this.DateOfBirth = dateOfBirth;

@@ -35,7 +35,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/Create",
+					"raw": "https://localhost:5001/api/Patients",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -43,8 +43,7 @@
 					"port": "5001",
 					"path": [
 						"api",
-						"Patients",
-						"Create"
+						"Patients"
 					]
 				}
 			},
@@ -56,7 +55,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"fullName\": \"John Doe\",\r\n  \"dateOfBirth\": \"1990-01-01\",\r\n  \"gender\" : \"male\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"phoneNumber\": \"123456789\",\r\n  \"emergencyContact\": \"934212346\"\r\n}",
+							"raw": "{\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"fullName\": \"John Doe\",\r\n  \"dateOfBirth\": \"1990-01-01\",\r\n  \"gender\" : \"male\",\r\n  \"email\": \"rodrigopontescardoso@gmail.com\",\r\n  \"phoneNumber\": \"123456789\",\r\n  \"emergencyContact\": \"934212346\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -64,7 +63,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/Patients/Create",
+							"raw": "https://localhost:5001/api/Patients",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -72,8 +71,7 @@
 							"port": "5001",
 							"path": [
 								"api",
-								"Patients",
-								"Create"
+								"Patients"
 							]
 						}
 					},
@@ -95,8 +93,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
-						"type": "text/javascript",
-						"packages": {}
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -153,7 +150,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/202410000001",
+					"raw": "https://localhost:5001/api/Patients/202410000002",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -162,7 +159,7 @@
 					"path": [
 						"api",
 						"Patients",
-						"202410000001"
+						"202410000002"
 					]
 				}
 			},
@@ -174,7 +171,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000001\",\r\n  \"fullName\": \"John Doing\"\r\n}",
+							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000002\",\r\n  \"fullName\": \"John Doing\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -182,7 +179,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/Patients/202410000001",
+							"raw": "https://localhost:5001/api/Patients/202410000002",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -191,7 +188,7 @@
 							"path": [
 								"api",
 								"Patients",
-								"202410000001"
+								"202410000002"
 							]
 						}
 					},
@@ -207,7 +204,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000001\",\r\n  \"email\": \"1221083@isep.ipp.pt\"\r\n}",
+							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000002\",\r\n  \"email\": \"1221083@isep.ipp.pt\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -215,7 +212,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/Patients/202410000001",
+							"raw": "https://localhost:5001/api/Patients/202410000002",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -224,7 +221,7 @@
 							"path": [
 								"api",
 								"Patients",
-								"202410000001"
+								"202410000002"
 							]
 						}
 					},
@@ -240,7 +237,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000001\",\r\n  \"phoneNumber\": \"987654321\"\r\n}",
+							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000002\",\r\n  \"phoneNumber\": \"987654321\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -248,7 +245,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/Patients/202410000001",
+							"raw": "https://localhost:5001/api/Patients/202410000002",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -257,7 +254,7 @@
 							"path": [
 								"api",
 								"Patients",
-								"202410000001"
+								"202410000002"
 							]
 						}
 					},
@@ -273,7 +270,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000001\",\r\n  \"medicalConditions\": \"Diabetes\"\r\n}",
+							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000002\",\r\n  \"medicalConditions\": \"Diabetes\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -281,7 +278,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/Patients/202410000001",
+							"raw": "https://localhost:5001/api/Patients/202410000002",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -290,7 +287,7 @@
 							"path": [
 								"api",
 								"Patients",
-								"202410000001"
+								"202410000002"
 							]
 						}
 					},
@@ -306,7 +303,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000001\",\r\n  \"fullName\": \"John Doe\",\r\n  \"email\": \"rodrigopontescardoso@gmail.com\",\r\n  \"phoneNumber\": \"123456789\",\r\n  \"medicalConditions\": \"AIDS\"\r\n}",
+							"raw": "{\r\n  \"medicalRecordNumber\": \"202410000002\",\r\n  \"fullName\": \"John Doe\",\r\n  \"email\": \"rodrigopontescardoso@gmail.com\",\r\n  \"phoneNumber\": \"123456789\",\r\n  \"medicalConditions\": \"AIDS\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -314,7 +311,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/Patients/202410000001",
+							"raw": "https://localhost:5001/api/Patients/202410000002",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -323,7 +320,7 @@
 							"path": [
 								"api",
 								"Patients",
-								"202410000001"
+								"202410000002"
 							]
 						}
 					},
