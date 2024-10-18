@@ -14,7 +14,7 @@ namespace DDDSample1.Domain.OperationRequestLoggers
         public string PatientId { get; private set; }
         public string OperationTypeId { get; private set; }
         public string DoctorId { get; private set; }
-        public string DeadLineDate { get; private set; } // Added missing property
+        public string DeadLineDate { get; private set; } 
 
         private OperationRequestLogger()
         {
@@ -24,7 +24,7 @@ namespace DDDSample1.Domain.OperationRequestLoggers
         {
             this.OperationRequestId = operationRequestId;
             this.Priority = priority;
-            this.DeadLineDate = deadLineDate; // Fixed property name and added missing semicolon
+            this.DeadLineDate = deadLineDate;
             this.OperationTypeId = operationTypeId;
             this.DoctorId = doctorId;
         }
