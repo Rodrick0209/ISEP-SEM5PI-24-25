@@ -121,7 +121,7 @@ namespace DDDSample1.Domain.Patients
                 patient.ChangeMedicalConditions(medicalConditions);
             }
 
-            logChanges(patient);
+            LogChanges(patient, "update");
 
             await _unitOfWork.CommitAsync();
 
@@ -131,6 +131,22 @@ namespace DDDSample1.Domain.Patients
             }
 
             return PatientMapper.ToDto(patient);
+        }
+
+        public async Task DeleteAsync(DeletingPatientProfileConfirmationDto dto)
+        {
+            var patient = await _patientRepository.GetByMedicalRecordNumberAsync(dto.MedicalRecordNumber);
+
+            if (patient == null)
+            {
+                throw new BusinessRuleValidationException("Patient not found");
+            }
+
+            _patientRepository.Remove(patient);
+
+            LogChanges(patient, "delete");
+
+            await _unitOfWork.CommitAsync();
         }
 
 
@@ -177,7 +193,7 @@ namespace DDDSample1.Domain.Patients
             return true;
         }
 
-        private void logChanges(Patient patient)
+        private void LogChanges(Patient patient, string typeOfChange)
         {
             var patientLogger = new PatientLogger(
                 patient.Id,
@@ -189,10 +205,32 @@ namespace DDDSample1.Domain.Patients
                 patient.EmergencyContact.emergencyContact,
                 patient.MedicalRecordNumber._medicalRecordNumber,
                 patient.MedicalConditions?.medicalConditions ?? null,
+                typeOfChange,
                 DateTime.Now
             );
 
             _patientLoggerRepository.AddAsync(patientLogger);
+        }
+
+        public async Task CleanupOldPatientLogs(TimeSpan retentionPeriod)
+        {
+            var cutoffDate = DateTime.UtcNow - retentionPeriod;
+
+            var oldLogs = await _patientLoggerRepository.GetOldLogsAsync(cutoffDate);
+
+            foreach (var log in oldLogs)
+            {
+                var cleanedLog = new PatientLogger(
+                    log.MedicalRecordNumber,
+                    log.FullName,
+                    log.ModificationDate
+                );
+
+                _patientLoggerRepository.Remove(log);
+                await _patientLoggerRepository.AddAsync(cleanedLog);
+            }
+
+            await _unitOfWork.CommitAsync();
         }
 
 
