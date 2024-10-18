@@ -1,7 +1,7 @@
 
 ```plantuml
 @startuml Process_View
-participant "Back-end" as BE <<Container>>
+participant "MastersData" as BE <<Container (C4)>>
 
 [o-> BE: POST (/api/patients)
 activate BE

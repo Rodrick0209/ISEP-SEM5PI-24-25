@@ -2,7 +2,7 @@
 ```plantuml
 @startuml Process_View
 actor Admin 
-participant System <<System>>
+participant System <<System (C4)>>
 
 activate Admin
 
