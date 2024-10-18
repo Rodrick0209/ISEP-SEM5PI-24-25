@@ -35,26 +35,26 @@ namespace DDDSample1.Controllers
         }
 
         // PUT: api/Patients/{medicalRecordNumber}
-       /* [HttpPut("{medicalRecordNumber}")]
-        public async Task<ActionResult<PatientDto>> Replace(string medicalRecordNumber, ReplacingPatientProfileDto dto)
-        {
-            if (medicalRecordNumber != dto.MedicalRecordNumber)
-            {
-            return BadRequest();
-            }
+        /* [HttpPut("{medicalRecordNumber}")]
+         public async Task<ActionResult<PatientDto>> Replace(string medicalRecordNumber, ReplacingPatientProfileDto dto)
+         {
+             if (medicalRecordNumber != dto.MedicalRecordNumber)
+             {
+             return BadRequest();
+             }
 
-            try
-            {
-            var patient = await _service.ReplaceAsync(dto);
+             try
+             {
+             var patient = await _service.ReplaceAsync(dto);
 
-            return Ok(patient);
-            }
-            catch (Exception ex)
-            {
-            return BadRequest(new { Message = ex.Message });
-            }
-        }
-        */
+             return Ok(patient);
+             }
+             catch (Exception ex)
+             {
+             return BadRequest(new { Message = ex.Message });
+             }
+         }
+         */
 
         // PATCH: api/Patients/{medicalRecordNumber}
         [HttpPatch("{medicalRecordNumber}")]
@@ -70,6 +70,27 @@ namespace DDDSample1.Controllers
                 var patient = await _service.UpdateAsync(dto);
 
                 return Ok(patient);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        // DELETE: api/Patients/{medicalRecordNumber}
+        [HttpDelete("{medicalRecordNumber}")]
+        public async Task<ActionResult> DeleteAsync(string medicalRecordNumber, DeletingPatientProfileConfirmationDto dto)
+        {
+            if (medicalRecordNumber != dto.MedicalRecordNumber)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _service.DeleteAsync(dto);
+
+                return NoContent();
             }
             catch (Exception ex)
             {
