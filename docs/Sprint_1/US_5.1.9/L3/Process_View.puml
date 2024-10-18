@@ -14,9 +14,9 @@ activate Route
 Route -> Controller : PATCH
 activate Controller
 Controller -> DTO** : recieves request body info
-Controller -> Service : editPatient(id, editingPatientDTO)
+Controller -> Service : editPatient(medicalRecordNumber, editingPatientDTO)
 activate Service
-Service -> Repository : findById(id)
+Service -> Repository : findByMedicalRecordNumber(medicalRecordNumber)
 activate Repository
 return patient
 Service -> Domain : changeName(newName)
