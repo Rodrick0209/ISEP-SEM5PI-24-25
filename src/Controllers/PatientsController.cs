@@ -18,8 +18,8 @@ namespace DDDSample1.Controllers
             _service = service;
         }
 
-        // POST: api/Patients/Create
-        [HttpPost("Create")]
+        // POST: api/Patients
+        [HttpPost]
         public async Task<ActionResult<PatientDto>> Create(CreatingPatientProfileDto dto)
         {
             try

@@ -8,9 +8,9 @@ participant EmailService as EmailService <<Service>>
 participant PatientRepository as Repository <<Repository>>
 participant Patient as Domain <<Domain>>
 participant PatientMapper as Mapper <<Mapper>>
-[o-> Route: PUT (/api/patients/{id})
+[o-> Route: PATCH (/api/patients/{medicalRecordNumber})
 activate Route
-Route -> Controller : PUT
+Route -> Controller : PATCH
 activate Controller
 Controller -> DTO** : recieves request body info
 Controller -> Service : editPatient(id, editingPatientDTO)

@@ -7,6 +7,7 @@ namespace DDDSample1.Domain.Specializations
 {
   public class Specialization : Entity<SpecializationId>, IAggregateRoot
   {
+    
     public string Name { get; }
 
 

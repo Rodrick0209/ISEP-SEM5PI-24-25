@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using DDDSample1.Domain.Families;
 using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.User;
 using DDDSample1.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +28,7 @@ public static class DataSeeder
     
     
     
-    SeedOperationType(context,new OperationType("1","New Operation Type",true,new Phase("1"),new Phase("2"),new Phase("3")));
+    //SeedOperationType(context,new OperationType("1","New Operation Type",true,new Phase("1"),new Phase("2"),new Phase("3"),new Specialization("Ortopedia")));
     
     context.SaveChanges();
   }

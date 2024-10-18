@@ -8,6 +8,7 @@ using DDDSample1.Domain.Utils;
 using DDDSample1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DDDSample1.Domain.Patient
 {
@@ -46,29 +47,19 @@ namespace DDDSample1.Domain.Patient
 
             FullName fullName = new FullName(dto.FullName);
             DateOfBirth dateOfBirth = new DateOfBirth(DateTime.Parse(dto.DateOfBirth));
+            Gender gender = new Gender(dto.Gender);
             Email email = new Email(dto.Email);
             PhoneNumber phoneNumber = new PhoneNumber(dto.PhoneNumber);
-
-            Gender gender = null;
-            if (!string.IsNullOrWhiteSpace(dto.Gender))
-            {
-                gender = new Gender(dto.Gender);
-            }
-
-            EmergencyContact emergencyContact = null;
-            if (!string.IsNullOrWhiteSpace(dto.EmergencyContact))
-            {
-                emergencyContact = new EmergencyContact(dto.EmergencyContact);
-            }
+            EmergencyContact emergencyContact = new EmergencyContact(dto.EmergencyContact);
 
             MedicalRecordNumber medicalRecordNumber = MedicalRecordNumberGenerator.GenerateMedicalRecordNumber();
 
             var patient = new Patient(
                 fullName,
                 dateOfBirth,
+                gender,
                 email,
                 phoneNumber,
-                gender,
                 emergencyContact,
                 medicalRecordNumber
             );
@@ -91,13 +82,13 @@ namespace DDDSample1.Domain.Patient
 
             string email = patient.Email.email;
 
-            if (dto.FullName != null)
+            if (!string.IsNullOrWhiteSpace(dto.FullName))
             {
                 FullName fullName = new FullName(dto.FullName);
                 patient.ChangeFullName(fullName);
             }
 
-            if (dto.Email != null)
+            if (!string.IsNullOrWhiteSpace(dto.Email))
             {
                 bool emailIsUnique = await ValidateEmailIsUnique(dto.Email);
                 if (!emailIsUnique)
@@ -108,7 +99,7 @@ namespace DDDSample1.Domain.Patient
                 patient.ChangeEmail(newEmail);
             }
 
-            if (dto.PhoneNumber != null)
+            if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
             {
                 bool phoneNumberIsUnique = await ValidatePhoneNumberIsUnique(dto.PhoneNumber);
                 if (!phoneNumberIsUnique)
@@ -119,7 +110,8 @@ namespace DDDSample1.Domain.Patient
                 patient.ChangePhoneNumber(phoneNumber);
             }
 
-            if (dto.MedicalConditions != null)
+
+            if (!string.IsNullOrWhiteSpace(dto.MedicalConditions))
             {
                 MedicalConditions medicalConditions = new MedicalConditions(dto.MedicalConditions);
                 patient.ChangeMedicalConditions(medicalConditions);

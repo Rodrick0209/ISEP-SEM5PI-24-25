@@ -14,8 +14,8 @@ namespace DDDSample1.Domain.Patient
         public DateOfBirth DateOfBirth { get; private set; }
         public Email Email { get; private set; }
         public PhoneNumber PhoneNumber { get; private set; }
-        public Gender? Gender { get; private set; }
-        public EmergencyContact? EmergencyContact { get; private set; }
+        public Gender Gender { get; private set; }
+        public EmergencyContact EmergencyContact { get; private set; }
         public MedicalRecordNumber MedicalRecordNumber { get; private set; }
         public MedicalConditions? MedicalConditions { get; private set; }
         public User.User? User { get; private set; }
@@ -24,16 +24,19 @@ namespace DDDSample1.Domain.Patient
         {
             this.FullName = default!;
             this.DateOfBirth = default!;
+            this.Gender = default!;
             this.Email = default!;
             this.PhoneNumber = default!;
             this.MedicalRecordNumber = default!;
+            this.EmergencyContact = default!;
         }
 
-        public Patient(FullName fullName, DateOfBirth dateOfBirth, Email email, PhoneNumber phoneNumber, Gender? gender, EmergencyContact? emergencyContact, MedicalRecordNumber medicalRecordNumber)
+        public Patient(FullName fullName, DateOfBirth dateOfBirth, Gender gender, Email email, PhoneNumber phoneNumber, EmergencyContact emergencyContact, MedicalRecordNumber medicalRecordNumber)
         {
             this.Id = new PatientId(Guid.NewGuid());
             this.FullName = fullName;
             this.DateOfBirth = dateOfBirth;
+            this.Gender = gender;
             this.Email = email;
             this.PhoneNumber = phoneNumber;
             this.EmergencyContact = emergencyContact;
