@@ -4,9 +4,9 @@
 
 #### Functional requirements
 
-*Admins can create a staff profile by inputting details such as first name, last name, contact information(email and phone number),specialization and availability slots.
+*Admins can create a staff profile by inputting details such as first name, last name, contact information(email and phone number),specialization, availability slots and licence number.
 *The system processes the information and ensure´s the staff´s email and phone number are unique.
-*A unique staff ID(License Number) is generated upon profile creation.
+*A unique staff ID is generated upon profile creation.
 *The profile is stored securely and access is based on role-based permissions.
 
 
@@ -39,7 +39,7 @@ License numbers are the numbers assigned by the professional guild (ex., "ordem 
 
 #### Postconditions
 
-*A unique staff ID(License Number) is generated upon profile creation.
+*A unique staff ID is generated upon profile creation.
 *The profile is stored securely and access is based on role-based permissions.
 
 
