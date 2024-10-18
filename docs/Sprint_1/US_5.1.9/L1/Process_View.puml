@@ -1,13 +1,13 @@
 ```plantuml
 @startuml Process_View
 actor Admin 
-participant System <<System>>
+participant System <<System (C4)>>
 
 activate Admin
 
 Admin -> System: Make a request to edit a patient profile
 activate System
-System --> Admin : Asks the patient's ID (or other unique identifier)
+System --> Admin : Asks the patient's ID
 Admin -> System: Provides the patient's ID
 System --> Admin : Asks the necessary information to edit
 Admin -> System: Provides the necessary information

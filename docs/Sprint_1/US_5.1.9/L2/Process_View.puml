@@ -1,6 +1,6 @@
 ```plantuml
 @startuml Process_View
-participant "Back-end" as BE <<Container>>
+participant "MastersData" as BE <<Container (C4)>>
 
 [o-> BE: PATCH (/api/patients/{medicalRecordNumber})
 activate BE
