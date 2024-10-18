@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using DDDSample1.Domain.Patient;
+using DDDSample1.Domain.Patients;
 using DDDSample1.Infrastructure.Shared;
 using Microsoft.EntityFrameworkCore;
 

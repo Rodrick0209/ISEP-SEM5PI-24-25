@@ -1,7 +1,7 @@
 using DDDSample1.Domain.Shared;
 using System;
 
-namespace DDDSample1.Domain.Patient
+namespace DDDSample1.Domain.Patients
 {
     public class EmergencyContact : IValueObject
     {

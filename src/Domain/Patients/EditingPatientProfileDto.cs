@@ -1,6 +1,6 @@
 #nullable enable
 
-namespace DDDSample1.Domain.Patient
+namespace DDDSample1.Domain.Patients
 {
     public class EditingPatientProfileDto
     {

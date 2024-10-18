@@ -1,6 +1,6 @@
 using System;
 using Xunit;
-using DDDSample1.Domain.Patient;
+using DDDSample1.Domain.Patients;
 
 namespace DDDSample1.UnitTests.Domain.Patient
 {

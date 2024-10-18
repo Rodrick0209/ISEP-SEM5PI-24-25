@@ -28,7 +28,7 @@ using DDDSample1.Infrastructure.OperationRequests;
 using DDDSample1.Domain.OperationType;
 using DDDSample1.Infrastructure.OperationTypes;
 using Domain.Staff;
-using DDDSample1.Domain.Patient;
+using DDDSample1.Domain.Patients;
 using DDDSample1.Infrastructure.Patients;
 using DDDSample1.Infrastructure.Specializations;
 using DDDSample1.Domain.Specializations;

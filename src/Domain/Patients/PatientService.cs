@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.IdentityModel.Tokens;
 
-namespace DDDSample1.Domain.Patient
+namespace DDDSample1.Domain.Patients
 {
     public class PatientService
     {

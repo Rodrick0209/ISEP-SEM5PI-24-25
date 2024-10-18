@@ -1,6 +1,6 @@
 #nullable enable
 using System;
-using DDDSample1.Domain.Patient;
+using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.PatientLoggers
@@ -19,7 +19,8 @@ namespace DDDSample1.Domain.PatientLoggers
         public string? MedicalConditions { get; private set; }
         public DateTime ModificationDate { get; private set; }
 
-        private PatientLogger(){
+        private PatientLogger(Patients.PatientId id)
+        {
             PatientId = default!;
             FullName = default!;
             DateOfBirth = default!;

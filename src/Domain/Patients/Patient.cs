@@ -5,7 +5,7 @@ using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Utils;
 using Microsoft.Extensions.Logging.Configuration;
 
-namespace DDDSample1.Domain.Patient
+namespace DDDSample1.Domain.Patients
 {
     public class Patient : Entity<PatientId>, IAggregateRoot
     {

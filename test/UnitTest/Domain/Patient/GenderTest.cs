@@ -1,5 +1,5 @@
 using System;
-using DDDSample1.Domain.Patient;
+using DDDSample1.Domain.Patients;
 using Xunit;
 
 namespace UnitTest.Domain.Patient

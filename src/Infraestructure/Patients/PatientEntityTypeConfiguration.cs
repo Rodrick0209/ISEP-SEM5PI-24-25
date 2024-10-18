@@ -1,4 +1,4 @@
-using DDDSample1.Domain.Patient;
+using DDDSample1.Domain.Patients;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

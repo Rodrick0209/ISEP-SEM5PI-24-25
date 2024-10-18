@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DDDSample1.Domain.Patient;
+using DDDSample1.Domain.Patients;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DDDSample1.Controllers

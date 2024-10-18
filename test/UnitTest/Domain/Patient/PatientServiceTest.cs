@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DDDSample1.Domain.Patient;
+using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.PatientLoggers;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
@@ -45,15 +45,15 @@ namespace UnitTest.Domain.Patient
             };
 
 
-            _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patient.Patient));
-            _patientRepositoryMock.Setup(repo => repo.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patient.Patient));
+            _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patients.Patient));
+            _patientRepositoryMock.Setup(repo => repo.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patients.Patient));
 
             // Act
             var result = await _patientService.CreateAsync(dto);
 
             // Assert
             Assert.NotNull(result);
-            _patientRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<DDDSample1.Domain.Patient.Patient>()), Times.Once);
+            _patientRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<DDDSample1.Domain.Patients.Patient>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
         }
 
@@ -72,7 +72,7 @@ namespace UnitTest.Domain.Patient
                 EmergencyContact = "2345678901"
             };
 
-            _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(new DDDSample1.Domain.Patient.Patient(
+            _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(new DDDSample1.Domain.Patients.Patient(
                 new FullName("John Doe"),
                 new DateOfBirth(DateTime.Parse("1990-01-01")),
                 new Gender("male"),
@@ -96,7 +96,7 @@ namespace UnitTest.Domain.Patient
                 FullName = "John Doe Updated"
             };
 
-            var existingPatient = new DDDSample1.Domain.Patient.Patient(
+            var existingPatient = new DDDSample1.Domain.Patients.Patient(
             new FullName("John Doe"),
             new DateOfBirth(DateTime.Parse("1990-01-01")),
             new Gender("male"),
@@ -129,7 +129,7 @@ namespace UnitTest.Domain.Patient
                 Email = "john.doe.updated@example.com"
             };
 
-            var existingPatient = new DDDSample1.Domain.Patient.Patient(
+            var existingPatient = new DDDSample1.Domain.Patients.Patient(
             new FullName("John Doe"),
             new DateOfBirth(DateTime.Parse("1990-01-01")),
             new Gender("male"),
@@ -140,7 +140,7 @@ namespace UnitTest.Domain.Patient
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
-            _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patient.Patient));
+            _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patients.Patient));
 
             // Act
             var result = await _patientService.UpdateAsync(dto);
@@ -163,7 +163,7 @@ namespace UnitTest.Domain.Patient
                 PhoneNumber = "0987654321"
             };
 
-            var existingPatient = new DDDSample1.Domain.Patient.Patient(
+            var existingPatient = new DDDSample1.Domain.Patients.Patient(
             new FullName("John Doe"),
             new DateOfBirth(DateTime.Parse("1990-01-01")),
             new Gender("male"),
@@ -174,7 +174,7 @@ namespace UnitTest.Domain.Patient
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
-            _patientRepositoryMock.Setup(repo => repo.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patient.Patient));
+            _patientRepositoryMock.Setup(repo => repo.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patients.Patient));
 
             // Act
             var result = await _patientService.UpdateAsync(dto);
@@ -197,7 +197,7 @@ namespace UnitTest.Domain.Patient
                 MedicalConditions = "Asthma, Diabetes"
             };
 
-            var existingPatient = new DDDSample1.Domain.Patient.Patient(
+            var existingPatient = new DDDSample1.Domain.Patients.Patient(
             new FullName("John Doe"),
             new DateOfBirth(DateTime.Parse("1990-01-01")),
             new Gender("male"),
@@ -208,7 +208,7 @@ namespace UnitTest.Domain.Patient
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
-            _patientRepositoryMock.Setup(repo => repo.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patient.Patient));
+            _patientRepositoryMock.Setup(repo => repo.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patients.Patient));
 
             // Act
             var result = await _patientService.UpdateAsync(dto);
@@ -233,7 +233,7 @@ namespace UnitTest.Domain.Patient
                 MedicalConditions = "Asthma"
             };
 
-            var existingPatient = new DDDSample1.Domain.Patient.Patient(
+            var existingPatient = new DDDSample1.Domain.Patients.Patient(
                 new FullName("John Doe"),
                 new DateOfBirth(DateTime.Parse("1990-01-01")),
                 new Gender("male"),
@@ -244,8 +244,8 @@ namespace UnitTest.Domain.Patient
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
-            _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patient.Patient));
-            _patientRepositoryMock.Setup(repo => repo.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patient.Patient));
+            _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patients.Patient));
+            _patientRepositoryMock.Setup(repo => repo.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patients.Patient));
 
             // Act
             var result = await _patientService.UpdateAsync(dto);
@@ -265,7 +265,7 @@ namespace UnitTest.Domain.Patient
         public async Task GetAllAsync_ShouldReturnAllPatients()
         {
             // Arrange
-            var patients = new List<DDDSample1.Domain.Patient.Patient>
+            var patients = new List<DDDSample1.Domain.Patients.Patient>
             {
                 new (
                     new FullName("John Doe"),
@@ -292,7 +292,7 @@ namespace UnitTest.Domain.Patient
         public async Task GetByMedicalRecordNumberAsync_ShouldReturnPatient_WhenExists()
         {
             // Arrange
-            var patient = new DDDSample1.Domain.Patient.Patient(
+            var patient = new DDDSample1.Domain.Patients.Patient(
                 new FullName("John Doe"),
                 new DateOfBirth(DateTime.Parse("1990-01-01")),
                 new Gender("male"),
@@ -316,7 +316,7 @@ namespace UnitTest.Domain.Patient
         {
             // Arrange
             var patientId = new PatientId(Guid.NewGuid());
-            var patient = new DDDSample1.Domain.Patient.Patient(
+            var patient = new DDDSample1.Domain.Patients.Patient(
                 new FullName("John Doe"),
                 new DateOfBirth(DateTime.Parse("1990-01-01")),
                 new Gender("male"),
@@ -326,7 +326,7 @@ namespace UnitTest.Domain.Patient
                 new MedicalRecordNumber("202410000001")
             );
 
-            _patientRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<DDDSample1.Domain.Patient.PatientId>())).ReturnsAsync(patient);
+            _patientRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<DDDSample1.Domain.Patients.PatientId>())).ReturnsAsync(patient);
 
             // Act
             var result = await _patientService.GetByIdAsync(patientId);

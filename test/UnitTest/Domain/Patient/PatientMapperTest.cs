@@ -1,5 +1,5 @@
 using System;
-using DDDSample1.Domain.Patient;
+using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Utils;
 using Xunit;
 
@@ -18,7 +18,7 @@ namespace UnitTest.Domain.Patient
             var gender = new Gender("male");
             var emergencyContact = new EmergencyContact("0987654321");
             var medicalRecordNumber = new MedicalRecordNumber("202410000001");
-            var patient = new DDDSample1.Domain.Patient.Patient(fullName, dateOfBirth, gender, email, phoneNumber, emergencyContact, medicalRecordNumber);
+            var patient = new DDDSample1.Domain.Patients.Patient(fullName, dateOfBirth, gender, email, phoneNumber, emergencyContact, medicalRecordNumber);
 
             // Act
             var patientDto = PatientMapper.ToDto(patient);
