@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Patient;
+using DDDSample1.Domain.PatientLoggers;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
 using DDDSample1.Domain.Utils;
@@ -14,6 +15,7 @@ namespace UnitTest.Domain.Patient
     {
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
         private readonly Mock<IPatientRepository> _patientRepositoryMock;
+        private readonly Mock<IPatientLoggerRepository> _patientLoggerRepositoryMock;
         private readonly Mock<IEmailSender> _emailSenderMock;
         private readonly PatientService _patientService;
 
@@ -21,8 +23,9 @@ namespace UnitTest.Domain.Patient
         {
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
             _emailSenderMock = new Mock<IEmailSender>();
-            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _emailSenderMock.Object);
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object,_patientLoggerRepositoryMock.Object, _emailSenderMock.Object);
         }
 
         [Fact]
@@ -104,6 +107,7 @@ namespace UnitTest.Domain.Patient
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
+            _patientLoggerRepositoryMock.Setup(repo => repo.AddAsync(It.IsAny<PatientLogger>()));
 
             // Act
             var result = await _patientService.UpdateAsync(dto);
@@ -111,6 +115,7 @@ namespace UnitTest.Domain.Patient
             // Assert
             Assert.NotNull(result);
             Assert.Equal("John Doe Updated", result.FullName);
+            _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
         }
 
@@ -143,6 +148,7 @@ namespace UnitTest.Domain.Patient
             // Assert
             Assert.NotNull(result);
             Assert.Equal("john.doe.updated@example.com", result.Email);
+            _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
             _emailSenderMock.Verify(sender => sender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
@@ -176,6 +182,7 @@ namespace UnitTest.Domain.Patient
             // Assert
             Assert.NotNull(result);
             Assert.Equal("0987654321", result.PhoneNumber);
+            _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
             _emailSenderMock.Verify(sender => sender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
@@ -208,6 +215,7 @@ namespace UnitTest.Domain.Patient
 
             // Assert
             Assert.NotNull(result);
+            _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             Assert.Equal("Asthma, Diabetes", result.MedicalConditions);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
         }
@@ -248,6 +256,7 @@ namespace UnitTest.Domain.Patient
             Assert.Equal("john.doe.updated@example.com", result.Email);
             Assert.Equal("0987654321", result.PhoneNumber);
             Assert.Equal("Asthma", result.MedicalConditions);
+            _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
             _emailSenderMock.Verify(sender => sender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }

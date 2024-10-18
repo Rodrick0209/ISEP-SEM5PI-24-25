@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Xml;
+using DDDSample1.Domain.PatientLoggers;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
 using DDDSample1.Domain.Utils;
@@ -16,12 +18,14 @@ namespace DDDSample1.Domain.Patient
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPatientRepository _patientRepository;
+        private readonly IPatientLoggerRepository _patientLoggerRepository;
         private readonly IEmailSender _emailSender;
 
-        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, IEmailSender emailSender)
+        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, IPatientLoggerRepository patientLoggerRepository, IEmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
             _patientRepository = patientRepository;
+            _patientLoggerRepository = patientLoggerRepository;
             _emailSender = emailSender;
         }
 
@@ -117,6 +121,8 @@ namespace DDDSample1.Domain.Patient
                 patient.ChangeMedicalConditions(medicalConditions);
             }
 
+            logChanges(patient);
+
             await _unitOfWork.CommitAsync();
 
             if (dto.Email != null || dto.PhoneNumber != null)
@@ -169,6 +175,24 @@ namespace DDDSample1.Domain.Patient
                 return false;
             }
             return true;
+        }
+
+        private void logChanges(Patient patient)
+        {
+            var patientLogger = new PatientLogger(
+                patient.Id,
+                patient.FullName.fullName,
+                patient.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd"),
+                patient.Gender.gender,
+                patient.Email.email,
+                patient.PhoneNumber.phoneNumber,
+                patient.EmergencyContact.emergencyContact,
+                patient.MedicalRecordNumber._medicalRecordNumber,
+                patient.MedicalConditions?.medicalConditions ?? null,
+                DateTime.Now
+            );
+
+            _patientLoggerRepository.AddAsync(patientLogger);
         }
 
 

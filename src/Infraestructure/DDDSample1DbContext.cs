@@ -16,6 +16,8 @@ using DDDSample1.Domain.Specializations;
 using DDDSample1.Infrastructure.Specializations;
 using DDDSample1.Domain.OperationRequestLoggers;
 using DDDSample1.Infrastructure.OperationRequestLoggers;
+using DDDSample1.Domain.PatientLoggers;
+using DDDSample.Infrastructure.PatientLoggers;
 
 namespace DDDSample1.Infrastructure
 {
@@ -39,6 +41,8 @@ namespace DDDSample1.Infrastructure
 
         public DbSet<OperationRequestLogger> OperationRequestLoggers { get; set; }
 
+        public DbSet<PatientLogger> PatientLoggers { get; set; }
+
         public DDDSample1DbContext(DbContextOptions options) : base(options)
         {
 
@@ -55,6 +59,7 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new PatientEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SpecializationEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRequestLoggerEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new PatientLoggerEntityTypeConfiguration());
 
             modelBuilder.Entity<OperationType>(entity =>
             {
