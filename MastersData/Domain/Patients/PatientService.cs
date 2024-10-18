@@ -151,7 +151,7 @@ namespace DDDSample1.Domain.Patients
 
         public async Task<List<ViewPatientDto>> SearchAsync(SearchFiltersDto dto)
         {
-            var patients = default(List<Patient>);
+            var patients = new List<Patient>();
             if (string.IsNullOrWhiteSpace(dto.MedicalRecordNumber) && string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.DateOfBirth))
             {
                 patients = await _patientRepository.GetAllAsync();
@@ -171,6 +171,7 @@ namespace DDDSample1.Domain.Patients
 
             return listDto;
         }
+
 
 
         public async Task<List<PatientDto>> GetAllAsync()

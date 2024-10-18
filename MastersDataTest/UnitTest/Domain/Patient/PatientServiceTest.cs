@@ -294,6 +294,177 @@ namespace UnitTest.Domain.Patient
         }
 
         [Fact]
+        public async Task SeachAsync_ShouldReturnPatients_WhenFiltersAreDisponible()
+        {
+            // Arrange
+            var dto = new SearchFiltersDto
+            {
+                MedicalRecordNumber = "2024",
+                Name = "John",
+                Email = "john.",
+                DateOfBirth = "1990"
+            };
+
+            var patients = new List<DDDSample1.Domain.Patients.Patient>
+            {
+                new (
+                    new FullName("John Doe"),
+                    new DateOfBirth(DateTime.Parse("1990-01-01")),
+                    new Gender("male"),
+                    new Email("john.doe@example.com"),
+                    new PhoneNumber("1234567890"),
+                    new EmergencyContact("Jane Doe"),
+                    new MedicalRecordNumber("202410000001")
+                ),
+                new (
+                    new FullName("John Doe"),
+                    new DateOfBirth(DateTime.Parse("1990-01-01")),
+                    new Gender("male"),
+                    new Email("john.doing@example.com"),
+                    new PhoneNumber("123456723"),
+                    new EmergencyContact("Jane Doe"),
+                    new MedicalRecordNumber("202410000012")
+                )
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(patients);
+            _patientRepositoryMock.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(patients.Where(p => p.MedicalRecordNumber._medicalRecordNumber.Contains(dto.MedicalRecordNumber)
+                                       && p.FullName.fullName.Contains(dto.Name)
+                                       && p.Email.email.Contains(dto.Email)
+                                       && p.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd").Contains(dto.DateOfBirth)).ToList());
+
+            // Act
+            var result = await _patientService.SearchAsync(dto);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count);
+        }
+
+        [Fact]
+        public async Task SeachAsync_ShouldReturnPatient_WhenFiltersAreDisponible()
+        {
+            // Arrange
+            var dto = new SearchFiltersDto
+            {
+                MedicalRecordNumber = "2024",
+                Name = "John Doe",
+                Email = "john.",
+                DateOfBirth = ""
+            };
+
+            var patients = new List<DDDSample1.Domain.Patients.Patient>
+            {
+                new (
+                    new FullName("John Doe"),
+                    new DateOfBirth(DateTime.Parse("1990-01-01")),
+                    new Gender("male"),
+                    new Email("john.doe@example.com"),
+                    new PhoneNumber("1234567890"),
+                    new EmergencyContact("Jane Doe"),
+                    new MedicalRecordNumber("202410000001")
+                ),
+                new (
+                    new FullName("John Doing"),
+                    new DateOfBirth(DateTime.Parse("1990-01-01")),
+                    new Gender("male"),
+                    new Email("john.doing@example.com"),
+                    new PhoneNumber("123456723"),
+                    new EmergencyContact("Jane Doe"),
+                    new MedicalRecordNumber("202410000012")
+                ),
+                new (
+                    new FullName("John Done"),
+                    new DateOfBirth(DateTime.Parse("1990-01-01")),
+                    new Gender("male"),
+                    new Email("john.done@example.com"),
+                    new PhoneNumber("1234567892"),
+                    new EmergencyContact("Jane Doe"),
+                    new MedicalRecordNumber("202410000009")
+                ),
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(patients);
+            _patientRepositoryMock.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                                    .ReturnsAsync(patients.Where(p => p.MedicalRecordNumber._medicalRecordNumber.Contains(dto.MedicalRecordNumber)
+                                       && p.FullName.fullName.Contains(dto.Name)
+                                       && p.Email.email.Contains(dto.Email)
+                                       && p.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd").Contains(dto.DateOfBirth)).ToList());
+
+            // Act
+            var result = await _patientService.SearchAsync(dto);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.Equal("202410000001", result[0].MedicalRecordNumber);
+            Assert.Equal("John Doe", result[0].Name);
+            Assert.Equal("john.doe@example.com", result[0].Email);
+            Assert.Equal("1990-01-01", result[0].DateOfBirth);
+        }
+
+        [Fact]
+        public async Task SeachAsync_ShouldReturnAllPatients_WhenFiltersAreNotDisponible()
+        {
+            // Arrange
+            var dto = new SearchFiltersDto
+            {
+                MedicalRecordNumber = "",
+                Name = "",
+                Email = "",
+                DateOfBirth = ""
+            };
+
+            var patients = new List<DDDSample1.Domain.Patients.Patient>
+            {
+                new (
+                    new FullName("John Doe"),
+                    new DateOfBirth(DateTime.Parse("1990-01-01")),
+                    new Gender("male"),
+                    new Email("john.doe@example.com"),
+                    new PhoneNumber("1234567890"),
+                    new EmergencyContact("Jane Doe"),
+                    new MedicalRecordNumber("202410000001")
+                ),
+                new (
+                    new FullName("John Doing"),
+                    new DateOfBirth(DateTime.Parse("1990-01-01")),
+                    new Gender("male"),
+                    new Email("john.doing@example.com"),
+                    new PhoneNumber("123456723"),
+                    new EmergencyContact("Jane Doe"),
+                    new MedicalRecordNumber("202410000012")
+                ),
+                new (
+                    new FullName("John Done"),
+                    new DateOfBirth(DateTime.Parse("1990-01-01")),
+                    new Gender("female"),
+                    new Email("john.done@example.com"),
+                    new PhoneNumber("123456725"),
+                    new EmergencyContact("Jane Doe"),
+                    new MedicalRecordNumber("202410000013")
+                )
+
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(patients);
+            _patientRepositoryMock.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                                    .ReturnsAsync(patients.Where(p => p.MedicalRecordNumber._medicalRecordNumber.Contains(dto.MedicalRecordNumber)
+                                       && p.FullName.fullName.Contains(dto.Name)
+                                       && p.Email.email.Contains(dto.Email)
+                                       && p.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd").Contains(dto.DateOfBirth)).ToList());
+            // Act
+            var result = await _patientService.SearchAsync(dto);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(3, result.Count);
+        }
+
+
+
+        [Fact]
         public async Task GetAllAsync_ShouldReturnAllPatients()
         {
             // Arrange

@@ -26,7 +26,10 @@ namespace DDDSample1.Infrastructure.Patients
         public Task<List<Patient>> GetByFiltersAsync(string medicalRecordNumber, string name, string email, string dateOfBirth)
         {
             return this.context.Patients
-                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Contains(medicalRecordNumber.Trim()) || p.FullName.fullName.Contains(name.Trim()) || p.Email.email.Contains(email.Trim()) || p.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd") == dateOfBirth)
+                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Contains(medicalRecordNumber) 
+                            && p.FullName.fullName.Contains(name)
+                            && p.Email.email.Contains(email) 
+                            && p.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd").Contains(dateOfBirth))
                 .ToListAsync();
         }
 
