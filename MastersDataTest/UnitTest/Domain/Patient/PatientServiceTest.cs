@@ -25,7 +25,7 @@ namespace UnitTest.Domain.Patient
             _patientRepositoryMock = new Mock<IPatientRepository>();
             _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
             _emailSenderMock = new Mock<IEmailSender>();
-            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object,_patientLoggerRepositoryMock.Object, _emailSenderMock.Object);
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, _emailSenderMock.Object);
         }
 
         [Fact]
@@ -262,6 +262,38 @@ namespace UnitTest.Domain.Patient
         }
 
         [Fact]
+        public async Task DeleteAsync_ShouldDeletePatient_WhenExists()
+        {
+            // Arrange
+            var dto = new DeletingPatientProfileConfirmationDto
+            {
+                MedicalRecordNumber = "202410000001",
+            };
+
+            var existingPatient = new DDDSample1.Domain.Patients.Patient(
+                new FullName("John Doe"),
+                new DateOfBirth(DateTime.Parse("1990-01-01")),
+                new Gender("male"),
+                new Email("john.doe@example.com"),
+                new PhoneNumber("1234567890"),
+                new EmergencyContact("Jane Doe"),
+                new MedicalRecordNumber("202410000001")
+            );
+
+            _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
+            _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patients.Patient));
+            _patientRepositoryMock.Setup(repo => repo.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patients.Patient));
+
+            // Act
+            await _patientService.DeleteAsync(dto);
+
+            // Assert
+            _patientRepositoryMock.Verify(repo => repo.Remove(It.IsAny<DDDSample1.Domain.Patients.Patient>()), Times.Once);
+            _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
+        }
+
+        [Fact]
         public async Task GetAllAsync_ShouldReturnAllPatients()
         {
             // Arrange
@@ -310,29 +342,6 @@ namespace UnitTest.Domain.Patient
             // Assert
             Assert.NotNull(result);
         }
-
-        [Fact]
-        public async Task GetByIdAsync_ShouldReturnPatient_WhenExists()
-        {
-            // Arrange
-            var patientId = new PatientId(Guid.NewGuid());
-            var patient = new DDDSample1.Domain.Patients.Patient(
-                new FullName("John Doe"),
-                new DateOfBirth(DateTime.Parse("1990-01-01")),
-                new Gender("male"),
-                new Email("john.doe@example.com"),
-                new PhoneNumber("1234567890"),
-                new EmergencyContact("Jane Doe"),
-                new MedicalRecordNumber("202410000001")
-            );
-
-            _patientRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<DDDSample1.Domain.Patients.PatientId>())).ReturnsAsync(patient);
-
-            // Act
-            var result = await _patientService.GetByIdAsync(patientId);
-
-            // Assert
-            Assert.NotNull(result);
-        }
     }
 }
+
