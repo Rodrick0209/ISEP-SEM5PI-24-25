@@ -149,6 +149,29 @@ namespace DDDSample1.Domain.Patients
             await _unitOfWork.CommitAsync();
         }
 
+        public async Task<List<ViewPatientDto>> SearchAsync(SearchFiltersDto dto)
+        {
+            var patients = default(List<Patient>);
+            if (string.IsNullOrWhiteSpace(dto.MedicalRecordNumber) && string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.DateOfBirth))
+            {
+                patients = await _patientRepository.GetAllAsync();
+            }
+            else
+            {
+                patients = await _patientRepository.GetByFiltersAsync(dto.MedicalRecordNumber, dto.Name, dto.Email, dto.DateOfBirth);
+            }
+
+            List<ViewPatientDto> listDto = patients.ConvertAll<ViewPatientDto>(pat => new ViewPatientDto
+            {
+                MedicalRecordNumber = pat.MedicalRecordNumber._medicalRecordNumber,
+                Name = pat.FullName.fullName,
+                Email = pat.Email.email,
+                DateOfBirth = pat.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd")
+            });
+
+            return listDto;
+        }
+
 
         public async Task<List<PatientDto>> GetAllAsync()
         {
