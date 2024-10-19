@@ -24,10 +24,11 @@ Service -> PatientRepository : findByNameEmailAndPhoneNumber(name, email, phoneN
 activate PatientRepository
 return patient
 Service -> Domain** : createUser(email, password)
-Service -> Repository : save(user)
 Service -> TokenGenerator : generateConfirmationToken(user)
+Service -> Domain : setConfirmationToken(confirmationToken, confirmationTokenExpiration)
+Service -> Repository : save(user)
 Service -> EmailService : sendConfirmationEmail(token, email)
-Service -> DTO** : createConfirmationRegisterPatientDTO(token, email)
+Service -> ConfirmationDTO** : createConfirmationRegisterPatientDTO(token, email)
 Service --> Controller : confirmationRegisterPatientDTO
 deactivate Service
 Controller --> Route : response

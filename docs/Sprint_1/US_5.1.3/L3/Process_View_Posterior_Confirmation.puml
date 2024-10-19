@@ -16,12 +16,12 @@ activate Controller
 Controller -> ConfirmationDTO** : recieves request body info
 Controller -> Service : confirmPatientRegistration(confirmationRegisterPatientDTO)
 activate Service
-Service -> Service : validateToken(token)
-activate Service
-return flag
 Service -> Repository : findUserByEmail(email)
 activate Repository
-return user 
+return user
+Service -> Service : validateToken(user, token)
+activate Service
+return flag
 Service -> PatientRepository : findPatientByEmail(email)
 activate PatientRepository
 return patient
