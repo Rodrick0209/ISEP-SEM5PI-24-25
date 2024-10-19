@@ -4,7 +4,12 @@ participant "MastersData" as BE <<Container (C4)>>
 
 [o-> BE: POST (/api/user/patients)
 activate BE
-BE -> BE: receive request body info, sends\nconfirmation email to the patient, register the user and associate with  in DB
+BE -> BE: receive request body info, validates, \nregisters user and sends confirmation email
+<-- BE: response
+deactivate BE
+[o-> BE: POST(/api/user/patients/confirmation/{token})
+activate BE
+BE -> BE : associates the user\nwith the patient record
 <-- BE: response
 deactivate BE
 @enduml
