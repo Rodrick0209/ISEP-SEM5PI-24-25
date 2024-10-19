@@ -1,0 +1,33 @@
+```plantuml
+@startuml Process_View
+participant PatientRoute as Route <<Route>>
+participant PatientController as Controller <<Controller>>
+participant SearchFiltersDTO as DTO <<DTO>>
+participant PatientService as Service <<Service>>
+participant PatientRepository as Repository <<Repository>>
+participant ViewPatientDTO as ViewDTO <<DTO>>
+[o-> Route: GET (/api/patients/search)
+activate Route
+Route -> Controller : GET
+activate Controller
+Controller -> DTO** : recieves request body info
+Controller -> Service : searchPatients(dto)
+activate Service
+alt multiple filters are provided
+Service -> Repository : getByMultipleFilters(medicalRecordNumber, name, email, dateOfBirth)
+activate Repository
+else no filters provided
+Service -> Repository : getAll()
+end alt
+return patients
+loop for each patient found
+Service -> ViewDTO** : create(patient)
+end loop
+Service --> Controller : patients
+deactivate Service
+Controller --> Route : response with list of patients
+deactivate Controller
+<-- Route : response with list of patients
+
+@enduml
+```

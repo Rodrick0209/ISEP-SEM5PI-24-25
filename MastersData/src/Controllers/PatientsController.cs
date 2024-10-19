@@ -98,6 +98,13 @@ namespace DDDSample1.Controllers
             }
         }
 
+        //GET: api/Patients/search
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<ViewPatientDto>>> SearchAsync(SearchFiltersDto dto)
+        {
+            return await _service.SearchAsync(dto);
+        }
+
         // GET: api/Patients
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllAsync()

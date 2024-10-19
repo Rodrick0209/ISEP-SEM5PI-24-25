@@ -1,0 +1,11 @@
+```plantuml
+@startuml Process_View
+participant "MastersData" as BE <<Container (C4)>>
+
+[o-> BE: GET (/api/patients/search)
+activate BE
+BE -> BE: receive request body info,\n and search for patient(s)
+<-- BE: response with list of patients
+deactivate BE
+@enduml
+```

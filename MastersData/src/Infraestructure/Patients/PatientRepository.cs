@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Infrastructure.Shared;
+using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace DDDSample1.Infrastructure.Patients
@@ -19,6 +21,16 @@ namespace DDDSample1.Infrastructure.Patients
         public async Task<Patient> GetByEmailAsync(string email)
         {
             return await this.context.Patients.FirstOrDefaultAsync(p => p.Email.email == email);
+        }
+
+        public Task<List<Patient>> GetByFiltersAsync(string medicalRecordNumber, string name, string email, string dateOfBirth)
+        {
+            return this.context.Patients
+                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Contains(medicalRecordNumber) 
+                            && p.FullName.fullName.Contains(name)
+                            && p.Email.email.Contains(email) 
+                            && p.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd").Contains(dateOfBirth))
+                .ToListAsync();
         }
 
         public async Task<Patient> GetByMedicalRecordNumberAsync(string medicalRecordNumber)

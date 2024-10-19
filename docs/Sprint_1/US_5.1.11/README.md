@@ -42,3 +42,14 @@ Filters are avaiable to refine the search results
 ### 3.2. Domain model references
 
 N/A
+
+## 4. Design - Process View
+
+#### Level 1
+![Process View - Level 1](L1/Process_View.svg)
+
+#### Level 2
+![Process View - Level 2](L2/Process_View.svg)
+
+#### Level 3
+![Process View - Level 3](L3/Process_View.svg)
