@@ -20,8 +20,9 @@ for instance, N202401234
 N is for nurse, D is for doctor, O is for other.
 yyyy is the year of recruitment
 nnnnn is a sequential number.
-
-License numbers are the numbers assigned by the professional guild (ex., "ordem dos enfermeiros", "ordem dos médicos") to the doctor or nurse attesting they legally can perform the medical acts of their profession.
+*License numbers are the numbers assigned by the professional guild (ex., "ordem dos enfermeiros", "ordem dos médicos") to the doctor or nurse attesting they legally can perform the medical acts of their profession.
+*Nurse's license numbers follow the format "E-xxxxx" where "xxxxx" represent 5 digits.
+*Doctor's license numbers follow the format "xxxxx" where "xxxxx" represent 5 digits.
 *A staff member can only have one specialization.
 
 
