@@ -1,0 +1,11 @@
+```plantuml
+@startuml Process_View
+participant "MastersData" as BE <<Container (C4)>>
+
+[o-> BE: POST (/api/user/patients)
+activate BE
+BE -> BE: receive request body info, sends\nconfirmation email to the patient, register the user and associate with  in DB
+<-- BE: response
+deactivate BE
+@enduml
+```

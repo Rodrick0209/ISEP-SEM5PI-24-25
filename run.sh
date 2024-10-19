@@ -18,7 +18,7 @@ fi
 
 # Run the project
 echo "Running MastersData.."
-dotnet run --project MastersData
+dotnet run --project MastersData/src
 if [ $? -ne 0 ]; then
     echo "Failed to run the project, exiting..."
     exit 1

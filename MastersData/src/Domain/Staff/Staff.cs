@@ -21,7 +21,9 @@ namespace DDDSample1.Domain.StaffMembers
         public Category Category { get; private set; }
         public User.User? User { get; private set; }
 
-    
+        private Staff()
+        {
+        }
 
         public Staff(StaffId staffId, string fullName, string licenseNumber, SpecializationId specializationId, AvailabilitySlotsId availabilitySlotsId, string email, string phoneNumber, string category)
         {
