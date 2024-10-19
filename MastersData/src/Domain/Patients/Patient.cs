@@ -62,6 +62,11 @@ namespace DDDSample1.Domain.Patients
         {
             this.MedicalConditions = medicalConditions;
         }
+
+        public void AssociateUser(User.User user)
+        {
+            this.User = user;
+        }
         
     }
 }

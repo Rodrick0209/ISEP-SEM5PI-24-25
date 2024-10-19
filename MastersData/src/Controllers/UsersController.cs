@@ -6,6 +6,7 @@ using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Families;
 using DDDSample1.Domain.User;
 using Microsoft.AspNetCore.Authorization;
+using DDDSample1.Domain.Patients;
 
 
 namespace DDDSample1.Controllers
@@ -128,6 +129,41 @@ namespace DDDSample1.Controllers
 
         }
 
+        // POST: api/user/patients
+        [Route("Register Patient")]
+        [HttpPost("patients")]
+        public async Task<ActionResult<ConfirmationRegisterPatientDto>> RegisterPatientAsync(RegisteringPatientDto dto){
+            try
+            {
+                var confirmationRegisterPatientDto = await _service.RegisterPatientAsync(dto);
+
+                return Ok(confirmationRegisterPatientDto);
+            } catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.ToString() });
+            }
+        }
+
+        // POST: api/user/patients/confirmation/{token}
+        [Route("Confirm Register Patient")]
+        [HttpPost("patients/confirmation/{token}")]
+        public async Task<ActionResult<PatientDto>> ConfirmRegisterPatientAsync(string token, ConfirmationRegisterPatientDto confirmationRegisterPatientDto){
+            
+            if (token != confirmationRegisterPatientDto.Token)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var patientDto = await _service.ConfirmRegisterPatientAsync(confirmationRegisterPatientDto);
+
+                return Ok(patientDto);
+            } catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.ToString() });
+            }
+        }
 
 
     }

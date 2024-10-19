@@ -21,6 +21,9 @@ namespace DDDSample1.Domain.User
 
         public AccountBlockedTime ? accountBlockedTime { get; private set; }
 
+        public AccountConfirmed ? accountConfirmed { get; private set; }
+        public ConfirmationRegisterPatientToken ? confirmationRegisterPatientToken { get; private set; }
+        public ConfirmationRegisterPatientTokenExpiration ? confirmationRegisterPatientTokenExpiration { get; private set; }
         private User()
         {
         }
@@ -31,6 +34,15 @@ namespace DDDSample1.Domain.User
             this.email = new Email(email);
             this.role = new Role(role);
             this.loginFailCounter = new LoginFailCounter(0);
+        }
+
+        public User(string email, string role, string password){
+            this.Id = new UserId(Guid.NewGuid());
+            this.email = new Email(email);
+            this.role = new Role(role);
+            this.password = new Password(password);
+            this.loginFailCounter = new LoginFailCounter(0);
+            this.accountConfirmed = new AccountConfirmed(false);
         }
 
         public void SetPassword(string password)
@@ -102,6 +114,19 @@ namespace DDDSample1.Domain.User
                 Console.WriteLine("Account is blocked.");
                 return true;
             }
+        }
+
+        public void SetConfirmationRegisterPatientToken(string token, DateTime expirationDate)
+        {
+            this.confirmationRegisterPatientToken = new ConfirmationRegisterPatientToken(token);
+            this.confirmationRegisterPatientTokenExpiration = new ConfirmationRegisterPatientTokenExpiration(expirationDate);
+        }
+
+        public void ConfirmAccount()
+        {
+            this.accountConfirmed = new AccountConfirmed(true);
+            this.confirmationRegisterPatientToken = null;
+            this.confirmationRegisterPatientTokenExpiration = null;
         }
             
 
