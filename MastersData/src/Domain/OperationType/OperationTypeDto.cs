@@ -8,13 +8,13 @@ namespace DDDSample1.Domain.OperationType
         public string Id { get; set; } // Changed to string
         public string Name { get; set; }
         public string Status { get; set; } // Changed to string (could be "active"/"inactive")
-        public PhaseDto PreparationPhase { get; set; }
-        public PhaseDto SurgeryPhase { get; set; }
-        public PhaseDto CleaningPhase { get; set; }
+        public PhaseDTO PreparationPhase { get; set; }
+        public PhaseDTO SurgeryPhase { get; set; }
+        public PhaseDTO CleaningPhase { get; set; }
 
         public string Specialization { get; set; }
 
-        public OperationTypeDto(string operationTypeId, string name, string status, PhaseDto preparationPhase, PhaseDto surgeryPhase, PhaseDto cleaningPhase, string specialization)
+        public OperationTypeDto(string operationTypeId, string name, string status, PhaseDTO preparationPhase, PhaseDTO surgeryPhase, PhaseDTO cleaningPhase, string specialization)
         {
             Id = operationTypeId;
             Name = name;
@@ -26,14 +26,4 @@ namespace DDDSample1.Domain.OperationType
         }
     }
 
-    public class PhaseDto
-    {
-    
-        public string Duration { get; set; } // Changed to string (duration in minutes as string)
-
-        public PhaseDto(string duration)
-        {
-            Duration = duration;
-        }
-    }
 }

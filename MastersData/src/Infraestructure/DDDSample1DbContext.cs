@@ -39,7 +39,9 @@ namespace DDDSample1.Infrastructure
 
         public DbSet<OperationType> OperationTypes { get; set; }
 
-        public DbSet<Patient> Patients { get; set; }    
+        public DbSet<Phase> Phases { get; set; }
+
+        public DbSet<Patient> Patients { get; set; }
 
         public DbSet<Specialization> Specializations { get; set; }
 
@@ -65,13 +67,19 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new OperationRequestLoggerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PatientLoggerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new StaffEntityTypeConfiguration());
-
-            modelBuilder.Entity<OperationType>(entity =>
+            modelBuilder.ApplyConfiguration(new PhaseEntityTypeConfiguration());
+            modelBuilder.Entity<Phase>(entity =>
             {
-                entity.OwnsOne(o => o.preparationPhase);
-                entity.OwnsOne(o => o.surgeryPhase);
-                entity.OwnsOne(o => o.cleaningPhase);
+                entity.OwnsMany(p => p.requiredStaff, rs =>
+                {
+                    rs.WithOwner().HasForeignKey("PhaseId");
+                    rs.Property<int>("Id");
+                    rs.HasKey("Id");
+                });
             });
+            
+
+           
         }
     }
 }

@@ -13,9 +13,9 @@ namespace DDDSample1.Domain.OperationType
                 operationType.Id.AsString(), // Assuming Id is of type Guid
                 operationType.name,
                 operationType.status ? "active" : "inactive", // Mapping boolean status to string
-                ToPhaseDto(operationType.preparationPhase),
-                ToPhaseDto(operationType.surgeryPhase),
-                ToPhaseDto(operationType.cleaningPhase),
+                PhaseMapper.ToPhaseDto(operationType.preparationPhase),
+                PhaseMapper.ToPhaseDto(operationType.surgeryPhase),
+                PhaseMapper.ToPhaseDto(operationType.cleaningPhase),
                 operationType.specialization.Value
             );
             
@@ -28,29 +28,11 @@ namespace DDDSample1.Domain.OperationType
                 operationTypeDto.Id, // Assuming you have a constructor that accepts an OperationTypeId
                 operationTypeDto.Name,
                 operationTypeDto.Status == "active", // Mapping string status back to boolean
-                ToPhaseEntity(operationTypeDto.PreparationPhase),
-                ToPhaseEntity(operationTypeDto.SurgeryPhase),
-                ToPhaseEntity(operationTypeDto.CleaningPhase),
+                PhaseMapper.ToPhaseEntity(operationTypeDto.PreparationPhase),
+                PhaseMapper.ToPhaseEntity(operationTypeDto.SurgeryPhase),
+                PhaseMapper.ToPhaseEntity(operationTypeDto.CleaningPhase),
                 new SpecializationId(operationTypeDto.Specialization)
             );
-        }
-
-        private static PhaseDto ToPhaseDto(Phase phase)
-        {
-            return new PhaseDto(
-                phase.AsString()
-            );
-        }
-
-        public static Phase ToPhaseEntity(PhaseDto phaseDto)
-        {
-            if (phaseDto == null)
-            {
-                throw new ArgumentNullException(nameof(phaseDto), "PhaseDto cannot be null");
-            }
-
-            return new Phase(phaseDto.Duration);
-            
         }
 
     }

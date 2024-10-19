@@ -25,6 +25,15 @@ namespace DDDSample1.Infrastructure.OperationTypes
 
         }
 
+        public async Task<OperationType> GetByIdAsync(OperationTypeId id)
+        {
+            return await this.context.OperationTypes
+                .Include(o => o.preparationPhase)
+                .Include(o => o.surgeryPhase)
+                .Include(o => o.cleaningPhase)
+                .FirstOrDefaultAsync(o => o.Id == id);
+        }
+
     }
 
 
