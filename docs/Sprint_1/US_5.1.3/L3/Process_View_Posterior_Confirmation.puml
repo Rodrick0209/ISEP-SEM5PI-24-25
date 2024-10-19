@@ -6,6 +6,7 @@ participant ConfirmationRegisterPatientDTO as ConfirmationDTO <<DTO>>
 participant UserService as Service <<Service>>
 participant UserRepository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>> 
+participant User as Domain <<Domain>>
 participant Patient as Patient <<Domain>>
 participant PatientMapper as Mapper <<Mapper>>
 [o-> Route : POST(/api/users/patients/confirmation/{token})
@@ -24,6 +25,7 @@ return user
 Service -> PatientRepository : findPatientByEmail(email)
 activate PatientRepository
 return patient
+Service -> Domain** : confirm()
 Service -> Patient : associateUser(user)
 Service -> Repository : save(user)
 Service -> PatientRepository : save(patient)
