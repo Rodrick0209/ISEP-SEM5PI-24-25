@@ -17,4 +17,4 @@ This US creates the functionality to a patient register in healthcare applicatio
 
 ### 2.2. User Story Dependencies
 
-N/A
+**US 5.1.8** - The patient profile must be created on the system.
