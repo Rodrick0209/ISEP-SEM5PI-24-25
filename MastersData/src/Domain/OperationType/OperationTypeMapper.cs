@@ -1,4 +1,7 @@
 using System;
+using DDDSample1.Application.Mappers;
+using DDDSample1.Domain.Specializations;
+using DDDSample1.Infrastructure.Specializations;
 
 namespace DDDSample1.Domain.OperationType
 {
@@ -12,7 +15,8 @@ namespace DDDSample1.Domain.OperationType
                 operationType.status ? "active" : "inactive", // Mapping boolean status to string
                 ToPhaseDto(operationType.preparationPhase),
                 ToPhaseDto(operationType.surgeryPhase),
-                ToPhaseDto(operationType.cleaningPhase)
+                ToPhaseDto(operationType.cleaningPhase),
+                operationType.specialization.Value
             );
             
         }
@@ -27,7 +31,7 @@ namespace DDDSample1.Domain.OperationType
                 ToPhaseEntity(operationTypeDto.PreparationPhase),
                 ToPhaseEntity(operationTypeDto.SurgeryPhase),
                 ToPhaseEntity(operationTypeDto.CleaningPhase),
-                null
+                new SpecializationId(operationTypeDto.Specialization)
             );
         }
 

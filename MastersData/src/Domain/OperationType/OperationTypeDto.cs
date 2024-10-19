@@ -12,9 +12,9 @@ namespace DDDSample1.Domain.OperationType
         public PhaseDto SurgeryPhase { get; set; }
         public PhaseDto CleaningPhase { get; set; }
 
-        public Specialization specialization { get; set; }
+        public string Specialization { get; set; }
 
-        public OperationTypeDto(string operationTypeId, string name, string status, PhaseDto preparationPhase, PhaseDto surgeryPhase, PhaseDto cleaningPhase)
+        public OperationTypeDto(string operationTypeId, string name, string status, PhaseDto preparationPhase, PhaseDto surgeryPhase, PhaseDto cleaningPhase, string specialization)
         {
             Id = operationTypeId;
             Name = name;
@@ -22,6 +22,7 @@ namespace DDDSample1.Domain.OperationType
             PreparationPhase = preparationPhase;
             SurgeryPhase = surgeryPhase;
             CleaningPhase = cleaningPhase;
+            Specialization = specialization;
         }
     }
 

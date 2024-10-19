@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using DDDSample1.Domain.Staff;
+using DDDSample1.Domain.StaffMembers;
 using Domain.StaffMembers;
 
 namespace DDDSample1.Domain.StaffMembers

@@ -64,8 +64,12 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new SpecializationEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRequestLoggerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PatientLoggerEntityTypeConfiguration());
+<<<<<<< HEAD:MastersData/Infraestructure/DDDSample1DbContext.cs
             modelBuilder.ApplyConfiguration(new StaffEntityTypeConfiguration());
 
+=======
+            modelBuilder.ApplyConfiguration(new SpecializationEntityTypeConfiguration());
+>>>>>>> 04fbeccdfaa8e2fb86090a67c9150878dea460cb:MastersData/src/Infraestructure/DDDSample1DbContext.cs
             modelBuilder.Entity<OperationType>(entity =>
             {
                 entity.OwnsOne(o => o.preparationPhase);
