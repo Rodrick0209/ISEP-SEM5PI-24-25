@@ -25,7 +25,7 @@ return flag
 Service -> PatientRepository : findPatientByEmail(email)
 activate PatientRepository
 return patient
-Service -> Domain** : confirm()
+Service -> Domain : confirm()
 Service -> Patient : associateUser(user)
 Service -> Repository : save(user)
 Service -> PatientRepository : save(patient)
