@@ -2,7 +2,6 @@
 @startuml Process_View_Posterior_Confirmation
 participant UserRoute as Route <<Route>>
 participant UserController as Controller <<Controller>>
-participant RegisteringPatientDTO as DTO <<DTO>>
 participant ConfirmationRegisterPatientDTO as ConfirmationDTO <<DTO>>
 participant UserService as Service <<Service>>
 participant UserRepository as Repository <<Repository>>
