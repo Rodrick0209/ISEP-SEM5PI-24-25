@@ -60,7 +60,7 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new SpecializationEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRequestLoggerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PatientLoggerEntityTypeConfiguration());
-
+            modelBuilder.ApplyConfiguration(new SpecializationEntityTypeConfiguration());
             modelBuilder.Entity<OperationType>(entity =>
             {
                 entity.OwnsOne(o => o.preparationPhase);
