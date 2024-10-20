@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using DDDSample1.Domain.Availability;
 using DDDSample1.Domain.Families;
 using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Domain.OperationType;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Specializations;
+using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Domain.User;
 using DDDSample1.Domain.Utils;
 using DDDSample1.Infrastructure;
@@ -27,7 +30,7 @@ public static class DataSeeder
       );
     }
 
-    SeedUsers(context,new User("admin@teste.com","admin"),"password");
+   // SeedUsers(context, new User("admin@teste.com", "admin"), "password");
 
     SeedPatients(context, new Patient(
       new FullName("John Cena"),
@@ -38,12 +41,38 @@ public static class DataSeeder
       new EmergencyContact("945123111"),
       MedicalRecordNumberGenerator.GenerateMedicalRecordNumber()
     ));
+
+    var specialization = new Specialization("Ortopedia");
+
+    // Create required staff
+    var requiredStaff1 = new RequiredStaff(1, specialization.Id);
+    var requiredStaff2 = new RequiredStaff(2, specialization.Id);
+    var requiredStaff3 = new RequiredStaff(3, specialization.Id);
+    var requiredStaffList = new List<RequiredStaff> { requiredStaff1, requiredStaff2 };
+    var requiredStaffList1 = new List<RequiredStaff> { requiredStaff3};
     
     
     
     
     //SeedOperationType(context,new OperationType("1","New Operation Type",true,new Phase("1"),new Phase("2"),new Phase("3"),new Specialization("Ortopedia")));
     
+
+
+    // Create new phases with required staff
+    var phase1 = new Phase("1", 30, requiredStaffList1);
+    var phase2 = new Phase("2", 45, requiredStaffList);
+    var phase3 = new Phase("3", 60, requiredStaffList);
+
+    // Create a new operation type with the phases and specialization
+    var operationType = new OperationType("1", "New Operation Type", true, phase1, phase2, phase3, specialization.Id);
+
+    Console.WriteLine(operationType.cleaningPhase.requiredStaff.Capacity);
+
+    // Seed the operation type into the context
+    SeedOperationType(context, operationType);
+
+    
+
     context.SaveChanges();
   }
 
@@ -67,11 +96,43 @@ public static class DataSeeder
     }
   }
 
-  private static void SeedPatients(DDDSample1DbContext context, Patient patient){
-    if(!context.Patients.Any()){
+  private static void SeedPatients(DDDSample1DbContext context, Patient patient)
+  {
+    if (!context.Patients.Any())
+    {
       context.Patients.Add(patient);
     }
   }
 
+  public static void SeedStaff(DDDSample1DbContext context)
+  {
+      var staffMembers = new List<Staff>
+      {
+          new Staff(
+              new StaffId("1"), 
+              "John Doe", 
+              "LN123456", 
+              new SpecializationId(Guid.NewGuid()), 
+              new AvailabilitySlotsId(Guid.NewGuid()), 
+              "john.doe@example.com", 
+              "123-456-7890", 
+              "Doctor"
+          ),
+          new Staff(
+              new StaffId("2"), 
+              "Jane Smith", 
+              "LN654321", 
+              new SpecializationId(Guid.NewGuid()), 
+              new AvailabilitySlotsId(Guid.NewGuid()), 
+              "jane.smith@example.com", 
+              "098-765-4321", 
+              "Nurse"
+          )
+          // Adicione mais instâncias conforme necessário
+      };
+
+      context.Set<Staff>().AddRange(staffMembers);
+      context.SaveChanges();
+  }
 
 }

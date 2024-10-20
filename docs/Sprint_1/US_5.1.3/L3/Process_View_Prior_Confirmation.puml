@@ -1,0 +1,41 @@
+```plantuml
+@startuml Process_View_Prior_Confirmation
+participant UserRoute as Route <<Route>>
+participant UserController as Controller <<Controller>>
+participant RegisteringPatientDTO as DTO <<DTO>>
+participant ConfirmationRegisterPatientDTO as ConfirmationDTO <<DTO>>
+participant UserService as Service <<Service>>
+participant EmailService as EmailService <<Service>>
+participant ConfirmationRegisterPatientTokenGenerator as TokenGenerator <<Service>>
+participant UserRepository as Repository <<Repository>>
+participant PatientRepository as PatientRepository <<Repository>> 
+participant User as Domain <<Domain>>
+[o-> Route: POST (/api/users/patients)
+activate Route
+Route -> Controller : POST
+activate Controller
+Controller -> DTO** : recieves request body info
+Controller -> Service : registerPatient(registeringPatientDTO)
+activate Service
+Service -> Service : validateEmailIsUnique(email)
+activate Service
+return flag
+Service -> PatientRepository : findByNameEmailAndPhoneNumber(name, email, phoneNumber)
+activate PatientRepository
+return patient
+Service -> Domain** : createUser(email, password)
+Service -> TokenGenerator : generateConfirmationToken(user)
+Service -> Domain : setConfirmationToken(confirmationToken, confirmationTokenExpiration)
+Service -> Repository : save(user)
+Service -> EmailService : sendConfirmationEmail(token, email)
+Service -> ConfirmationDTO** : createConfirmationRegisterPatientDTO(token, email)
+Service --> Controller : confirmationRegisterPatientDTO
+deactivate Service
+Controller --> Route : response
+deactivate Controller
+<-- Route : response
+deactivate Route
+
+
+@enduml
+```

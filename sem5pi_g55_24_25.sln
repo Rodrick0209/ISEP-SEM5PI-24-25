@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDNetCore", "MastersData\src\DDDNetCore.csproj", "{4C48B9F3-BC3E-4F33-8FF9-128AF56B02B2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MastersData", "MastersData", "{928BA1DD-BBE1-40C0-9E0E-0132BD77099E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "MastersData\test\test.csproj", "{C905DFE0-8B17-45F6-AA81-926F62F2337A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDNetCore", "MastersData\src\DDDNetCore.csproj", "{D9071E4A-ED37-44BC-A07D-B3171DB205A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "MastersData\test\test.csproj", "{5EC5EEBB-7772-4318-A1A3-A376CA256D6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,27 +15,31 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8B5C4022-E6D0-4762-857C-96110757C65D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B5C4022-E6D0-4762-857C-96110757C65D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B5C4022-E6D0-4762-857C-96110757C65D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B5C4022-E6D0-4762-857C-96110757C65D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A086970-E93D-41A2-932E-21824C50C4ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A086970-E93D-41A2-932E-21824C50C4ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A086970-E93D-41A2-932E-21824C50C4ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A086970-E93D-41A2-932E-21824C50C4ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4C48B9F3-BC3E-4F33-8FF9-128AF56B02B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C48B9F3-BC3E-4F33-8FF9-128AF56B02B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C48B9F3-BC3E-4F33-8FF9-128AF56B02B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C48B9F3-BC3E-4F33-8FF9-128AF56B02B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C905DFE0-8B17-45F6-AA81-926F62F2337A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C905DFE0-8B17-45F6-AA81-926F62F2337A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C905DFE0-8B17-45F6-AA81-926F62F2337A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C905DFE0-8B17-45F6-AA81-926F62F2337A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{206F0E6C-0EBB-4160-8B1A-144EDD48543B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{206F0E6C-0EBB-4160-8B1A-144EDD48543B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{206F0E6C-0EBB-4160-8B1A-144EDD48543B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{206F0E6C-0EBB-4160-8B1A-144EDD48543B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3319785D-23FF-4C2C-8F53-44A8A4BBE25A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3319785D-23FF-4C2C-8F53-44A8A4BBE25A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3319785D-23FF-4C2C-8F53-44A8A4BBE25A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3319785D-23FF-4C2C-8F53-44A8A4BBE25A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9071E4A-ED37-44BC-A07D-B3171DB205A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9071E4A-ED37-44BC-A07D-B3171DB205A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9071E4A-ED37-44BC-A07D-B3171DB205A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9071E4A-ED37-44BC-A07D-B3171DB205A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EC5EEBB-7772-4318-A1A3-A376CA256D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EC5EEBB-7772-4318-A1A3-A376CA256D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EC5EEBB-7772-4318-A1A3-A376CA256D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EC5EEBB-7772-4318-A1A3-A376CA256D6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8E725386-0B21-4632-A481-ADDAC5EE39C6}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D9071E4A-ED37-44BC-A07D-B3171DB205A5} = {928BA1DD-BBE1-40C0-9E0E-0132BD77099E}
+		{5EC5EEBB-7772-4318-A1A3-A376CA256D6F} = {928BA1DD-BBE1-40C0-9E0E-0132BD77099E}
 	EndGlobalSection
 EndGlobal

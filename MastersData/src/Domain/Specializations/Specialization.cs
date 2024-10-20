@@ -19,6 +19,7 @@ namespace DDDSample1.Domain.Specializations
 
     public Specialization(string name)
     {
+      this.Id = new SpecializationId(Guid.NewGuid());
       Name = name;
     }
 

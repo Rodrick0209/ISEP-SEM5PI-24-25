@@ -18,12 +18,14 @@ using DDDSample1.Domain.OperationRequestLoggers;
 using DDDSample1.Infrastructure.OperationRequestLoggers;
 using DDDSample1.Domain.PatientLoggers;
 using DDDSample.Infrastructure.PatientLoggers;
+using DDDSample1.Domain.StaffMembers;
+using DDDSample1.Infrastructure.StaffMembers;
 
 namespace DDDSample1.Infrastructure
 {
     public class DDDSample1DbContext : DbContext
     {
-        public DbSet<Category> Categories { get; set; }
+        /*public DbSet<Category> Categories { get; set; }*/
 
         public DbSet<Product> Products { get; set; }
 
@@ -32,10 +34,14 @@ namespace DDDSample1.Infrastructure
         public DbSet<User> Users { get; set; }
 
         public DbSet<OperationRequest> OperationRequests { get; set; }
+        public DbSet<Staff> StaffMembers { get; set; }
+
 
         public DbSet<OperationType> OperationTypes { get; set; }
 
-        public DbSet<Patient> Patients { get; set; }    
+        public DbSet<Phase> Phases { get; set; }
+
+        public DbSet<Patient> Patients { get; set; }
 
         public DbSet<Specialization> Specializations { get; set; }
 
@@ -60,13 +66,20 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new SpecializationEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRequestLoggerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PatientLoggerEntityTypeConfiguration());
-
-            modelBuilder.Entity<OperationType>(entity =>
+            modelBuilder.ApplyConfiguration(new StaffEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new PhaseEntityTypeConfiguration());
+            modelBuilder.Entity<Phase>(entity =>
             {
-                entity.OwnsOne(o => o.preparationPhase);
-                entity.OwnsOne(o => o.surgeryPhase);
-                entity.OwnsOne(o => o.cleaningPhase);
+                entity.OwnsMany(p => p.requiredStaff, rs =>
+                {
+                    rs.WithOwner().HasForeignKey("PhaseId");
+                    rs.Property<int>("Id");
+                    rs.HasKey("Id");
+                });
             });
+            
+
+           
         }
     }
 }

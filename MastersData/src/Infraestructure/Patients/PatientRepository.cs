@@ -38,6 +38,15 @@ namespace DDDSample1.Infrastructure.Patients
             return await this.context.Patients.FirstOrDefaultAsync(p => p.MedicalRecordNumber._medicalRecordNumber == medicalRecordNumber);
         }
 
+        public Task<Patient> GetByNameEmailPhoneAsync(string name, string email, string phoneNumber)
+        {
+            return this.context.Patients
+                .Where(p => p.FullName.fullName == name
+                            && p.Email.email == email
+                            && p.PhoneNumber.phoneNumber == phoneNumber)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<Patient> GetByPhoneNumberAsync(string phoneNumber)
         {
             return await this.context.Patients.FirstOrDefaultAsync(p => p.PhoneNumber.phoneNumber == phoneNumber);
