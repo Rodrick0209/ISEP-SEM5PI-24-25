@@ -16,6 +16,8 @@ namespace DDDSample1.Domain.Utils
             {
                 email = email.Trim();
                 validateEmail(email);
+            } else {
+                throw new ArgumentNullException(nameof(email));
             }
             this.email = email;
         }
