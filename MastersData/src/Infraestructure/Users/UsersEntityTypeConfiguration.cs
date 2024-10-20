@@ -18,7 +18,6 @@ namespace DDDSample1.Infrastructure.Users
             builder.OwnsOne(b => b.resetPasswordTokenExpiration);
             builder.OwnsOne(b => b.loginFailCounter);
             builder.OwnsOne(b => b.accountBlockedTime);
-            builder.OwnsOne(b => b.accountConfirmed);
             builder.OwnsOne(b => b.confirmationRegisterPatientToken);
             builder.OwnsOne(b => b.confirmationRegisterPatientTokenExpiration);
 
