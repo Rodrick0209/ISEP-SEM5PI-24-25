@@ -7,7 +7,7 @@ namespace DDDSample1.Domain.OperationType
 {
     public class OperationTypeMapper
     {
-        public static OperationTypeDto ToDto(OperationType operationType)
+        public static OperationTypeDto ToDto(OperationType operationType, string specialization)
         {
             return new OperationTypeDto(
                 operationType.Id.AsString(), // Assuming Id is of type Guid
@@ -16,7 +16,7 @@ namespace DDDSample1.Domain.OperationType
                 PhaseMapper.ToPhaseDto(operationType.preparationPhase),
                 PhaseMapper.ToPhaseDto(operationType.surgeryPhase),
                 PhaseMapper.ToPhaseDto(operationType.cleaningPhase),
-                operationType.specialization.Value
+                specialization
             );
             
         }

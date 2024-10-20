@@ -2,20 +2,23 @@ using System;
 using System.Threading.Tasks;
 using DDDSample1.Domain.OperationType;
 using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.Specializations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DDDSample1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+
     public class OperationTypeController : ControllerBase
     {
         private readonly IOperationTypeService _service;
+        private readonly SpecializationService _Spe_service;
 
-        public OperationTypeController(OperationTypeService service)
+        public OperationTypeController(OperationTypeService service, SpecializationService spe_service)
         {
             _service = service;
+            _Spe_service = spe_service;
         }
 
         // POST: api/OperationType
@@ -24,7 +27,8 @@ namespace DDDSample1.Controllers
         {
             var objDomain = OperationTypeMapper.toDomain(dto);
             var op = await _service.CreateAsync(objDomain);
-            var op2 = OperationTypeMapper.ToDto(op);
+            var specialization = await _Spe_service.GetByIdAsync(new SpecializationId(dto.Specialization));
+            var op2 = OperationTypeMapper.ToDto(op, specialization.Name);
             return CreatedAtAction(nameof(GetById), new { id = op2.Id }, op2);
 
         }
@@ -33,11 +37,22 @@ namespace DDDSample1.Controllers
         public async Task<ActionResult<OperationTypeDto>> GetById(String id)
         {
             var op = await _service.GetByIdAsync(new OperationTypeId(id));
+
             if (op == null)
             {
                 return NotFound();
             }
-            return OperationTypeMapper.ToDto(op);
+
+            
+            var sp = new SpecializationId(op.specialization.Value);
+            var specialization = await _Spe_service.GetByIdAsync(sp);
+            
+            if (specialization == null || string.IsNullOrEmpty(specialization.Name))
+            {
+                return BadRequest("Specialization not found or invalid");
+            }
+
+            return OperationTypeMapper.ToDto(op, specialization.Name);
         }
 
         [HttpDelete("{id}")]
@@ -51,7 +66,8 @@ namespace DDDSample1.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(OperationTypeMapper.ToDto(op));
+                var specialization = await _Spe_service.GetByIdAsync(new SpecializationId(op.specialization.Value));
+                return Ok(OperationTypeMapper.ToDto(op, specialization.Name));
 
             }
             catch (BusinessRuleValidationException ex)
@@ -59,6 +75,6 @@ namespace DDDSample1.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
-        
+
     }
 }

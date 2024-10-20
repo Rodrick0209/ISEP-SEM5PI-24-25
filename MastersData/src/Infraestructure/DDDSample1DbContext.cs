@@ -78,6 +78,8 @@ namespace DDDSample1.Infrastructure
                 });
             });
             
+            base.OnModelCreating(modelBuilder);
+            
 
            
         }
