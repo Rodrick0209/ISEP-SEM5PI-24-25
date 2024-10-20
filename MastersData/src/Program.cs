@@ -185,6 +185,7 @@ void ConfigureMyServices(IServiceCollection services)
 
     services.AddTransient<IOperationTypeRepository, OperationTypeRepository>();
     services.AddTransient<OperationTypeService>();
+    services.AddTransient<SpecializationService>();
 
     services.AddTransient<IPatientRepository, PatientRepository>();
     services.AddTransient<PatientService>();
@@ -198,5 +199,5 @@ void ConfigureMyServices(IServiceCollection services)
     
     services.AddTransient<IPatientLoggerRepository, PatientLoggerRepository>();
 
-
+   
 }

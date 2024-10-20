@@ -57,6 +57,8 @@ public static class DataSeeder
     //SeedOperationType(context,new OperationType("1","New Operation Type",true,new Phase("1"),new Phase("2"),new Phase("3"),new Specialization("Ortopedia")));
     
 
+    SeedSpecializations(context,specialization);
+
 
     // Create new phases with required staff
     var phase1 = new Phase("1", 30, requiredStaffList1);
@@ -65,8 +67,6 @@ public static class DataSeeder
 
     // Create a new operation type with the phases and specialization
     var operationType = new OperationType("New Operation Type", true, phase1, phase2, phase3, specialization.Id);
-
-    Console.WriteLine(operationType.cleaningPhase.requiredStaff.Capacity);
 
     // Seed the operation type into the context
     SeedOperationType(context, operationType);
@@ -101,6 +101,14 @@ public static class DataSeeder
     if (!context.Patients.Any())
     {
       context.Patients.Add(patient);
+    }
+  }
+
+  private static void SeedSpecializations(DDDSample1DbContext context, Specialization specialization)
+  {
+    if (!context.Specializations.Any())
+    {
+      context.Specializations.Add(specialization);
     }
   }
 
