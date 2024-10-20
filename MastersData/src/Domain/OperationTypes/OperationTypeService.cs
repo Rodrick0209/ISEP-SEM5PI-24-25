@@ -73,8 +73,7 @@ namespace DDDSample1.Domain.OperationTypes
         {
             var list = await this._repo.GetAllAsync();
             
-            List<OperationTypeDto> listDto = list.ConvertAll<OperationTypeDto>(prod => 
-                new OperationTypeDto(prod.Id.AsGuid()));
+            List<OperationTypeDto> listDto = list.ConvertAll<OperationTypeDto>(prod => OperationTypeMapper.ToDto(prod));
 
             return listDto;
         }

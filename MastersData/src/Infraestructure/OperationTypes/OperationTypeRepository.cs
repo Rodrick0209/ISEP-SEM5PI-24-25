@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Infrastructure.Shared;
@@ -34,6 +35,15 @@ namespace DDDSample1.Infrastructure.OperationTypes
                 .FirstOrDefaultAsync(o => o.Id == id);
         }
 
+        public async Task<List<OperationType>> GetAllAsync()
+        {
+            return await this.context.OperationTypes
+                .Include(o => o.preparationPhase)
+                .Include(o => o.surgeryPhase)
+                .Include(o => o.cleaningPhase)
+                .ToListAsync();
+        }
+        
     }
 
 
