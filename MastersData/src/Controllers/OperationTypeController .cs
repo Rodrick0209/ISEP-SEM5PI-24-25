@@ -77,8 +77,6 @@ namespace DDDSample1.Controllers
             }
         }
 
-<<<<<<< HEAD
-=======
 
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetAll()
@@ -87,6 +85,5 @@ namespace DDDSample1.Controllers
             return Ok(list);
         }
         
->>>>>>> 734860ea6fe291b5b962c4688c6111ec3d1016e4
     }
 }
