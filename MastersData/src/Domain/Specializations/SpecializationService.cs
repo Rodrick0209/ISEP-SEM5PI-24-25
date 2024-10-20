@@ -28,5 +28,16 @@ namespace DDDSample1.Domain.Specializations
             return op;
 
         }
+
+        public async Task<Specialization> GetByNameAsync(string name)
+        {   
+    
+            var op = await this._repo.GetByNameAsync(name);
+            if (op == null)
+                return null;
+
+            return op;
+
+        }
     }
 }

@@ -14,12 +14,21 @@ namespace DDDSample1.Domain.OperationTypes
 
         private Phase() { }
 
-        public Phase(string id,int duration, List<RequiredStaff> requiredStaff)
+        public Phase(int duration, List<RequiredStaff> requiredStaff)
+        {
+            this.Id=new PhasesId(Guid.NewGuid());
+            this.duration = duration;
+            this.requiredStaff = requiredStaff;
+        }
+
+        public Phase(Guid id,int duration, List<RequiredStaff> requiredStaff)
         {
             this.Id=new PhasesId(id);
             this.duration = duration;
             this.requiredStaff = requiredStaff;
         }
+
+        
         
     }
 }

@@ -5,13 +5,13 @@ namespace DDDSample1.Domain.OperationTypes
 {
     public class PhaseDTO
     {
-        public string Id {get;set;}
+        public Guid Id {get;set;}
         public int Duration { get; set; }
         public List<RequiredStaffDTO> RequiredStaff { get; set; }
 
         public PhaseDTO() { }
 
-        public PhaseDTO(string id,int duration, List<RequiredStaffDTO> requiredStaff)
+        public PhaseDTO(Guid id,int duration, List<RequiredStaffDTO> requiredStaff)
         {
             this.Id = id;
             this.Duration = duration;

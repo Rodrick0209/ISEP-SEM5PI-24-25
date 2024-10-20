@@ -5,6 +5,8 @@ using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Specializations;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace DDDSample1.Controllers
 {
@@ -26,11 +28,32 @@ namespace DDDSample1.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult<OperationTypeDto>> Create(OperationTypeDto dto)
         {
+            
             var objDomain = OperationTypeMapper.toDomain(dto);
             var op = await _service.CreateAsync(objDomain);
+
+            return await GetById(op.Id.Value);
+            
+            /*
             var specialization = await _Spe_service.GetByIdAsync(new SpecializationId(dto.Specialization));
-            var op2 = OperationTypeMapper.ToDto(op, specialization.Name);
+            // Retrieve specialization names for required staff
+            var specializationIds = op.preparationPhase.requiredStaff
+                .Concat(op.surgeryPhase.requiredStaff)
+                .Concat(op.cleaningPhase.requiredStaff)
+                .Select(staff => staff.specialization)
+                .Distinct()
+                .ToList();
+
+            var specializationNames = new Dictionary<Guid, string>();
+            foreach (var specId in specializationIds)
+            {
+                var spec = await _Spe_service.GetByIdAsync(new SpecializationId(specId.Value));
+                specializationNames[specId.AsGuid()] = spec.Name;
+            }
+
+            var op2 = OperationTypeMapper.ToDto(op, specialization.Name, specializationNames);
             return CreatedAtAction(nameof(GetById), new { id = op2.Id }, op2);
+            */
 
         }
 
@@ -48,12 +71,24 @@ namespace DDDSample1.Controllers
             var sp = new SpecializationId(op.specialization.Value);
             var specialization = await _Spe_service.GetByIdAsync(sp);
 
-            if (specialization == null || string.IsNullOrEmpty(specialization.Name))
+            // Retrieve specialization names for required staff
+            var specializationIds = op.preparationPhase.requiredStaff
+                .Concat(op.surgeryPhase.requiredStaff)
+                .Concat(op.cleaningPhase.requiredStaff)
+                .Select(staff => staff.specialization)
+                .Distinct()
+                .ToList();
+
+            var specializationNames = new Dictionary<Guid, string>();
+            foreach (var specId in specializationIds)
             {
-                return BadRequest("Specialization not found or invalid");
+                var spec = await _Spe_service.GetByIdAsync(new SpecializationId(specId.Value));
+                specializationNames[specId.AsGuid()] = spec.Name;
             }
 
-            return OperationTypeMapper.ToDto(op, specialization.Name);
+            var opDto = OperationTypeMapper.ToDto(op, specialization.Name, specializationNames);
+            return Ok(opDto);
+
         }
 
         [HttpDelete("{id}")]
@@ -67,9 +102,7 @@ namespace DDDSample1.Controllers
                 {
                     return NotFound();
                 }
-                var specialization = await _Spe_service.GetByIdAsync(new SpecializationId(op.specialization.Value));
-                return Ok(OperationTypeMapper.ToDto(op, specialization.Name));
-
+                return await GetById(op.Id.Value);
             }
             catch (BusinessRuleValidationException ex)
             {
@@ -86,9 +119,11 @@ namespace DDDSample1.Controllers
 
             foreach (var op in list)
             {
-                var specialization = await _Spe_service.GetByIdAsync(new SpecializationId(op.specialization.Value));
-                var dto = OperationTypeMapper.ToDto(op, specialization.Name);
-                listDto.Add(dto);
+                var result = await GetById(op.Id.Value);
+                if (result.Result is OkObjectResult okResult && okResult.Value is OperationTypeDto dto)
+                {
+                    listDto.Add(dto);
+                }
             }
 
             return Ok(listDto);

@@ -10,6 +10,8 @@ namespace DDDSample1.Domain.Specializations
   {
     Task<Specialization> GetByIdAsync(SpecializationId id);
 
+    Task<Specialization> GetByNameAsync(string name);
+
   }
 
 }

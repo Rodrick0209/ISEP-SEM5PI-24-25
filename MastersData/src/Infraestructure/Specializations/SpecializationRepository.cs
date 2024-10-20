@@ -23,7 +23,10 @@ namespace DDDSample1.Infrastructure.Specializations
             return await this.context.Specializations.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        
+        public async Task<Specialization> GetByNameAsync(string name)
+        {
+            return await this.context.Specializations.FirstOrDefaultAsync(p => p.Name == name);
+        }
     }
 
 }
