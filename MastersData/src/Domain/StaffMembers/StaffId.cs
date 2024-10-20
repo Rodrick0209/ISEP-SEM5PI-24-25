@@ -2,7 +2,7 @@ using System;
 using DDDSample1.Domain.Shared;
 using Newtonsoft.Json;
 
-namespace Domain.StaffMembers
+namespace DDDSample1.Domain.StaffMembers
 {
     public class StaffId : EntityId
     {

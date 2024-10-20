@@ -6,7 +6,6 @@ using DDDSample1.Domain.Utils;
 using DDDSample1.Domain.Availability;
 using DDDSample1.Domain.Specializations;
 using Microsoft.Extensions.Logging.Configuration;
-using Domain.StaffMembers;
 
 namespace DDDSample1.Domain.StaffMembers
 {

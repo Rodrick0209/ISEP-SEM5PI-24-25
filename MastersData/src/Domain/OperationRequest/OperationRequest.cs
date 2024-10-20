@@ -2,7 +2,7 @@ using System;
 using DDDSample1.Domain.OperationType;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Shared;
-using Domain.StaffMembers;
+using DDDSample1.Domain.StaffMembers;
 
 
 

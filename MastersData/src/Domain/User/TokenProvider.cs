@@ -57,7 +57,7 @@ namespace DDDSample1.Infrastructure.Users
                     new Claim(JwtRegisteredClaimNames.Email, user.email.email),
                     new Claim("purpose", "password_reset") 
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(2), // Expira em 24 horas
+                Expires = DateTime.UtcNow.AddMinutes(2), 
                 SigningCredentials = credentials,
                 Issuer = configuration["Jwt:Issuer"],
                 Audience = configuration["Jwt:Audience"]

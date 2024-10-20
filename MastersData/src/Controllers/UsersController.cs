@@ -130,7 +130,6 @@ namespace DDDSample1.Controllers
         }
 
         // POST: api/user/patients
-        [Route("Register Patient")]
         [HttpPost("patients")]
         public async Task<ActionResult<ConfirmationRegisterPatientDto>> RegisterPatientAsync(RegisteringPatientDto dto){
             try
@@ -145,7 +144,6 @@ namespace DDDSample1.Controllers
         }
 
         // POST: api/user/patients/confirmation/{token}
-        [Route("Confirm Register Patient")]
         [HttpPost("patients/confirmation/{token}")]
         public async Task<ActionResult<PatientDto>> ConfirmRegisterPatientAsync(string token, ConfirmationRegisterPatientDto confirmationRegisterPatientDto){
             

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Infrastructure.Shared;
-using Domain.StaffMembers;
+using DDDSample1.Domain.StaffMembers;
 using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.EntityFrameworkCore;
 

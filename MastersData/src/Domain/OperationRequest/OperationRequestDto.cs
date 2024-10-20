@@ -1,8 +1,7 @@
 using System;
 using DDDSample1.Domain.OperationType;
 using DDDSample1.Domain.Patients;
-using Domain.StaffMembers;
-
+using DDDSample1.Domain.StaffMembers;
 
 
 

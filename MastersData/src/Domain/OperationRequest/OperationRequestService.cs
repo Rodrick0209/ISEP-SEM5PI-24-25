@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Infrastructure.Families;
 using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.StaffMembers;
 
 
 
@@ -15,33 +15,30 @@ namespace DDDSample1.Domain.OperationRequest
     private readonly IOperationRequestRepository _repo;
 
     
-    //private readonly IAppointmentRepository _appointmentRepository;
+    // private readonly IAppointmentRepository _appointmentRepository;
 
-   // private readonly IOperationTypeRepository  _operationTypeRepository;
+    private readonly IOperationTypeRepository  _operationTypeRepository;
 
-    //private readonly IStaffRepository _staffRepository; 
-/*
+    private readonly IStaffRepository _staffRepository; 
+
     public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository repo,IOperationTypeRepository operationTypeRepository, IStaffRepository staffRepository)
     {
         this._unitOfWork = unitOfWork;
         this._repo = repo;
         this._operationTypeRepository = operationTypeRepository;
         this._staffRepository = staffRepository;
-        this._appointmentRepository = appointmentRepository;
+       // this._appointmentRepository = appointmentRepository;
     }
 
-*/
-    public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository repo)
-    {
-        this._unitOfWork = unitOfWork;
-        this._repo = repo;
-    }
 
+   
 
     public async Task<OperationRequest> AddAsync(OperationRequest operationRequest)
     {
-        // await checkOperationTypeIdAsync(operationRequest.OperationTypeId);
-        // await checkDoctorIdAsync(operationRequest.DoctorId);
+         await checkOperationTypeIdAsync(operationRequest.operationTypeId);
+         await checkDoctorIdAsync(operationRequest.doctorId);
+        
+        
         // falta adicionar o operation request ao medical history
 
 
@@ -117,7 +114,7 @@ namespace DDDSample1.Domain.OperationRequest
 
 
 
- /*   public async Task checkOperationTypeIdAsync(OperationTypeId operationTypeId)
+    public async Task checkOperationTypeIdAsync(OperationTypeId operationTypeId)
     {
 
         var opType = await this._operationTypeRepository.GetByIdAsync(operationTypeId);
@@ -126,23 +123,26 @@ namespace DDDSample1.Domain.OperationRequest
             throw new BusinessRuleValidationException("Operation Type not found");
         }
     }
-*/
+
  
  
-    /*
-    public async Task checkDoctorIdAsync(StaffId doctorId)
+    
+    public async Task<Staff> checkDoctorIdAsync(StaffId doctorId)
     {
 
-        var doctor = await this._staffRepository.GetDoctorById(doctorId);
-        if(doctor == null)
+        var staff = await this._staffRepository.GetByIdAsync(doctorId);
+        
+        if(staff == null || !staff.Category.Equals("Doctor"))
         {
             throw new BusinessRuleValidationException("Doctor invalid");
         }
 
+        return staff;
+
 
     }
-
-    public async Task checkOperationRequestIsAppointementAsync(OperationRequestId id)
+/*
+    public async Task<Appointment> checkOperationRequestIsAppointementAsync(OperationRequestId id)
     {
         var appointment = await this._appointmentRepository.GetByOperationRequestId(id);
         if(appointment != null)
