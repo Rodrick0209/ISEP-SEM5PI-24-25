@@ -18,6 +18,16 @@ namespace DDDSample1.Infrastructure.StaffMembers
         {
             this.context = context;
         }
+
+        public async Task<Staff> GetByEmailAsync(string email)
+        {
+            return await this.context.StaffMembers.FirstOrDefaultAsync(p => p.Email.email == email);
+        }
+
+         public async Task<Staff> GetByPhoneNumberAsync(string phoneNumber)
+        {
+            return await this.context.StaffMembers.FirstOrDefaultAsync(p => p.PhoneNumber.phoneNumber == phoneNumber);
+        }
         
     }
 }
