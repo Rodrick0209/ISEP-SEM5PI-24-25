@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using DDDSample1.Domain.OperationRequest;
-using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.OperationTypes;
 
 
 
@@ -13,7 +13,8 @@ namespace DDDSample1.Infrastructure.OperationTypes
 
         public void Configure(EntityTypeBuilder<OperationType> builder)
         {
-            
+                builder.HasKey(b => b.Id);
+                
         }
 
 

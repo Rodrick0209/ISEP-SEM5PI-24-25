@@ -5,7 +5,7 @@ using DDDSample1.Application.Mappers;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Infrastructure.Specializations;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDSample1.Domain.OperationTypes
 {
     public class PhaseMapper
     {

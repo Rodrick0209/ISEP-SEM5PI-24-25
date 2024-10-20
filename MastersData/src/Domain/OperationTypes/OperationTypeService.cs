@@ -2,8 +2,10 @@ using System;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Infrastructure;
+using Microsoft.AspNetCore.JsonPatch.Internal;
+using System.Collections.Generic;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDSample1.Domain.OperationTypes
 {
     public class OperationTypeService : IOperationTypeService
     {
@@ -66,5 +68,17 @@ namespace DDDSample1.Domain.OperationType
             return op;
 
         }
+
+        public async Task<List<OperationTypeDto>> GetAllAsync()
+        {
+            var list = await this._repo.GetAllAsync();
+            
+            List<OperationTypeDto> listDto = list.ConvertAll<OperationTypeDto>(prod => 
+                new OperationTypeDto(prod.Id.AsGuid()));
+
+            return listDto;
+        }
+
+        
     }
 }

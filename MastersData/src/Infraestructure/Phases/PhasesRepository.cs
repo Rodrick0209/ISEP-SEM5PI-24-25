@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Infrastructure.Shared;
 using Microsoft.EntityFrameworkCore;
 

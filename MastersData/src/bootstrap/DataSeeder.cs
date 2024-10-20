@@ -4,7 +4,7 @@ using System.Linq;
 using DDDSample1.Domain.Availability;
 using DDDSample1.Domain.Families;
 using DDDSample1.Domain.OperationRequest;
-using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.StaffMembers;
@@ -64,7 +64,7 @@ public static class DataSeeder
     var phase3 = new Phase("3", 60, requiredStaffList);
 
     // Create a new operation type with the phases and specialization
-    var operationType = new OperationType("1", "New Operation Type", true, phase1, phase2, phase3, specialization.Id);
+    var operationType = new OperationType("New Operation Type", true, phase1, phase2, phase3, specialization.Id);
 
     Console.WriteLine(operationType.cleaningPhase.requiredStaff.Capacity);
 

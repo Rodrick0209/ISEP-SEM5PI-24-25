@@ -1,8 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace DDDSample1.Controllers
 {
@@ -58,6 +59,14 @@ namespace DDDSample1.Controllers
             {
                 return BadRequest(new { Message = ex.Message });
             }
+        }
+
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetAll()
+        {
+            var list = await _service.GetAllAsync();
+            return Ok(list);
         }
         
     }

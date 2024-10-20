@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
-using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.OperationTypes;
+using System.Collections.Generic;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDSample1.Domain.OperationTypes
 {
     public interface IOperationTypeService
     {
@@ -10,5 +11,7 @@ namespace DDDSample1.Domain.OperationType
         Task<OperationType> GetByIdAsync(OperationTypeId id);
 
         Task<OperationType> Deactivate(OperationTypeId id);
+
+        Task<List<OperationTypeDto>> GetAllAsync();
     }
 }

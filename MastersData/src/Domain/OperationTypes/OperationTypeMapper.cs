@@ -3,14 +3,14 @@ using DDDSample1.Application.Mappers;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Infrastructure.Specializations;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDSample1.Domain.OperationTypes
 {
     public class OperationTypeMapper
     {
         public static OperationTypeDto ToDto(OperationType operationType)
         {
             return new OperationTypeDto(
-                operationType.Id.AsString(), // Assuming Id is of type Guid
+                operationType.Id.AsGuid(), // Assuming Id is of type Guid
                 operationType.name,
                 operationType.status ? "active" : "inactive", // Mapping boolean status to string
                 PhaseMapper.ToPhaseDto(operationType.preparationPhase),
@@ -25,7 +25,6 @@ namespace DDDSample1.Domain.OperationType
         {
         
             return new OperationType(
-                operationTypeDto.Id, // Assuming you have a constructor that accepts an OperationTypeId
                 operationTypeDto.Name,
                 operationTypeDto.Status == "active", // Mapping string status back to boolean
                 PhaseMapper.ToPhaseEntity(operationTypeDto.PreparationPhase),
