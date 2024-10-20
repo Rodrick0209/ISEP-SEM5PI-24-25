@@ -3,7 +3,7 @@ using DDDSample1.Domain.Shared;
 using Newtonsoft.Json;
 
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDSample1.Domain.OperationTypes
 {
 
     public class PhasesId : EntityId

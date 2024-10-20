@@ -8,7 +8,7 @@ using DDDSample1.Domain.User;
 using DDDSample1.Infrastructure.Users;
 using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Infrastructure.OperationRequests;
-using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Infrastructure.OperationTypes;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Infrastructure.Patients;

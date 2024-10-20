@@ -1,6 +1,6 @@
 using DDDSample1.Domain.Shared;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDSample1.Domain.OperationTypes
 {
     public class CreatingOperationTypeDto
     {

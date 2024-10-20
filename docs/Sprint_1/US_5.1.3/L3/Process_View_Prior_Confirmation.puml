@@ -5,6 +5,7 @@ participant UserController as Controller <<Controller>>
 participant RegisteringPatientDTO as DTO <<DTO>>
 participant ConfirmationRegisterPatientDTO as ConfirmationDTO <<DTO>>
 participant UserService as Service <<Service>>
+participant PasswordHasher as Hasher <<Service>>
 participant EmailService as EmailService <<Service>>
 participant ConfirmationRegisterPatientTokenGenerator as TokenGenerator <<Service>>
 participant UserRepository as Repository <<Repository>>
@@ -20,10 +21,17 @@ activate Service
 Service -> Service : validateEmailIsUnique(email)
 activate Service
 return flag
+Service -> Service : validatePassword(password)
+activate Service
+return flag
 Service -> PatientRepository : findByNameEmailAndPhoneNumber(name, email, phoneNumber)
 activate PatientRepository
 return patient
-Service -> Domain** : createUser(email, password)
+Service -> Service : validatePatientHasNoUser(patient)
+activate Service
+return flag
+Service -> Hasher : hash(password)
+Service -> Domain** : createUser(email, passwordHash)
 Service -> TokenGenerator : generateConfirmationToken(user)
 Service -> Domain : setConfirmationToken(confirmationToken, confirmationTokenExpiration)
 Service -> Repository : save(user)

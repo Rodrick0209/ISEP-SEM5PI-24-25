@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.StaffMembers;
 
 
@@ -35,12 +36,16 @@ namespace DDDSample1.Domain.OperationRequest
 
     public async Task<OperationRequest> AddAsync(OperationRequest operationRequest)
     {
+         Console.WriteLine("ERRO 1");
          await checkOperationTypeIdAsync(operationRequest.operationTypeId);
+         
+        Console.WriteLine("ERRO 2");
          await checkDoctorIdAsync(operationRequest.doctorId);
         
         
         // falta adicionar o operation request ao medical history
 
+        Console.WriteLine("ERRO 3");
 
         await this._repo.AddAsync(operationRequest);
 
@@ -114,7 +119,7 @@ namespace DDDSample1.Domain.OperationRequest
 
 
 
-    public async Task checkOperationTypeIdAsync(OperationTypeId operationTypeId)
+    public async Task<OperationType> checkOperationTypeIdAsync(OperationTypeId operationTypeId)
     {
 
         var opType = await this._operationTypeRepository.GetByIdAsync(operationTypeId);
@@ -122,6 +127,8 @@ namespace DDDSample1.Domain.OperationRequest
         {
             throw new BusinessRuleValidationException("Operation Type not found");
         }
+
+        return opType;
     }
 
  

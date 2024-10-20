@@ -1,11 +1,12 @@
 using DDDSample1.Application.Dtos;
 using DDDSample1.Domain.Specializations;
+using System;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDSample1.Domain.OperationTypes
 {
     public class OperationTypeDto
     {
-        public string Id { get; set; } // Changed to string
+        public Guid Id { get; set; } // Changed to string
         public string Name { get; set; }
         public string Status { get; set; } // Changed to string (could be "active"/"inactive")
         public PhaseDTO PreparationPhase { get; set; }
@@ -14,7 +15,7 @@ namespace DDDSample1.Domain.OperationType
 
         public string Specialization { get; set; }
 
-        public OperationTypeDto(string operationTypeId, string name, string status, PhaseDTO preparationPhase, PhaseDTO surgeryPhase, PhaseDTO cleaningPhase, string specialization)
+        public OperationTypeDto(Guid operationTypeId, string name, string status, PhaseDTO preparationPhase, PhaseDTO surgeryPhase, PhaseDTO cleaningPhase, string specialization)
         {
             Id = operationTypeId;
             Name = name;
@@ -24,6 +25,12 @@ namespace DDDSample1.Domain.OperationType
             CleaningPhase = cleaningPhase;
             Specialization = specialization;
         }
+
+        public OperationTypeDto (Guid operationTypeId)
+        {
+            Id = operationTypeId;
+        }
+
     }
 
 }

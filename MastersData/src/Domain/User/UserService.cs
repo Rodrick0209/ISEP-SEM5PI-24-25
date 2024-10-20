@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using MimeKit.Cryptography;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Utils;
+using System.Linq;
 
 namespace DDDSample1.Domain.User
 {
@@ -30,12 +31,13 @@ namespace DDDSample1.Domain.User
         private readonly IEmailSender _emailSender;
 
 
-        public UserService(IUnitOfWork unitOfWork, IUserRepository repo, IConfiguration configuration, IEmailSender emailSender)
+        public UserService(IUnitOfWork unitOfWork, IUserRepository repo, IConfiguration configuration, IEmailSender emailSender, IPatientRepository patientRepo)
         {
             _unitOfWork = unitOfWork;
             _repo = repo;
             _configuration = configuration;
             _emailSender = emailSender;
+            _patientRepo = patientRepo;
         }
 
 
@@ -178,6 +180,8 @@ namespace DDDSample1.Domain.User
         {
             ValidatesEmailIsUnique(dto.Email);
 
+            ValidatePassword(dto.Password);
+
             var patient = await _patientRepo.GetByNameEmailPhoneAsync(dto.Name, dto.Email, dto.PhoneNumber);
 
             if (patient == null)
@@ -187,12 +191,17 @@ namespace DDDSample1.Domain.User
 
             ValidatesPatientIsRegistered(patient);
 
-            var user = new User(dto.Email, "patient", dto.Password);
+            PasswordHasher passwordHasher = new PasswordHasher();
+            string password = passwordHasher.HashPassword(dto.Password);
+
+            var user = new User(dto.Email, "patient", password);
+
+            await _repo.AddAsync(user);
 
             ConfirmationRegisterPatientDto confirmationRegisterPatientDto = await GenerateConfirmationRegisterPatientToken(user);
 
             SendEmailWithUrlConfirmationRegisterPatient(dto.Email, confirmationRegisterPatientDto.Token);
-            
+
             return confirmationRegisterPatientDto;
         }
 
@@ -223,7 +232,7 @@ namespace DDDSample1.Domain.User
 
         private void ValidatesEmailIsUnique(string email)
         {
-            if (_repo.GetByEmailAsync(email) != null)
+            if (_repo.CheckEmail(email).Result)
             {
                 throw new BusinessRuleValidationException("Email already exists");
             }
@@ -262,7 +271,29 @@ namespace DDDSample1.Domain.User
             string callbackUrl = $"http://localhost:9999/resetpassword?code={token}&Email={email}";
             await _emailSender.SendEmailAsync($"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>", email, "ResetPassword");
         }
+
+        private void ValidatePassword(string password)
+        {
+            if (password.Length < 10)
+            {
+                throw new BusinessRuleValidationException("Password must have at least 10 characters");
+            }
+            if (!password.Any(char.IsUpper))
+            {
+                throw new BusinessRuleValidationException("Password must contain at least one uppercase letter");
+            }
+
+            if (!password.Any(char.IsDigit))
+            {
+                throw new BusinessRuleValidationException("Password must contain at least one number");
+            }
+
+            if (!password.Any(ch => !char.IsLetterOrDigit(ch)))
+            {
+                throw new BusinessRuleValidationException("Password must contain at least one special character");
+            }
+        }
+
+
     }
-
-
 }

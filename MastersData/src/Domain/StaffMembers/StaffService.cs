@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Infrastructure.Families;
-using DDDSample1.Domain.OperationType;
+using DDDSample1.Domain.OperationTypes;
 
 
 

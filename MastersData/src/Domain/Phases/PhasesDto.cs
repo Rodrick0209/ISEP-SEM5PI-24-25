@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDSample1.Domain.OperationTypes
 {
     public class PhaseDTO
     {

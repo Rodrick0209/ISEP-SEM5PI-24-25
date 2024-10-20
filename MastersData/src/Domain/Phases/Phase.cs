@@ -4,7 +4,7 @@ using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.StaffMembers;
 
-namespace DDDSample1.Domain.OperationType
+namespace DDDSample1.Domain.OperationTypes
 {
     public class Phase : Entity<PhasesId>
     {
