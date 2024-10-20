@@ -26,11 +26,7 @@ namespace DDDSample1.Domain.OperationTypes
             Specialization = specialization;
         }
 
-        public OperationTypeDto (Guid operationTypeId)
-        {
-            Id = operationTypeId;
-        }
-
+        
     }
 
 }

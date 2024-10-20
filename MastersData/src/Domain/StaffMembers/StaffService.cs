@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Infrastructure.Families;
 using DDDSample1.Domain.OperationTypes;
+using DDDSample1.Domain.Utils;
+using DDDSample1.Domain.Availability;
+using DDDSample1.Domain.Specializations;
+using System;
 
 
 
@@ -23,127 +27,72 @@ namespace DDDSample1.Domain.StaffMembers
             
         }
 
-// */
-    
+
+      /*  public async Task<StaffDto> AddAync(Staff staff)
+        {
 
 
-//     public async Task<OperationRequest> AddAsync(OperationRequest operationRequest)
-//     {
-//         // await checkOperationTypeIdAsync(operationRequest.OperationTypeId);
-//         // await checkDoctorIdAsync(operationRequest.DoctorId);
-//         // falta adicionar o operation request ao medical history
+            bool emailIsUnique = await validateEmailIsUnique(staff.Email.email);
+            bool phoneNumberIsUnique = await validatePhoneNumberIsUnique(staff.PhoneNumber.phoneNumber);
+            if (!emailIsUnique || !phoneNumberIsUnique)
+            {
+                throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
+            }
+
+            LicenseNumber licenseNumber = new LicenseNumber(staff.LicenseNumber.licenseNumber);
+            Category category = staff.Category;
+            FullName fullName = new FullName(staff.FullName.fullName);
+            Email email = new Email(staff.Email.email);
+            DateTime recruitmentDate = DateTime.Now; 
+            PhoneNumber phoneNumber = new PhoneNumber(staff.PhoneNumber.phoneNumber);
+
+           
+            StaffId staffId = staffIdGeneratorService.generateStaffId(category, recruitmentDate);
+           
+
+            
+            
+            
 
 
-//         await this._repo.AddAsync(operationRequest);
+            var staffMember = new Staff(
+                fullName,
+                
+                gender,
+                email,
+                phoneNumber,
+                emergencyContact,
+                medicalRecordNumber
+            );
 
-//         await this._unitOfWork.CommitAsync();
+            await _patientRepository.AddAsync(patient);
+            await _unitOfWork.CommitAsync();
 
-//         return operationRequest;
+            return PatientMapper.ToDto(patient);
+        }*/
 
-//     }
+         private async Task<bool> validateEmailIsUnique(string email)
+        {
+            var existingStaff = await _staffRepository.GetByEmailAsync(email);
+            if (existingStaff != null)
+            {
+                return false;
+            }
+            return true;
+        }
 
-//     public async Task<OperationRequest> UpdateAsync(OperationRequestDto dto)
-//     {
-//       //  await checkOperationTypeIdAsync(dto.OperationTypeId);
-//       //  await checkDoctorIdAsync(dto.DoctorId);
-    
-//         var op = await this._repo.GetByIdAsync(new OperationRequestId(dto.Id));
-//         if (op == null)
-//             return null;
-
-//             op.ChangeOperationTypeId(dto.OperationTypeId);
-//             op.ChangeDoctorId(dto.DoctorId);
-//             op.ChangePriority(dto.Priority);
-//             op.ChangeDeadLineDate(dto.DeadLineDate);
-//             op.ChangePatientId(dto.PatientId);
-
-//             await this._unitOfWork.CommitAsync();
-
-//             return op;
-
-//     }
-
-
-//     public async Task<OperationRequest> DeleteAsync(OperationRequestId id)
-//     {
-//         //var appointment = checkOperationRequestIsAppointementAsync
-//         // if (appointment == null)
-//         //     throw new BusinessRuleValidationException("Operation Request is an appointment");
-
-//         var op = await this._repo.GetByIdAsync(id);
-
-//         if (op == null)
-//             return null;
-
-//         this._repo.Remove(op);
-//         await this._unitOfWork.CommitAsync();
-
-//         return op;    
-
-//     }
-
-
-
-    
-
-//     public async Task<OperationRequest> GetByIdAsync(OperationRequestId id)
-//     {
-        
-//         var op = await this._repo.GetByIdAsync(id);
-//         if (op == null)
-//             return null;
-
-//         return op;
-
-//     }
-
-//     public async Task<List<OperationRequest>> GetOperationRequestsWithFilters(OperationRequestFilterDto filters, string doctorId)
-//     {
-//             return await this._repo.GetOperationRequestsWithFilters(filters, doctorId);
-//     }
+        private async Task<bool> validatePhoneNumberIsUnique(string phoneNumber)
+        {
+            var existingStaff = await _staffRepository.GetByPhoneNumberAsync(phoneNumber);
+            if (existingStaff != null)
+            {
+                return false;
+            }
+            return true;
+        }
 
 
 
 
-
-//  /*   public async Task checkOperationTypeIdAsync(OperationTypeId operationTypeId)
-//     {
-
-//         var opType = await this._operationTypeRepository.GetByIdAsync(operationTypeId);
-//         if (opType == null)
-//         {
-//             throw new BusinessRuleValidationException("Operation Type not found");
-//         }
-//     }
-// */
- 
- 
-//     /*
-//     public async Task checkDoctorIdAsync(StaffId doctorId)
-//     {
-
-//         var doctor = await this._staffRepository.GetDoctorById(doctorId);
-//         if(doctor == null)
-//         {
-//             throw new BusinessRuleValidationException("Doctor invalid");
-//         }
-
-
-//     }
-
-//     public async Task checkOperationRequestIsAppointementAsync(OperationRequestId id)
-//     {
-//         var appointment = await this._appointmentRepository.GetByOperationRequestId(id);
-//         if(appointment != null)
-//            return appointment;           
-//     }
-
-
-
-
-//     */
-
-
-// }
 }
 }

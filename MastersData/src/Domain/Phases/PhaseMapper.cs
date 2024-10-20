@@ -14,7 +14,7 @@ namespace DDDSample1.Domain.OperationTypes
         {
             
             return new PhaseDTO(
-                phase.Id.Value,
+                phase.Id.AsGuid(),
                 phase.duration,
                 phase.requiredStaff?.Select(ToRequiredStaffDto).ToList() ?? new List<RequiredStaffDTO>()
             );

@@ -20,7 +20,7 @@ namespace DDDSample1.Domain.StaffMembers
             };
         }
 
-        public StaffId GenerateStaffId(Category category, DateTime recruitmentDate)
+        public StaffId generateStaffId(Category category, DateTime recruitmentDate)
         {
             // Determina o prefixo com base na categoria
             string prefix = category switch

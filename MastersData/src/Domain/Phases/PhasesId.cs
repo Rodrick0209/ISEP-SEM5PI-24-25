@@ -9,20 +9,35 @@ namespace DDDSample1.Domain.OperationTypes
     public class PhasesId : EntityId
     {
 
-        public PhasesId(String value):base(value)
+        [JsonConstructor]
+        public PhasesId(Guid value) : base(value)
+        {
+
+        }
+
+
+        public PhasesId(String value) : base(value)
         {
 
         }
 
         override
-        protected  Object createFromString(String text){
-            return text;
+        protected Object createFromString(String text)
+        {
+           return new Guid(text);
         }
+        
         override
-        public String AsString(){
-            return (String) base.Value;
+        public string AsString()
+        {
+            Guid obj = (Guid) base.ObjValue;
+            return obj.ToString();
         }
 
+        public Guid AsGuid()
+        {
+            return (Guid)base.ObjValue;
+        }
     }
 
 

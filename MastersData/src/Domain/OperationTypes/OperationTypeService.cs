@@ -69,13 +69,10 @@ namespace DDDSample1.Domain.OperationTypes
 
         }
 
-        public async Task<List<OperationTypeDto>> GetAllAsync()
+        public async Task<List<OperationType>> GetAllAsync()
         {
-            var list = await this._repo.GetAllAsync();
-            
-            List<OperationTypeDto> listDto = list.ConvertAll<OperationTypeDto>(prod => OperationTypeMapper.ToDto(prod));
 
-            return listDto;
+            return await this._repo.GetAllAsync();
         }
 
         
