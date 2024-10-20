@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Utils;
-using DDDSample1.Domain.Availability;
+using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Domain.Specializations;
 using Microsoft.Extensions.Logging.Configuration;
 

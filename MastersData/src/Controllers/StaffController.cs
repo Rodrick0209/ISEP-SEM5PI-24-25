@@ -38,14 +38,5 @@
 //             return CreatedAtAction(nameof(GetGetById), new { id = op2.Id }, op2);
 //         }
 
-//         public async Task<ActionResult<StaffDto>> GetGetById(String id)
-//         {
-//             var op = await _service.GetByIdAsync();
-//             if (op == null)
-//             {
-//                 return NotFound();
-//             }
-//             return StaffMapper.toDTO(op);
-//         }
 //     }
 // }

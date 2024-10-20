@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DDDSample1.Domain.Availability;
+using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Domain.Families;
 using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Domain.OperationTypes;

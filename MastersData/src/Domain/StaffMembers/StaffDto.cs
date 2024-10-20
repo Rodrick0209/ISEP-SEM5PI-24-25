@@ -1,5 +1,5 @@
 using System;
-using DDDSample1.Domain.Availability;
+using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Domain.Specializations;
 
 

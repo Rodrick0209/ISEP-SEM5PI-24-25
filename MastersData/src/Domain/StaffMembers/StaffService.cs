@@ -4,7 +4,7 @@ using DDDSample1.Domain.Shared;
 using DDDSample1.Infrastructure.Families;
 using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Utils;
-using DDDSample1.Domain.Availability;
+using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Domain.Specializations;
 using System;
 
@@ -14,64 +14,83 @@ namespace DDDSample1.Domain.StaffMembers
 {
     public class StaffService
     {
-    private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-    private readonly IStaffRepository _staffRepository;
+        private readonly IStaffRepository _staffRepository;
+        private readonly IAvailabilitySlotsRepository _availabilitySlotsRepository;
 
-    
+        private readonly ISpecializationRepository _specializationRepository;
 
-        public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository)
+
+
+
+
+        public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository, IAvailabilitySlotsRepository availabilitySlotsRepository, ISpecializationRepository specializationRepository)
         {
             _unitOfWork = unitOfWork;
             _staffRepository = staffRepository;
-            
+            _availabilitySlotsRepository = availabilitySlotsRepository;
+            _specializationRepository = specializationRepository;
+
+
         }
 
 
-      /*  public async Task<StaffDto> AddAync(Staff staff)
+        // public async Task<StaffDto> AddAync(Staff staff)
+        // {
+
+
+        //     bool emailIsUnique = await validateEmailIsUnique(staff.Email.email);
+        //     bool phoneNumberIsUnique = await validatePhoneNumberIsUnique(staff.PhoneNumber.phoneNumber);
+        //     if (!emailIsUnique || !phoneNumberIsUnique)
+        //     {
+        //         throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
+        //     }
+
+        //     await checkOSpecializationIdAsync(staff.SpecializationId);
+
+
+        //     await checkAvailabilitySlotIdAsync(staff.AvailabilitySlotsId);
+
+        //     DateTime recruitmentDate = DateTime.Now;
+
+        //     StaffIdGeneratorService staffIdGeneratorService = new StaffIdGeneratorService();
+        //     staff.= staffIdGeneratorService.generateStaffId(staff.Category, recruitmentDate);
+
+
+        //     await _staffRepository.AddAsync(staff);
+        //     await _unitOfWork.CommitAsync();
+
+        //     return StaffMapper.toDTO(staff);
+        // }
+
+       
+
+        public async Task<Specialization> checkOSpecializationIdAsync(SpecializationId specializationId)
         {
 
-
-            bool emailIsUnique = await validateEmailIsUnique(staff.Email.email);
-            bool phoneNumberIsUnique = await validatePhoneNumberIsUnique(staff.PhoneNumber.phoneNumber);
-            if (!emailIsUnique || !phoneNumberIsUnique)
+            var spec = await this._specializationRepository.GetByIdAsync(specializationId);
+            if (spec == null)
             {
-                throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
+                throw new BusinessRuleValidationException("Specialization not found");
             }
 
-            LicenseNumber licenseNumber = new LicenseNumber(staff.LicenseNumber.licenseNumber);
-            Category category = staff.Category;
-            FullName fullName = new FullName(staff.FullName.fullName);
-            Email email = new Email(staff.Email.email);
-            DateTime recruitmentDate = DateTime.Now; 
-            PhoneNumber phoneNumber = new PhoneNumber(staff.PhoneNumber.phoneNumber);
+            return spec;
+        }
 
-           
-            StaffId staffId = staffIdGeneratorService.generateStaffId(category, recruitmentDate);
-           
+        public async Task<AvailabilitySlot> checkAvailabilitySlotIdAsync(AvailabilitySlotsId availabilitySlotsId)
+        {
 
-            
-            
-            
+            var aSlot = await this._availabilitySlotsRepository.GetByIdAsync(availabilitySlotsId);
+            if (aSlot == null)
+            {
+                throw new BusinessRuleValidationException("Availability Slot not found");
+            }
 
+            return aSlot;
+        }
 
-            var staffMember = new Staff(
-                fullName,
-                
-                gender,
-                email,
-                phoneNumber,
-                emergencyContact,
-                medicalRecordNumber
-            );
-
-            await _patientRepository.AddAsync(patient);
-            await _unitOfWork.CommitAsync();
-
-            return PatientMapper.ToDto(patient);
-        }*/
-
-         private async Task<bool> validateEmailIsUnique(string email)
+        private async Task<bool> validateEmailIsUnique(string email)
         {
             var existingStaff = await _staffRepository.GetByEmailAsync(email);
             if (existingStaff != null)
@@ -94,5 +113,5 @@ namespace DDDSample1.Domain.StaffMembers
 
 
 
-}
+    }
 }
