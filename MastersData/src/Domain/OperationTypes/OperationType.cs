@@ -22,20 +22,10 @@ namespace DDDSample1.Domain.OperationTypes
         private OperationType() { }
 
 
-        public OperationType(string id,string name, bool status, Phase preparationPhase, Phase surgeryPhase, Phase cleaningPhase, SpecializationId specialization)
-        {
-            this.Id = new OperationTypeId(new Guid());
-            this.name = name;
-            this.status = status;
-            this.preparationPhase = preparationPhase;
-            this.surgeryPhase = surgeryPhase;
-            this.cleaningPhase = cleaningPhase;
-            this.specialization= specialization;
-        }
 
         public OperationType(string name, bool status, Phase preparationPhase, Phase surgeryPhase, Phase cleaningPhase, SpecializationId specialization)
         {
-            this.Id = new OperationTypeId(new Guid());
+            this.Id = new OperationTypeId(Guid.NewGuid());
             this.name = name;
             this.status = status;
             this.preparationPhase = preparationPhase;

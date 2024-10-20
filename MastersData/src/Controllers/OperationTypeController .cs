@@ -44,10 +44,10 @@ namespace DDDSample1.Controllers
                 return NotFound();
             }
 
-            
+
             var sp = new SpecializationId(op.specialization.Value);
             var specialization = await _Spe_service.GetByIdAsync(sp);
-            
+
             if (specialization == null || string.IsNullOrEmpty(specialization.Name))
             {
                 return BadRequest("Specialization not found or invalid");
@@ -82,8 +82,17 @@ namespace DDDSample1.Controllers
         public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetAll()
         {
             var list = await _service.GetAllAsync();
-            return Ok(list);
+            var listDto = new List<OperationTypeDto>();
+
+            foreach (var op in list)
+            {
+                var specialization = await _Spe_service.GetByIdAsync(new SpecializationId(op.specialization.Value));
+                var dto = OperationTypeMapper.ToDto(op, specialization.Name);
+                listDto.Add(dto);
+            }
+
+            return Ok(listDto);
         }
-        
+
     }
 }
