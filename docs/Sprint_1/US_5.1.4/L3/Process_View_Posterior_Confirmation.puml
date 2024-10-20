@@ -1,0 +1,41 @@
+```plantuml
+@startuml Process_View_Posterior_Confirmation
+participant UserRoute as Route <<Route>>
+participant UserController as Controller <<Controller>>
+participant ConfirmationEditPatientSensitiveDataDTO as ConfirmationDTO <<DTO>>
+participant UserService as Service <<Service>>
+participant UserRepository as Repository <<Repository>>
+participant PatientRepository as PatientRepository <<Repository>> 
+participant User as Domain <<Domain>>
+participant Patient as Patient <<Domain>>
+participant PatientMapper as Mapper <<Mapper>>
+[o-> Route : PATCH (/api/user/patients/{logToken}/edit/confirmation/{token})
+activate Route
+Route -> Controller : PATCH
+activate Controller
+Controller -> ConfirmationDTO** : recieves request body info
+Controller -> Service : confirmEditPatientSensitiveDataRegistration(confirmationRegisterPatientDTO)
+activate Service
+Service -> Repository : findUserByEmail(email)
+activate Repository
+return user
+Service -> Service : validateUserIsLogged(logToken, user)
+activate Service
+return flag
+Service -> PatientRepository : findPatientByEmail(email)
+activate PatientRepository
+return patient
+Service -> Domain : confirm()
+Service -> Patient : associateUser(user)
+Service -> Repository : save(user)
+Service -> PatientRepository : save(patient)
+Service -> Mapper : toDTO(patient)
+activate Mapper
+return patientDTO
+Service --> Controller : patientDTO
+deactivate Service
+Controller --> Route : response
+deactivate Controller
+<-- Route : response
+@enduml
+```

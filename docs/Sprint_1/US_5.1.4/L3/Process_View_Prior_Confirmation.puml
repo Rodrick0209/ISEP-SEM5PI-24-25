@@ -1,0 +1,38 @@
+```plantuml
+@startuml Process_View_Prior_Confirmation
+participant UserRoute as Route <<Route>>
+participant UserController as Controller <<Controller>>
+participant EditingPatientDTO as DTO <<DTO>>
+participant ConfirmationEditingPatientDTO as ConfirmationDTO <<DTO>>
+participant UserService as Service <<Service>>
+participant EmailService as EmailService <<Service>>
+participant ConfirmationEditingPatientTokenGenerator as TokenGenerator <<Service>>
+participant UserRepository as Repository <<Repository>>
+participant PatientRepository as PatientRepository <<Repository>>
+participant User as Domain <<Domain>>
+[o-> Route: PATCH (/api/users/patients/{logToken}/edit)
+activate Route
+Route -> Controller : PATCH 
+activate Controller
+Controller -> DTO** : recieves request body info
+Controller -> Service : editPatient(EditingPatientDTO)
+activate Service
+Service -> Repository : findUserByEmail(email)
+activate Repository
+return user
+Service -> Service : validateUserIsLogged(logToken, user)
+activate Service
+return flag
+Service -> Domain : changeName(name)
+alt information contains sensitive data
+Service -> TokenGenerator : generateToken(user)
+activate TokenGenerator
+return token
+Service -> EmailService : sendEmail(email, token)
+end
+Service -> ConfirmationDTO** : createConfirmationEditPatientDTO(updatedUser, token, email, emailToEdit, phoneNumberToEdit)
+return confirmationEditPatientDTO
+return confirmationEditPatientDTO
+<-- Route : response
+@enduml
+```

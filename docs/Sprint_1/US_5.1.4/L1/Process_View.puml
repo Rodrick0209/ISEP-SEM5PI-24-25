@@ -1,0 +1,22 @@
+
+```plantuml
+@startuml Process_View
+actor Patient
+participant System <<System (C4)>>
+
+activate Patient
+
+Patient -> System: Make a request to edit user information
+activate System
+System --> Patient : Request for the necessary information to edit
+Patient -> System: Provides the necessary information
+alt information contains sensitive data
+System --> Patient : Sends an email confirmation
+Patient -> System: Clicks on the confirmation link
+end
+System --> Patient : Success/Error message
+deactivate System
+deactivate Patient
+
+@enduml
+```
