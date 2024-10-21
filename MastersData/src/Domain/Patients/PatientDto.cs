@@ -15,10 +15,9 @@ namespace DDDSample1.Domain.Patients
         public string PhoneNumber { get; set; }
         public string? MedicalConditions { get; set; }
         public string EmergencyContact { get; set; }
-        public MedicalRecordDto MedicalRecord {get; set;}
         public string MedicalRecordNumber { get; set; }
             
-        public PatientDto(Guid id, string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string medicalRecordNumber, string emergencyContact, MedicalRecordDto medicalRecord, string? medicalConditions = null)
+        public PatientDto(Guid id, string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string medicalRecordNumber, string emergencyContact, string? medicalConditions = null)
         {
             this.Id = id;
             this.FullName = fullName;
@@ -28,7 +27,6 @@ namespace DDDSample1.Domain.Patients
             this.PhoneNumber = phoneNumber;
             this.EmergencyContact = emergencyContact;
             this.MedicalRecordNumber = medicalRecordNumber;
-            this.MedicalRecord = medicalRecord;
             this.MedicalConditions = medicalConditions;
         }
     }

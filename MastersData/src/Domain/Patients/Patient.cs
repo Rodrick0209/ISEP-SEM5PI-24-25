@@ -17,7 +17,6 @@ namespace DDDSample1.Domain.Patients
         public PhoneNumber PhoneNumber { get; private set; }
         public Gender Gender { get; private set; }
         public EmergencyContact EmergencyContact { get; private set; }
-        public MedicalRecord MedicalRecord { get; private set; }
         public MedicalRecordNumber MedicalRecordNumber { get; private set; }
         public MedicalConditions? MedicalConditions { get; private set; }
         public User.User? User { get; private set; }
@@ -31,7 +30,6 @@ namespace DDDSample1.Domain.Patients
             this.PhoneNumber = default!;
             this.MedicalRecordNumber = default!;
             this.EmergencyContact = default!;
-            this.MedicalRecord = default!;
         }
 
         public Patient(string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string emergencyContact, string medicalRecordNumber)
@@ -43,7 +41,6 @@ namespace DDDSample1.Domain.Patients
             this.Email = new Email(email);
             this.PhoneNumber = new PhoneNumber(phoneNumber);
             this.EmergencyContact = new EmergencyContact(emergencyContact);
-            this.MedicalRecord = new MedicalRecord(new List<string>());
             this.MedicalRecordNumber = new MedicalRecordNumber(medicalRecordNumber);
         }
         
@@ -65,11 +62,6 @@ namespace DDDSample1.Domain.Patients
         public void ChangeMedicalConditions(string medicalConditions)
         {
             this.MedicalConditions = new MedicalConditions(medicalConditions);
-        }
-
-        public void ChangeMedicalRecord(List<string> medicalRecord)
-        {
-            this.MedicalRecord._medicalRecord = medicalRecord;
         }
 
         public void AssociateUser(User.User user)

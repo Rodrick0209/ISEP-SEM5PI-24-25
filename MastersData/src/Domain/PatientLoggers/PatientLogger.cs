@@ -36,7 +36,7 @@ namespace DDDSample1.Domain.PatientLoggers
             TypeOfChange = default!;
         }
 
-        public PatientLogger(PatientId patientId, string fullName, string dateOfBirth, string gender, string email, string phoneNumber,  string emergencyContact, string medicalRecordNumber, List<string> medicalRecord, string? medicalConditions, string change, DateTime modificiationDate)
+        public PatientLogger(PatientId patientId, string fullName, string dateOfBirth, string gender, string email, string phoneNumber,  string emergencyContact, string medicalRecordNumber, string? medicalConditions, string change, DateTime modificiationDate)
         {
             this.Id = new PatientLoggerId(Guid.NewGuid());
             this.PatientId = patientId;
@@ -48,7 +48,6 @@ namespace DDDSample1.Domain.PatientLoggers
             this.EmergencyContact = emergencyContact;
             this.MedicalRecordNumber = medicalRecordNumber;
             this.MedicalConditions = medicalConditions;
-            this.MedicalRecord = medicalRecord;
             this.TypeOfChange = change;
             this.ModificationDate = modificiationDate;
         }

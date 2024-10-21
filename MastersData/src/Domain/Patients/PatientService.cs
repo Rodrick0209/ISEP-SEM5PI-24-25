@@ -110,11 +110,6 @@ namespace DDDSample1.Domain.Patients
                 patient.ChangeMedicalConditions(dto.MedicalConditions);
             }
 
-            if (dto.MedicalRecord != null && dto.MedicalRecord.Count > 0)
-            {
-                patient.ChangeMedicalRecord(dto.MedicalRecord);
-            }
-
             LogChanges(patient, "update");
 
             await _unitOfWork.CommitAsync();
@@ -222,7 +217,6 @@ namespace DDDSample1.Domain.Patients
                 patient.PhoneNumber.phoneNumber,
                 patient.EmergencyContact.emergencyContact,
                 patient.MedicalRecordNumber._medicalRecordNumber,
-                patient.MedicalRecord._medicalRecord,
                 patient.MedicalConditions?.medicalConditions ?? null,
                 typeOfChange,
                 DateTime.UtcNow
