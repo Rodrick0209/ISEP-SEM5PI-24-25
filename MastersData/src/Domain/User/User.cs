@@ -31,16 +31,6 @@ namespace DDDSample1.Domain.User
         {
         }
 
-        public User (UserId id, string email, string role, string password)
-        {
-            this.Id = id;
-            this.email = new Email(email);
-            this.role = new Role(role);
-            this.password = new Password(password);
-            this.loginFailCounter = new LoginFailCounter(0);
-            this.accountConfirmed = false;
-        }
-
         public User (string email, string role)
         {
             this.Id = new UserId(Guid.NewGuid());

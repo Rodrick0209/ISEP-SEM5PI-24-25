@@ -13,7 +13,6 @@ namespace DDDSample1.Domain.Patients
                 patient.PhoneNumber.phoneNumber,
                 patient.MedicalRecordNumber._medicalRecordNumber,
                 patient.EmergencyContact.emergencyContact,
-                new MedicalRecordDto(patient.MedicalRecord.Id.AsGuid(), patient.MedicalRecord._medicalRecord),
                 patient.MedicalConditions?.medicalConditions ?? null
             );
         }
