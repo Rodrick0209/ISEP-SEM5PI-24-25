@@ -181,7 +181,12 @@ namespace DDDSample1.Domain.User
         {
             ValidatesEmailIsUnique(dto.Email);
 
-            ValidatePassword(dto.Password);
+            bool passwordSatiesfied = PasswordPolicy.IsSatisfiedBy(dto.Password);
+
+            if (!passwordSatiesfied)
+            {
+                throw new BusinessRuleValidationException("Password does not meet the requirements");
+            }
 
             var patient = await _patientRepo.GetByNameEmailPhoneAsync(dto.Name, dto.Email, dto.PhoneNumber);
 
@@ -242,8 +247,6 @@ namespace DDDSample1.Domain.User
                 throw new BusinessRuleValidationException("User not found");
             }
 
-            // ValidatesUserIsLoggedIn(dto.LogToken, user);
-
             ValidatePatientNewEmailIsUnique(dto.EmailToEdit);
 
             var patient = await _patientRepo.GetByEmailAsync(dto.Email);
@@ -290,8 +293,20 @@ namespace DDDSample1.Domain.User
             Patient patient = await _patientRepo.GetByEmailAsync(dto.Email);
 
             if(patient == null){
-                throw new BusinessRuleValidationException(dto.Email);
+                throw new BusinessRuleValidationException("Patient not found");
             }
+
+            if(!string.IsNullOrWhiteSpace(dto.EmailToEdit)){
+                patient.ChangeEmail(dto.EmailToEdit);
+            }
+
+            if(!string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit)){
+                patient.ChangePhoneNumber(dto.PhoneNumberToEdit);
+            }
+
+            user.ClearConfirmationEditPatientToken();
+
+            await _unitOfWork.CommitAsync();
 
             return PatientMapper.ToDto(patient);
         }
@@ -336,33 +351,6 @@ namespace DDDSample1.Domain.User
         {
             string callbackUrl = $"http://localhost:9999/resetpassword?code={token}&Email={email}";
             await _emailSender.SendEmailAsync($"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>", email, "ResetPassword");
-        }
-
-        private void ValidatePassword(string password)
-        {
-            if (password.Length < 10)
-            {
-                throw new BusinessRuleValidationException("Password must have at least 10 characters");
-            }
-            if (!password.Any(char.IsUpper))
-            {
-                throw new BusinessRuleValidationException("Password must contain at least one uppercase letter");
-            }
-
-            if (!password.Any(char.IsDigit))
-            {
-                throw new BusinessRuleValidationException("Password must contain at least one number");
-            }
-
-            if (!password.Any(ch => !char.IsLetterOrDigit(ch)))
-            {
-                throw new BusinessRuleValidationException("Password must contain at least one special character");
-            }
-        }
-
-        private void ValidatesUserIsLoggedIn(string logToken, User user)
-        {
-            // User Story of Implementation Login System -> Implement this
         }
 
         private void ValidatePatientNewEmailIsUnique(string newEmail)
