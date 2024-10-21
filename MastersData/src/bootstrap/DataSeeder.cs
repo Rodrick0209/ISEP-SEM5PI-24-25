@@ -68,15 +68,22 @@ public static class DataSeeder
     // Create a new operation type with the phases and specialization
     var operationType = new OperationType("New Operation Type", true, phase1, phase2, phase3, specialization.Id);
 
-  
-
+    var OperationRequest = new OperationRequest("2025-02-18","emergency",,operationType.Id)
 
     // Seed the operation type into the context
     SeedOperationType(context, operationType);
-
+    SeedOperationRequest(context, operationRequest);
     
 
     context.SaveChanges();
+  }
+
+  private static void SeedOperationRequest(DDDSample1DbContext context, OperationRequest operationRequest)
+  {
+    if (!context.OperationRequests.Any())
+    {
+      context.OperationRequests.Add(operationRequest);
+    }
   }
 
 
