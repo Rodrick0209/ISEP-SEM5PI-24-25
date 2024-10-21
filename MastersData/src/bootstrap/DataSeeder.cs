@@ -33,12 +33,12 @@ public static class DataSeeder
    // SeedUsers(context, new User("admin@teste.com", "admin"), "password");
 
     SeedPatients(context, new Patient(
-      new FullName("John Cena"),
-      new DateOfBirth(new DateTime(2022, 10, 1)),
-      new Gender("male"),
-      new Email("john.cena@example.com"),
-      new PhoneNumber("123456123"),
-      new EmergencyContact("945123111"),
+      "John Cena",
+      "2022-10-01",
+      "male",
+      "john.cena@example.com",
+      "123456123",
+      "945123111",
       MedicalRecordNumberGenerator.GenerateMedicalRecordNumber()
     ));
 

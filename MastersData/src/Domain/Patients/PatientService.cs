@@ -49,22 +49,15 @@ namespace DDDSample1.Domain.Patients
                 throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
             }
 
-            FullName fullName = new FullName(dto.FullName);
-            DateOfBirth dateOfBirth = new DateOfBirth(DateTime.Parse(dto.DateOfBirth));
-            Gender gender = new Gender(dto.Gender);
-            Email email = new Email(dto.Email);
-            PhoneNumber phoneNumber = new PhoneNumber(dto.PhoneNumber);
-            EmergencyContact emergencyContact = new EmergencyContact(dto.EmergencyContact);
-
-            MedicalRecordNumber medicalRecordNumber = MedicalRecordNumberGenerator.GenerateMedicalRecordNumber();
+            string medicalRecordNumber = MedicalRecordNumberGenerator.GenerateMedicalRecordNumber();
 
             var patient = new Patient(
-                fullName,
-                dateOfBirth,
-                gender,
-                email,
-                phoneNumber,
-                emergencyContact,
+                dto.FullName,
+                dto.DateOfBirth,
+                dto.Gender,
+                dto.Email,
+                dto.PhoneNumber,
+                dto.EmergencyContact,
                 medicalRecordNumber
             );
 
@@ -88,8 +81,7 @@ namespace DDDSample1.Domain.Patients
 
             if (!string.IsNullOrWhiteSpace(dto.FullName))
             {
-                FullName fullName = new FullName(dto.FullName);
-                patient.ChangeFullName(fullName);
+                patient.ChangeFullName(dto.FullName);
             }
 
             if (!string.IsNullOrWhiteSpace(dto.Email))
@@ -99,8 +91,7 @@ namespace DDDSample1.Domain.Patients
                 {
                     throw new BusinessRuleValidationException("Email already exists");
                 }
-                Email newEmail = new Email(dto.Email);
-                patient.ChangeEmail(newEmail);
+                patient.ChangeEmail(dto.Email);
             }
 
             if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
@@ -110,15 +101,13 @@ namespace DDDSample1.Domain.Patients
                 {
                     throw new BusinessRuleValidationException("Phone Number already exists");
                 }
-                PhoneNumber phoneNumber = new PhoneNumber(dto.PhoneNumber);
-                patient.ChangePhoneNumber(phoneNumber);
+                patient.ChangePhoneNumber(dto.PhoneNumber);
             }
 
 
             if (!string.IsNullOrWhiteSpace(dto.MedicalConditions))
             {
-                MedicalConditions medicalConditions = new MedicalConditions(dto.MedicalConditions);
-                patient.ChangeMedicalConditions(medicalConditions);
+                patient.ChangeMedicalConditions(dto.MedicalConditions);
             }
 
             LogChanges(patient, "update");

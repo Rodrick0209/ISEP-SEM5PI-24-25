@@ -73,13 +73,13 @@ namespace UnitTest.Domain.Patient
             };
 
             _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(new DDDSample1.Domain.Patients.Patient(
-                new FullName("John Doe"),
-                new DateOfBirth(DateTime.Parse("1990-01-01")),
-                new Gender("male"),
-                new Email("john.doe@example.com"),
-                new PhoneNumber("1234567890"),
-                new EmergencyContact("Jane Doe"),
-                new MedicalRecordNumber("202410000001")
+                "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
             ));
 
             // Act & Assert
@@ -97,13 +97,13 @@ namespace UnitTest.Domain.Patient
             };
 
             var existingPatient = new DDDSample1.Domain.Patients.Patient(
-            new FullName("John Doe"),
-            new DateOfBirth(DateTime.Parse("1990-01-01")),
-            new Gender("male"),
-            new Email("john.doe@example.com"),
-            new PhoneNumber("1234567890"),
-            new EmergencyContact("Jane Doe"),
-            new MedicalRecordNumber("202410000001")
+                "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
@@ -130,13 +130,13 @@ namespace UnitTest.Domain.Patient
             };
 
             var existingPatient = new DDDSample1.Domain.Patients.Patient(
-            new FullName("John Doe"),
-            new DateOfBirth(DateTime.Parse("1990-01-01")),
-            new Gender("male"),
-            new Email("john.doe@example.com"),
-            new PhoneNumber("1234567890"),
-            new EmergencyContact("Jane Doe"),
-            new MedicalRecordNumber("202410000001")
+                "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
@@ -164,13 +164,13 @@ namespace UnitTest.Domain.Patient
             };
 
             var existingPatient = new DDDSample1.Domain.Patients.Patient(
-            new FullName("John Doe"),
-            new DateOfBirth(DateTime.Parse("1990-01-01")),
-            new Gender("male"),
-            new Email("john.doe@example.com"),
-            new PhoneNumber("1234567890"),
-            new EmergencyContact("Jane Doe"),
-            new MedicalRecordNumber("202410000001")
+                "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
@@ -198,13 +198,13 @@ namespace UnitTest.Domain.Patient
             };
 
             var existingPatient = new DDDSample1.Domain.Patients.Patient(
-            new FullName("John Doe"),
-            new DateOfBirth(DateTime.Parse("1990-01-01")),
-            new Gender("male"),
-            new Email("john.doe@example.com"),
-            new PhoneNumber("1234567890"),
-            new EmergencyContact("Jane Doe"),
-            new MedicalRecordNumber("202410000001")
+                "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
@@ -234,13 +234,13 @@ namespace UnitTest.Domain.Patient
             };
 
             var existingPatient = new DDDSample1.Domain.Patients.Patient(
-                new FullName("John Doe"),
-                new DateOfBirth(DateTime.Parse("1990-01-01")),
-                new Gender("male"),
-                new Email("john.doe@example.com"),
-                new PhoneNumber("1234567890"),
-                new EmergencyContact("Jane Doe"),
-                new MedicalRecordNumber("202410000001")
+                "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
@@ -271,13 +271,13 @@ namespace UnitTest.Domain.Patient
             };
 
             var existingPatient = new DDDSample1.Domain.Patients.Patient(
-                new FullName("John Doe"),
-                new DateOfBirth(DateTime.Parse("1990-01-01")),
-                new Gender("male"),
-                new Email("john.doe@example.com"),
-                new PhoneNumber("1234567890"),
-                new EmergencyContact("Jane Doe"),
-                new MedicalRecordNumber("202410000001")
+                "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
@@ -308,22 +308,22 @@ namespace UnitTest.Domain.Patient
             var patients = new List<DDDSample1.Domain.Patients.Patient>
             {
                 new (
-                    new FullName("John Doe"),
-                    new DateOfBirth(DateTime.Parse("1990-01-01")),
-                    new Gender("male"),
-                    new Email("john.doe@example.com"),
-                    new PhoneNumber("1234567890"),
-                    new EmergencyContact("Jane Doe"),
-                    new MedicalRecordNumber("202410000001")
+                    "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
                 ),
                 new (
-                    new FullName("John Doe"),
-                    new DateOfBirth(DateTime.Parse("1990-01-01")),
-                    new Gender("male"),
-                    new Email("john.doing@example.com"),
-                    new PhoneNumber("123456723"),
-                    new EmergencyContact("Jane Doe"),
-                    new MedicalRecordNumber("202410000012")
+                    "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567891",
+                "Jane Doe",
+                "202410000002"
                 )
             };
 
@@ -357,31 +357,31 @@ namespace UnitTest.Domain.Patient
             var patients = new List<DDDSample1.Domain.Patients.Patient>
             {
                 new (
-                    new FullName("John Doe"),
-                    new DateOfBirth(DateTime.Parse("1990-01-01")),
-                    new Gender("male"),
-                    new Email("john.doe@example.com"),
-                    new PhoneNumber("1234567890"),
-                    new EmergencyContact("Jane Doe"),
-                    new MedicalRecordNumber("202410000001")
+                    "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
                 ),
                 new (
-                    new FullName("John Doing"),
-                    new DateOfBirth(DateTime.Parse("1990-01-01")),
-                    new Gender("male"),
-                    new Email("john.doing@example.com"),
-                    new PhoneNumber("123456723"),
-                    new EmergencyContact("Jane Doe"),
-                    new MedicalRecordNumber("202410000012")
+                    "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567891",
+                "Jane Doe",
+                "202410000002"
                 ),
                 new (
-                    new FullName("John Done"),
-                    new DateOfBirth(DateTime.Parse("1990-01-01")),
-                    new Gender("male"),
-                    new Email("john.done@example.com"),
-                    new PhoneNumber("1234567892"),
-                    new EmergencyContact("Jane Doe"),
-                    new MedicalRecordNumber("202410000009")
+                    "John Done",
+                    "1990-01-01",
+                    "male",
+                    "john.done@example.com",
+                    "1234567892",
+                    "Jane Doe",
+                    "202410000009"
                 ),
             };
 
@@ -416,36 +416,35 @@ namespace UnitTest.Domain.Patient
                 DateOfBirth = ""
             };
 
-            var patients = new List<DDDSample1.Domain.Patients.Patient>
+             var patients = new List<DDDSample1.Domain.Patients.Patient>
             {
                 new (
-                    new FullName("John Doe"),
-                    new DateOfBirth(DateTime.Parse("1990-01-01")),
-                    new Gender("male"),
-                    new Email("john.doe@example.com"),
-                    new PhoneNumber("1234567890"),
-                    new EmergencyContact("Jane Doe"),
-                    new MedicalRecordNumber("202410000001")
+                    "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
                 ),
                 new (
-                    new FullName("John Doing"),
-                    new DateOfBirth(DateTime.Parse("1990-01-01")),
-                    new Gender("male"),
-                    new Email("john.doing@example.com"),
-                    new PhoneNumber("123456723"),
-                    new EmergencyContact("Jane Doe"),
-                    new MedicalRecordNumber("202410000012")
+                    "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567891",
+                "Jane Doe",
+                "202410000002"
                 ),
                 new (
-                    new FullName("John Done"),
-                    new DateOfBirth(DateTime.Parse("1990-01-01")),
-                    new Gender("female"),
-                    new Email("john.done@example.com"),
-                    new PhoneNumber("123456725"),
-                    new EmergencyContact("Jane Doe"),
-                    new MedicalRecordNumber("202410000013")
-                )
-
+                    "John Done",
+                    "1990-01-01",
+                    "male",
+                    "john.done@example.com",
+                    "1234567892",
+                    "Jane Doe",
+                    "202410000009"
+                ),
             };
 
             _patientRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(patients);
@@ -471,14 +470,14 @@ namespace UnitTest.Domain.Patient
             var patients = new List<DDDSample1.Domain.Patients.Patient>
             {
                 new (
-                    new FullName("John Doe"),
-                    new DateOfBirth(DateTime.Parse("1990-01-01")),
-                    new Gender("male"),
-                    new Email("john.doe@example.com"),
-                    new PhoneNumber("1234567890"),
-                    new EmergencyContact("Jane Doe"),
-                    new MedicalRecordNumber("202410000001")
-                )
+                    "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
+                ),
             };
 
             _patientRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(patients);
@@ -496,13 +495,13 @@ namespace UnitTest.Domain.Patient
         {
             // Arrange
             var patient = new DDDSample1.Domain.Patients.Patient(
-                new FullName("John Doe"),
-                new DateOfBirth(DateTime.Parse("1990-01-01")),
-                new Gender("male"),
-                new Email("john.doe@example.com"),
-                new PhoneNumber("1234567890"),
-                new EmergencyContact("Jane Doe"),
-                new MedicalRecordNumber("202410000001")
+                "John Doe",
+                "1990-01-01",
+                "male",
+                "john.doe@example.com",
+                "1234567890",
+                "Jane Doe",
+                "202410000001"
             );
 
             _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(patient);
@@ -513,6 +512,7 @@ namespace UnitTest.Domain.Patient
             // Assert
             Assert.NotNull(result);
         }
+
     }
 }
 
