@@ -5,6 +5,7 @@ participant UserController as Controller <<Controller>>
 participant RegisteringPatientDTO as DTO <<DTO>>
 participant ConfirmationRegisterPatientDTO as ConfirmationDTO <<DTO>>
 participant UserService as Service <<Service>>
+participant PasswordPolicy as Policy <<Service>>
 participant PasswordHasher as Hasher <<Service>>
 participant EmailService as EmailService <<Service>>
 participant ConfirmationRegisterPatientTokenGenerator as TokenGenerator <<Service>>
@@ -21,8 +22,8 @@ activate Service
 Service -> Service : validateEmailIsUnique(email)
 activate Service
 return flag
-Service -> Service : validatePassword(password)
-activate Service
+Service -> Policy : isSatisfiedBy(password)
+activate Policy
 return flag
 Service -> PatientRepository : findByNameEmailAndPhoneNumber(name, email, phoneNumber)
 activate PatientRepository
