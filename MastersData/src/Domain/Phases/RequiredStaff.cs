@@ -27,6 +27,19 @@ namespace DDDSample1.Domain.OperationTypes
             // Parameterless constructor for ORM or serialization purposes
         }
 
+        public void ChangeNumber(int newNum)
+        {
+            if (newNum <= 0)
+            {
+                throw new ArgumentException("Number of required staff must be greater than zero.", nameof(newNum));
+            }
+            this.num = newNum;
+        }
+
+        public void ChangeSpecialization(SpecializationId newSpecialization)
+        {
+            this.specialization = newSpecialization ?? throw new ArgumentNullException(nameof(newSpecialization));
+        }
 
     }
 }

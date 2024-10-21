@@ -13,5 +13,7 @@ namespace DDDSample1.Domain.OperationTypes
         Task<OperationType> Deactivate(OperationTypeId id);
 
         Task<List<OperationType>> GetAllAsync();
+
+        Task<OperationType> UpdateAsync(OperationTypeDto dto);
     }
 }

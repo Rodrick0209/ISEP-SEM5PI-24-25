@@ -23,6 +23,19 @@ namespace DDDSample1.Domain.OperationTypes
 
         }
 
+        public static OperationTypeDto ToDto(OperationType operationType)
+        {
+            return new OperationTypeDto(
+                operationType.Id.AsGuid(), // Assuming Id is of type Guid
+                operationType.name,
+                operationType.status ? "active" : "inactive", // Mapping boolean status to string
+                TransformPhase(operationType.preparationPhase, new Dictionary<Guid, string>()),
+                TransformPhase(operationType.surgeryPhase, new Dictionary<Guid, string>()),
+                TransformPhase(operationType.cleaningPhase, new Dictionary<Guid, string>()),
+                operationType.specialization.Value
+            );
+        }
+
         private static PhaseDTO TransformPhase(Phase phase, Dictionary<Guid, string> specializationNames)
         {
             return new PhaseDTO
@@ -31,7 +44,7 @@ namespace DDDSample1.Domain.OperationTypes
                 Duration = phase.duration,
                 RequiredStaff = phase.requiredStaff.Select(staff => new RequiredStaffDTO(
                     staff.num.ToString(),
-                    specializationNames.ContainsKey(staff.specialization.AsGuid()) ? specializationNames[staff.specialization.AsGuid()] : staff.specialization.ToString()
+                    specializationNames.ContainsKey(staff.specialization.AsGuid()) ? specializationNames[staff.specialization.AsGuid()] : staff.specialization.AsGuid().ToString()
                 )).ToList()
             };
         }

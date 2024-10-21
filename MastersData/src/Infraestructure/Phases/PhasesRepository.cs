@@ -19,6 +19,15 @@ namespace DDDSample1.Infrastructure.OperationTypes
             this.context = context;
         }
 
+        
+
+        public async Task<Phase> GetByIdAsync(PhasesId id)
+        {
+            return await this.context.Phases.FirstOrDefaultAsync(u => u.Id.Value == id.Value);
+
+        }
+
+
 
     }
 

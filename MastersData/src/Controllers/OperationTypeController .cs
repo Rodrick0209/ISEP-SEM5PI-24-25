@@ -30,6 +30,7 @@ namespace DDDSample1.Controllers
         {
             
             var objDomain = OperationTypeMapper.toDomain(dto);
+            
             var op = await _service.CreateAsync(objDomain);
 
             return await GetById(op.Id.Value);
@@ -46,15 +47,14 @@ namespace DDDSample1.Controllers
                 return NotFound();
             }
 
-
+            
+            /*
             var sp = new SpecializationId(op.specialization.Value);
             var specialization = await _Spe_service.GetByIdAsync(sp);
-
-            
             var specializationNames = await _Spe_service.GetByNameOperationTypeAsync(op);
-            
-
             var opDto = OperationTypeMapper.ToDto(op, specialization.Name, specializationNames);
+            */
+            var opDto = OperationTypeMapper.ToDto(op);
             return Ok(opDto);
 
         }
@@ -95,6 +95,31 @@ namespace DDDSample1.Controllers
             }
 
             return Ok(listDto);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<OperationTypeDto>> Update(Guid id, OperationTypeDto dto)
+        {
+            if (id != dto.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var op = await _service.UpdateAsync(dto);
+                if (op == null)
+                {
+                    return NotFound();
+                }
+                return await GetById(op.Id.Value);
+
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
 
     }

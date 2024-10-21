@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Domain.Families;
 using DDDSample1.Domain.OperationRequest;
@@ -15,7 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 public static class DataSeeder
 {
-  public static void Seed(IServiceProvider serviceProvider)
+  public static async Task SeedAsync(IServiceProvider serviceProvider)
   {
     using var scope = serviceProvider.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<DDDSample1DbContext>();
@@ -30,7 +31,7 @@ public static class DataSeeder
       );
     }
 
-   // SeedUsers(context, new User("admin@teste.com", "admin"), "password");
+    // SeedUsers(context, new User("admin@teste.com", "admin"), "password");
 
     Patient johnCena = new Patient(
       "John Cena",
@@ -40,43 +41,43 @@ public static class DataSeeder
       "123456123",
       "945123111",
       MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
-    
-    
-    SeedPatients(context, johnCena);
-    
 
-    var specialization = new Specialization("Ortopedia");
+
+    SeedPatients(context, johnCena);
+
+
+    var specialization1 = new Specialization("Ortopedia");
+    var specialization2 = new Specialization("Oncologia");
+    var specialization3 = new Specialization("Obstetricia");
+    SeedSpecializations(context, specialization1);
+    SeedSpecializations(context, specialization2);
+    SeedSpecializations(context, specialization3);
+
 
     // Create required staff
-    var requiredStaff1 = new RequiredStaff(1, specialization.Id);
-    var requiredStaff2 = new RequiredStaff(2, specialization.Id);
-    var requiredStaff3 = new RequiredStaff(3, specialization.Id);
-    var requiredStaffList = new List<RequiredStaff> { requiredStaff1, requiredStaff2 };
-    var requiredStaffList1 = new List<RequiredStaff> { requiredStaff3};
-    
-    
-    
-    
-    //SeedOperationType(context,new OperationType("1","New Operation Type",true,new Phase("1"),new Phase("2"),new Phase("3"),new Specialization("Ortopedia")));
-    
+    var requiredStaff1 = new RequiredStaff(10, specialization1.Id);
+    var requiredStaff2 = new RequiredStaff(20, specialization2.Id);
+    var requiredStaffList1 = new List<RequiredStaff> { requiredStaff1, requiredStaff2 };
+    var requiredStaffList2 = new List<RequiredStaff> { new RequiredStaff(20, specialization2.Id) }; // New instance
+    var requiredStaffList3 = new List<RequiredStaff> { new RequiredStaff(2, specialization2.Id) }; // New instance
 
-    SeedSpecializations(context,specialization);
 
 
     // Create new phases with required staff
-    var phase1 = new Phase(30, requiredStaffList1);
-    var phase2 = new Phase(45, requiredStaffList);
-    var phase3 = new Phase(60, requiredStaffList);
+    var phase1 = new Phase(20, requiredStaffList1);
+    var phase2 = new Phase(90, requiredStaffList2);
+    var phase3 = new Phase(15, requiredStaffList3);
 
     // Create a new operation type with the phases and specialization
-    var operationType = new OperationType("New Operation Type", true, phase1, phase2, phase3, specialization.Id);
+    var operationType = new OperationType("Operation Type 1", true, phase1, phase2, phase3, specialization3.Id);
 
-    var operationRequest = new OperationRequest("2025-02-18","emergency",johnCena.Id,operationType.Id,new StaffId(Guid.NewGuid()));
+
+    var operationRequest = new OperationRequest("2025-02-18", "emergency", johnCena.Id, operationType.Id, new StaffId(Guid.NewGuid()));
+
 
     // Seed the operation type into the context
     SeedOperationType(context, operationType);
     SeedOperationRequest(context, operationRequest);
-    
 
     context.SaveChanges();
   }
@@ -127,33 +128,33 @@ public static class DataSeeder
 
   public static void SeedStaff(DDDSample1DbContext context)
   {
-      var staffMembers = new List<Staff>
+    var staffMembers = new List<Staff>
       {
           new Staff(
-              new StaffId("1"), 
-              "John Doe", 
-              "LN123456", 
-              new SpecializationId(Guid.NewGuid()), 
-              new AvailabilitySlotsId(Guid.NewGuid()), 
-              "john.doe@example.com", 
-              "123-456-7890", 
+              new StaffId("1"),
+              "John Doe",
+              "LN123456",
+              new SpecializationId(Guid.NewGuid()),
+              new AvailabilitySlotsId(Guid.NewGuid()),
+              "john.doe@example.com",
+              "123-456-7890",
               "Doctor"
           ),
           new Staff(
-              new StaffId("2"), 
-              "Jane Smith", 
-              "LN654321", 
-              new SpecializationId(Guid.NewGuid()), 
-              new AvailabilitySlotsId(Guid.NewGuid()), 
-              "jane.smith@example.com", 
-              "098-765-4321", 
+              new StaffId("2"),
+              "Jane Smith",
+              "LN654321",
+              new SpecializationId(Guid.NewGuid()),
+              new AvailabilitySlotsId(Guid.NewGuid()),
+              "jane.smith@example.com",
+              "098-765-4321",
               "Nurse"
           )
           // Adicione mais instâncias conforme necessário
       };
 
-      context.Set<Staff>().AddRange(staffMembers);
-      context.SaveChanges();
+    context.Set<Staff>().AddRange(staffMembers);
+    context.SaveChanges();
   }
 
 }

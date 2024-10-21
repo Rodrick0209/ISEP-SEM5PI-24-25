@@ -37,6 +37,23 @@ namespace DDDSample1.Domain.OperationTypes
         }
 
 
+        public void ChangeDuration(int newDuration)
+        {
+            if (newDuration <= 0)
+            {
+                throw new ArgumentException("New duration must be greater than 0.");
+            }
+            this.duration = newDuration;
+        }
+
+        public void ChangeRequiredStaff(List<RequiredStaff> newRequiredStaff)
+        {
+            if (newRequiredStaff == null || newRequiredStaff.Count == 0)
+            {
+                throw new ArgumentNullException(nameof(newRequiredStaff), "New required staff cannot be null or empty.");
+            }
+            this.requiredStaff = newRequiredStaff;
+        }
 
 
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Specializations;
 
@@ -44,6 +45,33 @@ namespace DDDSample1.Domain.OperationTypes
         public void Deactivate()
         {
             this.status = false;
+        }
+
+
+        public void changeName(string name){
+            this.name=name;
+        }
+
+        public void ChangePhases(Phase preparationPhase, Phase surgeryPhase, Phase cleaningPhase)
+        {
+            if (preparationPhase == null)
+            {
+            throw new ArgumentNullException(nameof(preparationPhase), "Preparation phase cannot be null.");
+            }
+
+            if (surgeryPhase == null)
+            {
+            throw new ArgumentNullException(nameof(surgeryPhase), "Surgery phase cannot be null.");
+            }
+
+            if (cleaningPhase == null)
+            {
+            throw new ArgumentNullException(nameof(cleaningPhase), "Cleaning phase cannot be null.");
+            }
+
+            this.preparationPhase = preparationPhase;
+            this.surgeryPhase = surgeryPhase;
+            this.cleaningPhase = cleaningPhase;
         }
 
 

@@ -135,7 +135,7 @@ ConfigureMyServices(builder.Services);
 
 var app = builder.Build();
 
-DataSeeder.Seed(app.Services);
+DataSeeder.SeedAsync(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -206,5 +206,6 @@ void ConfigureMyServices(IServiceCollection services)
 
     services.AddTransient<IAvailabilitySlotsRepository,AvailabilitySlotRepository>();
 
-   
+        services.AddTransient<IPhasesRepository, PhasesRepository>(); // Register IPhasesRepository
+
 }
