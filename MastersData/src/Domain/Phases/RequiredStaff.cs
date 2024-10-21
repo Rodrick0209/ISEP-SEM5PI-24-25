@@ -8,12 +8,16 @@ namespace DDDSample1.Domain.OperationTypes
 {
     public class RequiredStaff : IValueObject
     {
-        public int num {get; private set;}
-        public SpecializationId specialization {get; private set;}
-        
+        public int num { get; private set; }
+        public SpecializationId specialization { get; private set; }
+
 
         public RequiredStaff(int num, SpecializationId specialization)
         {
+            if (num <= 0)
+            {
+                throw new ArgumentException("Number of required staff must be greater than zero.", nameof(num));
+            }
             this.num = num;
             this.specialization = specialization ?? throw new ArgumentNullException(nameof(specialization));
         }
@@ -23,6 +27,6 @@ namespace DDDSample1.Domain.OperationTypes
             // Parameterless constructor for ORM or serialization purposes
         }
 
-        
+
     }
 }

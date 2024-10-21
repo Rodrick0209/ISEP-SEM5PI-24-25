@@ -37,6 +37,8 @@ using DDDSample1.Domain.OperationRequestLoggers;
 using DDDSample1.Infrastructure.OperationRequestLoggers;
 using DDDSample1.Domain.PatientLoggers;
 using DDDSample1.Infrastructure.PatientLoggers;
+using DDDSample1.Domain.AvailabilitySlots;
+using DDDSample1.Infrastructure.AvailabilitySlots;
 
 
 
@@ -192,6 +194,9 @@ void ConfigureMyServices(IServiceCollection services)
 
     services.AddTransient<IStaffRepository, StaffRepository>();
     services.AddTransient<StaffService>();
+
+    services.AddTransient<IAvailabilitySlotsRepository, AvailabilitySlotRepository>();
+    
 
     services.AddTransient<ISpecializationRepository, SpecializationRepository>();
 

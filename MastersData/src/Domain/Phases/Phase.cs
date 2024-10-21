@@ -16,19 +16,28 @@ namespace DDDSample1.Domain.OperationTypes
 
         public Phase(int duration, List<RequiredStaff> requiredStaff)
         {
-            this.Id=new PhasesId(Guid.NewGuid());
+            if (duration <= 0)
+            {
+                throw new ArgumentException("Duration must be greater than 0.");
+            }
+
+            if (requiredStaff == null || requiredStaff.Count == 0)
+            {
+                throw new ArgumentNullException(nameof(requiredStaff), "Required staff cannot be null or empty.");
+            }
+
+            this.Id = new PhasesId(Guid.NewGuid());
             this.duration = duration;
             this.requiredStaff = requiredStaff;
         }
 
-        public Phase(Guid id,int duration, List<RequiredStaff> requiredStaff)
+        public Phase(Guid id, int duration, List<RequiredStaff> requiredStaff) : this(duration, requiredStaff)
         {
-            this.Id=new PhasesId(id);
-            this.duration = duration;
-            this.requiredStaff = requiredStaff;
+            this.Id = new PhasesId(id);
         }
 
-        
-        
+
+
+
     }
 }
