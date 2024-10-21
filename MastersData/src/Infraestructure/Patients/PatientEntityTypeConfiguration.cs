@@ -11,12 +11,12 @@ namespace DDDSample1.Infrastructure.Patients
             builder.HasKey(b => b.Id);
             builder.OwnsOne(b => b.DateOfBirth);
             builder.OwnsOne(b => b.Email).HasIndex(e => e.email).IsUnique();
-            builder.OwnsOne(b => b.EmergencyContact).Property(e => e.emergencyContact).IsRequired(false);
+            builder.OwnsOne(b => b.EmergencyContact).Property(e => e.emergencyContact);
             builder.OwnsOne(b => b.FullName);
             builder.OwnsOne(b => b.PhoneNumber).HasIndex(p => p.phoneNumber).IsUnique();
             builder.OwnsOne(b => b.MedicalRecordNumber);
             builder.OwnsOne(b => b.MedicalConditions).Property(m => m.medicalConditions).IsRequired(false);
-            builder.OwnsOne(b => b.Gender).Property(g => g.gender).IsRequired(false);
+            builder.OwnsOne(b => b.Gender).Property(g => g.gender);
         }
     }
 }

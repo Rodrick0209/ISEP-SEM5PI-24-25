@@ -11,17 +11,16 @@ namespace MastersData.test.UnitTest.Domain.User
         public void ToDto_ShouldMapUserToUserDTO()
         {
             // Arrange
-            var userId = new UserId(Guid.NewGuid());
             var role = new Role("doctor");
             var email = new Email("test@example.com");
             var password = new Password("password123");
-            var user = new DDDSample1.Domain.User.User(userId, email.email, role.role, password.password);
+            var user = new DDDSample1.Domain.User.User(email.email, role.role, password.password);
 
             // Act
             var userDto = UserMapper.ToDto(user);
 
             // Assert
-            Assert.Equal(userId.AsGuid(), userDto.Id);
+            Assert.Equal(user.Id.AsGuid(), userDto.Id);
             Assert.Equal(role.role, userDto.role);
             Assert.Equal(email.email, userDto.email);
             Assert.Equal(password.password, userDto.password);

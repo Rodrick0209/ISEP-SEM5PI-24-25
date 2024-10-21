@@ -18,7 +18,7 @@ namespace DDDSample1.Domain.PatientLoggers
         public string EmergencyContact { get; private set; }
         public string MedicalRecordNumber { get; private set; }
         public string? MedicalConditions { get; private set; }
-        public List<string> MedicalRecord {get; private set;}
+
         public string TypeOfChange { get; private set; }
         public DateTime ModificationDate { get; private set; }
 
@@ -32,7 +32,6 @@ namespace DDDSample1.Domain.PatientLoggers
             PhoneNumber = default!;
             EmergencyContact = default!;
             MedicalRecordNumber = default!;
-            MedicalRecord = default!;
             TypeOfChange = default!;
         }
 
@@ -64,7 +63,6 @@ namespace DDDSample1.Domain.PatientLoggers
             this.EmergencyContact = default!;
             this.MedicalRecordNumber = medicalRecordNumber;
             this.MedicalConditions = default;
-            this.MedicalRecord = default!;
             this.TypeOfChange = typeOfChange;
             this.ModificationDate = modificationDate;
         }

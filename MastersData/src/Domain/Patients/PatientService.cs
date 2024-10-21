@@ -77,6 +77,8 @@ namespace DDDSample1.Domain.Patients
                 throw new BusinessRuleValidationException("Patient not found");
             }
 
+            LogChanges(patient, "update");
+
             string email = patient.Email.email;
 
             if (!string.IsNullOrWhiteSpace(dto.FullName))
@@ -110,8 +112,6 @@ namespace DDDSample1.Domain.Patients
                 patient.ChangeMedicalConditions(dto.MedicalConditions);
             }
 
-            LogChanges(patient, "update");
-
             await _unitOfWork.CommitAsync();
 
             if (dto.Email != null || dto.PhoneNumber != null)
@@ -131,9 +131,9 @@ namespace DDDSample1.Domain.Patients
                 throw new BusinessRuleValidationException("Patient not found");
             }
 
-            _patientRepository.Remove(patient);
-
             LogChanges(patient, "delete");
+
+            _patientRepository.Remove(patient);
 
             await _unitOfWork.CommitAsync();
         }
@@ -224,28 +224,6 @@ namespace DDDSample1.Domain.Patients
 
             _patientLoggerRepository.AddAsync(patientLogger);
         }
-
-        public async Task CleanupOldPatientLogs(TimeSpan retentionPeriod)
-        {
-            var cutoffDate = DateTime.UtcNow - retentionPeriod;
-
-            var oldLogs = await _patientLoggerRepository.GetOldLogsAsync(cutoffDate);
-
-            foreach (var log in oldLogs)
-            {
-                var cleanedLog = new PatientLogger(
-                    log.MedicalRecordNumber,
-                    log.FullName,
-                    log.ModificationDate
-                );
-
-                _patientLoggerRepository.Remove(log);
-                await _patientLoggerRepository.AddAsync(cleanedLog);
-            }
-
-            await _unitOfWork.CommitAsync();
-        }
-
 
     }
 }
