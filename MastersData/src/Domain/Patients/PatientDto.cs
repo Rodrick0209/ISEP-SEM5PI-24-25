@@ -15,10 +15,10 @@ namespace DDDSample1.Domain.Patients
         public string PhoneNumber { get; set; }
         public string? MedicalConditions { get; set; }
         public string EmergencyContact { get; set; }
-        public List<string> MedicalRecord {get; set;}
+        public MedicalRecordDto MedicalRecord {get; set;}
         public string MedicalRecordNumber { get; set; }
             
-        public PatientDto(Guid id, string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string medicalRecordNumber, string emergencyContact, List<string> medicalRecord, string? medicalConditions = null)
+        public PatientDto(Guid id, string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string medicalRecordNumber, string emergencyContact, MedicalRecordDto medicalRecord, string? medicalConditions = null)
         {
             this.Id = id;
             this.FullName = fullName;
