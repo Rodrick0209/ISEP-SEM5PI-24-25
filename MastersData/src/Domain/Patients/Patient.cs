@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Utils;
+using EllipticCurve.Utils;
 using Microsoft.Extensions.Logging.Configuration;
 
 namespace DDDSample1.Domain.Patients
@@ -31,36 +32,36 @@ namespace DDDSample1.Domain.Patients
             this.EmergencyContact = default!;
         }
 
-        public Patient(FullName fullName, DateOfBirth dateOfBirth, Gender gender, Email email, PhoneNumber phoneNumber, EmergencyContact emergencyContact, MedicalRecordNumber medicalRecordNumber)
+        public Patient(string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string emergencyContact, string medicalRecordNumber)
         {
             this.Id = new PatientId(Guid.NewGuid());
-            this.FullName = fullName;
-            this.DateOfBirth = dateOfBirth;
-            this.Gender = gender;
-            this.Email = email;
-            this.PhoneNumber = phoneNumber;
-            this.EmergencyContact = emergencyContact;
-            this.MedicalRecordNumber = medicalRecordNumber;
+            this.FullName = new FullName(fullName);
+            this.DateOfBirth = new DateOfBirth(DateTime.Parse(dateOfBirth));
+            this.Gender = new Gender(gender);
+            this.Email = new Email(email);
+            this.PhoneNumber = new PhoneNumber(phoneNumber);
+            this.EmergencyContact = new EmergencyContact(emergencyContact);
+            this.MedicalRecordNumber = new MedicalRecordNumber(medicalRecordNumber);
         }
         
-        public void ChangeFullName(FullName fullName)
+        public void ChangeFullName(string fullName)
         {
-            this.FullName = fullName;
+            this.FullName = new FullName(fullName);
         }
 
-        public void ChangeEmail(Email email)
+        public void ChangeEmail(string email)
         {
-            this.Email = email;
+            this.Email = new Email(email);
         }
 
-        public void ChangePhoneNumber(PhoneNumber phoneNumber)
+        public void ChangePhoneNumber(string phoneNumber)
         {
-            this.PhoneNumber = phoneNumber;
+            this.PhoneNumber = new PhoneNumber(phoneNumber);
         }
 
-        public void ChangeMedicalConditions(MedicalConditions medicalConditions)
+        public void ChangeMedicalConditions(string medicalConditions)
         {
-            this.MedicalConditions = medicalConditions;
+            this.MedicalConditions = new MedicalConditions(medicalConditions);
         }
 
         public void AssociateUser(User.User user)

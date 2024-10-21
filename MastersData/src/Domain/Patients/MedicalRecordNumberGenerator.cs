@@ -6,12 +6,12 @@ namespace DDDSample1.Domain.Patients
     {
         private static int lastSequentialNumber = 0;
 
-        public static MedicalRecordNumber GenerateMedicalRecordNumber()
+        public static string GenerateMedicalRecordNumber()
         {
             string yearMonth = DateTime.Now.ToString("yyyyMM");
             lastSequentialNumber++;
 
-            return new MedicalRecordNumber($"{yearMonth}{lastSequentialNumber:D6}");
+            return $"{yearMonth}{lastSequentialNumber:D6}";
         }
     }
 }
