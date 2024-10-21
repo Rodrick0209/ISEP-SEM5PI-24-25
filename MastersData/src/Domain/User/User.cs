@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.ComponentModel.DataAnnotations;
 using DDDSample1.Domain.Shared;
@@ -24,6 +25,8 @@ namespace DDDSample1.Domain.User
         public bool ? accountConfirmed { get; private set; }
         public ConfirmationRegisterPatientToken ? confirmationRegisterPatientToken { get; private set; }
         public ConfirmationRegisterPatientTokenExpiration ? confirmationRegisterPatientTokenExpiration { get; private set; }
+        public ConfirmationEditPatientToken ? confirmationEditPatientToken { get; private set; }
+        public ConfirmationEditPatientTokenExpiration ? confirmationEditPatientTokenExpiration { get; private set; }
         private User()
         {
         }
@@ -137,6 +140,18 @@ namespace DDDSample1.Domain.User
             this.accountConfirmed = true;
             this.confirmationRegisterPatientToken = null;
             this.confirmationRegisterPatientTokenExpiration = null;
+        }
+
+        public void SetConfirmationEditPatientToken(string token, DateTime expirationDate)
+        {
+            this.confirmationEditPatientToken = new ConfirmationEditPatientToken(token);
+            this.confirmationEditPatientTokenExpiration = new ConfirmationEditPatientTokenExpiration(expirationDate);
+        }
+
+        public void ClearConfirmationEditPatientToken()
+        {
+            this.confirmationEditPatientToken = null;
+            this.confirmationEditPatientTokenExpiration = null;
         }
             
 

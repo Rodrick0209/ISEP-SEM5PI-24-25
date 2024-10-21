@@ -16,6 +16,7 @@ using MimeKit.Cryptography;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Utils;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DDDSample1.Domain.User
 {
@@ -223,9 +224,74 @@ namespace DDDSample1.Domain.User
                 throw new BusinessRuleValidationException("Patient not found");
             }
 
+            patient.AssociateUser(user);
+
             user.ConfirmAccount();
 
             await _unitOfWork.CommitAsync();
+
+            return PatientMapper.ToDto(patient);
+        }
+
+        public async Task<ConfirmationEditPatientDto> EditPatientAsync(EditingPatientDto dto)
+        {
+            var user = await _repo.GetByEmailAsync(dto.Email);
+
+            if (user == null)
+            {
+                throw new BusinessRuleValidationException("User not found");
+            }
+
+            // ValidatesUserIsLoggedIn(dto.LogToken, user);
+
+            ValidatePatientNewEmailIsUnique(dto.EmailToEdit);
+
+            var patient = await _patientRepo.GetByEmailAsync(dto.Email);
+
+            if (patient == null)
+            {
+                throw new BusinessRuleValidationException("Patient not found");
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.NameToEdit))
+            {
+                patient.ChangeFullName(dto.NameToEdit);
+            }
+
+            string? token = null;
+            string? emailToEdit = null;
+            string? phoneNumberToEdit = null;
+
+            if (!string.IsNullOrWhiteSpace(dto.EmailToEdit) || !string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit))
+            {
+                token = await GenerateConfirmationEditPatientToken(user);
+                if (!string.IsNullOrWhiteSpace(emailToEdit))
+                {
+                    emailToEdit = dto.EmailToEdit;
+                }
+                if (!string.IsNullOrWhiteSpace(phoneNumberToEdit))
+                {
+                    phoneNumberToEdit = dto.PhoneNumberToEdit;
+                }
+            }
+
+            return new ConfirmationEditPatientDto(PatientMapper.ToDto(patient), token, dto.Email, emailToEdit, phoneNumberToEdit);
+        }
+
+        public async Task<PatientDto> ConfirmEditPatientSensitiveDataAsync(ConfirmationEditPatientSensitiveDataDto dto){
+            User user = await _repo.GetByEmailAsync(dto.Email);
+
+            if(user == null){
+                throw new BusinessRuleValidationException("User not found");
+            }
+
+            ValidatesConfirmationEditPatientToken(dto.Token, user);
+
+            Patient patient = await _patientRepo.GetByEmailAsync(dto.Email);
+
+            if(patient == null){
+                throw new BusinessRuleValidationException(dto.Email);
+            }
 
             return PatientMapper.ToDto(patient);
         }
@@ -291,6 +357,47 @@ namespace DDDSample1.Domain.User
             if (!password.Any(ch => !char.IsLetterOrDigit(ch)))
             {
                 throw new BusinessRuleValidationException("Password must contain at least one special character");
+            }
+        }
+
+        private void ValidatesUserIsLoggedIn(string logToken, User user)
+        {
+            // User Story of Implementation Login System -> Implement this
+        }
+
+        private void ValidatePatientNewEmailIsUnique(string newEmail)
+        {
+            var existingPatient = _patientRepo.GetByEmailAsync(newEmail);
+
+            if (existingPatient != null)
+            {
+                throw new BusinessRuleValidationException("Email already used by other patient record)");
+            }
+        }
+
+        private void ValidatePatientNewPhoneNumberIsUnique(string newPhoneNumber)
+        {
+            var existingPatient = _patientRepo.GetByPhoneNumberAsync(newPhoneNumber);
+
+            if (existingPatient != null)
+            {
+                throw new BusinessRuleValidationException("Phone Number already used by other patient record");
+            }
+        }
+
+        private async Task<string> GenerateConfirmationEditPatientToken(User user)
+        {
+            TokenProvider tokenProvider = new TokenProvider(_configuration);
+            string token = tokenProvider.CreateConfirmationRegisterPatientToken(user);
+            user.SetConfirmationEditPatientToken(token, DateTime.UtcNow.AddHours(24));
+            return token;
+        }
+
+        private void ValidatesConfirmationEditPatientToken(string token, User user)
+        {
+            if (user.confirmationEditPatientToken.Token != token)
+            {
+                throw new BusinessRuleValidationException("Invalid token");
             }
         }
 

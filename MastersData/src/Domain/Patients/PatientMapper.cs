@@ -13,6 +13,7 @@ namespace DDDSample1.Domain.Patients
                 patient.PhoneNumber.phoneNumber,
                 patient.MedicalRecordNumber._medicalRecordNumber,
                 patient.EmergencyContact.emergencyContact,
+                patient.MedicalRecord._medicalRecord,
                 patient.MedicalConditions?.medicalConditions ?? null
             );
         }

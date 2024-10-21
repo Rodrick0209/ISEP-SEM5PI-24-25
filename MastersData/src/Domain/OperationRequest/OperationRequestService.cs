@@ -36,11 +36,9 @@ namespace DDDSample1.Domain.OperationRequest
 
     public async Task<OperationRequest> AddAsync(OperationRequest operationRequest)
     {
-         Console.WriteLine("ERRO 1");
          await checkOperationTypeIdAsync(operationRequest.operationTypeId);
          
-        Console.WriteLine("ERRO 2");
-         await checkDoctorIdAsync(operationRequest.doctorId);
+//       await checkDoctorIdAsync(operationRequest.doctorId);
         
         
         // falta adicionar o operation request ao medical history

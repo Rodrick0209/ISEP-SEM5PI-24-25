@@ -204,5 +204,7 @@ void ConfigureMyServices(IServiceCollection services)
     
     services.AddTransient<IPatientLoggerRepository, PatientLoggerRepository>();
 
+    services.AddTransient<IAvailabilitySlotsRepository,AvailabilitySlotRepository>();
+
    
 }

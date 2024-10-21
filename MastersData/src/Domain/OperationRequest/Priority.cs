@@ -20,6 +20,7 @@ namespace DDDSample1.Domain.OperationRequest
         }
 
         private void validatePriority(string priority){
+            priority.ToLower();
             List<string> priorities = new List<string> {"eletric", "urgency", "emergency"};
             if(string.IsNullOrEmpty(priority) || !priorities.Contains(priority)){
                 throw new ArgumentNullException("Invalid priority");

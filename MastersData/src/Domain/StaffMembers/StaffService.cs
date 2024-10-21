@@ -36,35 +36,48 @@ namespace DDDSample1.Domain.StaffMembers
         }
 
 
-        // public async Task<StaffDto> AddAync(Staff staff)
-        // {
+        public async Task<StaffDto> AddAsync(StaffDto staffdto)
+        {
 
 
-        //     bool emailIsUnique = await validateEmailIsUnique(staff.Email.email);
-        //     bool phoneNumberIsUnique = await validatePhoneNumberIsUnique(staff.PhoneNumber.phoneNumber);
-        //     if (!emailIsUnique || !phoneNumberIsUnique)
-        //     {
-        //         throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
-        //     }
+            bool emailIsUnique = await validateEmailIsUnique(staffdto.Email);
+            bool phoneNumberIsUnique = await validatePhoneNumberIsUnique(staffdto.PhoneNumber);
+            if (!emailIsUnique || !phoneNumberIsUnique)
+            {
+                throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
+            }
 
-        //     await checkOSpecializationIdAsync(staff.SpecializationId);
-
-
-        //     await checkAvailabilitySlotIdAsync(staff.AvailabilitySlotsId);
-
-        //     DateTime recruitmentDate = DateTime.Now;
-
-        //     StaffIdGeneratorService staffIdGeneratorService = new StaffIdGeneratorService();
-        //     staff.= staffIdGeneratorService.generateStaffId(staff.Category, recruitmentDate);
+            await checkOSpecializationIdAsync(staffdto.SpecializationId);
 
 
-        //     await _staffRepository.AddAsync(staff);
-        //     await _unitOfWork.CommitAsync();
+            await checkAvailabilitySlotIdAsync(staffdto.AvailabilitySlotsId);
 
-        //     return StaffMapper.toDTO(staff);
-        // }
+            DateTime recruitmentDate = DateTime.Now;
 
-       
+            StaffIdGeneratorService staffIdGeneratorService = new StaffIdGeneratorService();
+            Category category = Enum.Parse<Category>(staffdto.Category);
+            StaffId staffId = staffIdGeneratorService.generateStaffId(category, recruitmentDate);
+            Staff staff = StaffMapper.toDomain(staffdto, staffId);
+
+            await _staffRepository.AddAsync(staff);
+            await _unitOfWork.CommitAsync();
+
+            return StaffMapper.toDTO(staff);
+        }
+
+
+        public async Task<Staff> GetByIdAsync(StaffId id)
+        {
+
+            var op = await this._staffRepository.GetByIdAsync(id);
+            if (op == null)
+                return null;
+
+            return op;
+
+        }
+
+
 
         public async Task<Specialization> checkOSpecializationIdAsync(SpecializationId specializationId)
         {
