@@ -11,7 +11,7 @@ namespace DDDSample1.Domain.OperationRequestLoggers
 
         public static OperationRequestLoggerDto toDTO(OperationRequestLogger op)
         {
-            return new OperationRequestLoggerDto(op.Id.AsString(),op.DeadLineDate,op.Priority,op.OperationTypeId,op.DoctorId,op.OperationRequestId,op.LoggerType);
+            return new OperationRequestLoggerDto(op.Id.AsString(),op.DeadLineDate,op.Priority,op.OperationTypeId,op.DoctorThatRequestedId,op.DoctorThatWillPerformId,op.OperationRequestId,op.LoggerType);
         }
     }
 }

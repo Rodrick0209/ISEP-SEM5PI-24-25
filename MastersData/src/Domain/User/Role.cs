@@ -17,6 +17,7 @@ namespace DDDSample1.Domain.User{
 
 
         private void validateUserRole(string role){
+            role = role.ToLower();
             List<string> roles = new List<string> {"admin", "doctor", "nurse","technician","patient"};
             if(string.IsNullOrEmpty(role) || !roles.Contains(role)){
                 throw new ArgumentNullException("Invalid role");

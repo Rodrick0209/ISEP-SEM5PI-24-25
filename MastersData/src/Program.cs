@@ -135,7 +135,7 @@ ConfigureMyServices(builder.Services);
 
 var app = builder.Build();
 
-DataSeeder.SeedAsync(app.Services);
+await DataSeeder.SeedAsync(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

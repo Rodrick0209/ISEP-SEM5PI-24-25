@@ -64,64 +64,50 @@ namespace DDDSample1.Domain.OperationRequest
 
     }
 
-    public async Task<OperationRequest> UpdateAsync(OperationRequestDto dto)
+    public async Task<OperationRequest> UpdateAsync(ChangeOperationRequestDto dto, string doctorThatWantsToUpdateEmail)
     {
-    
         var op = await this._repo.GetByIdAsync(new OperationRequestId(dto.Id));
+        Email email = new Email(doctorThatWantsToUpdateEmail);
+        var doctorThatRequestedId = email.getFirstPartOfEmail();
         
-        Console.WriteLine("ENTROU");
-
-        var objetoLogger = LogObjectCreate(op, LoggerTypeOfChange.Update);
-        
-        Console.WriteLine("SAIU");
-
-
         if (op == null)
         {
             throw new BusinessRuleValidationException("Operation Request not found");
         }
 
-        if (!string.IsNullOrWhiteSpace(dto.OperationTypeId))
+        if (!op.doctorThatRequestedId.Equals(doctorThatRequestedId))
         {
-            await checkOperationTypeIdAsync(dto.OperationTypeId);
-            op.ChangeOperationTypeId(dto.OperationTypeId);
+            throw new BusinessRuleValidationException("Doctor not allowed to update this operation request");
         }
 
+        bool hasChanges = false;
 
-      /*  
-        if (!string.IsNullOrWhiteSpace(dto.DoctorId.AsString()))
+        if (!string.IsNullOrWhiteSpace(dto.Priority) && !op.priority.priority.Equals(dto.Priority))
         {
-            await checkDoctorIdAsync(dto.DoctorId);
-            op.ChangeDoctorId(dto.DoctorId);
-        }
-        */
-
-        if (!string.IsNullOrWhiteSpace(dto.Priority))
             op.ChangePriority(dto.Priority);
-
-        if (!string.IsNullOrWhiteSpace(dto.DeadLineDate))
-            op.ChangeDeadLineDate(dto.DeadLineDate);
-
-        /*
-        if (!string.IsNullOrWhiteSpace(dto.PatientId.AsString()))
-        {
-            await checkPatientAsync(dto.PatientId);
-            op.ChangePatientId(dto.PatientId);
+            hasChanges = true;
         }
 
-        */
+        if (!string.IsNullOrWhiteSpace(dto.DeadLineDate) && !op.deadLineDate.deadLineDate.Equals(dto.DeadLineDate))
+        {
+            op.ChangeDeadLineDate(dto.DeadLineDate);
+            hasChanges = true;
+        }
 
-        await this._operationRequestLoggerRepository.AddAsync(objetoLogger);
-        
+        if (hasChanges)
+        {
+            var objetoLogger = LogObjectCreate(op, LoggerTypeOfChange.Update);
+            await this._operationRequestLoggerRepository.AddAsync(objetoLogger);
+        }
+
         await this._unitOfWork.CommitAsync();
         return op;
-
     }
+
 
     private OperationRequestLogger LogObjectCreate(OperationRequest operationRequest, LoggerTypeOfChange typeOfChange)
     {
-       Console.WriteLine("OPERATION REQUESTTT -> " + operationRequest.Id.AsString());
-       return new OperationRequestLogger(operationRequest.deadLineDate.deadLineDate,operationRequest.priority.priority,operationRequest.operationTypeId,operationRequest.doctorId,operationRequest.Id.AsString(), typeOfChange.ToString());
+       return new OperationRequestLogger(operationRequest.deadLineDate.deadLineDate,operationRequest.priority.priority,operationRequest.operationTypeId,operationRequest.doctorThatWillPerformId ,operationRequest.doctorThatRequestedId,operationRequest.Id.AsString(), typeOfChange.ToString());
     }
     
 

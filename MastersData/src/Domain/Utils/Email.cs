@@ -32,5 +32,21 @@ namespace DDDSample1.Domain.Utils
             }
 
         }
+        
+        public string getFirstPartOfEmail()
+        {
+            if (string.IsNullOrEmpty(this.email))
+            {
+                throw new ArgumentException("Email cannot be null or empty", nameof(this.email));
+            }
+
+            var atIndex = this.email.IndexOf('@');
+            if (atIndex == -1)
+            {
+                throw new ArgumentException("Invalid email format", nameof(this.email));
+            }
+
+            return this.email.Substring(0, atIndex);
+        }
     }
 }

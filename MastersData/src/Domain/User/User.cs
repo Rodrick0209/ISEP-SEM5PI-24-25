@@ -84,7 +84,7 @@ namespace DDDSample1.Domain.User
         //increases the fail counter
         public void IncreaseFailCounter(int maxAllowedFailCounter, int minDefinedAsLimit)
         {
-            this.loginFailCounter = new LoginFailCounter(this.loginFailCounter.loginFailCounter + 1);
+            this.loginFailCounter = new LoginFailCounter(loginFailCounter.loginFailCounter + 1);
             if (this.loginFailCounter.loginFailCounter >= maxAllowedFailCounter)
             {
                 this.accountBlockedTime = new AccountBlockedTime(DateTime.Now.AddMinutes(minDefinedAsLimit));
@@ -153,7 +153,8 @@ namespace DDDSample1.Domain.User
             this.confirmationEditPatientToken = null;
             this.confirmationEditPatientTokenExpiration = null;
         }
-            
+
+        
 
     }
 

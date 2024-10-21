@@ -10,6 +10,9 @@ using DDDSample1.Domain.Shared;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.IdentityModel.JsonWebTokens;
+
 
 
 
@@ -52,7 +55,8 @@ namespace DDDSample1.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<OperationRequestDto>> Update(Guid id, OperationRequestDto dto)
+        [Authorize(Roles = "Doctor")]
+        public async Task<ActionResult<OperationRequestDto>> Update(Guid id, ChangeOperationRequestDto dto)
         {
             if (id != dto.Id)
             {
@@ -61,7 +65,9 @@ namespace DDDSample1.Controllers
 
             try
             {
-                var op = await _service.UpdateAsync(dto);
+                var emailDoctorQuerEditar = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                
+                var op = await _service.UpdateAsync(dto, emailDoctorQuerEditar);
                 if (op == null)
                 {
                     return NotFound();
