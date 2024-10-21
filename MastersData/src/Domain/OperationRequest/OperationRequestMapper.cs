@@ -11,7 +11,7 @@ namespace DDDSample1.Domain.OperationRequest
 
         public static OperationRequestDto toDTO(OperationRequest obj)
         {
-            return new OperationRequestDto (obj.Id.AsGuid(), obj.deadLineDate.ToString(), obj.priority.ToString(), obj.patientId, obj.operationTypeId, obj.doctorId);
+            return new OperationRequestDto (obj.Id.AsGuid(), obj.deadLineDate.deadLineDate, obj.priority.priority, obj.patientId, obj.operationTypeId, obj.doctorId);
         }
 
         public static OperationRequest toDomain(OperationRequestDto obj)

@@ -9,6 +9,7 @@ using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Domain.Shared;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using System.Collections.Generic;
 
 
 
@@ -31,7 +32,6 @@ namespace DDDSample1.Controllers
         [HttpPost]
         public async Task<ActionResult<OperationRequestDto>> Create(OperationRequestDto dto)
         {
-            
             var objDomain = OperationRequestMapper.toDomain(dto);
             var op = await _service.AddAsync(objDomain);
             var op2 = OperationRequestMapper.toDTO(op);
@@ -115,6 +115,23 @@ namespace DDDSample1.Controllers
         var operationRequests = await _service.GetOperationRequestsWithFilters(filters, doctorId);
         return Ok(operationRequests);
     }
+
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetAll()
+        {
+            var list = await  _service.GetAllAsync();
+            var listDto = new List<OperationRequestDto>();
+            
+            foreach (var op in list)
+            {
+                listDto.Add(OperationRequestMapper.toDTO(op));
+            }
+
+            return Ok(listDto);
+        } 
+
+
 
 
 

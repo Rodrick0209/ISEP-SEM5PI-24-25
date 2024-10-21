@@ -23,7 +23,7 @@ namespace DDDSample1.Domain.OperationRequest
             priority.ToLower();
             List<string> priorities = new List<string> {"eletric", "urgency", "emergency"};
             if(string.IsNullOrEmpty(priority) || !priorities.Contains(priority)){
-                throw new ArgumentNullException("Invalid priority");
+                throw new BusinessRuleValidationException("Invalid priority");
             }
         }
 

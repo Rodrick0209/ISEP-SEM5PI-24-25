@@ -69,7 +69,7 @@ namespace DDDSample1.Domain.Patients
 
         public void ChangeMedicalRecord(List<string> medicalRecord)
         {
-            this.MedicalRecord = new MedicalRecord(medicalRecord);
+            this.MedicalRecord._medicalRecord = medicalRecord;
         }
 
         public void AssociateUser(User.User user)

@@ -69,15 +69,21 @@ public static class DataSeeder
     var phase3 = new Phase(15, requiredStaffList3);
 
     // Create a new operation type with the phases and specialization
-    var operationType = new OperationType("Operation Type 1", true, phase1, phase2, phase3, specialization3.Id);
+    var operationType = new OperationType("New Operation Type", true, phase1, phase2, phase3, specialization1.Id);
+    var operationType2 = new OperationType("New Operation Type2", true, phase1, phase2, phase3, specialization2.Id);
 
 
-    var operationRequest = new OperationRequest("2025-02-18", "emergency", johnCena.Id, operationType.Id, new StaffId(Guid.NewGuid()));
+    Console.WriteLine(operationType.Id.AsGuid());
 
+    var operationRequest = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType.Id.AsString(),new StaffId("D202512345").AsString());
+    var operationRequest2 = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512345").AsString());
+    
 
     // Seed the operation type into the context
     SeedOperationType(context, operationType);
+    SeedOperationType(context, operationType2);
     SeedOperationRequest(context, operationRequest);
+    SeedOperationRequest(context,operationRequest2);
 
     context.SaveChanges();
   }
