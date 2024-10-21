@@ -32,15 +32,18 @@ public static class DataSeeder
 
    // SeedUsers(context, new User("admin@teste.com", "admin"), "password");
 
-    SeedPatients(context, new Patient(
+    Patient johnCena = new Patient(
       "John Cena",
       "2022-10-01",
       "male",
       "john.cena@example.com",
       "123456123",
       "945123111",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber()
-    ));
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
+    
+    
+    SeedPatients(context, johnCena);
+    
 
     var specialization = new Specialization("Ortopedia");
 
@@ -61,14 +64,14 @@ public static class DataSeeder
 
 
     // Create new phases with required staff
-    var phase1 = new Phase( 30, requiredStaffList1);
+    var phase1 = new Phase(30, requiredStaffList1);
     var phase2 = new Phase(45, requiredStaffList);
     var phase3 = new Phase(60, requiredStaffList);
 
     // Create a new operation type with the phases and specialization
     var operationType = new OperationType("New Operation Type", true, phase1, phase2, phase3, specialization.Id);
 
-    var OperationRequest = new OperationRequest("2025-02-18","emergency",,operationType.Id)
+    var operationRequest = new OperationRequest("2025-02-18","emergency",johnCena.Id,operationType.Id,new StaffId(Guid.NewGuid()));
 
     // Seed the operation type into the context
     SeedOperationType(context, operationType);

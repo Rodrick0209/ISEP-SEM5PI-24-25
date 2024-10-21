@@ -20,6 +20,9 @@ namespace DDDSample1.Infrastructure.Users
             builder.OwnsOne(b => b.accountBlockedTime);
             builder.OwnsOne(b => b.confirmationRegisterPatientToken);
             builder.OwnsOne(b => b.confirmationRegisterPatientTokenExpiration);
+            builder.OwnsOne(b => b.confirmationEditPatientToken);
+            builder.OwnsOne(b => b.confirmationEditPatientTokenExpiration);
+
 
         }
     }
