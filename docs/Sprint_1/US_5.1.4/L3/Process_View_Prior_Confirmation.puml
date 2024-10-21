@@ -9,7 +9,9 @@ participant EmailService as EmailService <<Service>>
 participant ConfirmationEditingPatientTokenGenerator as TokenGenerator <<Service>>
 participant UserRepository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>>
-participant User as Domain <<Domain>>
+participant User as User <<Domain>>
+participant Patient as Patient <<Domain>>
+participant PatientMapper as Mapper <<Mapper>>
 [o-> Route: PATCH (/api/users/patients/{logToken}/edit)
 activate Route
 Route -> Controller : PATCH 
@@ -23,16 +25,24 @@ return user
 Service -> Service : validateUserIsLogged(logToken, user)
 activate Service
 return flag
-Service -> Domain : changeName(name)
+Service -> PatientRepository : findPatientByEmail(email)
+activate PatientRepository
+return patient
+Service -> Patient : changeFullName(name)
 alt information contains sensitive data
 Service -> TokenGenerator : generateToken(user)
 activate TokenGenerator
 return token
+Service -> User : setConfirmationEditPatientToken(token, tokenExpirationDate)
+Service -> Repository : save(user)
 Service -> EmailService : sendEmail(email, token)
 end
-Service -> ConfirmationDTO** : createConfirmationEditPatientDTO(updatedUser, token, email, emailToEdit, phoneNumberToEdit)
+Service -> Mapper : toDTO(patient)
+activate Mapper
+return patientDTO
+Service -> ConfirmationDTO** : createConfirmationEditPatientDTO(patientDTO, token, email, emailToEdit, phoneNumberToEdit)
 return confirmationEditPatientDTO
-return confirmationEditPatientDTO
+return response
 <-- Route : response
 @enduml
 ```

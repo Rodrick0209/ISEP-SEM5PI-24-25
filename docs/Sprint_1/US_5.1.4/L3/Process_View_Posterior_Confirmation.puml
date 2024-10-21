@@ -6,10 +6,9 @@ participant ConfirmationEditPatientSensitiveDataDTO as ConfirmationDTO <<DTO>>
 participant UserService as Service <<Service>>
 participant UserRepository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>> 
-participant User as Domain <<Domain>>
 participant Patient as Patient <<Domain>>
 participant PatientMapper as Mapper <<Mapper>>
-[o-> Route : PATCH (/api/user/patients/{logToken}/edit/confirmation/{token})
+[o-> Route : PATCH (/api/user/patients/edit/confirmation/{token})
 activate Route
 Route -> Controller : PATCH
 activate Controller
@@ -19,23 +18,20 @@ activate Service
 Service -> Repository : findUserByEmail(email)
 activate Repository
 return user
-Service -> Service : validateUserIsLogged(logToken, user)
+Service -> Service : validateToken(user, token)
 activate Service
 return flag
 Service -> PatientRepository : findPatientByEmail(email)
 activate PatientRepository
 return patient
-Service -> Domain : confirm()
-Service -> Patient : associateUser(user)
-Service -> Repository : save(user)
+Service -> Patient : changeEmail(email)
+Service -> Patient : changePhoneNumber(phoneNumber)
 Service -> PatientRepository : save(patient)
 Service -> Mapper : toDTO(patient)
 activate Mapper
+return patientDTO 
 return patientDTO
-Service --> Controller : patientDTO
-deactivate Service
-Controller --> Route : response
-deactivate Controller
-<-- Route : response
+return response
+return response
 @enduml
 ```

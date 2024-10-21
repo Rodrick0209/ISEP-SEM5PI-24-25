@@ -73,8 +73,6 @@ when the patient follows the link sent to their personal email, the system will 
 
 ## 4. Design - Process View
 
-## 4. Design - Process View
-
  #### Level 1
  ![Process View - Level 1](L1/Process_View.svg)
 
