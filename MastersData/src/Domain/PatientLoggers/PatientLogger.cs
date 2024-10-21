@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Shared;
 
@@ -17,6 +18,7 @@ namespace DDDSample1.Domain.PatientLoggers
         public string EmergencyContact { get; private set; }
         public string MedicalRecordNumber { get; private set; }
         public string? MedicalConditions { get; private set; }
+        public List<string> MedicalRecord {get; private set;}
         public string TypeOfChange { get; private set; }
         public DateTime ModificationDate { get; private set; }
 
@@ -30,10 +32,11 @@ namespace DDDSample1.Domain.PatientLoggers
             PhoneNumber = default!;
             EmergencyContact = default!;
             MedicalRecordNumber = default!;
+            MedicalRecord = default!;
             TypeOfChange = default!;
         }
 
-        public PatientLogger(PatientId patientId, string fullName, string dateOfBirth, string gender, string email, string phoneNumber,  string emergencyContact, string medicalRecordNumber, string? medicalConditions, string change, DateTime modificiationDate)
+        public PatientLogger(PatientId patientId, string fullName, string dateOfBirth, string gender, string email, string phoneNumber,  string emergencyContact, string medicalRecordNumber, List<string> medicalRecord, string? medicalConditions, string change, DateTime modificiationDate)
         {
             this.Id = new PatientLoggerId(Guid.NewGuid());
             this.PatientId = patientId;
@@ -45,6 +48,7 @@ namespace DDDSample1.Domain.PatientLoggers
             this.EmergencyContact = emergencyContact;
             this.MedicalRecordNumber = medicalRecordNumber;
             this.MedicalConditions = medicalConditions;
+            this.MedicalRecord = medicalRecord;
             this.TypeOfChange = change;
             this.ModificationDate = modificiationDate;
         }
@@ -61,6 +65,7 @@ namespace DDDSample1.Domain.PatientLoggers
             this.EmergencyContact = default!;
             this.MedicalRecordNumber = medicalRecordNumber;
             this.MedicalConditions = default;
+            this.MedicalRecord = default!;
             this.TypeOfChange = typeOfChange;
             this.ModificationDate = modificationDate;
         }

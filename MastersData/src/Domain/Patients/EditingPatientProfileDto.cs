@@ -1,5 +1,7 @@
 #nullable enable
 
+using System.Collections.Generic;
+
 namespace DDDSample1.Domain.Patients
 {
     public class EditingPatientProfileDto
@@ -9,5 +11,6 @@ namespace DDDSample1.Domain.Patients
         public string? Email { get; set; }
         public string? PhoneNumber  { get; set; }
         public string? MedicalConditions { get; set; }
+        public List<string>? MedicalRecord { get; set; }
     }
 }

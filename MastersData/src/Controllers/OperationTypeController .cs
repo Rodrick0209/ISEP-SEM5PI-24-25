@@ -33,28 +33,7 @@ namespace DDDSample1.Controllers
             var op = await _service.CreateAsync(objDomain);
 
             return await GetById(op.Id.Value);
-            
-            /*
-            var specialization = await _Spe_service.GetByIdAsync(new SpecializationId(dto.Specialization));
-            // Retrieve specialization names for required staff
-            var specializationIds = op.preparationPhase.requiredStaff
-                .Concat(op.surgeryPhase.requiredStaff)
-                .Concat(op.cleaningPhase.requiredStaff)
-                .Select(staff => staff.specialization)
-                .Distinct()
-                .ToList();
-
-            var specializationNames = new Dictionary<Guid, string>();
-            foreach (var specId in specializationIds)
-            {
-                var spec = await _Spe_service.GetByIdAsync(new SpecializationId(specId.Value));
-                specializationNames[specId.AsGuid()] = spec.Name;
-            }
-
-            var op2 = OperationTypeMapper.ToDto(op, specialization.Name, specializationNames);
-            return CreatedAtAction(nameof(GetById), new { id = op2.Id }, op2);
-            */
-
+           
         }
 
         [HttpGet("{id}")]
@@ -71,20 +50,9 @@ namespace DDDSample1.Controllers
             var sp = new SpecializationId(op.specialization.Value);
             var specialization = await _Spe_service.GetByIdAsync(sp);
 
-            // Retrieve specialization names for required staff
-            var specializationIds = op.preparationPhase.requiredStaff
-                .Concat(op.surgeryPhase.requiredStaff)
-                .Concat(op.cleaningPhase.requiredStaff)
-                .Select(staff => staff.specialization)
-                .Distinct()
-                .ToList();
-
-            var specializationNames = new Dictionary<Guid, string>();
-            foreach (var specId in specializationIds)
-            {
-                var spec = await _Spe_service.GetByIdAsync(new SpecializationId(specId.Value));
-                specializationNames[specId.AsGuid()] = spec.Name;
-            }
+            
+            var specializationNames = await _Spe_service.GetByNameOperationTypeAsync(op);
+            
 
             var opDto = OperationTypeMapper.ToDto(op, specialization.Name, specializationNames);
             return Ok(opDto);

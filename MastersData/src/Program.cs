@@ -195,6 +195,9 @@ void ConfigureMyServices(IServiceCollection services)
     services.AddTransient<IStaffRepository, StaffRepository>();
     services.AddTransient<StaffService>();
 
+    services.AddTransient<IAvailabilitySlotsRepository, AvailabilitySlotRepository>();
+    
+
     services.AddTransient<ISpecializationRepository, SpecializationRepository>();
 
     services.AddTransient<IOperationRequestLoggerRepository, OperationRequestLoggerRepository>();

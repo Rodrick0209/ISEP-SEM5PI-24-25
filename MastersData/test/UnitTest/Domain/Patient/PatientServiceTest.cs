@@ -369,7 +369,7 @@ namespace UnitTest.Domain.Patient
                     "John Doe",
                 "1990-01-01",
                 "male",
-                "john.doe@example.com",
+                "johna.doing@example.com",
                 "1234567891",
                 "Jane Doe",
                 "202410000002"
