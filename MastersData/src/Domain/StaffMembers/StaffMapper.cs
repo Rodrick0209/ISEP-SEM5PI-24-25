@@ -18,10 +18,10 @@ namespace DDDSample1.Domain.StaffMembers
             );
         }
 
-        public static Staff toDomain(StaffDto dto)
+        public static Staff toDomain(StaffDto dto, StaffId staffId)
         {
             return new Staff(
-                dto.Id,
+                staffId,
                 dto.FullName,
                 dto.LicenseNumber,
                 dto.SpecializationId,
