@@ -1,0 +1,74 @@
+@startuml Process_View
+actor Admin 
+participant UI  as UI
+participant OperationTypeController as ctrl <<Controller>>
+participant OperationTypeMapper as mapper <<Mapper>>
+participant OperationType as domain <<Domain>>
+participant OperationTypeDTO as dto <<DTO>>
+participant OperationTypeService as service <<Service>>
+participant OperationTypeLogger as Logger <<Logger>>
+participant OperationTypeLoggerRepository as repositoryLogger <<Repository>>
+participant OperationTypeRepository as repository <<Repository>>
+participant UnitOfWork
+
+activate Admin
+
+Admin -> UI: Request to list Operation Types
+activate UI
+UI -> ctrl: requests HTTP GET for Operation Types
+activate ctrl
+note over ctrl : US 5.1.23
+
+ctrl --> UI: display list of Operation Types
+deactivate ctrl
+
+Admin -> UI: Select an Operation Type to edit
+note over UI: GetByID
+UI -> Admin: Show OperationType
+
+Admin -> UI: Edit OperationType
+UI -> ctrl: requests HTTP POST to edit Operation Type
+activate ctrl
+ctrl->service: saveLogger(OperationTypeDto)
+activate service
+service->Logger**:create
+service->repositoryLogger:save(OpeartionTypeLogger)
+activate repositoryLogger
+deactivate repositoryLogger
+service->UnitOfWork:CommitASync()
+activate UnitOfWork
+deactivate UnitOfWork
+service->ctrl:OperationTypeLogger
+deactivate service
+ctrl->mapper: ToEntity(OperationTypeDTO)
+activate mapper
+mapper->domain**: creates
+mapper ->ctrl: OperationType
+deactivate mapper
+ctrl->service: updateOperationType(OperationType)
+activate service
+service-> repository:updateOperationTypeASync(OperationType)
+activate repository
+deactivate repository
+service-> UnitOfWork: commitASync()
+activate UnitOfWork
+deactivate UnitOfWork
+service->ctrl: OperationType
+deactivate service
+ctrl-> mapper: toDTO(OperationType)
+activate mapper
+mapper->dto**:create
+mapper-->ctrl:OperationTypeDTO
+deactivate mapper
+
+
+
+
+
+ctrl --> UI: response
+deactivate ctrl
+UI --> Admin: Display success/error message
+deactivate UI
+deactivate Admin
+
+@enduml
