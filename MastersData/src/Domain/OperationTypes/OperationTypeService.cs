@@ -71,7 +71,6 @@ namespace DDDSample1.Domain.OperationTypes
 
         public async Task<List<OperationType>> GetAllAsync()
         {
-
             return await this._repo.GetAllAsync();
         }
 

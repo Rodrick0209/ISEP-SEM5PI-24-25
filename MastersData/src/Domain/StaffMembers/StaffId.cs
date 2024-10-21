@@ -9,7 +9,13 @@ namespace DDDSample1.Domain.StaffMembers
         [JsonConstructor]
         public StaffId(Guid value) : base(value) { }
 
-        public StaffId(string value) : base(value) { }
+        public StaffId(string value) : base(value) 
+        {
+            if (!IsValid(value))
+            {
+                throw new ArgumentException("Invalid Staff ID format.");
+            }
+        }
 
         // Construtor para criar StaffId a partir de uma string específica
         public static StaffId Create(string value)
@@ -25,7 +31,7 @@ namespace DDDSample1.Domain.StaffMembers
             {
                 throw new ArgumentException("Invalid Staff ID format.");
             }
-            return new StaffId(text);
+            return text; // Retorna o texto validado
         }
 
         override

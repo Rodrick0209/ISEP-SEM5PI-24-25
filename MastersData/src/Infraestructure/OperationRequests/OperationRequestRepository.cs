@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 
 
@@ -24,6 +25,7 @@ namespace DDDSample1.Infrastructure.OperationRequests
 
         public async Task<List<OperationRequest>> GetOperationRequestsWithFilters(OperationRequestFilterDto filters, string doctorId)
         {
+            /*
             var query = context.OperationRequests
                     .Join(context.Patients,
                         or => or.patientId,
@@ -48,7 +50,19 @@ namespace DDDSample1.Infrastructure.OperationRequests
                 }
 
                 return await query.Select(op => op.OperationRequest).ToListAsync();
+            */
+            return null;
+        
         }
+    
+    
+        public async Task<List<OperationRequest>> GetAllAsync()
+        {
+            return await this.context.OperationRequests
+                .ToListAsync();
+        }
+    
+    
     }
 
 }

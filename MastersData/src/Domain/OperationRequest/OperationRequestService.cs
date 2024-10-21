@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.StaffMembers;
+using DDDSample1.Domain.Patients;
+using DDDSample1.Domain.OperationRequestLoggers;
+using DDDSample1.Domain.Utils;
 
 
 
@@ -18,16 +21,22 @@ namespace DDDSample1.Domain.OperationRequest
     
     // private readonly IAppointmentRepository _appointmentRepository;
 
+    private readonly IPatientRepository _patientRepository;
+
     private readonly IOperationTypeRepository  _operationTypeRepository;
 
-    private readonly IStaffRepository _staffRepository; 
+    private readonly IStaffRepository _staffRepository;
+    
+    private readonly IOperationRequestLoggerRepository _operationRequestLoggerRepository;
 
-    public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository repo,IOperationTypeRepository operationTypeRepository, IStaffRepository staffRepository)
+    public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository repo,IOperationTypeRepository operationTypeRepository, IStaffRepository staffRepository, IPatientRepository patientRepository, IOperationRequestLoggerRepository operationRequestLoggerRepository)
     {
         this._unitOfWork = unitOfWork;
         this._repo = repo;
         this._operationTypeRepository = operationTypeRepository;
         this._staffRepository = staffRepository;
+        this._patientRepository = patientRepository;
+        this._operationRequestLoggerRepository = operationRequestLoggerRepository;
        // this._appointmentRepository = appointmentRepository;
     }
 
@@ -38,14 +47,16 @@ namespace DDDSample1.Domain.OperationRequest
     {
          await checkOperationTypeIdAsync(operationRequest.operationTypeId);
          
-//       await checkDoctorIdAsync(operationRequest.doctorId);
+        // await checkDoctorIdAsync(operationRequest.doctorId);
+        // await checkPatientAsync(operationRequest.patientId);
         
-        
-        // falta adicionar o operation request ao medical history
 
-        Console.WriteLine("ERRO 3");
 
         await this._repo.AddAsync(operationRequest);
+
+        // falta adicionar o operation request ao medical history
+
+
 
         await this._unitOfWork.CommitAsync();
 
@@ -55,24 +66,64 @@ namespace DDDSample1.Domain.OperationRequest
 
     public async Task<OperationRequest> UpdateAsync(OperationRequestDto dto)
     {
-      //  await checkOperationTypeIdAsync(dto.OperationTypeId);
-      //  await checkDoctorIdAsync(dto.DoctorId);
     
         var op = await this._repo.GetByIdAsync(new OperationRequestId(dto.Id));
+        
+        Console.WriteLine("ENTROU");
+
+        var objetoLogger = LogObjectCreate(op, LoggerTypeOfChange.Update);
+        
+        Console.WriteLine("SAIU");
+
+
         if (op == null)
-            return null;
+        {
+            throw new BusinessRuleValidationException("Operation Request not found");
+        }
 
+        if (!string.IsNullOrWhiteSpace(dto.OperationTypeId))
+        {
+            await checkOperationTypeIdAsync(dto.OperationTypeId);
             op.ChangeOperationTypeId(dto.OperationTypeId);
+        }
+
+
+      /*  
+        if (!string.IsNullOrWhiteSpace(dto.DoctorId.AsString()))
+        {
+            await checkDoctorIdAsync(dto.DoctorId);
             op.ChangeDoctorId(dto.DoctorId);
+        }
+        */
+
+        if (!string.IsNullOrWhiteSpace(dto.Priority))
             op.ChangePriority(dto.Priority);
+
+        if (!string.IsNullOrWhiteSpace(dto.DeadLineDate))
             op.ChangeDeadLineDate(dto.DeadLineDate);
+
+        /*
+        if (!string.IsNullOrWhiteSpace(dto.PatientId.AsString()))
+        {
+            await checkPatientAsync(dto.PatientId);
             op.ChangePatientId(dto.PatientId);
+        }
 
-            await this._unitOfWork.CommitAsync();
+        */
 
-            return op;
+        await this._operationRequestLoggerRepository.AddAsync(objetoLogger);
+        
+        await this._unitOfWork.CommitAsync();
+        return op;
 
     }
+
+    private OperationRequestLogger LogObjectCreate(OperationRequest operationRequest, LoggerTypeOfChange typeOfChange)
+    {
+       Console.WriteLine("OPERATION REQUESTTT -> " + operationRequest.Id.AsString());
+       return new OperationRequestLogger(operationRequest.deadLineDate.deadLineDate,operationRequest.priority.priority,operationRequest.operationTypeId,operationRequest.doctorId,operationRequest.Id.AsString(), typeOfChange.ToString());
+    }
+    
 
 
     public async Task<OperationRequest> DeleteAsync(OperationRequestId id)
@@ -129,7 +180,29 @@ namespace DDDSample1.Domain.OperationRequest
         return opType;
     }
 
- 
+    public async Task<OperationType> checkOperationTypeIdAsync(string operationTypeId)
+    {
+        try
+        {
+            var id = new OperationTypeId(operationTypeId);
+            Console.WriteLine("ID ->: " + id);
+            var opType = await this._operationTypeRepository.GetByIdAsync(id);
+
+            if (opType == null)
+            {
+                throw new BusinessRuleValidationException("Operation Type not found");
+            }
+
+            return opType;
+        }
+        catch (Exception e)
+        {
+            throw new BusinessRuleValidationException ("Operation Type Not Found");
+        }
+    }
+
+
+
  
     
     public async Task<Staff> checkDoctorIdAsync(StaffId doctorId)
@@ -146,6 +219,22 @@ namespace DDDSample1.Domain.OperationRequest
 
 
     }
+
+    public async Task<List<OperationRequest>> GetAllAsync()
+    {    
+        return await this._repo.GetAllAsync();
+    }
+
+    public async Task<Patient> checkPatientAsync(PatientId id)
+    {
+        var patient = await this._patientRepository.GetByIdAsync(id);
+        if(patient == null)
+            throw new BusinessRuleValidationException("Patient not found");
+        return patient;
+    }
+
+
+
 /*
     public async Task<Appointment> checkOperationRequestIsAppointementAsync(OperationRequestId id)
     {
@@ -158,6 +247,8 @@ namespace DDDSample1.Domain.OperationRequest
 
 
     */
+
+
 
 
 }

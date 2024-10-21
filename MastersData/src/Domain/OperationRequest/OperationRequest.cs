@@ -15,16 +15,19 @@ namespace DDDSample1.Domain.OperationRequest
         public DeadLineDate deadLineDate { get; private set; }
         public Priority priority { get; private set; }
 
-        public PatientId patientId { get; private set; }
+       // public PatientId patientId { get; private set; }
+            public String patientId {get; private set;}
+            public String operationTypeId{get; private set;}
+            public String doctorId{get; private set;}
 
-        public OperationTypeId operationTypeId { get; private set; }   
+      //  public OperationTypeId operationTypeId { get; private set; }   
 
-        public StaffId doctorId { get; private set; }
+      //  public StaffId doctorId { get; private set; }
 
         private OperationRequest()
         {
         }
-
+/*
         public OperationRequest(string deadLineDate, string priority, PatientId patientId, OperationTypeId operationTypeId, StaffId doctorId)
         {
             this.Id = new OperationRequestId(Guid.NewGuid());
@@ -34,6 +37,17 @@ namespace DDDSample1.Domain.OperationRequest
             this.operationTypeId = operationTypeId;
             this.doctorId = doctorId;
         }
+*/
+        public OperationRequest(string deadLineDate, string priority, String patientId, String operationTypeId, String doctorId)
+        {
+            this.Id = new OperationRequestId(Guid.NewGuid());
+            this.priority = new Priority(priority);
+            this.deadLineDate = new DeadLineDate(deadLineDate);
+            this.patientId = patientId;
+            this.operationTypeId = operationTypeId;
+            this.doctorId = doctorId;
+        }
+
 
 
         public void ChangeDeadLineDate(string deadLineDate)
@@ -47,21 +61,41 @@ namespace DDDSample1.Domain.OperationRequest
             this.priority = new Priority(priority);
         }
 
-        public void ChangePatientId(PatientId patientId)
+  /*      public void ChangePatientId(PatientId patientId)
+        {       
+            this.patientId = patientId;
+        }
+        */
+
+        public void ChangePatientId(String patientId)
         {       
             this.patientId = patientId;
         }
 
+
+/*
         public void ChangeOperationTypeId(OperationTypeId operationTypeId)
         {
             this.operationTypeId = operationTypeId;
         }
+        */
 
+        public void ChangeOperationTypeId(String operationTypeId)
+        {
+            this.operationTypeId = operationTypeId;
+        }
+
+     /*
         public void ChangeDoctorId(StaffId doctorId)
         {
             this.doctorId = doctorId;
         }
+        */
 
+        public void ChangeDoctorId(String doctorId)
+        {
+            this.doctorId = doctorId;
+        }
 
     }
 
