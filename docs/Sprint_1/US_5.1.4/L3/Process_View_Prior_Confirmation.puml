@@ -9,6 +9,7 @@ participant EmailService as EmailService <<Service>>
 participant ConfirmationEditingPatientTokenGenerator as TokenGenerator <<Service>>
 participant UserRepository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>>
+participant PatientLogger as Logger <<Domain>>
 participant User as User <<Domain>>
 participant Patient as Patient <<Domain>>
 participant PatientMapper as Mapper <<Mapper>>
@@ -22,12 +23,16 @@ activate Service
 Service -> Repository : findUserByEmail(email)
 activate Repository
 return user
-Service -> Service : validateUserIsLogged(logToken, user)
-activate Service
-return flag
 Service -> PatientRepository : findPatientByEmail(email)
 activate PatientRepository
 return patient
+Service -> Service : validateEmailIsUnique(email)
+activate Service
+return flag
+Service -> Service : validatePhoneNumberIsUnique(phoneNumber)
+activate Service
+return flag
+Service -> Logger : logChanges(patient)
 Service -> Patient : changeFullName(name)
 alt information contains sensitive data
 Service -> TokenGenerator : generateToken(user)
