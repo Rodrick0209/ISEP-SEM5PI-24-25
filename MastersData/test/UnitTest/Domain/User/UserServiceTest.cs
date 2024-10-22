@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DDDSample1.Domain.PatientLoggers;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
@@ -19,6 +20,7 @@ namespace MastersData.test.UnitTest.Domain.User
         private readonly Mock<IEmailSender> _emailSenderMock;
         private readonly Mock<IConfiguration> _configurationMock;
         private readonly Mock<IPatientRepository> _patientRepoMock;
+        private readonly Mock<IPatientLoggerRepository> _patientLoggerRepoMock;
         private readonly UserService _userService;
 
         public UserServiceTest()
@@ -28,13 +30,15 @@ namespace MastersData.test.UnitTest.Domain.User
             _emailSenderMock = new Mock<IEmailSender>();
             _configurationMock = new Mock<IConfiguration>();
             _patientRepoMock = new Mock<IPatientRepository>();
+            _patientLoggerRepoMock = new Mock<IPatientLoggerRepository>();
 
             _userService = new UserService(
                 _unitOfWorkMock.Object,
                 _userRepoMock.Object,
                 _configurationMock.Object,
                 _emailSenderMock.Object,
-                _patientRepoMock.Object
+                _patientRepoMock.Object,
+                _patientLoggerRepoMock.Object
             );
         }
 
@@ -218,6 +222,121 @@ namespace MastersData.test.UnitTest.Domain.User
             _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(Patient));
 
             await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.ConfirmRegisterPatientAsync(dto));
+        }
+
+        [Fact]
+        public async Task EditPatientAsync_ShouldThrowException_WhenUserNotFound()
+        {
+            // Arrange
+            var dto = new EditingPatientDto { Email = "test@example.com", NameToEdit = "John Doing" };
+            PasswordHasher passwordHasher = new PasswordHasher();
+            var user = new DDDSample1.Domain.User.User ("john.doe@example.com", "patient", passwordHasher.HashPassword("password"));
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456789", "934512876", "202410000001");
+            patient.AssociateUser(user);
+            _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(DDDSample1.Domain.User.User));
+
+            // Act & Assert
+            await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.EditPatientAsync(dto));
+        }
+
+        [Fact]
+        public async Task EditPatientAsync_ShouldThrowException_WhenPatientNotFound()
+        {
+            // Arrange
+            var dto = new EditingPatientDto { Email = "test@example.com", NameToEdit = "John Doing" };
+            PasswordHasher passwordHasher = new PasswordHasher();
+            var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
+            var patient = new Patient("John Doe", "2024-10-12", "male", "john.doe@example.com", "123456789", "934512876", "202410000001");
+            patient.AssociateUser(user);
+            _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
+            _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(Patient));
+
+            // Act & Assert
+            await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.EditPatientAsync(dto));
+        }
+
+        [Fact]
+        public async Task EditPatientAsync_ShouldThrowException_WhenNewEmailIsNotUnique()
+        {
+            // Arrange
+            var dto = new EditingPatientDto { Email = "testing@example.com", NameToEdit = "John Doing", EmailToEdit = "john.doe@gmail.com"};
+            PasswordHasher passwordHasher = new PasswordHasher();
+            var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456789", "934512876", "202410000001");
+            patient.AssociateUser(user);
+            var existingPatient = new Patient("Jane Doe", "2024-10-12", "female", "john.doe@example.com", "123456787", "934512876", "202410000002");
+            _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
+            _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(patient);
+            _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.EmailToEdit)).ReturnsAsync(existingPatient);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.EditPatientAsync(dto));
+        }
+
+        [Fact]
+        public async Task EditPatientAsync_ShouldThrowException_WhenNewPhoneNumberIsNotUnique(){
+            // Arrange
+            var dto = new EditingPatientDto { Email = "test@example.com", NameToEdit = "John Doing" , PhoneNumberToEdit = "123456789"};
+            PasswordHasher passwordHasher = new PasswordHasher();
+            var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456787", "934512876", "202410000001");
+            patient.AssociateUser(user);
+            var existingPatient = new Patient("Jane Doe", "2024-10-12", "female", "jane.doe@example.com", "123456789", "934512876", "202410000002");
+            _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
+            _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(patient);
+            _patientRepoMock.Setup(repo => repo.GetByPhoneNumberAsync(dto.PhoneNumberToEdit)).ReturnsAsync(existingPatient);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.EditPatientAsync(dto));
+        }
+
+        [Fact]
+        public async Task ConfirmEditPatientSensitiveDataAsync_ShouldThrowException_WhenUserNotFound()
+        {
+            // Arrange
+            var dto = new ConfirmationEditPatientSensitiveDataDto{ Token = "token", Email = "test@example.com", EmailToEdit = "john.doe@gmail.com"};
+            PasswordHasher passwordHasher = new PasswordHasher();
+            var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456787", "934512876", "202410000001");
+            patient.AssociateUser(user);
+            user.SetConfirmationEditPatientToken(dto.Token, DateTime.UtcNow.AddHours(24));
+            _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(DDDSample1.Domain.User.User));
+
+            // Act & Assert
+            await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.ConfirmEditPatientSensitiveDataAsync(dto));
+        }
+
+        [Fact]
+        public async Task ConfirmEditPatientSensitiveDataAsync_ShouldThrowException_WhenTokenIsInvalid()
+        {
+            // Arrange
+            var dto = new ConfirmationEditPatientSensitiveDataDto{ Token = "token", Email = "jane.doe@example.com", EmailToEdit = "john.doe@example.com"};
+            PasswordHasher passwordHasher = new PasswordHasher();
+            var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456787", "934512876", "202410000001");
+            patient.AssociateUser(user);
+            user.SetConfirmationEditPatientToken("valid_token", DateTime.UtcNow.AddHours(24));
+            _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.ConfirmEditPatientSensitiveDataAsync(dto));
+        }
+
+        [Fact]
+        public async Task ConfirmEditPatientSensitiveDataAsync_ShouldThrowException_WhenPatientNotFound()
+        {
+            // Arrange
+            var dto = new ConfirmationEditPatientSensitiveDataDto{ Token = "token", Email = "test@example.com", EmailToEdit = "john.doe@gmail.com"};
+            PasswordHasher passwordHasher = new PasswordHasher();
+            var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456787", "934512876", "202410000001");
+            patient.AssociateUser(user);
+            user.SetConfirmationEditPatientToken(dto.Token, DateTime.UtcNow.AddHours(24));
+            _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
+            _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.EmailToEdit)).ReturnsAsync(default(Patient));
+
+            // Act & Assert
+            await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.ConfirmEditPatientSensitiveDataAsync(dto));
         }
     }
 }
