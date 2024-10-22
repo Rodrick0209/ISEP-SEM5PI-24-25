@@ -163,6 +163,41 @@ namespace DDDSample1.Controllers
             }
         }
 
+        // PATCH : api/user/patients/edit
+        [HttpPatch("patients/edit")]
+        public async Task<ActionResult<ConfirmationEditPatientDto>> EditPatientAsync(EditingPatientDto dto){
+    
+                try
+                {
+                    var confirmationEditPatientDto = await _service.EditPatientAsync(dto);
+    
+                    return Ok(confirmationEditPatientDto);
+                } catch (Exception ex)
+                {
+                    return BadRequest(new { Message = ex.ToString() });
+                }
+        }
+
+        // PATCH : api/user/patients/edit/confirmation/{token}
+        [HttpPatch("patients/edit/confirmation/{token}")]
+        public async Task<ActionResult<PatientDto>> ConfirmEditPatientSensitiveDataAsync(string email, string token, ConfirmationEditPatientSensitiveDataDto dto){
+
+            if (token != dto.Token)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var patientDto = await _service.ConfirmEditPatientSensitiveDataAsync(dto);
+
+                return Ok(patientDto);
+            } catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.ToString() });
+            }
+        }
+
 
     }
 
