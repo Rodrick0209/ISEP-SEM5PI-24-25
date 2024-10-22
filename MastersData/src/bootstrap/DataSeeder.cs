@@ -64,7 +64,6 @@ public static class DataSeeder
     var user = new User("D202512345@gmail.com","Doctor");
     var user2 = new User("D202512344@gmail.com","Doctor");
 
-
     // Create new phases with required staff
     var phase1 = new Phase(20, requiredStaffList1);
     var phase2 = new Phase(90, requiredStaffList2);
