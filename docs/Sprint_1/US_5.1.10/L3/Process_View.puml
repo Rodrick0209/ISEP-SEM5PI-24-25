@@ -17,17 +17,8 @@ activate Service
 Service -> Repository : findByMedicalRecordNumber(medicalRecordNumber)
 activate Repository
 return patient
-Service -> Repository : delete(patient)
 Service -> Logger : logChanges(patient)
-alt the period mandated of data retention has expired
-    Service -> Logger : createImportantLog(medicalRecordNumber, modificationDate)
-    Service -> LoggerRepository: findLogsByPatientId(id)
-    activate LoggerRepository
-    return logs
-    loop through logs
-        Service -> LoggerRepository: delete(logs)
-    end
-end
+Service -> Repository : delete(patient)
 deactivate Repository
 deactivate Service
 Controller --> Route : response
