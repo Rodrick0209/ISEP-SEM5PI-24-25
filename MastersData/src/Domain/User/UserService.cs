@@ -17,6 +17,8 @@ using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Utils;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.AspNetCore.Routing;
+using DDDSample1.Domain.PatientLoggers;
 
 namespace DDDSample1.Domain.User
 {
@@ -27,18 +29,21 @@ namespace DDDSample1.Domain.User
         private readonly IUserRepository _repo;
         private readonly IPatientRepository _patientRepo;
 
+        private readonly IPatientLoggerRepository _patientLoggerRepository;
+
         private readonly IConfiguration _configuration;
 
         private readonly IEmailSender _emailSender;
 
 
-        public UserService(IUnitOfWork unitOfWork, IUserRepository repo, IConfiguration configuration, IEmailSender emailSender, IPatientRepository patientRepo)
+        public UserService(IUnitOfWork unitOfWork, IUserRepository repo, IConfiguration configuration, IEmailSender emailSender, IPatientRepository patientRepo, IPatientLoggerRepository patientLoggerRepository)
         {
             _unitOfWork = unitOfWork;
             _repo = repo;
             _configuration = configuration;
             _emailSender = emailSender;
             _patientRepo = patientRepo;
+            _patientLoggerRepository = patientLoggerRepository;
         }
 
 
@@ -247,8 +252,6 @@ namespace DDDSample1.Domain.User
                 throw new BusinessRuleValidationException("User not found");
             }
 
-            ValidatePatientNewEmailIsUnique(dto.EmailToEdit);
-
             var patient = await _patientRepo.GetByEmailAsync(dto.Email);
 
             if (patient == null)
@@ -256,12 +259,23 @@ namespace DDDSample1.Domain.User
                 throw new BusinessRuleValidationException("Patient not found");
             }
 
+            if(!string.IsNullOrWhiteSpace(dto.EmailToEdit)){
+                ValidatePatientNewEmailIsUnique(dto.EmailToEdit);
+            }
+            
+            if(!string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit)){
+                ValidatePatientNewPhoneNumberIsUnique(dto.PhoneNumberToEdit);
+            }
+
+            LogPatientChanges(patient, "update");
+
             if (!string.IsNullOrWhiteSpace(dto.NameToEdit))
             {
                 patient.ChangeFullName(dto.NameToEdit);
             }
 
             string? token = null;
+            string? email = null;
             string? emailToEdit = null;
             string? phoneNumberToEdit = null;
 
@@ -276,9 +290,10 @@ namespace DDDSample1.Domain.User
                 {
                     phoneNumberToEdit = dto.PhoneNumberToEdit;
                 }
+                email = dto.Email;
             }
 
-            return new ConfirmationEditPatientDto(PatientMapper.ToDto(patient), token, dto.Email, emailToEdit, phoneNumberToEdit);
+            return new ConfirmationEditPatientDto(PatientMapper.ToDto(patient), token, email, emailToEdit, phoneNumberToEdit);
         }
 
         public async Task<PatientDto> ConfirmEditPatientSensitiveDataAsync(ConfirmationEditPatientSensitiveDataDto dto){
@@ -389,6 +404,23 @@ namespace DDDSample1.Domain.User
             }
         }
 
+        private void LogPatientChanges(Patient patient, string typeOfChange)
+        {
+            var patientLogger = new PatientLogger(
+                patient.Id,
+                patient.FullName.fullName,
+                patient.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd"),
+                patient.Gender.gender,
+                patient.Email.email,
+                patient.PhoneNumber.phoneNumber,
+                patient.EmergencyContact.emergencyContact,
+                patient.MedicalRecordNumber._medicalRecordNumber,
+                patient.MedicalConditions?.medicalConditions ?? null,
+                typeOfChange,
+                DateTime.UtcNow
+            );
 
+            _patientLoggerRepository.AddAsync(patientLogger);
+        }
     }
 }
