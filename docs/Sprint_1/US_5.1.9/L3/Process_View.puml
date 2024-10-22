@@ -19,15 +19,14 @@ activate Service
 Service -> Repository : findByMedicalRecordNumber(medicalRecordNumber)
 activate Repository
 return patient
+Service -> Logger : logChanges(patient)
 Service -> Domain : changeName(newName)
 Service -> Domain : changeEmail(newEmail)
 Service -> Domain : changePhoneNumber(newPhoneNumber)
 Service -> Domain : changeMedicalConditions(newMedicalConditions)
-Serivce -> Domain : changeMedicalRecord(medicalRecord)
-Service -> Logger : logChanges(patient)
 Service -> Repository : save(patient)
 alt content editable contains sensitive info
-    Service -> EmailService : sendEmail(email)
+    Service -> EmailService : sendEmailNotification(email)
 end
 Service -> Mapper : toDTO(patient)
 activate Mapper
