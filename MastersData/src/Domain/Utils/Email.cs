@@ -46,7 +46,7 @@ namespace DDDSample1.Domain.Utils
                 throw new ArgumentException("Invalid email format", nameof(this.email));
             }
 
-            return this.email.Substring(0, atIndex);
+            return email.Substring(0, atIndex);
         }
     }
 }

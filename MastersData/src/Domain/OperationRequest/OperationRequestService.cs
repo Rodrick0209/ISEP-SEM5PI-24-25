@@ -79,6 +79,8 @@ namespace DDDSample1.Domain.OperationRequest
         {
             throw new BusinessRuleValidationException("Doctor not allowed to update this operation request");
         }
+        
+        var objetoLogger = LogObjectCreate(op, LoggerTypeOfChange.Update);
 
         bool hasChanges = false;
 
@@ -96,7 +98,6 @@ namespace DDDSample1.Domain.OperationRequest
 
         if (hasChanges)
         {
-            var objetoLogger = LogObjectCreate(op, LoggerTypeOfChange.Update);
             await this._operationRequestLoggerRepository.AddAsync(objetoLogger);
         }
 
