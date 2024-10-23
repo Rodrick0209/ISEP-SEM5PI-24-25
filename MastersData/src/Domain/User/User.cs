@@ -13,7 +13,7 @@ namespace DDDSample1.Domain.User
 
         public Role role{get; private set;}
 
-        public Password password { get; private set; }
+        public Password ? password { get; private set; }
 
         public ResetPasswordToken ? resetPasswordToken { get; private set; }
         public ResetPasswordTokenExpiration ? resetPasswordTokenExpiration { get; private set; }
@@ -27,8 +27,12 @@ namespace DDDSample1.Domain.User
         public ConfirmationRegisterPatientTokenExpiration ? confirmationRegisterPatientTokenExpiration { get; private set; }
         public ConfirmationEditPatientToken ? confirmationEditPatientToken { get; private set; }
         public ConfirmationEditPatientTokenExpiration ? confirmationEditPatientTokenExpiration { get; private set; }
+        public ConfirmationDeletePatientToken ? confirmationDeletePatientToken { get; private set; }
+        public ConfirmationDeletePatientTokenExpiration ? confirmationDeletePatientTokenExpiration { get; private set; }
         private User()
         {
+            this.email = default!;
+            this.role = default!;
         }
 
         public User (string email, string role)
@@ -142,6 +146,12 @@ namespace DDDSample1.Domain.User
         {
             this.confirmationEditPatientToken = null;
             this.confirmationEditPatientTokenExpiration = null;
+        }
+
+        public void SetConfirmationDeletePatientToken(string token, DateTime expirationDate)
+        {
+            this.confirmationDeletePatientToken = new ConfirmationDeletePatientToken(token);
+            this.confirmationDeletePatientTokenExpiration = new ConfirmationDeletePatientTokenExpiration(expirationDate);
         }
 
         

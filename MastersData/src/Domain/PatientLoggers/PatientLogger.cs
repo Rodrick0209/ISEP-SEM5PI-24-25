@@ -15,7 +15,9 @@ namespace DDDSample1.Domain.PatientLoggers
         public string Email { get; private set; }
         public string PhoneNumber { get; private set; }
         public string Gender { get; private set; }
-        public string EmergencyContact { get; private set; }
+        public string EmergencyContactName { get; private set; }
+        public string EmergencyContactEmail { get; private set; }
+        public string EmergencyContactPhoneNumber { get; private set; }
         public string MedicalRecordNumber { get; private set; }
         public string? MedicalConditions { get; private set; }
 
@@ -30,12 +32,14 @@ namespace DDDSample1.Domain.PatientLoggers
             Gender = default!;
             Email = default!;
             PhoneNumber = default!;
-            EmergencyContact = default!;
+            EmergencyContactName = default!;
+            EmergencyContactEmail = default!;
+            EmergencyContactPhoneNumber = default!;
             MedicalRecordNumber = default!;
             TypeOfChange = default!;
         }
 
-        public PatientLogger(PatientId patientId, string fullName, string dateOfBirth, string gender, string email, string phoneNumber,  string emergencyContact, string medicalRecordNumber, string? medicalConditions, string change, DateTime modificiationDate)
+        public PatientLogger(PatientId patientId, string fullName, string dateOfBirth, string gender, string email, string phoneNumber,  string emergencyContactName, string emergencyContactEmail, string emergencyContactPhoneNumber, string medicalRecordNumber, string? medicalConditions, string change, DateTime modificiationDate)
         {
             this.Id = new PatientLoggerId(Guid.NewGuid());
             this.PatientId = patientId;
@@ -44,7 +48,9 @@ namespace DDDSample1.Domain.PatientLoggers
             this.Gender = gender;
             this.Email = email;
             this.PhoneNumber = phoneNumber;
-            this.EmergencyContact = emergencyContact;
+            this.EmergencyContactName = emergencyContactName;
+            this.EmergencyContactEmail = emergencyContactEmail;
+            this.EmergencyContactPhoneNumber = emergencyContactPhoneNumber;
             this.MedicalRecordNumber = medicalRecordNumber;
             this.MedicalConditions = medicalConditions;
             this.TypeOfChange = change;
@@ -60,7 +66,9 @@ namespace DDDSample1.Domain.PatientLoggers
             this.Gender = default!;
             this.Email = default!;
             this.PhoneNumber = default!;
-            this.EmergencyContact = default!;
+            this.EmergencyContactName = default!;
+            this.EmergencyContactEmail = default!;
+            this.EmergencyContactPhoneNumber = default!;
             this.MedicalRecordNumber = medicalRecordNumber;
             this.MedicalConditions = default;
             this.TypeOfChange = typeOfChange;

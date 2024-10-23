@@ -51,6 +51,8 @@ namespace DDDSample1.Infrastructure
 
         public DbSet<OperationRequestLogger> OperationRequestLoggers { get; set; }
 
+        public DbSet<OperationTypeLogger> OperationTypeLoggers { get; set; }
+
         public DbSet<PatientLogger> PatientLoggers { get; set; }
 
         public DDDSample1DbContext(DbContextOptions options) : base(options)

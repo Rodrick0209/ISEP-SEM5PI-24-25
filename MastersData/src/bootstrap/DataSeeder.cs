@@ -23,14 +23,23 @@ public static class DataSeeder
 
     // SeedUsers(context, new User("admin@teste.com", "admin"), "password");
 
+    Patient lastPatientInMonth = context.Patients
+                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Substring(0,6) == DateTime.Now.ToString("yyyyMM"))
+                .OrderByDescending(p => p.MedicalRecordNumber._medicalRecordNumber)
+                .FirstOrDefault();
+
     Patient johnCena = new Patient(
       "John Cena",
       "2022-10-01",
       "male",
       "john.cena@example.com",
       "123456123",
-      "945123111",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
+      "Jane Cena",
+      "jane.cena@example.com",
+      "234567234",
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(lastPatientInMonth)
+    );
+
     SeedPatients(context, johnCena);
 
     Patient johnCena2 = new Patient(

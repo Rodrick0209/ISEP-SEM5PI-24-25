@@ -94,6 +94,58 @@ namespace DDDSample1.Infrastructure.Users
 
             return token;
         }
+
+        public string CreateConfirmationEditPatientToken(User user)
+        {
+            string secretKey = configuration["Jwt:SecretKey"];
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, user.email.email),
+                    new Claim("purpose", "confirmation_edit_patient") 
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(2), // Expira em 24 horas
+                SigningCredentials = credentials,
+                Issuer = configuration["Jwt:Issuer"],
+                Audience = configuration["Jwt:Audience"]
+            };
+
+            var handler = new JsonWebTokenHandler();
+            string token = handler.CreateToken(tokenDescriptor);
+
+            return token;
+        }
+
+        public string CreateConfirmationDeletePatientToken(User user)
+        {
+            string secretKey = configuration["Jwt:SecretKey"];
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, user.email.email),
+                    new Claim("purpose", "confirmation_delete_patient") 
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(2), // Expira em 24 horas
+                SigningCredentials = credentials,
+                Issuer = configuration["Jwt:Issuer"],
+                Audience = configuration["Jwt:Audience"]
+            };
+
+            var handler = new JsonWebTokenHandler();
+            string token = handler.CreateToken(tokenDescriptor);
+
+            return token;
+        }
     
 
     }

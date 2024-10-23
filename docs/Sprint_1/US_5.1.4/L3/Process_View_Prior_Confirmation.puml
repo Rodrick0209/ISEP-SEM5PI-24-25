@@ -3,17 +3,13 @@
 participant UserRoute as Route <<Route>>
 participant UserController as Controller <<Controller>>
 participant EditingPatientDTO as DTO <<DTO>>
-participant ConfirmationEditingPatientDTO as ConfirmationDTO <<DTO>>
 participant UserService as Service <<Service>>
 participant EmailService as EmailService <<Service>>
-participant ConfirmationEditingPatientTokenGenerator as TokenGenerator <<Service>>
 participant UserRepository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>>
-participant PatientLogger as Logger <<Domain>>
 participant User as User <<Domain>>
 participant Patient as Patient <<Domain>>
-participant PatientMapper as Mapper <<Mapper>>
-[o-> Route: PATCH (/api/users/patients/{logToken}/edit)
+[o-> Route: PATCH (/api/users/patients/edit)
 activate Route
 Route -> Controller : PATCH 
 activate Controller
@@ -23,30 +19,27 @@ activate Service
 Service -> Repository : findUserByEmail(email)
 activate Repository
 return user
-Service -> PatientRepository : findPatientByEmail(email)
-activate PatientRepository
-return patient
 Service -> Service : validateEmailIsUnique(email)
 activate Service
 return flag
 Service -> Service : validatePhoneNumberIsUnique(phoneNumber)
 activate Service
 return flag
-Service -> Logger : logChanges(patient)
+Service -> PatientRepository : findPatientByAssociatedUser(user)
+activate PatientRepository
+return patient
+alt full name to edit is not null or empty
 Service -> Patient : changeFullName(name)
+Service -> PatientRepository : save(patient)
+Service -> Service : logChanges(patient, "update")
+activate Service
+deactivate Service
+end
 alt information contains sensitive data
-Service -> TokenGenerator : generateToken(user)
-activate TokenGenerator
-return token
 Service -> User : setConfirmationEditPatientToken(token, tokenExpirationDate)
-Service -> Repository : save(user)
 Service -> EmailService : sendEmail(email, token)
 end
-Service -> Mapper : toDTO(patient)
-activate Mapper
-return patientDTO
-Service -> ConfirmationDTO** : createConfirmationEditPatientDTO(patientDTO, token, email, emailToEdit, phoneNumberToEdit)
-return confirmationEditPatientDTO
+return response
 return response
 <-- Route : response
 @enduml

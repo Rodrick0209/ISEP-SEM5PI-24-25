@@ -12,29 +12,32 @@ namespace DDDSample1.Domain.OperationTypes
 
         public string name { get; private set; }
 
-        public string status { get; private set; }
+        public bool status { get; private set; }
 
-        public string preparationPhase { get; private set; }
-        public string surgeryPhase { get; private set; }
-        public string cleaningPhase { get; private set; }
+        public Phase preparationPhase { get; private set; }
+        public Phase surgeryPhase { get; private set; }
+        public Phase cleaningPhase { get; private set; }
 
-        public string specialization {get; private set;}
+        public SpecializationId specialization { get; private set; }
+
+        public Guid version {get; private set;}
 
 
         private OperationTypeLogger() { }
 
 
 
-        public OperationTypeLogger(OperationTypeId id,string name, string status, string preparationPhase, string surgeryPhase, string cleaningPhase, string specialization)
+        public OperationTypeLogger(OperationType op)
         {
             this.Id= new OperationTypeLoggerId(Guid.NewGuid());
-            this.OperationRequestId = id;
-            this.name = name;
-            this.status = status;
-            this.preparationPhase = preparationPhase;
-            this.surgeryPhase = surgeryPhase;
-            this.cleaningPhase = cleaningPhase;
-            this.specialization= specialization;
+            this.OperationRequestId = op.Id;
+            this.name = op.name;
+            this.status = op.status;
+            this.preparationPhase = op.preparationPhase;
+            this.surgeryPhase = op.surgeryPhase;
+            this.cleaningPhase = op.cleaningPhase;
+            this.specialization= op.specialization;
+            this.version=Guid.NewGuid();
         }
 
 

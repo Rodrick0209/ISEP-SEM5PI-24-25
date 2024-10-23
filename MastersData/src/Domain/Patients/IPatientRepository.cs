@@ -7,6 +7,7 @@ namespace DDDSample1.Domain.Patients
 {
     public interface IPatientRepository : IRepository<Patient, PatientId>
     {
+        Task<Patient> GetLastPatientRegisteredInMonthAsync();
         Task<Patient> GetByEmailAsync(string email);
         Task<Patient> GetByPhoneNumberAsync(string phoneNumber);
         Task<List<Patient>> GetByNameAsync(string name);

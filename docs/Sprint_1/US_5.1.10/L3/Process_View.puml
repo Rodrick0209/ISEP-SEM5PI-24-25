@@ -5,8 +5,6 @@ participant PatientController as Controller <<Controller>>
 participant DeletePatientConfirmationDTO as DTO <<DTO>>
 participant PatientService as Service <<Service>>
 participant PatientRepository as Repository <<Repository>>
-participant PatientLoggeerRepository as LoggerRepository <<Repository>>
-participant PatientLogger as Logger <<Logger>>
 [o-> Route: DELETE (/api/patients/{medicalRecordNumber})
 activate Route
 Route -> Controller : DELETE
@@ -17,11 +15,12 @@ activate Service
 Service -> Repository : findByMedicalRecordNumber(medicalRecordNumber)
 activate Repository
 return patient
-Service -> Logger : logChanges(patient)
 Service -> Repository : delete(patient)
-deactivate Repository
+Service -> Service : logChanges(patient, "delete")
+activate Service
 deactivate Service
-Controller --> Route : response
+return response
+return response
 deactivate Controller
 <-- Route : response
 

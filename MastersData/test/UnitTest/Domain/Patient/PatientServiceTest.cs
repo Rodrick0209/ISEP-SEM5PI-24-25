@@ -13,25 +13,20 @@ namespace UnitTest.Domain.Patient
 {
     public class PatientServiceTest
     {
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        private readonly Mock<IPatientRepository> _patientRepositoryMock;
-        private readonly Mock<IPatientLoggerRepository> _patientLoggerRepositoryMock;
-        private readonly Mock<IEmailSender> _emailSenderMock;
-        private readonly PatientService _patientService;
-
-        public PatientServiceTest()
-        {
-            _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _patientRepositoryMock = new Mock<IPatientRepository>();
-            _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
-            _emailSenderMock = new Mock<IEmailSender>();
-            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, _emailSenderMock.Object);
-        }
+        private Mock<IUnitOfWork>? _unitOfWorkMock;
+        private Mock<IPatientRepository>? _patientRepositoryMock;
+        private Mock<IPatientLoggerRepository>? _patientLoggerRepositoryMock;
+        private Mock<IEmailSender>? _emailSenderMock;
+        private PatientService? _patientService;
 
         [Fact]
         public async Task CreateAsync_ShouldCreatePatient_WhenValidData()
         {
             // Arrange
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, null, null);
+
             var dto = new CreatingPatientProfileDto
             {
                 FirstName = "John",
@@ -40,8 +35,10 @@ namespace UnitTest.Domain.Patient
                 DateOfBirth = "1990-01-01",
                 Gender = "male",
                 Email = "john.doe@example.com",
-                PhoneNumber = "1234567890",
-                EmergencyContact = "2345678901"
+                PhoneNumber = "123456780",
+                EmergencyContactName = "Jane Doe",
+                EmergencyContactEmail = "jane.doe@example.com",
+                EmergencyContactPhoneNumber = "234567890"
             };
 
 
@@ -60,6 +57,10 @@ namespace UnitTest.Domain.Patient
         [Fact]
         public async Task CreateAsync_ShouldThrowException_WhenEmailNotUnique()
         {
+            // Arrange
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+
             var dto = new CreatingPatientProfileDto
             {
                 FirstName = "John",
@@ -68,8 +69,10 @@ namespace UnitTest.Domain.Patient
                 DateOfBirth = "1990-01-01",
                 Gender = "male",
                 Email = "john.doe@example.com",
-                PhoneNumber = "1234567890",
-                EmergencyContact = "2345678901"
+                PhoneNumber = "123456780",
+                EmergencyContactName = "Jane Doe",
+                EmergencyContactEmail = "jane.doe@example.com",
+                EmergencyContactPhoneNumber = "2345678901"
             };
 
             _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(new DDDSample1.Domain.Patients.Patient(
@@ -77,8 +80,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
             ));
 
@@ -90,6 +95,11 @@ namespace UnitTest.Domain.Patient
         public async Task UpdateAsync_ShouldUpdatePatientFullName_WhenValidData()
         {
             // Arrange
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, null);
+
             var dto = new EditingPatientProfileDto
             {
                 MedicalRecordNumber = "202410000001",
@@ -101,8 +111,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
             );
 
@@ -123,6 +135,12 @@ namespace UnitTest.Domain.Patient
         public async Task UpdateAsync_ShouldUpdatePatientEmail_WhenValidData()
         {
             // Arrange
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
+            _emailSenderMock = new Mock<IEmailSender>();
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, _emailSenderMock.Object);
+
             var dto = new EditingPatientProfileDto
             {
                 MedicalRecordNumber = "202410000001",
@@ -134,8 +152,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
             );
 
@@ -157,10 +177,16 @@ namespace UnitTest.Domain.Patient
         public async Task UpdateAsync_ShouldUpdatePatientPhoneNumber_WhenValidData()
         {
             // Arrange
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
+            _emailSenderMock = new Mock<IEmailSender>();
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, _emailSenderMock.Object);
+
             var dto = new EditingPatientProfileDto
             {
                 MedicalRecordNumber = "202410000001",
-                PhoneNumber = "0987654321"
+                PhoneNumber = "098765432"
             };
 
             var existingPatient = new DDDSample1.Domain.Patients.Patient(
@@ -168,8 +194,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
             );
 
@@ -181,7 +209,7 @@ namespace UnitTest.Domain.Patient
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("0987654321", result.PhoneNumber);
+            Assert.Equal("098765432", result.PhoneNumber);
             _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
             _emailSenderMock.Verify(sender => sender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
@@ -191,6 +219,11 @@ namespace UnitTest.Domain.Patient
         public async Task UpdateAsync_ShouldUpdateMedicalConditions_WhenValidData()
         {
             // Arrange
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, null);
+
             var dto = new EditingPatientProfileDto
             {
                 MedicalRecordNumber = "202410000001",
@@ -202,8 +235,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
             );
 
@@ -224,12 +259,18 @@ namespace UnitTest.Domain.Patient
         public async Task UpdateAsync_ShouldUpdatePatient_WhenValidData()
         {
             // Arrange
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
+            _emailSenderMock = new Mock<IEmailSender>();
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, _emailSenderMock.Object);
+
             var dto = new EditingPatientProfileDto
             {
                 MedicalRecordNumber = "202410000001",
                 FullName = "John Doe Updated",
                 Email = "john.doe.updated@example.com",
-                PhoneNumber = "0987654321",
+                PhoneNumber = "098765432",
                 MedicalConditions = "Asthma"
             };
 
@@ -238,8 +279,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
             );
 
@@ -254,7 +297,7 @@ namespace UnitTest.Domain.Patient
             Assert.NotNull(result);
             Assert.Equal("John Doe Updated", result.FullName);
             Assert.Equal("john.doe.updated@example.com", result.Email);
-            Assert.Equal("0987654321", result.PhoneNumber);
+            Assert.Equal("098765432", result.PhoneNumber);
             Assert.Equal("Asthma", result.MedicalConditions);
             _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
@@ -265,6 +308,11 @@ namespace UnitTest.Domain.Patient
         public async Task DeleteAsync_ShouldDeletePatient_WhenExists()
         {
             // Arrange
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, null);
+
             var dto = new DeletingPatientProfileConfirmationDto
             {
                 MedicalRecordNumber = "202410000001",
@@ -275,8 +323,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
             );
 
@@ -297,6 +347,9 @@ namespace UnitTest.Domain.Patient
         public async Task SeachAsync_ShouldReturnPatients_WhenFiltersAreDisponible()
         {
             // Arrange
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+
             var dto = new SearchFiltersDto
             {
                 MedicalRecordNumber = "2024",
@@ -312,8 +365,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
                 ),
                 new (
@@ -321,8 +376,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567891",
+                "123456781",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000002"
                 )
             };
@@ -346,6 +403,9 @@ namespace UnitTest.Domain.Patient
         public async Task SeachAsync_ShouldReturnPatient_WhenFiltersAreDisponible()
         {
             // Arrange
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+
             var dto = new SearchFiltersDto
             {
                 MedicalRecordNumber = "2024",
@@ -361,8 +421,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
                 ),
                 new (
@@ -370,8 +432,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "johna.doing@example.com",
-                "1234567891",
+                "123456781",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000002"
                 ),
                 new (
@@ -379,8 +443,10 @@ namespace UnitTest.Domain.Patient
                     "1990-01-01",
                     "male",
                     "john.done@example.com",
-                    "1234567892",
+                    "123456782",
                     "Jane Doe",
+                    "jane.doe@example.com",
+                "234567890",
                     "202410000009"
                 ),
             };
@@ -408,6 +474,9 @@ namespace UnitTest.Domain.Patient
         public async Task SeachAsync_ShouldReturnAllPatients_WhenFiltersAreNotDisponible()
         {
             // Arrange
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+
             var dto = new SearchFiltersDto
             {
                 MedicalRecordNumber = "",
@@ -423,8 +492,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
                 ),
                 new (
@@ -432,8 +503,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567891",
+                "123456781",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000002"
                 ),
                 new (
@@ -441,8 +514,10 @@ namespace UnitTest.Domain.Patient
                     "1990-01-01",
                     "male",
                     "john.done@example.com",
-                    "1234567892",
+                    "123456782",
                     "Jane Doe",
+                    "jane.doe@example.com",
+                "234567890",
                     "202410000009"
                 ),
             };
@@ -467,6 +542,9 @@ namespace UnitTest.Domain.Patient
         public async Task GetAllAsync_ShouldReturnAllPatients()
         {
             // Arrange
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+
             var patients = new List<DDDSample1.Domain.Patients.Patient>
             {
                 new (
@@ -474,8 +552,10 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
                 ),
             };
@@ -494,13 +574,18 @@ namespace UnitTest.Domain.Patient
         public async Task GetByMedicalRecordNumberAsync_ShouldReturnPatient_WhenExists()
         {
             // Arrange
+            _patientRepositoryMock = new Mock<IPatientRepository>();
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+            
             var patient = new DDDSample1.Domain.Patients.Patient(
                 "John Doe",
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "1234567890",
+                "123456780",
                 "Jane Doe",
+                "jane.doe@example.com",
+                "234567890",
                 "202410000001"
             );
 

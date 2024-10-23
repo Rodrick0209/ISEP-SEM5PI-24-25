@@ -1,0 +1,16 @@
+```plantuml
+@startuml Process_View
+participant "MastersData" as BE <<Container (C4)>>
+
+[o-> BE: DELETE (/api/user/patients/delete/{email})
+activate BE
+BE -> BE: receive request body info, validates \nand sends confirmation email
+<-- BE: response
+deactivate BE
+[o-> BE: DELETE (/api/user/patients/delete/confirmation/{token})
+activate BE
+BE -> BE : receive token, validates \nand deletes user and\nall associated data
+<-- BE: response
+deactivate BE
+@enduml
+```

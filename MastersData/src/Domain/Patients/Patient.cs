@@ -32,7 +32,7 @@ namespace DDDSample1.Domain.Patients
             this.EmergencyContact = default!;
         }
 
-        public Patient(string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string emergencyContact, string medicalRecordNumber)
+        public Patient(string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string emergencyContactName, string emergencyContactEmail, string emergencyContactPhoneNumber, string medicalRecordNumber)
         {
             this.Id = new PatientId(Guid.NewGuid());
             this.FullName = new FullName(fullName);
@@ -40,7 +40,9 @@ namespace DDDSample1.Domain.Patients
             this.Gender = new Gender(gender);
             this.Email = new Email(email);
             this.PhoneNumber = new PhoneNumber(phoneNumber);
-            this.EmergencyContact = new EmergencyContact(emergencyContact);
+            this.EmergencyContact = new EmergencyContact(emergencyContactName, 
+                                                        emergencyContactEmail, 
+                                                        emergencyContactPhoneNumber);
             this.MedicalRecordNumber = new MedicalRecordNumber(medicalRecordNumber);
         }
         
