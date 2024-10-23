@@ -7,7 +7,6 @@ participant PatientService as Service <<Service>>
 participant MedicalRecordNumberGenerator as MedicalRecordNumberGenerator <<Service>>
 participant PatientRepository as Repository <<Repository>>
 participant Patient as Domain <<Domain>>
-participant PatientMapper as Mapper <<Mapper>>
 [o-> Route: POST (/api/patients)
 activate Route
 Route -> Controller : POST
@@ -29,13 +28,8 @@ activate MedicalRecordNumberGenerator
 return medicalRecordNumber
 Service -> Domain** : create(createPatientDTO, medicalRecordNumber)
 Service -> Repository : save(patient)
-Service -> Mapper : toDTO(patient)
-activate Mapper
-return patientDTO
-Service --> Controller : patientDTO
-deactivate Service
-Controller --> Route : response
-deactivate Controller
+return response
+return response
 <-- Route : response
 
 @enduml
