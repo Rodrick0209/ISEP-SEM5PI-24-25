@@ -7,6 +7,9 @@ using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.OperationRequestLoggers;
 using DDDSample1.Domain.Utils;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
+using System.Linq;
 
 
 
@@ -146,15 +149,7 @@ namespace DDDSample1.Domain.OperationRequest
 
     }
 
-    public async Task<List<OperationRequest>> GetOperationRequestsWithFilters(OperationRequestFilterDto filters, string doctorId)
-    {
-            return await this._repo.GetOperationRequestsWithFilters(filters, doctorId);
-    }
-
-
-
-
-
+    
     public async Task<OperationType> checkOperationTypeIdAsync(OperationTypeId operationTypeId)
     {
 
@@ -234,6 +229,104 @@ namespace DDDSample1.Domain.OperationRequest
 
 
     */
+
+
+    public async Task<List<OperationRequest>> GetOperationRequestsWithFilters(OperationRequestFilterDto filters, string doctorIdEmail)
+    {
+        List<OperationRequest> query = null;
+
+        if (!string.IsNullOrWhiteSpace(filters.MedicalRecordNumber))
+        {
+            var patient = await _patientRepository.GetByMedicalRecordNumberAsync(filters.MedicalRecordNumber);
+            
+            if (patient != null)
+            {    
+                query = await _repo.GetOperationRequestsByPatientId(patient.Id.AsString());
+            }
+
+            if (patient == null)
+            {
+                return new List<OperationRequest>();
+            }
+
+        }
+        if (!string.IsNullOrWhiteSpace(filters.PatientName))
+        {
+            var patients = await _patientRepository.GetByNameAsync(filters.PatientName);
+
+            if (patients != null && patients.Any())
+            {
+                List<OperationRequest> matchingRequests = new List<OperationRequest>();
+
+                foreach (var patient in patients)
+                {
+                    if (query == null)
+                    {
+                        var patientRequests = await _repo.GetOperationRequestsByPatientId(patient.Id.AsString());
+                        matchingRequests.AddRange(patientRequests);
+                    }
+                    else
+                    {
+                        var patientRequests = query.FindAll(or => or.patientId.Equals(patient.Id.AsString()));
+                        matchingRequests.AddRange(patientRequests);
+                    }
+                }
+
+                query = matchingRequests;
+            }
+            else
+            {
+                return new List<OperationRequest>();
+            }
+        }
+
+
+        if(query == null && !string.IsNullOrWhiteSpace(doctorIdEmail))
+        {
+            string doctorId = new Email(doctorIdEmail).getFirstPartOfEmail();
+            query = await _repo.GetOperationRequestsByDoctorIdRequested(doctorId);
+        }
+
+        
+        if (!string.IsNullOrWhiteSpace(filters.OperationType))
+        {
+            var operationType = await _operationTypeRepository.GetByNameAsync(filters.OperationType);
+            if (operationType == null)
+            {
+                return new List<OperationRequest>();
+            }
+            query = query.FindAll(or => or.operationTypeId.Equals(operationType.Id.AsString()));
+        }
+
+        if (query == null || query.Count == 0)
+        {
+            return new List<OperationRequest>();
+        }
+
+        if (filters.StartDate.HasValue)
+        {
+            query = query.FindAll(or =>
+            {
+                DateTime deadLineDateTime = DateTime.ParseExact(or.deadLineDate.deadLineDate, "yyyy-MM-dd", null);
+                return deadLineDateTime >= filters.StartDate.Value;
+            });
+        }
+       
+        if (filters.EndDate.HasValue)
+        {
+            query = query.FindAll(or =>
+            {
+                DateTime deadLineDateTime = DateTime.ParseExact(or.deadLineDate.deadLineDate, "yyyy-MM-dd", null);
+                return deadLineDateTime <= filters.EndDate.Value;
+            });
+        }
+        
+
+        return query; 
+    }
+
+
+
 
 
 

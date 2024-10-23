@@ -6,6 +6,7 @@ using DDDSample1.Domain.Patients;
 using DDDSample1.Infrastructure.Shared;
 using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1;
 
 namespace DDDSample1.Infrastructure.Patients
 {
@@ -51,5 +52,23 @@ namespace DDDSample1.Infrastructure.Patients
         {
             return await this.context.Patients.FirstOrDefaultAsync(p => p.PhoneNumber.phoneNumber == phoneNumber);
         }
+
+
+        public async Task<List<Patient>> GetByIdsAsync(List<String> ids)
+        {
+            return await this.context.Patients
+                .Where(p => ids.Contains(p.Id.AsString()))
+                .ToListAsync();
+        }
+
+        public async Task<List<Patient>> GetByNameAsync(string name)
+        {
+            return await this.context.Patients
+                .Where(p => p.FullName.fullName == name)
+                .ToListAsync();
+        }
+
+
+
     }
 }

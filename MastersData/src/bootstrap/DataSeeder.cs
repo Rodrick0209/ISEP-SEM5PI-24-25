@@ -21,16 +21,6 @@ public static class DataSeeder
     using var scope = serviceProvider.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<DDDSample1DbContext>();
 
-
-    // Example: Add Families if none exist
-    if (!context.Families.Any())
-    {
-      context.Families.AddRange(
-          new Family("1", "Family1"),
-          new Family("2", "Family2")
-      );
-    }
-
     // SeedUsers(context, new User("admin@teste.com", "admin"), "password");
 
     Patient johnCena = new Patient(
@@ -41,9 +31,50 @@ public static class DataSeeder
       "123456123",
       "945123111",
       MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
-
-
     SeedPatients(context, johnCena);
+
+    Patient johnCena2 = new Patient(
+      "John Cena2",
+      "2022-10-01",
+      "male",
+      "john.cena@example.com",
+      "123456123",
+      "945123111",
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
+    SeedPatients(context, johnCena2);
+
+
+    Patient johnCena3 = new Patient(
+      "John Cena3",
+      "2022-10-01",
+      "male",
+      "john.cena@example.com",
+      "123456123",
+      "945123111",
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
+    SeedPatients(context, johnCena3);
+
+
+    Patient johnCena4 = new Patient(
+      "John Cena",
+      "2022-10-01",
+      "male",
+      "john.cena@example.com",
+      "123456123",
+      "945123111",
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
+    SeedPatients(context, johnCena4);
+
+
+    Patient johnCena5 = new Patient(
+      "John Cena",
+      "2022-10-01",
+      "male",
+      "john.cena@example.com",
+      "123456123",
+      "945123111",
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
+    SeedPatients(context, johnCena5);
 
 
     var specialization1 = new Specialization("Ortopedia");
@@ -74,8 +105,11 @@ public static class DataSeeder
     var operationType2 = new OperationType("New Operation Type2", true, phase1, phase2, phase3, specialization2.Id);
     
     var operationRequest = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType.Id.AsString(),new StaffId("D202512345").AsString(),new StaffId("D202512344").AsString());
-    
-    var operationRequest2 = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
+    var operationRequest2 = new OperationRequest("2025-02-18","emergency",johnCena2.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
+    var operationRequest3 = new OperationRequest("2025-02-18","emergency",johnCena2.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
+    var operationRequest4 = new OperationRequest("2025-02-18","emergency",johnCena3.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
+    var operationRequest5 = new OperationRequest("2025-02-18","emergency",johnCena4.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
+    var operationRequest6 = new OperationRequest("2025-02-18","emergency",johnCena5.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
 
 
     // Seed the operation type into the context
@@ -83,6 +117,10 @@ public static class DataSeeder
     SeedOperationType(context, operationType2);
     SeedOperationRequest(context, operationRequest);
     SeedOperationRequest(context,operationRequest2);
+    SeedOperationRequest(context,operationRequest3);
+    SeedOperationRequest(context,operationRequest4);
+    SeedOperationRequest(context,operationRequest5);
+    SeedOperationRequest(context,operationRequest6);
     SeedUsers(context,user,"password");
     SeedUsers(context,user2,"password");
 
