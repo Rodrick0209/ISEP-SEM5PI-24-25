@@ -13,7 +13,7 @@ participant PatientLogger as Logger <<Domain>>
 participant User as User <<Domain>>
 participant Patient as Patient <<Domain>>
 participant PatientMapper as Mapper <<Mapper>>
-[o-> Route: PATCH (/api/users/patients/{logToken}/edit)
+[o-> Route: PATCH (/api/users/patients/edit)
 activate Route
 Route -> Controller : PATCH 
 activate Controller
