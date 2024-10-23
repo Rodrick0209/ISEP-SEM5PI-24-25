@@ -46,8 +46,6 @@ namespace DDDSample1.Domain.User
             _patientLoggerRepository = patientLoggerRepository;
         }
 
-
-
         public async Task<string> GetLogToken(LoginRequest request)
         {
             if (request == null)
