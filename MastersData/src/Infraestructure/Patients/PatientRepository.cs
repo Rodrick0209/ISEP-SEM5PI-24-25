@@ -51,5 +51,14 @@ namespace DDDSample1.Infrastructure.Patients
         {
             return await this.context.Patients.FirstOrDefaultAsync(p => p.PhoneNumber.phoneNumber == phoneNumber);
         }
+
+
+        public async Task<Patient> GetLastPatientRegisteredInMonthAsync()
+        {
+            return this.context.Patients
+                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Substring(0,6) == DateTime.Now.ToString("yyyyMM"))
+                .OrderByDescending(p => p.MedicalRecordNumber._medicalRecordNumber)
+                .FirstOrDefault();
+        }
     }
 }

@@ -364,8 +364,8 @@ namespace DDDSample1.Domain.User
 
         private async void SendEmailWithUrlConfirmationRegisterPatient(string email, string token)
         {
-            string callbackUrl = $"http://localhost:9999/resetpassword?code={token}&Email={email}";
-            await _emailSender.SendEmailAsync($"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>", email, "ResetPassword");
+            string callbackUrl = $"http://localhost:5000/api/users/confirmation/{token}";
+            await _emailSender.SendEmailAsync($"Please Confirm your register here: <a href='{callbackUrl}'>link</a>", email, "ResetPassword");
         }
 
         private void ValidatePatientNewEmailIsUnique(string newEmail)
