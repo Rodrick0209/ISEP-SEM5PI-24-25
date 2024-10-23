@@ -39,7 +39,9 @@ public static class DataSeeder
       "male",
       "john.cena@example.com",
       "123456123",
-      "945123111",
+      "Jane Cena",
+      "jane.cena@example.com",
+      "234567234",
       MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
 
 

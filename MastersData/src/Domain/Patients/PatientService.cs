@@ -57,7 +57,9 @@ namespace DDDSample1.Domain.Patients
                 dto.Gender,
                 dto.Email,
                 dto.PhoneNumber,
-                dto.EmergencyContact,
+                dto.EmergencyContactName,
+                dto.EmergencyContactEmail,
+                dto.EmergencyContactPhoneNumber,
                 medicalRecordNumber
             );
 
@@ -215,7 +217,9 @@ namespace DDDSample1.Domain.Patients
                 patient.Gender.gender,
                 patient.Email.email,
                 patient.PhoneNumber.phoneNumber,
-                patient.EmergencyContact.emergencyContact,
+                patient.EmergencyContact.Name.fullName,
+                patient.EmergencyContact.Email.email,
+                patient.EmergencyContact.PhoneNumber.phoneNumber,
                 patient.MedicalRecordNumber._medicalRecordNumber,
                 patient.MedicalConditions?.medicalConditions ?? null,
                 typeOfChange,
