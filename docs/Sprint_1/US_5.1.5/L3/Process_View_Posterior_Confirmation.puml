@@ -2,18 +2,17 @@
 @startuml Process_View_Posterior_Confirmation
 participant UserRoute as Route <<Route>>
 participant UserController as Controller <<Controller>>
-participant ConfirmationEditPatientSensitiveDataDTO as ConfirmationDTO <<DTO>>
+participant ConfirmationDeletePatientDTO as ConfirmationDTO <<DTO>>
 participant UserService as Service <<Service>>
 participant UserRepository as Repository <<Repository>>
-participant PatientRepository as PatientRepository <<Repository>> 
-participant Patient as Patient <<Domain>>
-participant PatientMapper as Mapper <<Mapper>>
-[o-> Route : PATCH (/api/user/patients/edit/confirmation/{token})
+participant PatientRepository as PatientRepository <<Repository>>
+participant PatientLogger as PatientLogger <<Domain>> 
+[o-> Route : DELETE (/api/users/patients/delete/confirmation/{token})
 activate Route
-Route -> Controller : PATCH
+Route -> Controller : DELETE
 activate Controller
 Controller -> ConfirmationDTO** : recieves request body info
-Controller -> Service : confirmEditPatientSensitiveData(confirmationEditPatientSensitiveDataDTO)
+Controller -> Service : confirmDeletePatient(confimationDeletePatientDTO)
 activate Service
 Service -> Repository : findUserByEmail(email)
 activate Repository
@@ -24,13 +23,9 @@ return flag
 Service -> PatientRepository : findPatientByEmail(email)
 activate PatientRepository
 return patient
-Service -> Patient : changeEmail(email)
-Service -> Patient : changePhoneNumber(phoneNumber)
-Service -> PatientRepository : save(patient)
-Service -> Mapper : toDTO(patient)
-activate Mapper
-return patientDTO 
-return patientDTO
+Service -> PatientLogger: logChanges(patient, "delete")
+Service -> Repository : delete(user)
+Service -> PatientRepository : delete(patient)
 return response
 return response
 @enduml
