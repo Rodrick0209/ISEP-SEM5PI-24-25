@@ -27,7 +27,7 @@ namespace DDDSample1.Domain.OperationTypes
                 throw new ArgumentNullException(nameof(phaseDto), "PhaseDto cannot be null");
             }
 
-            return new Phase(phaseDto.Id,phaseDto.Duration, phaseDto.RequiredStaff.Select(ToRequiredStaffEntity).ToList());
+            return new Phase(Guid.NewGuid(),phaseDto.Duration, phaseDto.RequiredStaff.Select(ToRequiredStaffEntity).ToList());
 
         }
 

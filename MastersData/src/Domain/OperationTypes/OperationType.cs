@@ -20,6 +20,7 @@ namespace DDDSample1.Domain.OperationTypes
         public SpecializationId specialization { get; private set; }
 
 
+
         private OperationType() { }
 
 
