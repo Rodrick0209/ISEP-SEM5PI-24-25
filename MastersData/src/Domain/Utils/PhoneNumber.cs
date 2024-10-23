@@ -15,10 +15,9 @@ namespace DDDSample1.Domain.Utils
 
         private void validatePhoneNumber(string phoneNumber)
         {
-            phoneNumber.Trim();
-            if(phoneNumber.Length != 9)
+            if (string.IsNullOrWhiteSpace(phoneNumber) || !phoneNumber.StartsWith("+"))
             {
-                throw new ArgumentOutOfRangeException("Invalid phone number format");
+                throw new ArgumentException("Phone number must include a country code.");
             }
         }
 

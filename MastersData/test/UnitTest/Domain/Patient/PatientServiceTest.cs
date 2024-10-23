@@ -35,10 +35,14 @@ namespace UnitTest.Domain.Patient
                 DateOfBirth = "1990-01-01",
                 Gender = "male",
                 Email = "john.doe@example.com",
-                PhoneNumber = "123456780",
+                PhoneNumber = "+351 123456780",
+                Street = "Main Street",
+                PostalCode = "12345",
+                City = "City",
+                Country = "Country",
                 EmergencyContactName = "Jane Doe",
                 EmergencyContactEmail = "jane.doe@example.com",
-                EmergencyContactPhoneNumber = "234567890"
+                EmergencyContactPhoneNumber = "+351 234567890"
             };
 
 
@@ -69,10 +73,14 @@ namespace UnitTest.Domain.Patient
                 DateOfBirth = "1990-01-01",
                 Gender = "male",
                 Email = "john.doe@example.com",
-                PhoneNumber = "123456780",
+                PhoneNumber = "+351 123456780",
+                Street = "Main Street",
+                PostalCode = "12345",
+                City = "City",
+                Country = "Country",
                 EmergencyContactName = "Jane Doe",
                 EmergencyContactEmail = "jane.doe@example.com",
-                EmergencyContactPhoneNumber = "2345678901"
+                EmergencyContactPhoneNumber = "+351 234567890"
             };
 
             _patientRepositoryMock.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(new DDDSample1.Domain.Patients.Patient(
@@ -80,10 +88,14 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
             ));
 
@@ -111,10 +123,14 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
             );
 
@@ -152,10 +168,14 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
             );
 
@@ -186,7 +206,7 @@ namespace UnitTest.Domain.Patient
             var dto = new EditingPatientProfileDto
             {
                 MedicalRecordNumber = "202410000001",
-                PhoneNumber = "098765432"
+                PhoneNumber = "+351 098765432"
             };
 
             var existingPatient = new DDDSample1.Domain.Patients.Patient(
@@ -194,10 +214,14 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
             );
 
@@ -209,7 +233,7 @@ namespace UnitTest.Domain.Patient
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("098765432", result.PhoneNumber);
+            Assert.Equal("+351 098765432", result.PhoneNumber);
             _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
             _emailSenderMock.Verify(sender => sender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
@@ -235,10 +259,14 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
             );
 
@@ -270,7 +298,7 @@ namespace UnitTest.Domain.Patient
                 MedicalRecordNumber = "202410000001",
                 FullName = "John Doe Updated",
                 Email = "john.doe.updated@example.com",
-                PhoneNumber = "098765432",
+                PhoneNumber = "+351 098765432",
                 MedicalConditions = "Asthma"
             };
 
@@ -279,10 +307,14 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
             );
 
@@ -297,7 +329,7 @@ namespace UnitTest.Domain.Patient
             Assert.NotNull(result);
             Assert.Equal("John Doe Updated", result.FullName);
             Assert.Equal("john.doe.updated@example.com", result.Email);
-            Assert.Equal("098765432", result.PhoneNumber);
+            Assert.Equal("+351 098765432", result.PhoneNumber);
             Assert.Equal("Asthma", result.MedicalConditions);
             _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
@@ -323,10 +355,14 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
             );
 
@@ -365,10 +401,14 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
                 ),
                 new (
@@ -376,10 +416,14 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456781",
+                "+351 123456781",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000002"
                 )
             };
@@ -421,10 +465,14 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
                 ),
                 new (
@@ -432,10 +480,14 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "johna.doing@example.com",
-                "123456781",
+                "+351 123456781",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000002"
                 ),
                 new (
@@ -443,10 +495,14 @@ namespace UnitTest.Domain.Patient
                     "1990-01-01",
                     "male",
                     "john.done@example.com",
-                    "123456782",
-                    "Jane Doe",
-                    "jane.doe@example.com",
-                "234567890",
+                    "+351 123456782",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
+                "Jane Doe",
+                "jane.doe@example.com",
+                "+351 234567890",
                     "202410000009"
                 ),
             };
@@ -492,21 +548,29 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
                 ),
                 new (
                     "John Doe",
                 "1990-01-01",
                 "male",
-                "john.doe@example.com",
-                "123456781",
+                "johna.doing@example.com",
+                "+351 123456781",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000002"
                 ),
                 new (
@@ -514,10 +578,14 @@ namespace UnitTest.Domain.Patient
                     "1990-01-01",
                     "male",
                     "john.done@example.com",
-                    "123456782",
-                    "Jane Doe",
-                    "jane.doe@example.com",
-                "234567890",
+                    "+351 123456782",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
+                "Jane Doe",
+                "jane.doe@example.com",
+                "+351 234567890",
                     "202410000009"
                 ),
             };
@@ -552,12 +620,16 @@ namespace UnitTest.Domain.Patient
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
-                ),
+                )
             };
 
             _patientRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(patients);
@@ -576,16 +648,20 @@ namespace UnitTest.Domain.Patient
             // Arrange
             _patientRepositoryMock = new Mock<IPatientRepository>();
             _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
-            
+
             var patient = new DDDSample1.Domain.Patients.Patient(
                 "John Doe",
                 "1990-01-01",
                 "male",
                 "john.doe@example.com",
-                "123456780",
+                "+351 123456780",
+                "Main Street",
+                "12345",
+                "City",
+                "Country",
                 "Jane Doe",
                 "jane.doe@example.com",
-                "234567890",
+                "+351 234567890",
                 "202410000001"
             );
 

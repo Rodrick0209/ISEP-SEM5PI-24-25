@@ -39,12 +39,16 @@ namespace DDDSample1.Infrastructure.Patients
             return await this.context.Patients.FirstOrDefaultAsync(p => p.MedicalRecordNumber._medicalRecordNumber == medicalRecordNumber);
         }
 
-        public async Task<Patient> GetByNameEmailPhoneAsync(string name, string email, string phoneNumber)
+        public async Task<Patient> GetByNameEmailPhoneAddressAsync(string name, string email, string phoneNumber, string street, string postalCode, string city, string country)
         {
             return await this.context.Patients
                 .Where(p => p.FullName.fullName == name
                             && p.Email.email == email
-                            && p.PhoneNumber.phoneNumber == phoneNumber)
+                            && p.PhoneNumber.phoneNumber == phoneNumber
+                            && p.Address.Street.street == street
+                            && p.Address.PostalCode.postalCode == postalCode
+                            && p.Address.City.city == city
+                            && p.Address.Country.country == country)
                 .FirstOrDefaultAsync();
         }
 

@@ -13,6 +13,13 @@ namespace DDDSample1.Infrastructure.Patients
             builder.OwnsOne(b => b.Email).HasIndex(e => e.email).IsUnique();
             builder.OwnsOne(b => b.FullName);
             builder.OwnsOne(b => b.PhoneNumber).HasIndex(p => p.phoneNumber).IsUnique();
+            builder.OwnsOne(b => b.Address, a =>
+            {
+                a.OwnsOne(ad => ad.Street);
+                a.OwnsOne(ad => ad.PostalCode);
+                a.OwnsOne(ad => ad.City);
+                a.OwnsOne(ad => ad.Country);
+            });
             builder.OwnsOne(b => b.EmergencyContact, ec =>
             {
                 ec.OwnsOne(e => e.Name);

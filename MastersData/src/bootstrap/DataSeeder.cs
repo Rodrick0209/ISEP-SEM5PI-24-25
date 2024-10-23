@@ -23,71 +23,100 @@ public static class DataSeeder
 
     // SeedUsers(context, new User("admin@teste.com", "admin"), "password");
 
-    Patient lastPatientInMonth = context.Patients
-                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Substring(0,6) == DateTime.Now.ToString("yyyyMM"))
-                .OrderByDescending(p => p.MedicalRecordNumber._medicalRecordNumber)
-                .FirstOrDefault();
-
-    
-    /*
-    
     Patient johnCena = new Patient(
       "John Cena",
       "2022-10-01",
       "male",
       "john.cena@example.com",
-      "123456123",
+      "+351 123456123",
+      "Main Street 123",
+      "1234-567",
+      "Los Angeles",
+      "USA",
       "Jane Cena",
       "jane.cena@example.com",
-      "234567234",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(lastPatientInMonth)
-    );
+      "+351 234567234",
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(GetLastPatientRegisteredInMont(context)));
 
     SeedPatients(context, johnCena);
+
+    context.SaveChanges();
 
     Patient johnCena2 = new Patient(
       "John Cena2",
       "2022-10-01",
       "male",
-      "john.cena@example.com",
-      "123456123",
-      "945123111",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
+      "john.cena2@example.com",
+      "+351 123456121",
+      "Main Street 123",
+      "1234-567",
+      "Los Angeles",
+      "USA",
+      "Jane Cena",
+      "jane.cena@example.com",
+      "+351 234567234",
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(GetLastPatientRegisteredInMont(context)));
     SeedPatients(context, johnCena2);
+
+    context.SaveChanges();
 
 
     Patient johnCena3 = new Patient(
       "John Cena3",
       "2022-10-01",
       "male",
-      "john.cena@example.com",
-      "123456123",
-      "945123111",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
+      "john.cena3@example.com",
+      "+351 123456621",
+      "Main Street 123",
+      "1234-567",
+      "Los Angeles",
+      "USA",
+      "Jane Cena",
+      "jane.cena@example.com",
+      "+351 234567234",
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(GetLastPatientRegisteredInMont(context)));
     SeedPatients(context, johnCena3);
+
+    context.SaveChanges();
 
 
     Patient johnCena4 = new Patient(
       "John Cena",
       "2022-10-01",
       "male",
-      "john.cena@example.com",
-      "123456123",
-      "945123111",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
+      "john.cena4@example.com",
+      "+351 123412621",
+      "Main Street 123",
+      "1234-567",
+      "Los Angeles",
+      "USA",
+      "Jane Cena",
+      "jane.cena@example.com",
+      "+351 234567234",
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(GetLastPatientRegisteredInMont(context)));
     SeedPatients(context, johnCena4);
+
+    context.SaveChanges();
 
 
     Patient johnCena5 = new Patient(
       "John Cena",
       "2022-10-01",
       "male",
-      "john.cena@example.com",
-      "123456123",
-      "945123111",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
+      "john.cena5@example.com",
+      "+351 123412421",
+      "Main Street 123",
+      "1234-567",
+      "Los Angeles",
+      "USA",
+      "Jane Cena",
+      "jane.cena@example.com",
+      "+351 234567234",
+      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(GetLastPatientRegisteredInMont(context)));
     SeedPatients(context, johnCena5);
-*/
+
+    context.SaveChanges();
+
 
     var specialization1 = new Specialization("Ortopedia");
     var specialization2 = new Specialization("Oncologia");
@@ -140,6 +169,13 @@ public static class DataSeeder
     SeedUsers(context,user2,"password");
 
     context.SaveChanges();
+  }
+
+  private static Patient GetLastPatientRegisteredInMont(DDDSample1DbContext context){
+        return context.Patients
+                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Substring(0,6) == DateTime.Now.ToString("yyyyMM"))
+                .OrderByDescending(p => p.MedicalRecordNumber._medicalRecordNumber)
+                .FirstOrDefault();
   }
 
   private static void SeedOperationRequest(DDDSample1DbContext context, OperationRequest operationRequest)

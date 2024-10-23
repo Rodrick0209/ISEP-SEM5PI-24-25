@@ -192,7 +192,7 @@ namespace MastersData.test.UnitTest.Domain.User
         {
             _userRepoMock = new Mock<IUserRepository>();
             _userService = new UserService(null, _userRepoMock.Object, null, null, null, null);
-            var dto = new RegisteringPatientDto { Name = "John Doe", PhoneNumber = "123456789", Email = "test@example.com", Password = "Password123!" };
+            var dto = new RegisteringPatientDto { Name = "John Doe", Email = "test@example.com", PhoneNumber = "123456789", Password = "Password123!", Street = "Main Street", PostalCode = "12345", City = "City", Country = "Country" };
             _userRepoMock.Setup(repo => repo.CheckEmail(dto.Email)).ReturnsAsync(true);
 
             await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.RegisterPatientAsync(dto));
@@ -204,10 +204,10 @@ namespace MastersData.test.UnitTest.Domain.User
             _userRepoMock = new Mock<IUserRepository>();
             _patientRepoMock = new Mock<IPatientRepository>();
             _userService = new UserService(null, _userRepoMock.Object, null, null, _patientRepoMock.Object, null);
-            var dto = new RegisteringPatientDto { Name = "John Doe", PhoneNumber = "123456789", Email = "test@example.com", Password = "Password123!" };
+            var dto = new RegisteringPatientDto { Name = "John Doe", Email = "test@example.com", PhoneNumber = "123456789", Password = "Password123!", Street = "Main Street", PostalCode = "12345", City = "City", Country = "Country" };
 
             _userRepoMock.Setup(repo => repo.CheckEmail(dto.Email)).ReturnsAsync(false);
-            _patientRepoMock.Setup(repo => repo.GetByNameEmailPhoneAsync(dto.Name, dto.Email, dto.PhoneNumber)).ReturnsAsync((Patient?)null);
+            _patientRepoMock.Setup(repo => repo.GetByNameEmailPhoneAddressAsync(dto.Name, dto.Email, dto.PhoneNumber, dto.Street, dto.PostalCode, dto.City, dto.Country)).ReturnsAsync((Patient?)null);
 
             await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.RegisterPatientAsync(dto));
         }
@@ -250,7 +250,7 @@ namespace MastersData.test.UnitTest.Domain.User
             var dto = new EditingPatientDto { Email = "test@example.com", NameToEdit = "John Doing" };
             PasswordHasher passwordHasher = new PasswordHasher();
             var user = new DDDSample1.Domain.User.User ("john.doe@example.com", "patient", passwordHasher.HashPassword("password"));
-            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456789", "Jane Doe", "jane.doe@example.com", "234532123", "202410000001");
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "+351 123456789", "Main Street", "12345", "City", "Country", "Jane Doe", "jane.doe@example.com", "+351 234532123", "202410000001");
             patient.AssociateUser(user);
             _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(DDDSample1.Domain.User.User));
 
@@ -268,7 +268,7 @@ namespace MastersData.test.UnitTest.Domain.User
             var dto = new EditingPatientDto { Email = "test@example.com", NameToEdit = "John Doing" };
             PasswordHasher passwordHasher = new PasswordHasher();
             var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
-            var patient = new Patient("John Doe", "2024-10-12", "male", "john.doe@example.com", "123456789", "Jane Doe", "jane.doe@example.com", "234532123", "202410000001");
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "+351 123456789", "Main Street", "12345", "City", "Country", "Jane Doe", "jane.doe@example.com", "+351 234532123", "202410000001");
             patient.AssociateUser(user);
             _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
             _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(Patient));
@@ -287,9 +287,9 @@ namespace MastersData.test.UnitTest.Domain.User
             var dto = new EditingPatientDto { Email = "testing@example.com", NameToEdit = "John Doing", EmailToEdit = "john.doe@gmail.com"};
             PasswordHasher passwordHasher = new PasswordHasher();
             var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
-            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456789", "Jane Doe", "jane.doe@example.com", "234532123", "202410000001");
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "+351 123456789", "Main Street", "12345", "City", "Country", "Jane Doe", "jane.doe@example.com", "+351 234532123", "202410000001");
             patient.AssociateUser(user);
-            var existingPatient = new Patient("Jane Doe", "2024-10-12", "female", "john.doe@example.com", "123456787", "Jane Doe", "jane.doe@example.com", "234532123", "202410000002");
+            var existingPatient = new Patient("John Doe", "2024-10-12", "male", "test1@example.com", "+351 123456786", "Main Street", "12345", "City", "Country", "Jane Doe", "jane.doe@example.com", "+351 234532123", "202410000002");
             _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
             _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(patient);
             _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.EmailToEdit)).ReturnsAsync(existingPatient);
@@ -307,10 +307,9 @@ namespace MastersData.test.UnitTest.Domain.User
             var dto = new EditingPatientDto { Email = "test@example.com", NameToEdit = "John Doing" , PhoneNumberToEdit = "123456789"};
             PasswordHasher passwordHasher = new PasswordHasher();
             var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
-            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456787", "Jane Doe", "jane.doe@example.com", "234532123", "202410000001");
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "+351 123456789", "Main Street", "12345", "City", "Country", "Jane Doe", "jane.doe@example.com", "+351 234532123", "202410000001");
             patient.AssociateUser(user);
-            var existingPatient = new Patient("Jane Doe", "2024-10-12", "female", "jane.doe@example.com", "123456789", "Jane Doe", "jane.doe@example.com", "234532123", "202410000002");
-            _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
+            var existingPatient = new Patient("John Doe", "2024-10-12", "male", "test1@example.com", "+351 123456786", "Main Street", "12345", "City", "Country", "Jane Doe", "jane.doe@example.com", "+351 234532123", "202410000002");
             _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(patient);
             _patientRepoMock.Setup(repo => repo.GetByPhoneNumberAsync(dto.PhoneNumberToEdit)).ReturnsAsync(existingPatient);
 
@@ -328,7 +327,7 @@ namespace MastersData.test.UnitTest.Domain.User
             var dto = new ConfirmationEditPatientDto("token", "test@example.com", "john.doe@gmail.com", "123456789");
             PasswordHasher passwordHasher = new PasswordHasher();
             var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
-            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456787", "Jane Doe", "jane.doe@example.com", "234532123", "202410000001");
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "+351 123456789", "Main Street", "12345", "City", "Country", "Jane Doe", "jane.doe@example.com", "+351 234532123", "202410000001");
             patient.AssociateUser(user);
             if (dto.Token == null)
             {
@@ -351,7 +350,7 @@ namespace MastersData.test.UnitTest.Domain.User
             var dto = new ConfirmationEditPatientDto("token", "jane.doe@example.com", "john.doe@example.com", null);
             PasswordHasher passwordHasher = new PasswordHasher();
             var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
-            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456787", "Jane Doe", "jane.doe@example.com", "234532123", "202410000001");
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "+351 123456789", "Main Street", "12345", "City", "Country", "Jane Doe", "jane.doe@example.com", "+351 234532123", "202410000001");
             patient.AssociateUser(user);
             user.SetConfirmationEditPatientToken("valid_token", DateTime.UtcNow.AddHours(24));
             _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
@@ -371,7 +370,7 @@ namespace MastersData.test.UnitTest.Domain.User
             var dto = new ConfirmationEditPatientDto("token", "test@example.com", "john.doe@gmail.com", null);
             PasswordHasher passwordHasher = new PasswordHasher();
             var user = new DDDSample1.Domain.User.User ("test@example.com", "patient", passwordHasher.HashPassword("password"));
-            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "123456787", "Jane Doe", "jane.doe@example.com", "234532123", "202410000001");
+            var patient = new Patient("John Doe", "2024-10-12", "male", "test@example.com", "+351 123456789", "Main Street", "12345", "City", "Country", "Jane Doe", "jane.doe@example.com", "+351 234532123", "202410000001");
             patient.AssociateUser(user);
             user.SetConfirmationEditPatientToken(dto.Token, DateTime.UtcNow.AddHours(24));
             _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
