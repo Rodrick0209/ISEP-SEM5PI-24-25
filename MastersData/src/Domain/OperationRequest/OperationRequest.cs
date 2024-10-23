@@ -19,6 +19,8 @@ namespace DDDSample1.Domain.OperationRequest
         public String doctorThatRequestedId{get; private set;}
         public String doctorThatWillPerformId{get; private set;}
 
+        public OperationRequestStatus status { get; private set; }
+
 
 
         private OperationRequest()
@@ -33,6 +35,7 @@ namespace DDDSample1.Domain.OperationRequest
             this.operationTypeId = operationTypeId;
             this.doctorThatRequestedId = doctorThatRequestedId;
             this.doctorThatWillPerformId = doctorThatWillPerformId;
+            this.status = OperationRequestStatus.Waiting;
         }
 
         public void ChangeDeadLineDate(string deadLineDate)
@@ -40,6 +43,8 @@ namespace DDDSample1.Domain.OperationRequest
             this.deadLineDate = new DeadLineDate(deadLineDate);
         }
 
+
+        
 
         public void ChangePriority(string priority)
         {

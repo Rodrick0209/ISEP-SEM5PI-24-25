@@ -50,15 +50,13 @@ namespace DDDSample1.Domain.OperationRequest
     {
          await checkOperationTypeIdAsync(operationRequest.operationTypeId);
          
-        // await checkDoctorIdAsync(operationRequest.doctorId);
+        // await checkDoctorIdAsync(operationRequest.doctorThatRequestedId);
+        // checkDoctorIdAsync(operationRequest.doctorThatWillPerformId);
         // await checkPatientAsync(operationRequest.patientId);
         
 
 
         await this._repo.AddAsync(operationRequest);
-
-        // falta adicionar o operation request ao medical history
-
 
 
         await this._unitOfWork.CommitAsync();
@@ -118,14 +116,17 @@ namespace DDDSample1.Domain.OperationRequest
 
     public async Task<OperationRequest> DeleteAsync(OperationRequestId id)
     {
-        //var appointment = checkOperationRequestIsAppointementAsync
-        // if (appointment == null)
-        //     throw new BusinessRuleValidationException("Operation Request is an appointment");
-
+        
         var op = await this._repo.GetByIdAsync(id);
 
         if (op == null)
-            return null;
+            throw new BusinessRuleValidationException("Operation Request not found");
+
+        
+
+        if (op.status.Equals(OperationRequestStatus.Accepted))
+            throw new BusinessRuleValidationException("Operation Request is scheduled and cannot be deleted");
+
 
         this._repo.Remove(op);
         await this._unitOfWork.CommitAsync();
@@ -214,21 +215,6 @@ namespace DDDSample1.Domain.OperationRequest
             throw new BusinessRuleValidationException("Patient not found");
         return patient;
     }
-
-
-
-/*
-    public async Task<Appointment> checkOperationRequestIsAppointementAsync(OperationRequestId id)
-    {
-        var appointment = await this._appointmentRepository.GetByOperationRequestId(id);
-        if(appointment != null)
-           return appointment;           
-    }
-
-
-
-
-    */
 
 
     public async Task<List<OperationRequest>> GetOperationRequestsWithFilters(OperationRequestFilterDto filters, string doctorIdEmail)
