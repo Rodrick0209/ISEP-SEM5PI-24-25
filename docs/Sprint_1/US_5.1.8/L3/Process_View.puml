@@ -21,7 +21,10 @@ return flag
 Service -> Service : validatePhoneNumberIsUnique(email)
 activate Service
 return flag
-Service -> MedicalRecordNumberGenerator : generateMedicalRecordNumber()
+Service -> Repository : getLastPatientRegisteredInMonth()
+activate Repository
+return lastPatientRegisteredInMonth
+Service -> MedicalRecordNumberGenerator : generateMedicalRecordNumber(lastPatientRegisteredInMonth)
 activate MedicalRecordNumberGenerator
 return medicalRecordNumber
 Service -> Domain** : create(createPatientDTO, medicalRecordNumber)
