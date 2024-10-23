@@ -38,9 +38,9 @@ namespace DDDSample1.Infrastructure.Patients
             return await this.context.Patients.FirstOrDefaultAsync(p => p.MedicalRecordNumber._medicalRecordNumber == medicalRecordNumber);
         }
 
-        public Task<Patient> GetByNameEmailPhoneAsync(string name, string email, string phoneNumber)
+        public async Task<Patient> GetByNameEmailPhoneAsync(string name, string email, string phoneNumber)
         {
-            return this.context.Patients
+            return await this.context.Patients
                 .Where(p => p.FullName.fullName == name
                             && p.Email.email == email
                             && p.PhoneNumber.phoneNumber == phoneNumber)
@@ -55,10 +55,10 @@ namespace DDDSample1.Infrastructure.Patients
 
         public async Task<Patient> GetLastPatientRegisteredInMonthAsync()
         {
-            return this.context.Patients
-                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Substring(0,6) == DateTime.Now.ToString("yyyyMM"))
+            return await this.context.Patients
+                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Substring(0, 6) == DateTime.Now.ToString("yyyyMM"))
                 .OrderByDescending(p => p.MedicalRecordNumber._medicalRecordNumber)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -7,6 +7,5 @@ namespace DDDSample1.Domain.PatientLoggers
 {
     public interface IPatientLoggerRepository : IRepository<PatientLogger, PatientLoggerId>
     {
-        Task<List<PatientLogger>> GetOldLogsAsync(DateTime cutoffDate);
     }
 }

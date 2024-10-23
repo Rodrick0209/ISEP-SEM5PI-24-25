@@ -131,7 +131,7 @@ namespace DDDSample1.Controllers
 
         // POST: api/user/patients
         [HttpPost("patients")]
-        public async Task<ActionResult<ConfirmationRegisterPatientDto>> RegisterPatientAsync(RegisteringPatientDto dto){
+        public async Task<ActionResult<ConfirmationPatientDto>> RegisterPatientAsync(RegisteringPatientDto dto){
             try
             {
                 var confirmationRegisterPatientDto = await _service.RegisterPatientAsync(dto);
@@ -145,16 +145,16 @@ namespace DDDSample1.Controllers
 
         // POST: api/user/patients/confirmation/{token}
         [HttpPost("patients/confirmation/{token}")]
-        public async Task<ActionResult<PatientDto>> ConfirmRegisterPatientAsync(string token, ConfirmationRegisterPatientDto confirmationRegisterPatientDto){
+        public async Task<ActionResult<PatientDto>> ConfirmRegisterPatientAsync(string token, ConfirmationPatientDto dto){
             
-            if (token != confirmationRegisterPatientDto.Token)
+            if (token != dto.Token)
             {
                 return NotFound();
             }
 
             try
             {
-                var patientDto = await _service.ConfirmRegisterPatientAsync(confirmationRegisterPatientDto);
+                var patientDto = await _service.ConfirmRegisterPatientAsync(dto);
 
                 return Ok(patientDto);
             } catch (Exception ex)
@@ -180,7 +180,7 @@ namespace DDDSample1.Controllers
 
         // PATCH : api/user/patients/edit/confirmation/{token}
         [HttpPatch("patients/edit/confirmation/{token}")]
-        public async Task<ActionResult<PatientDto>> ConfirmEditPatientSensitiveDataAsync(string email, string token, ConfirmationEditPatientSensitiveDataDto dto){
+        public async Task<ActionResult<PatientDto>> ConfirmEditPatientSensitiveDataAsync(string email, string token, ConfirmationEditPatientDto dto){
 
             if (token != dto.Token)
             {
@@ -189,7 +189,7 @@ namespace DDDSample1.Controllers
 
             try
             {
-                var patientDto = await _service.ConfirmEditPatientSensitiveDataAsync(dto);
+                var patientDto = await _service.ConfirmEditPatientAsync(dto);
 
                 return Ok(patientDto);
             } catch (Exception ex)

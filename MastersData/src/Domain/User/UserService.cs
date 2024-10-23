@@ -182,7 +182,7 @@ namespace DDDSample1.Domain.User
 
         }
 
-        public async Task<ConfirmationRegisterPatientDto> RegisterPatientAsync(RegisteringPatientDto dto)
+        public async Task<ConfirmationPatientDto> RegisterPatientAsync(RegisteringPatientDto dto)
         {
             ValidatesEmailIsUnique(dto.Email);
 
@@ -209,14 +209,18 @@ namespace DDDSample1.Domain.User
 
             await _repo.AddAsync(user);
 
-            ConfirmationRegisterPatientDto confirmationRegisterPatientDto = await GenerateConfirmationRegisterPatientToken(user);
+            TokenProvider tokenProvider = new TokenProvider(_configuration);
+            string token = tokenProvider.CreateConfirmationRegisterPatientToken(user);
+            user.SetConfirmationRegisterPatientToken(token, DateTime.UtcNow.AddHours(24));
 
-            SendEmailWithUrlConfirmationRegisterPatient(dto.Email, confirmationRegisterPatientDto.Token);
+            SendEmailWithUrlConfirmationRegisterPatient(dto.Email, token);
 
-            return confirmationRegisterPatientDto;
+            await _unitOfWork.CommitAsync();
+
+            return new ConfirmationPatientDto(token, dto.Email);
         }
 
-        public async Task<PatientDto> ConfirmRegisterPatientAsync(ConfirmationRegisterPatientDto dto)
+        public async Task<PatientDto> ConfirmRegisterPatientAsync(ConfirmationPatientDto dto)
         {
             User user = await _repo.GetByEmailAsync(dto.Email);
 
@@ -259,11 +263,13 @@ namespace DDDSample1.Domain.User
                 throw new BusinessRuleValidationException("Patient not found");
             }
 
-            if(!string.IsNullOrWhiteSpace(dto.EmailToEdit)){
+            if (!string.IsNullOrWhiteSpace(dto.EmailToEdit))
+            {
                 ValidatePatientNewEmailIsUnique(dto.EmailToEdit);
             }
-            
-            if(!string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit)){
+
+            if (!string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit))
+            {
                 ValidatePatientNewPhoneNumberIsUnique(dto.PhoneNumberToEdit);
             }
 
@@ -281,49 +287,118 @@ namespace DDDSample1.Domain.User
 
             if (!string.IsNullOrWhiteSpace(dto.EmailToEdit) || !string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit))
             {
-                token = await GenerateConfirmationEditPatientToken(user);
+
+                TokenProvider tokenProvider = new TokenProvider(_configuration);
+                token = tokenProvider.CreateConfirmationRegisterPatientToken(user);
+
+                user.SetConfirmationEditPatientToken(token, DateTime.UtcNow.AddHours(24));
+
                 if (!string.IsNullOrWhiteSpace(emailToEdit))
                 {
                     emailToEdit = dto.EmailToEdit;
                 }
+
                 if (!string.IsNullOrWhiteSpace(phoneNumberToEdit))
                 {
                     phoneNumberToEdit = dto.PhoneNumberToEdit;
                 }
+
                 email = dto.Email;
+                SendEmailWithUrlConfirmationEdtPatient(dto.Email, token);
             }
 
-            return new ConfirmationEditPatientDto(PatientMapper.ToDto(patient), token, email, emailToEdit, phoneNumberToEdit);
+            await _unitOfWork.CommitAsync();
+
+            return new ConfirmationEditPatientDto(token, email, emailToEdit, phoneNumberToEdit);
         }
 
-        public async Task<PatientDto> ConfirmEditPatientSensitiveDataAsync(ConfirmationEditPatientSensitiveDataDto dto){
+        public async Task<PatientDto> ConfirmEditPatientAsync(ConfirmationEditPatientDto dto)
+        {
             User user = await _repo.GetByEmailAsync(dto.Email);
 
-            if(user == null){
+            if (user == null)
+            {
                 throw new BusinessRuleValidationException("User not found");
             }
 
-            ValidatesConfirmationEditPatientToken(dto.Token, user);
+            if (user.confirmationEditPatientToken.Token != dto.Token)
+            {
+                throw new BusinessRuleValidationException("Invalid token");
+            }
 
             Patient patient = await _patientRepo.GetByEmailAsync(dto.Email);
 
-            if(patient == null){
+            if (patient == null)
+            {
                 throw new BusinessRuleValidationException("Patient not found");
             }
 
-            if(!string.IsNullOrWhiteSpace(dto.EmailToEdit)){
+            if (!string.IsNullOrWhiteSpace(dto.EmailToEdit))
+            {
                 patient.ChangeEmail(dto.EmailToEdit);
             }
 
-            if(!string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit)){
+            if (!string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit))
+            {
                 patient.ChangePhoneNumber(dto.PhoneNumberToEdit);
             }
 
             user.ClearConfirmationEditPatientToken();
 
+            LogPatientChanges(patient, "update");
+
             await _unitOfWork.CommitAsync();
 
             return PatientMapper.ToDto(patient);
+        }
+
+        public async Task<ConfirmationPatientDto> DeletePatientAsync(DeletingPatientDto dto)
+        {
+            User user = await _repo.GetByEmailAsync(dto.Email);
+
+            if (user == null)
+            {
+                throw new BusinessRuleValidationException("User not found");
+            }
+
+            TokenProvider tokenProvider = new TokenProvider(_configuration);
+            string token = tokenProvider.CreateConfirmationDeletePatientToken(user);
+            user.SetConfirmationDeletePatientToken(token, DateTime.UtcNow.AddHours(24));
+
+            SendEmailWithUrlConfirmationDeletePatient(dto.Email, token);
+
+            await _unitOfWork.CommitAsync();
+
+            return new ConfirmationPatientDto(token, dto.Email);
+        }
+
+        public async Task ConfirmDeletePatientAsync(ConfirmationPatientDto dto)
+        {
+            User user = await _repo.GetByEmailAsync(dto.Email);
+
+            if (user == null)
+            {
+                throw new BusinessRuleValidationException("User not found");
+            }
+
+            if (user.confirmationDeletePatientToken.Token != dto.Token)
+            {
+                throw new BusinessRuleValidationException("Invalid token");
+            }
+
+            Patient patient = await _patientRepo.GetByEmailAsync(dto.Email);
+
+            if (patient == null)
+            {
+                throw new BusinessRuleValidationException("Patient not found");
+            }
+
+            _repo.Remove(user);
+            _patientRepo.Remove(patient);
+
+            LogPatientChanges(patient, "delete");
+
+            await _unitOfWork.CommitAsync();
         }
 
         private void ValidatesEmailIsUnique(string email)
@@ -342,18 +417,6 @@ namespace DDDSample1.Domain.User
             }
         }
 
-        private async Task<ConfirmationRegisterPatientDto> GenerateConfirmationRegisterPatientToken(User user)
-        {
-            TokenProvider tokenProvider = new TokenProvider(_configuration);
-            string token = tokenProvider.CreateConfirmationRegisterPatientToken(user);
-
-            //definir o tempo de expiração do token num config file 
-            user.SetConfirmationRegisterPatientToken(token, DateTime.UtcNow.AddHours(24));
-            await this._unitOfWork.CommitAsync();
-
-            return new ConfirmationRegisterPatientDto(token, user.email.email);
-        }
-
         private void validatesConfirmationRegisterPatientToken(string token, User user)
         {
             if (user.confirmationRegisterPatientToken.Token != token)
@@ -362,10 +425,22 @@ namespace DDDSample1.Domain.User
             }
         }
 
-        private async void SendEmailWithUrlConfirmationRegisterPatient(string email, string token)
+        private void SendEmailWithUrlConfirmationRegisterPatient(string email, string token)
         {
-            string callbackUrl = $"http://localhost:5000/api/users/confirmation/{token}";
-            await _emailSender.SendEmailAsync($"Please Confirm your register here: <a href='{callbackUrl}'>link</a>", email, "ResetPassword");
+            string callbackUrl = $"http://localhost:5000/api/users/patients/confirmation/{token}";
+            _emailSender.SendEmailAsync($"Please confirm your register here: <a href='{callbackUrl}'>link</a>", email, "Confirm the register og your account");
+        }
+
+        private void SendEmailWithUrlConfirmationEdtPatient(string email, string token)
+        {
+            string callbackUrl = $"http://localhost:5000/api/users/patients/edit/confirmation/{token}";
+            _emailSender.SendEmailAsync($"Please confirm your edition here: <a href='{callbackUrl}'>link</a>", email, "Confirm the edition of your account");
+        }
+
+        private void SendEmailWithUrlConfirmationDeletePatient(string email, string token)
+        {
+            string callbackUrl = $"http://localhost:5000/api/users/patients/delete/confirmation/{token}";
+            _emailSender.SendEmailAsync($"Please confirm your deletion here: <a href='{callbackUrl}'>link</a>", email, "Confirm the deletion of your account");
         }
 
         private void ValidatePatientNewEmailIsUnique(string newEmail)
@@ -385,22 +460,6 @@ namespace DDDSample1.Domain.User
             if (existingPatient != null)
             {
                 throw new BusinessRuleValidationException("Phone Number already used by other patient record");
-            }
-        }
-
-        private async Task<string> GenerateConfirmationEditPatientToken(User user)
-        {
-            TokenProvider tokenProvider = new TokenProvider(_configuration);
-            string token = tokenProvider.CreateConfirmationRegisterPatientToken(user);
-            user.SetConfirmationEditPatientToken(token, DateTime.UtcNow.AddHours(24));
-            return token;
-        }
-
-        private void ValidatesConfirmationEditPatientToken(string token, User user)
-        {
-            if (user.confirmationEditPatientToken.Token != token)
-            {
-                throw new BusinessRuleValidationException("Invalid token");
             }
         }
 
