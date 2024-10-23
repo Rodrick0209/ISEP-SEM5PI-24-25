@@ -28,6 +28,9 @@ public static class DataSeeder
                 .OrderByDescending(p => p.MedicalRecordNumber._medicalRecordNumber)
                 .FirstOrDefault();
 
+    
+    /*
+    
     Patient johnCena = new Patient(
       "John Cena",
       "2022-10-01",
@@ -84,7 +87,7 @@ public static class DataSeeder
       "945123111",
       MedicalRecordNumberGenerator.GenerateMedicalRecordNumber());
     SeedPatients(context, johnCena5);
-
+*/
 
     var specialization1 = new Specialization("Ortopedia");
     var specialization2 = new Specialization("Oncologia");
@@ -112,24 +115,27 @@ public static class DataSeeder
     // Create a new operation type with the phases and specialization
     var operationType = new OperationType("New Operation Type", true, phase1, phase2, phase3, specialization1.Id);
     var operationType2 = new OperationType("New Operation Type2", true, phase1, phase2, phase3, specialization2.Id);
-    
+    /*
     var operationRequest = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType.Id.AsString(),new StaffId("D202512345").AsString(),new StaffId("D202512344").AsString());
     var operationRequest2 = new OperationRequest("2025-02-18","emergency",johnCena2.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
     var operationRequest3 = new OperationRequest("2025-02-18","emergency",johnCena2.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
     var operationRequest4 = new OperationRequest("2025-02-18","emergency",johnCena3.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
     var operationRequest5 = new OperationRequest("2025-02-18","emergency",johnCena4.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
     var operationRequest6 = new OperationRequest("2025-02-18","emergency",johnCena5.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
-
+*/
 
     // Seed the operation type into the context
     SeedOperationType(context, operationType);
     SeedOperationType(context, operationType2);
+  
+  /*
     SeedOperationRequest(context, operationRequest);
     SeedOperationRequest(context,operationRequest2);
     SeedOperationRequest(context,operationRequest3);
     SeedOperationRequest(context,operationRequest4);
     SeedOperationRequest(context,operationRequest5);
     SeedOperationRequest(context,operationRequest6);
+  */
     SeedUsers(context,user,"password");
     SeedUsers(context,user2,"password");
 

@@ -54,7 +54,6 @@ namespace DDDSample1.Infrastructure.Patients
         }
 
 
-<<<<<<< HEAD
         public async Task<List<Patient>> GetByIdsAsync(List<String> ids)
         {
             return await this.context.Patients
@@ -71,7 +70,7 @@ namespace DDDSample1.Infrastructure.Patients
 
 
 
-=======
+
         public async Task<Patient> GetLastPatientRegisteredInMonthAsync()
         {
             return await this.context.Patients
@@ -79,6 +78,5 @@ namespace DDDSample1.Infrastructure.Patients
                 .OrderByDescending(p => p.MedicalRecordNumber._medicalRecordNumber)
                 .FirstOrDefaultAsync();
         }
->>>>>>> cc0d683cc17eda071a8ec96591ae2beb5a090c65
     }
 }
