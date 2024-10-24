@@ -28,7 +28,7 @@
 
 
 ## Domain Model
-![Domain Model]()
+![Domain Model](Domain_Model/DomainModel.svg)
 
 ### Glossary
 For more details, refer to the [Glossary](glossary.md).
