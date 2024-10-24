@@ -13,11 +13,12 @@ namespace DDDSample1.Domain.Patients
         public string Gender { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public string? MedicalConditions { get; set; }
-        public string EmergencyContact { get; set; }
+        public AddressDto Address { get; set; }
+        public EmergencyContactDto EmergencyContact { get; set; }
         public string MedicalRecordNumber { get; set; }
+        public string? MedicalConditions { get; set; }
             
-        public PatientDto(Guid id, string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string medicalRecordNumber, string emergencyContact, string? medicalConditions = null)
+        public PatientDto(Guid id, string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string medicalRecordNumber, AddressDto address, EmergencyContactDto emergencyContact, string? medicalConditions = null)
         {
             this.Id = id;
             this.FullName = fullName;
@@ -25,6 +26,7 @@ namespace DDDSample1.Domain.Patients
             this.Gender = gender;
             this.Email = email;
             this.PhoneNumber = phoneNumber;
+            this.Address = address;
             this.EmergencyContact = emergencyContact;
             this.MedicalRecordNumber = medicalRecordNumber;
             this.MedicalConditions = medicalConditions;

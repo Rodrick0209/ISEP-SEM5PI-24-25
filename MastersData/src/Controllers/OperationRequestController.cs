@@ -111,14 +111,10 @@ namespace DDDSample1.Controllers
         [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> GetOperationRequests([FromQuery] OperationRequestFilterDto filters)
         {
-        var doctorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var emailDoctorQuerEditar = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
 
-        if (doctorId == null)
-        {
-            return Unauthorized();
-        }
 
-        var operationRequests = await _service.GetOperationRequestsWithFilters(filters, doctorId);
+        var operationRequests = await _service.GetOperationRequestsWithFilters(filters, emailDoctorQuerEditar);
         return Ok(operationRequests);
     }
 

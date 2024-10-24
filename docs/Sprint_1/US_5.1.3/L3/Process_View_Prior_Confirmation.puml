@@ -8,7 +8,6 @@ participant UserService as Service <<Service>>
 participant PasswordPolicy as Policy <<Service>>
 participant PasswordHasher as Hasher <<Service>>
 participant EmailService as EmailService <<Service>>
-participant ConfirmationRegisterPatientTokenGenerator as TokenGenerator <<Service>>
 participant UserRepository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>> 
 participant User as Domain <<Domain>>
@@ -32,16 +31,14 @@ Service -> Service : validatePatientHasNoUser(patient)
 activate Service
 return flag
 Service -> Hasher : hash(password)
-Service -> Domain** : createUser(email, passwordHash)
-Service -> TokenGenerator : generateConfirmationToken(user)
+activate Hasher
+return passwordHash
+Service -> Domain** : createUser(email, "patient", passwordHash)
 Service -> Domain : setConfirmationToken(confirmationToken, confirmationTokenExpiration)
 Service -> Repository : save(user)
 Service -> EmailService : sendConfirmationEmail(token, email)
-Service -> ConfirmationDTO** : createConfirmationRegisterPatientDTO(token, email)
-Service --> Controller : confirmationRegisterPatientDTO
-deactivate Service
-Controller --> Route : response
-deactivate Controller
+return response
+return response
 <-- Route : response
 deactivate Route
 

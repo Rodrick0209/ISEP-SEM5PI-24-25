@@ -13,6 +13,12 @@ namespace DDDSample1.Domain.Patients
         public required string Gender { get; set; }
         public required string Email { get; set; }
         public required string PhoneNumber { get; set; }
-        public required string EmergencyContact { get; set; }
+        public required string Street { get; set; }
+        public required string PostalCode { get; set; }
+        public required string City { get; set; }
+        public required string Country { get; set; }
+        public required string EmergencyContactName { get; set; }
+        public required string EmergencyContactEmail { get; set; }
+        public required string EmergencyContactPhoneNumber { get; set; }
     }
 }

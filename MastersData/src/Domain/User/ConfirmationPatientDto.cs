@@ -1,11 +1,11 @@
 namespace DDDSample1.Domain.User
 {
-    public class ConfirmationRegisterPatientDto
+    public class ConfirmationPatientDto
     {
         public string Token { get; set; }
         public string Email { get; set; }
 
-        public ConfirmationRegisterPatientDto(string token, string email)
+        public ConfirmationPatientDto(string token, string email)
         {
             this.Token = token;
             this.Email = email;

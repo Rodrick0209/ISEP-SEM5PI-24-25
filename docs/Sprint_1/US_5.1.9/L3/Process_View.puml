@@ -7,7 +7,6 @@ participant PatientService as Service <<Service>>
 participant EmailService as EmailService <<Service>>
 participant PatientRepository as Repository <<Repository>>
 participant Patient as Domain <<Domain>>
-participant PatientLogger as Logger <<Logger>>
 participant PatientMapper as Mapper <<Mapper>>
 [o-> Route: PATCH (/api/patients/{medicalRecordNumber})
 activate Route
@@ -19,22 +18,19 @@ activate Service
 Service -> Repository : findByMedicalRecordNumber(medicalRecordNumber)
 activate Repository
 return patient
-Service -> Logger : logChanges(patient)
 Service -> Domain : changeName(newName)
 Service -> Domain : changeEmail(newEmail)
 Service -> Domain : changePhoneNumber(newPhoneNumber)
 Service -> Domain : changeMedicalConditions(newMedicalConditions)
 Service -> Repository : save(patient)
-alt content editable contains sensitive info
-    Service -> EmailService : sendEmailNotification(email)
-end
-Service -> Mapper : toDTO(patient)
-activate Mapper
-return patientDTO
-Service --> Controller : patientDTO
+Service -> Service : logChanges(patient, "update")
+activate Service
 deactivate Service
-Controller --> Route : response
-deactivate Controller
+alt content editable contains sensitive info
+    Service -> EmailService : sendEmail(email)
+end
+return response
+return response
 <-- Route : response
 
 @enduml

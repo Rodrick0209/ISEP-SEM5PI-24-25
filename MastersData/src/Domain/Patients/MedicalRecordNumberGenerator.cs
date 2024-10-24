@@ -4,14 +4,26 @@ namespace DDDSample1.Domain.Patients
 {
     public class MedicalRecordNumberGenerator
     {
-        private static int lastSequentialNumber = 0;
-
-        public static string GenerateMedicalRecordNumber()
+        private static int ExtractSequentialNumber(string medicalRecordNumber)
         {
-            string yearMonth = DateTime.Now.ToString("yyyyMM");
-            lastSequentialNumber++;
+            return int.Parse(medicalRecordNumber.Substring(6));
+        }
 
-            return $"{yearMonth}{lastSequentialNumber:D6}";
+        public static string GenerateMedicalRecordNumber(Patient lastPatientInMonth)
+        {
+            int sequentialNumber;
+            if (lastPatientInMonth == null)
+            {
+                sequentialNumber = 1;
+            }
+            else
+            {
+                string lastMedicalRecordNumber = lastPatientInMonth.MedicalRecordNumber._medicalRecordNumber;
+                sequentialNumber = ExtractSequentialNumber(lastMedicalRecordNumber) + 1;
+            }
+
+            string currentYearMonth = DateTime.Now.ToString("yyyyMM");
+            return $"{currentYearMonth}{sequentialNumber:D6}";
         }
     }
 }

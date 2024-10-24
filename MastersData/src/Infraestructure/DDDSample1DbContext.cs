@@ -53,6 +53,8 @@ namespace DDDSample1.Infrastructure
 
         public DbSet<OperationRequestLogger> OperationRequestLoggers { get; set; }
 
+        public DbSet<OperationTypeLogger> OperationTypeLoggers { get; set; }
+
         public DbSet<PatientLogger> PatientLoggers { get; set; }
         public DbSet<StaffLogger> StaffLoggers { get; set; } 
 

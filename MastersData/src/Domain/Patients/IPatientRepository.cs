@@ -7,10 +7,14 @@ namespace DDDSample1.Domain.Patients
 {
     public interface IPatientRepository : IRepository<Patient, PatientId>
     {
+        Task<Patient> GetLastPatientRegisteredInMonthAsync();
         Task<Patient> GetByEmailAsync(string email);
         Task<Patient> GetByPhoneNumberAsync(string phoneNumber);
+        Task<List<Patient>> GetByNameAsync(string name);
         Task<Patient> GetByMedicalRecordNumberAsync(string medicalRecordNumber);
         Task<List<Patient>> GetByFiltersAsync(string medicalRecordNumber, string name, string email, string dateOfBirth);
-        Task<Patient> GetByNameEmailPhoneAsync(string name, string email, string phoneNumber);
+        Task<Patient> GetByNameEmailPhoneAddressAsync(string name, string email, string phoneNumber, string street, string postalCode, string city, string country);
+        Task<List<Patient>> GetByIdsAsync(List<String> ids);
+
     }
 }

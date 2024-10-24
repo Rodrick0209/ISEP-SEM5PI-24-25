@@ -2,7 +2,7 @@
 @startuml Process_View_Posterior_Confirmation
 participant UserRoute as Route <<Route>>
 participant UserController as Controller <<Controller>>
-participant ConfirmationEditPatientSensitiveDataDTO as ConfirmationDTO <<DTO>>
+participant ConfirmationEditPatientDTO as ConfirmationDTO <<DTO>>
 participant UserService as Service <<Service>>
 participant UserRepository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>> 
@@ -13,7 +13,7 @@ activate Route
 Route -> Controller : PATCH
 activate Controller
 Controller -> ConfirmationDTO** : recieves request body info
-Controller -> Service : confirmEditPatientSensitiveDataRegistration(confirmationRegisterPatientDTO)
+Controller -> Service : confirmEditPatient(confirmationEditPatientDTO)
 activate Service
 Service -> Repository : findUserByEmail(email)
 activate Repository
@@ -21,17 +21,17 @@ return user
 Service -> Service : validateToken(user, token)
 activate Service
 return flag
-Service -> PatientRepository : findPatientByEmail(email)
+Service -> PatientRepository : findPatientByAssociatedUser(user)
 activate PatientRepository
 return patient
 Service -> Patient : changeEmail(email)
 Service -> Patient : changePhoneNumber(phoneNumber)
 Service -> PatientRepository : save(patient)
-Service -> Mapper : toDTO(patient)
-activate Mapper
-return patientDTO 
-return patientDTO
+Service -> Service : logChanges(patient, "update")
+activate Service
+deactivate Service
 return response
 return response
+<-- Route : response
 @enduml
 ```

@@ -22,8 +22,8 @@ namespace DDDSample1.Infrastructure.Users
             builder.OwnsOne(b => b.confirmationRegisterPatientTokenExpiration);
             builder.OwnsOne(b => b.confirmationEditPatientToken);
             builder.OwnsOne(b => b.confirmationEditPatientTokenExpiration);
-
-
+            builder.OwnsOne(b => b.confirmationDeletePatientToken);
+            builder.OwnsOne(b => b.confirmationDeletePatientTokenExpiration);
         }
     }
 

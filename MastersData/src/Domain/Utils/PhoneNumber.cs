@@ -10,15 +10,14 @@ namespace DDDSample1.Domain.Utils
         public PhoneNumber(string phoneNumber)
         {
             validatePhoneNumber(phoneNumber);
-            phoneNumber.Trim();
             this.phoneNumber = phoneNumber;
         }
 
         private void validatePhoneNumber(string phoneNumber)
         {
-            if (string.IsNullOrWhiteSpace(phoneNumber))
+            if (string.IsNullOrWhiteSpace(phoneNumber) || !phoneNumber.StartsWith("+"))
             {
-                throw new ArgumentNullException("Invalid phone number");
+                throw new ArgumentException("Phone number must include a country code.");
             }
         }
 

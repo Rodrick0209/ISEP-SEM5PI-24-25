@@ -12,7 +12,17 @@ namespace DDDSample1.Domain.Patients
                 patient.Email.email,
                 patient.PhoneNumber.phoneNumber,
                 patient.MedicalRecordNumber._medicalRecordNumber,
-                patient.EmergencyContact.emergencyContact,
+                new AddressDto(
+                    patient.Address.Street.street,
+                    patient.Address.PostalCode.postalCode,
+                    patient.Address.City.city,
+                    patient.Address.Country.country
+                ),
+                new EmergencyContactDto(
+                    patient.EmergencyContact.Name.fullName,
+                    patient.EmergencyContact.Email.email,
+                    patient.EmergencyContact.PhoneNumber.phoneNumber
+                ),
                 patient.MedicalConditions?.medicalConditions ?? null
             );
         }

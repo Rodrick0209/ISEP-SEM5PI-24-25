@@ -1,0 +1,17 @@
+```plantuml
+@startuml Process_View
+actor Patient
+participant System <<System (C4)>>
+
+activate Patient
+
+Patient -> System: Make a request to delete the user and all associated data
+activate System
+System --> Patient : Sends an email confirmation
+Patient -> System: Clicks on the confirmation link
+System --> Patient : Success/Error message
+deactivate System
+deactivate Patient
+
+@enduml
+```

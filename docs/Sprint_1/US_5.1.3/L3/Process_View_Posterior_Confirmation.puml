@@ -8,7 +8,6 @@ participant UserRepository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>> 
 participant User as Domain <<Domain>>
 participant Patient as Patient <<Domain>>
-participant PatientMapper as Mapper <<Mapper>>
 [o-> Route : POST(/api/users/patients/confirmation/{token})
 activate Route
 Route -> Controller : POST
@@ -25,17 +24,12 @@ return flag
 Service -> PatientRepository : findPatientByEmail(email)
 activate PatientRepository
 return patient
-Service -> Domain : confirm()
+Service -> Domain : confirmAccount()
 Service -> Patient : associateUser(user)
 Service -> Repository : save(user)
 Service -> PatientRepository : save(patient)
-Service -> Mapper : toDTO(patient)
-activate Mapper
-return patientDTO
-Service --> Controller : patientDTO
-deactivate Service
-Controller --> Route : response
-deactivate Controller
+return response
+return response
 <-- Route : response
 @enduml
 ```

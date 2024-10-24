@@ -51,7 +51,6 @@ This information will be processed and handled as part of the functional and bus
 <br>
 
 
-
 ## 2. Design
 
 
@@ -80,6 +79,28 @@ This information will be processed and handled as part of the functional and bus
 
 ## 3. Implementation
 
+
+### Implementation Steps
+
+1. **Database Schema Update:**
+  - Add a new table `operation_types`
+    - Ensure the Name column is unique.
+  - Add a new table `phases`
+    - each phase register its duration and required staff
+    
+
+2. **Backend Development:**
+  - Create a new model `OperationType` to represent the operation type entity.
+  - Implement a service `OperationTypeService` to handle business logic for adding, updating, and deactivating operation types.
+  - Develop a controller `OperationTypeController` to manage API endpoints for CRUD operations.
+
+3. **API Endpoints:**
+  - `POST /operation-types`: Endpoint to create a new operation type.
+
+
+4. **Validation Logic:**
+  - Ensure the backend validates the uniqueness of the operation type name.
+  - Validate that all phases have specified durations.
 
 
 
@@ -143,7 +164,3 @@ This information will be processed and handled as part of the functional and bus
 - **Expected Result:** The system should display appropriate error messages for each invalid input.
 
 
-
-## Observations
-
-This user story implementation will follow the MVC architecture, ensuring separation of concerns between the view, model, and controller layers. The operation types will be managed using a database, and the system will provide an interface for administrators to add new procedures, ensuring compliance with the described business rules.

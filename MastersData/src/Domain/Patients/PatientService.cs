@@ -49,7 +49,9 @@ namespace DDDSample1.Domain.Patients
                 throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
             }
 
-            string medicalRecordNumber = MedicalRecordNumberGenerator.GenerateMedicalRecordNumber();
+            var lastPatientRegisterInMonth = await _patientRepository.GetLastPatientRegisteredInMonthAsync();
+
+            string medicalRecordNumber = MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(lastPatientRegisterInMonth);
 
             var patient = new Patient(
                 dto.FullName,
@@ -57,7 +59,13 @@ namespace DDDSample1.Domain.Patients
                 dto.Gender,
                 dto.Email,
                 dto.PhoneNumber,
-                dto.EmergencyContact,
+                dto.Street,
+                dto.PostalCode,
+                dto.City,
+                dto.Country,
+                dto.EmergencyContactName,
+                dto.EmergencyContactEmail,
+                dto.EmergencyContactPhoneNumber,
                 medicalRecordNumber
             );
 
@@ -215,7 +223,9 @@ namespace DDDSample1.Domain.Patients
                 patient.Gender.gender,
                 patient.Email.email,
                 patient.PhoneNumber.phoneNumber,
-                patient.EmergencyContact.emergencyContact,
+                patient.EmergencyContact.Name.fullName,
+                patient.EmergencyContact.Email.email,
+                patient.EmergencyContact.PhoneNumber.phoneNumber,
                 patient.MedicalRecordNumber._medicalRecordNumber,
                 patient.MedicalConditions?.medicalConditions ?? null,
                 typeOfChange,

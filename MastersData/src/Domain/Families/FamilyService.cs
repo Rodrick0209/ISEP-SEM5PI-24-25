@@ -20,7 +20,7 @@ namespace DDDSample1.Domain.Families
             var list = await this._repo.GetAllAsync();
             
             List<FamilyDto> listDto = list.ConvertAll<FamilyDto>(fam => new FamilyDto{Id = fam.Id.AsString(), Description = fam.Description});
-
+            
             return listDto;
         }
 

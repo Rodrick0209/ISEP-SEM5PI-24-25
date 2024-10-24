@@ -16,7 +16,9 @@ namespace DDDSample1.Domain.Utils
             {
                 email = email.Trim();
                 validateEmail(email);
-            } else {
+            }
+            else
+            {
                 throw new ArgumentNullException(nameof(email));
             }
             this.email = email;
@@ -24,15 +26,18 @@ namespace DDDSample1.Domain.Utils
 
         private void validateEmail(string email)
         {
-            //More validations can be added format,etc.....
+            if (!email.Contains('@'))
+            {
+                throw new ArgumentException("Invalid email format");
+            }
 
             if (email.Length < 1)
             {
-                throw new ArgumentNullException(nameof(email));
+                throw new ArgumentNullException("Email cannot have only one character");
             }
 
         }
-        
+
         public string getFirstPartOfEmail()
         {
             if (string.IsNullOrEmpty(this.email))
