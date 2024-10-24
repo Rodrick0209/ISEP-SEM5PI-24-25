@@ -45,11 +45,11 @@ namespace DDDSample1.Controllers
             return StaffMapper.toDTO(op);
         }
 
-
+/*
         [HttpPut("{id}")]
-        public async Task<ActionResult<StaffDto>> Update(EditingStaffProfileDto dto, StaffId staffId)
+        public async Task<ActionResult<StaffDto>> Update(StaffId id, EditingStaffProfileDto dto)
         {
-            if (staffId != dto.Id)
+            if (id != dto.Id)
             {
                 return BadRequest();
             }
@@ -64,7 +64,7 @@ namespace DDDSample1.Controllers
             {
                 return BadRequest(new { Message = ex.Message });
             }
-        }
+        }*/
 
         [HttpDelete("{id}")]
 
