@@ -48,13 +48,10 @@ namespace DDDSample1.Domain.OperationRequest
 
     public async Task<OperationRequest> AddAsync(OperationRequest operationRequest)
     {
-         await checkOperationTypeIdAsync(operationRequest.operationTypeId);
-         
-        // await checkDoctorIdAsync(operationRequest.doctorThatRequestedId);
-        // checkDoctorIdAsync(operationRequest.doctorThatWillPerformId);
-        // await checkPatientAsync(operationRequest.patientId);
+         await checkOperationTypeIdAsync(operationRequest.operationTypeId); 
+         await checkDoctorIdAsync(new StaffId(operationRequest.doctorThatRequestedId));
+         await checkPatientAsync(new PatientId(operationRequest.patientId));
         
-
 
         await this._repo.AddAsync(operationRequest);
 
@@ -197,10 +194,7 @@ namespace DDDSample1.Domain.OperationRequest
         {
             throw new BusinessRuleValidationException("Doctor invalid");
         }
-
         return staff;
-
-
     }
 
     public async Task<List<OperationRequest>> GetAllAsync()

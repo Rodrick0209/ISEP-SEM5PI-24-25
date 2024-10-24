@@ -164,7 +164,7 @@ public static class DataSeeder
     SeedOperationType(context, operationType);
     SeedOperationType(context, operationType2);
   
-  /*
+  
     SeedOperationRequest(context, operationRequest);
     SeedOperationRequest(context,operationRequest2);
     SeedUsers(context,user,"password");
@@ -224,35 +224,14 @@ public static class DataSeeder
     }
   }
 
-  public static void SeedStaff(DDDSample1DbContext context)
+ 
+  public static void SeedStaff(DDDSample1DbContext context, Staff staff)
+ 
   {
-    var staffMembers = new List<Staff>
-      {
-          new Staff(
-              new StaffId("1"),
-              "John Doe",
-              "LN123456",
-              new SpecializationId(Guid.NewGuid()),
-              new AvailabilitySlotsId(Guid.NewGuid()),
-              "john.doe@example.com",
-              "123-456-7890",
-              "Doctor"
-          ),
-          new Staff(
-              new StaffId("2"),
-              "Jane Smith",
-              "LN654321",
-              new SpecializationId(Guid.NewGuid()),
-              new AvailabilitySlotsId(Guid.NewGuid()),
-              "jane.smith@example.com",
-              "098-765-4321",
-              "Nurse"
-          )
-          // Adicione mais instâncias conforme necessário
-      };
-
-    context.Set<Staff>().AddRange(staffMembers);
-    context.SaveChanges();
+    if (! context.Specializations.Any())
+    {
+      context.StaffMembers.Add(staff);
+    }
   }
 
 

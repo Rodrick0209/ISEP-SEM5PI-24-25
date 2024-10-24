@@ -20,7 +20,7 @@ namespace DDDSample1.Domain.StaffMembers
         public Category Category { get; private set; }
         public User.User? User { get; private set; }
 
-        private Staff()
+        private Staff(StaffId staffId)
         {
         }
 
