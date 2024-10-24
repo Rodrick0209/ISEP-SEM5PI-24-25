@@ -40,7 +40,6 @@ namespace DDDSample1.Domain.OperationRequest
         this._staffRepository = staffRepository;
         this._patientRepository = patientRepository;
         this._operationRequestLoggerRepository = operationRequestLoggerRepository;
-       // this._appointmentRepository = appointmentRepository;
     }
 
 
@@ -211,7 +210,7 @@ namespace DDDSample1.Domain.OperationRequest
     }
 
 
-    public async Task<List<OperationRequest>> GetOperationRequestsWithFilters(OperationRequestFilterDto filters, string doctorIdEmail)
+    public async Task<List<OperationRequestDto>> GetOperationRequestsWithFilters(OperationRequestFilterDto filters, string doctorIdEmail)
     {
         List<OperationRequest> query = null;
 
@@ -226,7 +225,7 @@ namespace DDDSample1.Domain.OperationRequest
 
             if (patient == null)
             {
-                return new List<OperationRequest>();
+                return new List<OperationRequestDto>();
             }
 
         }
@@ -256,7 +255,7 @@ namespace DDDSample1.Domain.OperationRequest
             }
             else
             {
-                return new List<OperationRequest>();
+                return new List<OperationRequestDto>();
             }
         }
 
@@ -273,14 +272,14 @@ namespace DDDSample1.Domain.OperationRequest
             var operationType = await _operationTypeRepository.GetByNameAsync(filters.OperationType);
             if (operationType == null)
             {
-                return new List<OperationRequest>();
+                return new List<OperationRequestDto>();
             }
             query = query.FindAll(or => or.operationTypeId.Equals(operationType.Id.AsString()));
         }
 
         if (query == null || query.Count == 0)
         {
-            return new List<OperationRequest>();
+            return new List<OperationRequestDto>();
         }
 
         if (filters.StartDate.HasValue)
@@ -302,7 +301,9 @@ namespace DDDSample1.Domain.OperationRequest
         }
         
 
-        return query; 
+        List<OperationRequestDto> result = query.ConvertAll(or => OperationRequestMapper.toDTO(or));
+
+        return result; 
     }
 
 

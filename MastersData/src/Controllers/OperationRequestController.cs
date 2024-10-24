@@ -83,17 +83,13 @@ namespace DDDSample1.Controllers
 
 
         [HttpDelete("{id}")]
-
+        [Authorize]
         public async Task<ActionResult<OperationRequestDto>> Delete(Guid id)
         {
             try
             {
                 var op = await _service.DeleteAsync(new OperationRequestId(id));
-                if (op == null)
-                {
-                    return NotFound();
-                }
-
+                
                 return Ok(OperationRequestMapper.toDTO(op));
 
             }
@@ -115,6 +111,11 @@ namespace DDDSample1.Controllers
 
 
         var operationRequests = await _service.GetOperationRequestsWithFilters(filters, emailDoctorQuerEditar);
+        if(operationRequests == null)
+        {
+            return NotFound();
+        }
+        
         return Ok(operationRequests);
     }
 

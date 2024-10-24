@@ -12,10 +12,11 @@
 #### Regras de negócio
 
 *Deadline can´t be in the past.
+*the doctor can change the deadline, the priority, and the description. the doctor cannot change the operation type nor the patient
 
 #### Partes interessadas
 
-*The interested parts in this US is the doctor and the pacient.
+*The interested parts in this US are the doctor and the pacient.
 
 #### Pré-condições
 

@@ -6,7 +6,6 @@
 #### Requisitos funcionais
 
 
-*Doctors can search operation requests by patient name, operation type, priority, and status.
 *The system displays a list of operation requests in a searchable and filterable view.
 *Each entry in the list includes operation request details (e.g., patient name, operation type, status).
 *Doctors can select an operation request to view, update, or delete it.
@@ -14,7 +13,9 @@
 
 #### Regras de negócio
 
-*A doctor can see the operation requests they have submitted as well as the operation requests of a certain patient.
+*Doctor can see the operation requests they have submitted as well as the operation requests of a certain patient.
+*Doctor can search and filter by operation type, patient name, patient medical record number, date range
+
 
 #### Partes interessadas
 

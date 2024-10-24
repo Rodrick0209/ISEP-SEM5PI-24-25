@@ -8,7 +8,7 @@
 *The system validates that the operation type matches the doctor’s specialization.
 *The operation request includes: Patient ID,Doctor ID,Operation Type,Deadline,Priority.
 *The system confirms successful submission of the operation request and logs the request in the patient’s medical history.
-*The history of the operation type definition is part of the application's data. if the user needs to view the details of an operation that was performed last year, they need to be able to see the operation configuration that was in place at that time.
+
 
 
 #### Regras de negócio
