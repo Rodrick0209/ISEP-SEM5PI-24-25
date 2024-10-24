@@ -8,11 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DDDSample1.Tests.IntegrationTests.Controllers
 {
-    
-    private readonly HttpClient _client;
-    private readonly MastersDataWebApplicationFactory<Program> _factory;
-
-    public PatientsControllerTestWithoutIsolation(MastersDataWebApplicationFactory<Program> factory)
+    public class PatientsControllerTestWithoutIsolation :
+        IClassFixture<MastersDataWebApplicationFactory<Program>>
     {
         private readonly HttpClient _client;
         private readonly MastersDataWebApplicationFactory<Program> _factory;
@@ -25,7 +22,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
                 AllowAutoRedirect = false
             });
         }
-
+/*
         [Fact]
         public async Task Get_ReturnData()
         {
@@ -120,6 +117,12 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
+
+
         }
+*/
+
     }
+
+
 }

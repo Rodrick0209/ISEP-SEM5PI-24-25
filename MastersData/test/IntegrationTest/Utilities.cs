@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Infrastructure;
 
@@ -14,6 +16,10 @@ public static class Utilities
         db.Patients.RemoveRange(db.Patients);
         InitializeDbForTests(db);
     }
+
+    
+
+
 
     public static List<Patient> GetSeedingPatients()
     {
