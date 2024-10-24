@@ -18,13 +18,9 @@ public class MastersDataWebApplicationFactory<Program>
                 d => d.ServiceType ==
                     typeof(DbContextOptions<DDDSample1DbContext>));
 
-            services.Remove(dbContextDescriptor);
-
             var dbConnectionDescriptor = services.SingleOrDefault(
                 d => d.ServiceType ==
                     typeof(DbConnection));
-
-            services.Remove(dbConnectionDescriptor);
 
             // Create open SqliteConnection so EF won't automatically close it.
             services.AddSingleton<DbConnection>(container =>

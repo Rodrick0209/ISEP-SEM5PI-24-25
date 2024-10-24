@@ -14,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace DDDSample1.Domain.Patients
 {
-    public class PatientService
+    public class PatientService : IPatientService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPatientRepository _patientRepository;
@@ -130,9 +130,9 @@ namespace DDDSample1.Domain.Patients
             return PatientMapper.ToDto(patient);
         }
 
-        public async Task DeleteAsync(DeletingPatientProfileConfirmationDto dto)
+        public async Task DeleteAsync(string medicalRecordNumber)
         {
-            var patient = await _patientRepository.GetByMedicalRecordNumberAsync(dto.MedicalRecordNumber);
+            var patient = await _patientRepository.GetByMedicalRecordNumberAsync(medicalRecordNumber);
 
             if (patient == null)
             {
@@ -223,6 +223,10 @@ namespace DDDSample1.Domain.Patients
                 patient.Gender.gender,
                 patient.Email.email,
                 patient.PhoneNumber.phoneNumber,
+                patient.Address.Street.street,
+                patient.Address.PostalCode.postalCode,
+                patient.Address.City.city,
+                patient.Address.Country.country,
                 patient.EmergencyContact.Name.fullName,
                 patient.EmergencyContact.Email.email,
                 patient.EmergencyContact.PhoneNumber.phoneNumber,

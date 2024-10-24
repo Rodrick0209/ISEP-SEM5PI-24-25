@@ -18,7 +18,7 @@ public class UsersControllerUnitTests
     public async Task RegisterPatientAsync_ValidCreate_ReturnsOk()
     {
         // Arrange
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+        _mockUserService = new Mock<UserService>(Mock.Of<IPatientRepository>(), Mock.Of<IPatientLogger>());
         _controller = new UsersController(_mockUserService.Object);
 
         var dto = new RegisteringPatientDto {Name = "John Doe", Email = "john.doe@gmail.com", PhoneNumber = "+351 123456789", Street = "Main Street", PostalCode = "1234-567", City = "Los Angeles", Country = "USA", Password = "123456789"};

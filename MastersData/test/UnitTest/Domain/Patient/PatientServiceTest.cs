@@ -8,6 +8,7 @@ using DDDSample1.Domain.User;
 using DDDSample1.Domain.Utils;
 using Moq;
 using Xunit;
+using System.Xml;
 
 namespace UnitTest.Domain.Patient
 {
@@ -371,7 +372,7 @@ namespace UnitTest.Domain.Patient
             _patientRepositoryMock.Setup(repo => repo.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patients.Patient));
 
             // Act
-            await _patientService.DeleteAsync(dto);
+            await _patientService.DeleteAsync("202410000001");
 
             // Assert
             _patientRepositoryMock.Verify(repo => repo.Remove(It.IsAny<DDDSample1.Domain.Patients.Patient>()), Times.Once);

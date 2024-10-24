@@ -31,5 +31,9 @@ namespace DDDSample1.Domain.Patients
             this.MedicalRecordNumber = medicalRecordNumber;
             this.MedicalConditions = medicalConditions;
         }
+
+        public PatientDto()
+        {
+        }
     }
 }

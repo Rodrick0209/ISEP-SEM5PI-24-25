@@ -11,9 +11,9 @@ namespace DDDSample1.Controllers
 
     public class PatientsController : ControllerBase
     {
-        private readonly PatientService _service;
+        private readonly IPatientService _service;
 
-        public PatientsController(PatientService service)
+        public PatientsController(IPatientService service)
         {
             _service = service;
         }
@@ -79,16 +79,11 @@ namespace DDDSample1.Controllers
 
         // DELETE: api/Patients/{medicalRecordNumber}
         [HttpDelete("{medicalRecordNumber}")]
-        public async Task<ActionResult> DeleteAsync(string medicalRecordNumber, DeletingPatientProfileConfirmationDto dto)
+        public async Task<ActionResult> DeleteAsync(string medicalRecordNumber)
         {
-            if (medicalRecordNumber != dto.MedicalRecordNumber)
-            {
-                return BadRequest();
-            }
-
             try
             {
-                await _service.DeleteAsync(dto);
+                await _service.DeleteAsync(medicalRecordNumber);
 
                 return NoContent();
             }
