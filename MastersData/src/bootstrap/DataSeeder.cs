@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DDDSample1.Domain.AvailabilitySlots;
-using DDDSample1.Domain.Families;
 using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Patients;

@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 public class PatientsControllerTestWithoutIsolation :
     IClassFixture<MastersDataWebApplicationFactory<Program>>
 {
+    
     private readonly HttpClient _client;
     private readonly MastersDataWebApplicationFactory<Program> _factory;
 

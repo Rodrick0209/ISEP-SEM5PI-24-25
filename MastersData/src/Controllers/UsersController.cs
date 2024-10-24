@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Families;
 using DDDSample1.Domain.User;
 using Microsoft.AspNetCore.Authorization;
 using DDDSample1.Domain.Patients;

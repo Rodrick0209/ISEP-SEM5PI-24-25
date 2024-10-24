@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Infrastructure.Families;
 using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Utils;
 using DDDSample1.Domain.AvailabilitySlots;
