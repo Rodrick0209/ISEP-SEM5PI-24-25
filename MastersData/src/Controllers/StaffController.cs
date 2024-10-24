@@ -9,6 +9,7 @@ using DDDSample1.Domain.Shared;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using DDDSample1.Domain.StaffMembers;
+using System.Collections.Generic;
 
 namespace DDDSample1.Controllers
 {
@@ -88,5 +89,19 @@ namespace DDDSample1.Controllers
 
 
         }
+
+         [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<StaffDto>>> GetAll()
+        {
+            var list = await  _service.GetAllAsync();
+            var listDto = new List<StaffDto>();
+            
+            foreach (var staff in list)
+            {
+                listDto.Add(StaffMapper.toDTO(staff));
+            }
+
+            return Ok(listDto);
+        } 
     }
 }

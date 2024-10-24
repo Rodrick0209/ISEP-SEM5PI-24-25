@@ -229,7 +229,7 @@ namespace DDDSample1.Domain.StaffMembers
             return true;
         }
 
-        private void LogChanges(Staff staff, string typeOfChange)
+        private void LogChanges(Staff staff, string loggertype)
         {
             var staffLogger = new StaffLogger(
                 staff.Id,
@@ -239,10 +239,17 @@ namespace DDDSample1.Domain.StaffMembers
                 staff.Email.email,
                 staff.PhoneNumber.phoneNumber,
                 staff.Category.ToString(),
+                loggertype,
                 DateTime.UtcNow
             );
 
             _staffLoggerRepository.AddAsync(staffLogger);
+        }
+
+
+          public async Task<List<Staff>> GetAllAsync()
+        {    
+            return await this._staffRepository.GetAllAsync();
         }
 
 

@@ -15,14 +15,17 @@ namespace DDDSample1.Domain.StaffLoggers
         public string Email { get; private set; }
         public string PhoneNumber { get; private set; }
         public string Category { get; private set; }
+
+        public string LoggerType { get; private set; }
         public DateTime ModificationDate { get; private set; }
+
 
         private StaffLogger()
         {
 
         }
 
-        public StaffLogger(StaffId staffId, string licenseNumber, string specializationId, string availabilitySlotsId, string email, string phoneNumber, string category, DateTime modificationDate)
+        public StaffLogger(StaffId staffId, string licenseNumber, string specializationId, string availabilitySlotsId, string email, string phoneNumber, string category, string LoggerType, DateTime modificationDate)
         {
             this.Id = new StaffLoggerId(Guid.NewGuid());
             this.LicenseNumber = licenseNumber;
@@ -31,6 +34,7 @@ namespace DDDSample1.Domain.StaffLoggers
             this.Email = email;
             this.PhoneNumber = phoneNumber;
             this.Category = category;
+            this.LoggerType = LoggerType;
             this.ModificationDate = modificationDate;
 
         }
