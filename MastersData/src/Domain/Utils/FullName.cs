@@ -37,6 +37,9 @@ namespace DDDSample1.Domain.Utils
             return names[names.Length - 1]; // O último elemento da lista é o último nome
         }
 
-        
+        public static implicit operator string(FullName v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -39,6 +39,8 @@ using DDDSample1.Domain.PatientLoggers;
 using DDDSample1.Infrastructure.PatientLoggers;
 using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Infrastructure.AvailabilitySlots;
+using DDDSample1.Domain.StaffLoggers;
+using DDDSample1.Infrastructure.StaffLoggers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -217,9 +219,7 @@ namespace DDDSample1.Startup
 
             services.AddTransient<IAvailabilitySlotsRepository, AvailabilitySlotRepository>();
 
-            services.AddTransient<IPhasesRepository, PhasesRepository>(); // Register IPhasesRepository
-
+        services.AddTransient<IPhasesRepository, PhasesRepository>(); // Register IPhasesRepository
         }
     }
 }
-
