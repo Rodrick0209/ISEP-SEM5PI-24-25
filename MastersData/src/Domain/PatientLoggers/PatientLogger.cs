@@ -15,6 +15,10 @@ namespace DDDSample1.Domain.PatientLoggers
         public string Email { get; private set; }
         public string PhoneNumber { get; private set; }
         public string Gender { get; private set; }
+        public string Street { get; private set; }
+        public string PostalCode { get; private set; }
+        public string City { get; private set; }
+        public string Country { get; private set; }
         public string EmergencyContactName { get; private set; }
         public string EmergencyContactEmail { get; private set; }
         public string EmergencyContactPhoneNumber { get; private set; }
@@ -39,7 +43,7 @@ namespace DDDSample1.Domain.PatientLoggers
             TypeOfChange = default!;
         }
 
-        public PatientLogger(PatientId patientId, string fullName, string dateOfBirth, string gender, string email, string phoneNumber,  string emergencyContactName, string emergencyContactEmail, string emergencyContactPhoneNumber, string medicalRecordNumber, string? medicalConditions, string change, DateTime modificiationDate)
+        public PatientLogger(PatientId patientId, string fullName, string dateOfBirth, string gender, string email, string phoneNumber,  string street, string postalCode, string city, string country, string emergencyContactName, string emergencyContactEmail, string emergencyContactPhoneNumber, string medicalRecordNumber, string? medicalConditions, string change, DateTime modificiationDate)
         {
             this.Id = new PatientLoggerId(Guid.NewGuid());
             this.PatientId = patientId;
@@ -48,6 +52,10 @@ namespace DDDSample1.Domain.PatientLoggers
             this.Gender = gender;
             this.Email = email;
             this.PhoneNumber = phoneNumber;
+            this.Street = street;
+            this.PostalCode = postalCode;
+            this.City = city;
+            this.Country = country;
             this.EmergencyContactName = emergencyContactName;
             this.EmergencyContactEmail = emergencyContactEmail;
             this.EmergencyContactPhoneNumber = emergencyContactPhoneNumber;
