@@ -27,11 +27,11 @@ namespace DDDSample1.Controllers
         public async Task<ActionResult<StaffDto>> Create(StaffDto dto)
         {
             var op = await _service.AddAsync(dto);
-      
+
             return CreatedAtAction(nameof(GetGetById), new { id = op.Id }, op);
         }
 
-        
+
         [HttpGet("{id}")]
 
         public async Task<ActionResult<StaffDto>> GetGetById(String id)
@@ -42,6 +42,51 @@ namespace DDDSample1.Controllers
                 return NotFound();
             }
             return StaffMapper.toDTO(op);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<StaffDto>> Update(EditingStaffProfileDto dto, StaffId staffId)
+        {
+            if (staffId != dto.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var staff = await _service.UpdateAsync(dto, dto.Id);
+
+                return Ok(staff);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        [HttpDelete("{id}")]
+
+        public async Task<ActionResult<StaffDto>> Delete(Guid id)
+        {
+            try
+            {
+                var staff = await _service.DeleteAsync(new StaffId(id));
+                if (staff == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(StaffMapper.toDTO(staff));
+
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+
+
+
         }
     }
 }

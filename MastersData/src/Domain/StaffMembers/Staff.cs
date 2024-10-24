@@ -13,8 +13,8 @@ namespace DDDSample1.Domain.StaffMembers
     {
         public FullName FullName { get; private set; }
         public LicenseNumber LicenseNumber { get; private set; }
-        public SpecializationId SpecializationId { get; private set; }
-        public AvailabilitySlotsId AvailabilitySlotsId { get; private set; }
+        public String SpecializationId { get; private set; }
+        public String AvailabilitySlotsId { get; private set; }
         public Email Email { get; private set; }
         public PhoneNumber PhoneNumber { get; private set; }
         public Category Category { get; private set; }
@@ -24,7 +24,7 @@ namespace DDDSample1.Domain.StaffMembers
         {
         }
 
-        public Staff(StaffId staffId, string fullName, string licenseNumber, SpecializationId specializationId, AvailabilitySlotsId availabilitySlotsId, string email, string phoneNumber, string category)
+        public Staff(StaffId staffId, string fullName, string licenseNumber, String specializationId, String availabilitySlotsId, string email, string phoneNumber, string category)
         {
             this.Id = staffId;
             this.FullName = new FullName(fullName);
@@ -36,34 +36,25 @@ namespace DDDSample1.Domain.StaffMembers
             this.Category = Enum.Parse<Category>(category);
         }
 
-        public void ChangeFullName(FullName fullName)
+        public void ChangeFullName(string fullName)
         {
-            this.FullName = fullName;
+            this.FullName = new FullName(fullName);
         }
 
-        public void ChangeLicenseNumber(LicenseNumber licenseNumber)
+        public void ChangeLicenseNumber(string licenseNumber)
         {
-            this.LicenseNumber = licenseNumber;
+            this.LicenseNumber = new LicenseNumber(licenseNumber);
         }
 
-        public void ChangeSpecialization(SpecializationId specializationId)
+
+        public void ChangeEmail(string email)
         {
-            this.SpecializationId = specializationId;
+            this.Email = new Email(email);
         }
 
-        public void ChangeAvailabilitySlots(AvailabilitySlotsId availabilitySlots)
+        public void ChangePhoneNumber(string phoneNumber)
         {
-            this.AvailabilitySlotsId = availabilitySlots;
-        }
-
-        public void ChangeEmail(Email email)
-        {
-            this.Email = email;
-        }
-
-        public void ChangePhoneNumber(PhoneNumber phoneNumber)
-        {
-            this.PhoneNumber = phoneNumber;
+            this.PhoneNumber = new PhoneNumber(phoneNumber);
         }
         public void ChangeCategory(Category category)
         {

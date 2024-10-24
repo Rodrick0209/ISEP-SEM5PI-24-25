@@ -18,6 +18,8 @@ using DDDSample1.Domain.OperationRequestLoggers;
 using DDDSample1.Infrastructure.OperationRequestLoggers;
 using DDDSample1.Domain.PatientLoggers;
 using DDDSample.Infrastructure.PatientLoggers;
+using DDDSample1.Domain.StaffLoggers;
+using DDDSample.Infrastructure.StaffLoggers;
 using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Infrastructure.StaffMembers;
 using DDDSample1.Domain.AvailabilitySlots;
@@ -52,6 +54,7 @@ namespace DDDSample1.Infrastructure
         public DbSet<OperationRequestLogger> OperationRequestLoggers { get; set; }
 
         public DbSet<PatientLogger> PatientLoggers { get; set; }
+        public DbSet<StaffLogger> StaffLoggers { get; set; } 
 
         public DDDSample1DbContext(DbContextOptions options) : base(options)
         {
@@ -71,6 +74,7 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new OperationRequestLoggerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PatientLoggerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new StaffEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new StaffLoggerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AvailabilitySlotEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PhaseEntityTypeConfiguration());
             modelBuilder.Entity<Phase>(entity =>

@@ -6,7 +6,9 @@ using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Utils;
 using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Domain.Specializations;
+using DDDSample1.Domain.StaffLoggers;
 using System;
+using DDDSample1.Domain.User;
 
 
 
@@ -20,18 +22,22 @@ namespace DDDSample1.Domain.StaffMembers
         private readonly IAvailabilitySlotsRepository _availabilitySlotsRepository;
 
         private readonly ISpecializationRepository _specializationRepository;
+        private readonly IEmailSender _emailSender;
+        private readonly IStaffLoggerRepository _staffLoggerRepository;
 
 
 
 
 
-        public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository, IAvailabilitySlotsRepository availabilitySlotsRepository, ISpecializationRepository specializationRepository)
+
+        public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository, IAvailabilitySlotsRepository availabilitySlotsRepository, ISpecializationRepository specializationRepository, IEmailSender emailSender, IStaffLoggerRepository staffLoggerRepository)
         {
             _unitOfWork = unitOfWork;
             _staffRepository = staffRepository;
             _availabilitySlotsRepository = availabilitySlotsRepository;
             _specializationRepository = specializationRepository;
-
+            _emailSender = emailSender;
+            _staffLoggerRepository = staffLoggerRepository;
 
         }
 
@@ -65,6 +71,85 @@ namespace DDDSample1.Domain.StaffMembers
             return StaffMapper.toDTO(staff);
         }
 
+        public async Task<StaffDto> UpdateAsync(EditingStaffProfileDto dto, StaffId staffId)
+        {
+            var staff = await _staffRepository.GetByIdAsync(staffId);
+
+            if (staff == null)
+            {
+                throw new BusinessRuleValidationException("Staff member not found");
+            }
+
+            LogChanges(staff, "update");
+
+            string email = staff.Email.email;
+
+            if (!string.IsNullOrWhiteSpace(dto.FullName))
+            {
+                staff.ChangeFullName(dto.FullName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.Email))
+            {
+                bool emailIsUnique = await validateEmailIsUnique(dto.Email);
+                if (!emailIsUnique)
+                {
+                    throw new BusinessRuleValidationException("Email already exists");
+                }
+                staff.ChangeEmail(dto.Email);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
+            {
+                bool phoneNumberIsUnique = await validatePhoneNumberIsUnique(dto.PhoneNumber);
+                if (!phoneNumberIsUnique)
+                {
+                    throw new BusinessRuleValidationException("Phone Number already exists");
+                }
+                staff.ChangePhoneNumber(dto.PhoneNumber);
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(dto.LicenseNumber))
+            {
+                staff.ChangeLicenseNumber(dto.LicenseNumber);
+            }
+
+
+            await _unitOfWork.CommitAsync();
+
+            if (dto.Email != null || dto.PhoneNumber != null)
+            {
+                await _emailSender.SendEmailAsync("Your profile has been updated. If you are not aware of this this change, please contact support immediately.", email, "Profile Update Notification");
+            }
+
+            return StaffMapper.toDTO(staff);
+
+
+
+        }
+
+        public async Task<Staff> DeleteAsync(StaffId id)
+        {
+            var staff = await _staffRepository.GetByIdAsync(id);
+
+            if (staff == null)
+            {
+                throw new BusinessRuleValidationException("Staff member not found");
+            }
+
+            LogChanges(staff, "delete");
+
+            _staffRepository.Remove(staff);
+
+            await _unitOfWork.CommitAsync();
+
+
+
+
+            return staff;
+        }
+
 
         public async Task<Staff> GetByIdAsync(StaffId id)
         {
@@ -79,29 +164,50 @@ namespace DDDSample1.Domain.StaffMembers
 
 
 
-        public async Task<Specialization> checkOSpecializationIdAsync(SpecializationId specializationId)
+        public async Task<Specialization> checkOSpecializationIdAsync(string specializationId)
         {
 
-            var spec = await this._specializationRepository.GetByIdAsync(specializationId);
-            if (spec == null)
+            try
             {
-                throw new BusinessRuleValidationException("Specialization not found");
-            }
+                var id = new SpecializationId(specializationId);
+                Console.WriteLine("ID ->: " + id);
+                var spec = await this._specializationRepository.GetByIdAsync(id);
 
-            return spec;
+                if (spec == null)
+                {
+                    throw new BusinessRuleValidationException("Specialization does not exist");
+                }
+
+                return spec;
+            }
+            catch (Exception e)
+            {
+                throw new BusinessRuleValidationException("Specialization does not exist");
+            }
         }
 
-        public async Task<AvailabilitySlot> checkAvailabilitySlotIdAsync(AvailabilitySlotsId availabilitySlotsId)
+        public async Task<AvailabilitySlot> checkAvailabilitySlotIdAsync(string availabilitySlotsId)
         {
 
-            var aSlot = await this._availabilitySlotsRepository.GetByIdAsync(availabilitySlotsId);
-            if (aSlot == null)
+            try
             {
-                throw new BusinessRuleValidationException("Availability Slot not found");
-            }
+                var id = new AvailabilitySlotsId(availabilitySlotsId);
+                Console.WriteLine("ID ->: " + id);
+                var slot = await this._availabilitySlotsRepository.GetByIdAsync(id);
 
-            return aSlot;
+                if (slot == null)
+                {
+                    throw new BusinessRuleValidationException("Availability Slot does not exist");
+                }
+
+                return slot;
+            }
+            catch (Exception e)
+            {
+                throw new BusinessRuleValidationException("Availability Slot does not exist");
+            }
         }
+
 
         private async Task<bool> validateEmailIsUnique(string email)
         {
@@ -121,6 +227,22 @@ namespace DDDSample1.Domain.StaffMembers
                 return false;
             }
             return true;
+        }
+
+        private void LogChanges(Staff staff, string typeOfChange)
+        {
+            var staffLogger = new StaffLogger(
+                staff.Id,
+                staff.FullName,
+                staff.SpecializationId,
+                staff.AvailabilitySlotsId,
+                staff.Email.email,
+                staff.PhoneNumber.phoneNumber,
+                staff.Category.ToString(),
+                DateTime.UtcNow
+            );
+
+            _staffLoggerRepository.AddAsync(staffLogger);
         }
 
 

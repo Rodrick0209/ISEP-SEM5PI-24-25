@@ -54,6 +54,16 @@ public static class DataSeeder
     SeedSpecializations(context, specialization3);
 
 
+    var availabilitySlot1 = new AvailabilitySlot("ola");
+    var availabilitySlot2 = new AvailabilitySlot("boas");
+    var availabilitySlot3 = new AvailabilitySlot("tudo");
+    SeedAvailabilitySlots(context, availabilitySlot1);
+    SeedAvailabilitySlots(context, availabilitySlot2);
+    SeedAvailabilitySlots(context, availabilitySlot3);
+
+   
+
+
     // Create required staff
     var requiredStaff1 = new RequiredStaff(10, specialization1.Id);
     var requiredStaff2 = new RequiredStaff(20, specialization2.Id);
@@ -61,8 +71,8 @@ public static class DataSeeder
     var requiredStaffList2 = new List<RequiredStaff> { new RequiredStaff(20, specialization2.Id) }; // New instance
     var requiredStaffList3 = new List<RequiredStaff> { new RequiredStaff(2, specialization2.Id) }; // New instance
 
-    var user = new User("D202512345@gmail.com","Doctor");
-    var user2 = new User("D202512344@gmail.com","Doctor");
+    var user = new User("D202512345@gmail.com", "Doctor");
+    var user2 = new User("D202512344@gmail.com", "Doctor");
 
     // Create new phases with required staff
     var phase1 = new Phase(20, requiredStaffList1);
@@ -72,19 +82,19 @@ public static class DataSeeder
     // Create a new operation type with the phases and specialization
     var operationType = new OperationType("New Operation Type", true, phase1, phase2, phase3, specialization1.Id);
     var operationType2 = new OperationType("New Operation Type2", true, phase1, phase2, phase3, specialization2.Id);
-    
-    var operationRequest = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType.Id.AsString(),new StaffId("D202512345").AsString(),new StaffId("D202512344").AsString());
-    
-    var operationRequest2 = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
+
+    var operationRequest = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512344").AsString());
+
+    var operationRequest2 = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512344").AsString(), new StaffId("D202512345").AsString());
 
 
     // Seed the operation type into the context
     SeedOperationType(context, operationType);
     SeedOperationType(context, operationType2);
     SeedOperationRequest(context, operationRequest);
-    SeedOperationRequest(context,operationRequest2);
-    SeedUsers(context,user,"password");
-    SeedUsers(context,user2,"password");
+    SeedOperationRequest(context, operationRequest2);
+    SeedUsers(context, user, "password");
+    SeedUsers(context, user2, "password");
 
     context.SaveChanges();
   }
@@ -163,5 +173,16 @@ public static class DataSeeder
     context.Set<Staff>().AddRange(staffMembers);
     context.SaveChanges();
   }
+
+
+
+  private static void SeedAvailabilitySlots(DDDSample1DbContext context, AvailabilitySlot availabilitySlot)
+  {
+    if (!context.AvailabilitySlots.Any())
+    {
+      context.AvailabilitySlots.Add(availabilitySlot);
+    }
+  }
+
 
 }
