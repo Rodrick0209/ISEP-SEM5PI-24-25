@@ -219,7 +219,10 @@ namespace DDDSample1.Startup
 
             services.AddTransient<IAvailabilitySlotsRepository, AvailabilitySlotRepository>();
 
-        services.AddTransient<IPhasesRepository, PhasesRepository>(); // Register IPhasesRepository
+            services.AddTransient<IPhasesRepository, PhasesRepository>(); // Register IPhasesRepository
+
+            services.AddTransient<IStaffLoggerRepository, StaffLoggerRepository>();
+            services.AddTransient<StaffLoggerService>();
         }
     }
 }
