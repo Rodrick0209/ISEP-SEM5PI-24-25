@@ -180,7 +180,7 @@ namespace DDDSample1.Domain.User
 
         }
 
-        public async Task<ConfirmationPatientDto> RegisterPatientAsync(RegisteringPatientDto dto)
+        public async Task<UserDTO> RegisterPatientAsync(RegisteringPatientDto dto)
         {
             ValidatesEmailIsUnique(dto.Email);
 
@@ -215,7 +215,7 @@ namespace DDDSample1.Domain.User
 
             await _unitOfWork.CommitAsync();
 
-            return new ConfirmationPatientDto(token, dto.Email);
+            return UserMapper.ToDto(user);
         }
 
         public async Task<PatientDto> ConfirmRegisterPatientAsync(ConfirmationPatientDto dto)
