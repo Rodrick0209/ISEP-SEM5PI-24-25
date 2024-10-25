@@ -12,33 +12,40 @@ namespace DDDSample1.Domain.OperationRequest
     public class OperationRequestDto
     {
         public Guid Id { get; set; }
-
         public string DeadLineDate { get; set; }
-
         public string Priority { get; set; }
-
-
         public String PatientId { get; set; }
         public String OperationTypeId { get; set; }
-        public String DoctorThatRequestedId { get; set;}
-
+        
         public String DoctorThatWillPerformId { get; set; }
+
+        public String DoctorThatRequestedId { get; set; }
 
 
       
 
-        public OperationRequestDto(Guid id, string deadLineDate, string priority, String patientId, String operationTypeId, String doctorThatRequestedId, String doctorThatWillPerformId)
+        public OperationRequestDto(Guid id, string deadLineDate, string priority, String patientId, String operationTypeId, String doctorThatRequestedId,String doctorThatWillPerformId)
         {
             this.Id = id;
             this.DeadLineDate = deadLineDate;
             this.Priority = priority;
             this.PatientId = patientId;
             this.OperationTypeId = operationTypeId;
-            this.DoctorThatWillPerformId = doctorThatWillPerformId;
             this.DoctorThatRequestedId = doctorThatRequestedId;
+            this.DoctorThatWillPerformId = doctorThatWillPerformId;
         }
        
-
+        public OperationRequestDto(string deadLineDate, string priority, String patientId, String operationTypeId, String doctorThatWillPerformId)
+        {
+            this.DeadLineDate = deadLineDate;
+            this.Priority = priority;
+            this.PatientId = patientId;
+            this.OperationTypeId = operationTypeId;
+            this.DoctorThatWillPerformId = doctorThatWillPerformId;
+        }
+        public OperationRequestDto()
+        {
+        }
 
     }
 

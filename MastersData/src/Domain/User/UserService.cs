@@ -52,7 +52,6 @@ namespace DDDSample1.Domain.User
             {
                 throw new Exception("Login request is null");
             }
-            Console.WriteLine("TRACK ERROR 1");
 
             User? user = await _repo.GetByEmailAsync(request.Email);
             if (user == null)
@@ -61,7 +60,6 @@ namespace DDDSample1.Domain.User
             }
 
             bool result2 = user.checkIfAccountIsBlocked();
-            Console.WriteLine("TRACK ERROR 2--- resultado > " + result2);
 
 
             if (result2)
@@ -273,6 +271,10 @@ namespace DDDSample1.Domain.User
             if (!string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit))
             {
                 bool valid = await ValidatePatientNewPhoneNumberIsUnique(dto.PhoneNumberToEdit);
+                if (!valid)
+                {
+                    throw new BusinessRuleValidationException("Phone number already exists in a patient record");
+                }
             }
 
             LogPatientChanges(patient, "update");
@@ -295,12 +297,12 @@ namespace DDDSample1.Domain.User
 
                 user.SetConfirmationEditPatientToken(token, DateTime.UtcNow.AddHours(24));
 
-                if (!string.IsNullOrWhiteSpace(emailToEdit))
+                if (!string.IsNullOrWhiteSpace(dto.EmailToEdit))
                 {
                     emailToEdit = dto.EmailToEdit;
                 }
 
-                if (!string.IsNullOrWhiteSpace(phoneNumberToEdit))
+                if (!string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit))
                 {
                     phoneNumberToEdit = dto.PhoneNumberToEdit;
                 }

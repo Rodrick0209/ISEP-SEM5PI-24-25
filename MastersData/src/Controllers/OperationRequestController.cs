@@ -12,6 +12,8 @@ using System.Security.Claims;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IdentityModel.JsonWebTokens;
+using System.Xml;
+using DDDSample1.Domain.Utils;
 
 
 
@@ -33,14 +35,31 @@ namespace DDDSample1.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Doctor")]
         public async Task<ActionResult<OperationRequestDto>> Create(OperationRequestDto dto)
         {
-            var objDomain = OperationRequestMapper.toDomain(dto);
-            var op = await _service.AddAsync(objDomain);
-            var op2 = OperationRequestMapper.toDTO(op);
-            return CreatedAtAction(nameof(GetGetById), new { id = op2.Id }, op2);
-        }
+            try
+            {
+                var emailDoctorQuerCriar = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                if (emailDoctorQuerCriar == null)
+                {
+                    throw new Exception("Email do doutor não encontrado.");
+                }
 
+                var objDomain = OperationRequestMapper.toDomain(dto, new Email(emailDoctorQuerCriar).getFirstPartOfEmail().ToString());
+                var op = await _service.AddAsync(objDomain);
+                var op2 = OperationRequestMapper.toDTO(op);
+                return CreatedAtAction(nameof(GetGetById), new { id = op2.Id }, op2);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
 
         [HttpGet("{id}")]
 
@@ -60,7 +79,7 @@ namespace DDDSample1.Controllers
         {
             if (id != dto.Id)
             {
-                return BadRequest();
+                return BadRequest("ID mismatch");
             }
 
             try
@@ -103,7 +122,7 @@ namespace DDDSample1.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("getWithFilters")]
         [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> GetOperationRequests([FromQuery] OperationRequestFilterDto filters)
         {
@@ -111,7 +130,7 @@ namespace DDDSample1.Controllers
 
 
         var operationRequests = await _service.GetOperationRequestsWithFilters(filters, emailDoctorQuerEditar);
-        if(operationRequests == null)
+        if(operationRequests == null || operationRequests.Count == 0)
         {
             return NotFound();
         }

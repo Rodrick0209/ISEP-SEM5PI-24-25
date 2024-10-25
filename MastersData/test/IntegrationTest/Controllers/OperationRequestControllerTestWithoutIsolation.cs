@@ -43,12 +43,14 @@ public class OperationRequestControllerTestWithoutIsolation :
         {
             var services = scope.ServiceProvider;
             var context = services.GetRequiredService<DDDSample1DbContext>();
-            
+            context.Database.EnsureCreated();
+            Utilities.InitializeDbForTests(context);
         }
 
-        
         var token = await GetAuthTokenAsync();
         _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                _output.WriteLine($"Token: {token}");
+         
             // Act
             var response = await _client.GetAsync("/api/operationrequest/getWithFilters");
 
@@ -58,14 +60,22 @@ public class OperationRequestControllerTestWithoutIsolation :
 
     private async Task<string> GetAuthTokenAsync()
     {
-        var loginRequest = new
+         var loginRequest = new LoginRequest
         {
             Email = "D202512345@gmail.com",
             Password = "password"
         };
 
+
         var response = await _client.PostAsJsonAsync("/api/login/login", loginRequest);
+        
         _output.WriteLine($"Status da resposta de login: {response.StatusCode}");
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            var errorContent = await response.Content.ReadAsStringAsync();
+            _output.WriteLine($"Erro de login: {errorContent}");
+        }
+        
         response.EnsureSuccessStatusCode();
 
         var responseString = await response.Content.ReadAsStringAsync();
@@ -94,6 +104,8 @@ public class OperationRequestControllerTestWithoutIsolation :
             var services = scope.ServiceProvider;
             var context = services.GetRequiredService<DDDSample1DbContext>();
             context.Database.EnsureCreated();
+            Utilities.InitializeDbForTests(context);
+
             var operationType = context.OperationTypes.FirstOrDefault();
             if (operationType != null)
             {
@@ -110,7 +122,6 @@ public class OperationRequestControllerTestWithoutIsolation :
             if (doctor != null)
             {
                 doctorId = doctor.Id.AsString();
-                _output.WriteLine($"DoctorId: {doctorId}");
             }
         }
 
@@ -124,15 +135,12 @@ public class OperationRequestControllerTestWithoutIsolation :
         _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
 
-
         // Act
         var response = await _client.PostAsJsonAsync("/api/operationrequest", new OperationRequestDto(
-            Guid.NewGuid(),
             "2025-01-01",
             "eletric",
             patientId,
             operationTypeId,
-            doctorId,
             doctorId
         ));
 
@@ -162,6 +170,8 @@ public async Task UpdateOperationRequest_ReturnsSuccessStatusCode()
         var services = scope.ServiceProvider;
         var context = services.GetRequiredService<DDDSample1DbContext>();
         context.Database.EnsureCreated();
+        Utilities.InitializeDbForTests(context);
+  
         var operationRequest = context.OperationRequests.FirstOrDefault();
         if (operationRequest != null)
         {
@@ -209,6 +219,8 @@ public async Task UpdateOperationRequest_ReturnsUnsuccessStatusCode()
         var services = scope.ServiceProvider;
         var context = services.GetRequiredService<DDDSample1DbContext>();
         context.Database.EnsureCreated();
+        Utilities.InitializeDbForTests(context);
+   
         var operationRequest = context.OperationRequests.FirstOrDefault();
         if (operationRequest != null)
         {
