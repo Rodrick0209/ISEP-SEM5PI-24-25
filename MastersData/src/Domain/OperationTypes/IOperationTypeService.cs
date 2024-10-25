@@ -14,6 +14,8 @@ namespace DDDSample1.Domain.OperationTypes
 
         Task<List<OperationType>> GetAllAsync();
 
+        Task<List<OperationType>> GetOperationTypesByFilter(string name, string status, string specialization);
+
         Task<OperationType> UpdateAsync(OperationTypeDto dto);
     }
 }

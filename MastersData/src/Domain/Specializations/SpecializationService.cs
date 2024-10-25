@@ -37,7 +37,7 @@ namespace DDDSample1.Domain.Specializations
     
             var op = await this._repo.GetByNameAsync(name);
             if (op == null)
-                return null;
+                throw new Exception($"No specialization found with the name '{name}'.");
 
             return op;
 

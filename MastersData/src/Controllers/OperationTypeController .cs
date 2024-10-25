@@ -122,5 +122,36 @@ namespace DDDSample1.Controllers
             }
         }
 
+
+        [HttpGet("Filter")]
+        public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetByFilters(string name, string status, string specialization)
+        {
+            var specializationstr="";
+            if (!string.IsNullOrEmpty(specialization))
+            {
+                var specializationId = await _Spe_service.GetByNameAsync(specialization);
+                specializationstr=specializationId.Id.Value;
+            }
+            
+
+            var list = await _service.GetOperationTypesByFilter(name,status,specializationstr);
+
+            var listDto = new List<OperationTypeDto>();
+
+            foreach (var op in list)
+            {
+                var result = await GetById(op.Id.Value);
+                if (result.Result is OkObjectResult okResult && okResult.Value is OperationTypeDto dto)
+                {
+                    listDto.Add(dto);
+                }
+            }
+
+            return Ok(listDto);
+        }
+
     }
+
+
+    
 }

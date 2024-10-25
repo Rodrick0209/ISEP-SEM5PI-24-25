@@ -75,7 +75,10 @@ namespace DDDSample1.Domain.OperationTypes
             this.cleaningPhase = cleaningPhase;
         }
 
-
+        public string GetStatusAsString()
+        {
+            return this.status ? "Active" : "Inactive";
+        }
     }
 
 

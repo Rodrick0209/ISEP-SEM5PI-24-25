@@ -65,7 +65,24 @@ The following attributes should be displayed and managed in the system for each 
 
 ## 3. Implementation
 
----
+### 1. Database Schema Update
+- No changes are required to the `operation_types` table. The existing structure supports the necessary fields (`ID`, `Name`, `Status`, `Specialization`). Ensure historical data is preserved by implementing a versioning mechanism or a history table.
+
+### 2. Backend Development
+- Update the `OperationType` model to include methods for filtering by name, specialization, and status.
+- Enhance `OperationTypeService` to handle filtering logic.
+- Extend `OperationTypeController` to include endpoints for retrieving filtered lists of operation types.
+
+### 3. API Endpoints
+- `GET /operation-types`: Endpoint to retrieve a list of all operation types with optional query parameters for filtering by name, specialization, and status.
+
+### 4. Validation Logic
+- Ensure the backend validates the filter parameters.
+- Validate that the filter values are correctly formatted and within the allowed values (e.g., valid specializations, status values).
+- Ensure that the filtering logic is efficient and returns accurate results.
+- Ensure that any empty filter is ignored when retrieving data.
+
+
 
 ## 4. Testing
 

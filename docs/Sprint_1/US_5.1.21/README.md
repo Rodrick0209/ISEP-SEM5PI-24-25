@@ -48,6 +48,9 @@ The client has indicated that the system should allow modification of existing o
 
 ## 2. Design
 
+### Domain Model
+![Domain_Model](DM/DM.png) 
+
 ### High-Level Process View (L1)
 ![N1_VP_US21](L1/Process_View.svg)
 
@@ -67,6 +70,24 @@ The client has indicated that the system should allow modification of existing o
 <br>
 
 ## 3. Implementation
+
+
+### Implementation Steps
+
+1. **Database Schema Update:**
+  There is no need to change the `operation_types` table from the previous User Story. The existing structure already supports the required fields (`name`, `required_staff`, `estimated_duration`). Ensure historical data is preserved by creating a versioning mechanism or a history table.
+
+2. **Backend Development:**
+  - Enhance `OperationTypeService` to handle updates while preserving historical data.
+  - Extend `OperationTypeController` to include endpoints for updating operation types.
+
+3. **API Endpoints:**
+  - `PUT /operation-types/{id}`: Endpoint to update an existing operation type.
+  - `GET /operation-types/{id}`: Endpoint to retrieve details of a specific operation type.
+
+4. **Validation Logic:**
+  - Ensure the backend validates the uniqueness of the operation type name during updates.
+  - Validate that all required fields are provided and correctly formatted.
 
 
 ## 4. Testing
