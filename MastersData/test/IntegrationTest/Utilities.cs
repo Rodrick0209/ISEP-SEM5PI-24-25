@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Domain.Patients;
+using DDDSample1.Domain.User;
 using DDDSample1.Infrastructure;
 
 public static class Utilities
@@ -8,12 +9,16 @@ public static class Utilities
     public static void InitializeDbForTests(DDDSample1DbContext db)
     {
         db.Patients.AddRange(GetSeedingPatients());
+        db.Users.Add(new User("D202512345@gmail.com", "Doctor"));
+        db.Users.Add(new User("D202512344@gmail.com", "Doctor"));
         db.SaveChanges();
     }
 
     public static void ReinitializeDbForTests(DDDSample1DbContext db)
     {
         db.Patients.RemoveRange(db.Patients);
+        db.Users.RemoveRange(db.Users);
+        
         InitializeDbForTests(db);
     }
 
