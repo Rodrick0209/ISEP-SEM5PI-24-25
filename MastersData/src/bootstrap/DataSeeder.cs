@@ -20,7 +20,7 @@ public static class DataSeeder
     using var scope = serviceProvider.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<DDDSample1DbContext>();
 
-    // SeedUsers(context, new User("admin@teste.com", "admin"), "password");
+    SeedUsers(context, new User("admin@teste.com", "admin"), "password");
 
     Patient johnCena = new Patient(
       "John Cena",
