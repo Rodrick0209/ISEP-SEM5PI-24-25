@@ -271,6 +271,10 @@ namespace DDDSample1.Domain.User
             if (!string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit))
             {
                 bool valid = await ValidatePatientNewPhoneNumberIsUnique(dto.PhoneNumberToEdit);
+                if (!valid)
+                {
+                    throw new BusinessRuleValidationException("Phone number already exists in a patient record");
+                }
             }
 
             LogPatientChanges(patient, "update");
