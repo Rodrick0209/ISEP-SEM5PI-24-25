@@ -57,7 +57,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
 
             // Act
             var result = await _controller.Create(dto);
-
+            
             // Assert
             var actionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
             Assert.Equal(nameof(_controller.GetGetById), actionResult.ActionName);

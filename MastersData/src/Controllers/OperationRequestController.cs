@@ -27,9 +27,9 @@ namespace DDDSample1.Controllers
     public class OperationRequestController : ControllerBase
     {
 
-        private readonly OperationRequestService _service;
+        private readonly IOperationRequestService _service;
 
-        public OperationRequestController(OperationRequestService service)
+        public OperationRequestController(IOperationRequestService service)
         {
             _service = service;
         }
