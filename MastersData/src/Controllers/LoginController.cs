@@ -15,10 +15,10 @@ namespace DDDSample1.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
 
-        public LoginController(UserService service)
+        public LoginController(IUserService service)
         {
             _userService = service;
         }

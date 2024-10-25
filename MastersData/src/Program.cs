@@ -178,7 +178,7 @@ namespace DDDSample1.Startup
             services.AddTransient<DDDSample1.Domain.User.IEmailSender, EmailSender>();
 
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<UserService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddTransient<IOperationRequestRepository, OperationRequestRepository>();
             services.AddTransient<OperationRequestService>();
