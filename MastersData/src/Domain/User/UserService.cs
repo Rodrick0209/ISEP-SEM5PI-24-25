@@ -52,7 +52,6 @@ namespace DDDSample1.Domain.User
             {
                 throw new Exception("Login request is null");
             }
-            Console.WriteLine("TRACK ERROR 1");
 
             User? user = await _repo.GetByEmailAsync(request.Email);
             if (user == null)
@@ -61,7 +60,6 @@ namespace DDDSample1.Domain.User
             }
 
             bool result2 = user.checkIfAccountIsBlocked();
-            Console.WriteLine("TRACK ERROR 2--- resultado > " + result2);
 
 
             if (result2)

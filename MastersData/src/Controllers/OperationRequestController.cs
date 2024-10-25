@@ -12,6 +12,8 @@ using System.Security.Claims;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IdentityModel.JsonWebTokens;
+using System.Xml;
+using DDDSample1.Domain.Utils;
 
 
 
@@ -33,9 +35,12 @@ namespace DDDSample1.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Doctor")]
         public async Task<ActionResult<OperationRequestDto>> Create(OperationRequestDto dto)
         {
-            var objDomain = OperationRequestMapper.toDomain(dto);
+            var emailDoctorQuerCriar = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            
+            var objDomain = OperationRequestMapper.toDomain(dto,new Email(emailDoctorQuerCriar).getFirstPartOfEmail().ToString());
             var op = await _service.AddAsync(objDomain);
             var op2 = OperationRequestMapper.toDTO(op);
             return CreatedAtAction(nameof(GetGetById), new { id = op2.Id }, op2);
@@ -60,7 +65,7 @@ namespace DDDSample1.Controllers
         {
             if (id != dto.Id)
             {
-                return BadRequest();
+                return BadRequest("ID mismatch");
             }
 
             try
@@ -103,7 +108,7 @@ namespace DDDSample1.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("getWithFilters")]
         [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> GetOperationRequests([FromQuery] OperationRequestFilterDto filters)
         {

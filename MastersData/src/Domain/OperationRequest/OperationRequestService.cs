@@ -47,9 +47,10 @@ namespace DDDSample1.Domain.OperationRequest
 
     public async Task<OperationRequest> AddAsync(OperationRequest operationRequest)
     {
-         await checkOperationTypeIdAsync(operationRequest.operationTypeId); 
-         await checkDoctorIdAsync(new StaffId(operationRequest.doctorThatRequestedId));
-         await checkPatientAsync(new PatientId(operationRequest.patientId));
+        await checkOperationTypeIdAsync(operationRequest.operationTypeId); 
+        await checkDoctorIdAsync(new StaffId(operationRequest.doctorThatRequestedId));
+        await checkDoctorIdAsync(new StaffId(operationRequest.doctorThatWillPerformId)); 
+        await checkPatientAsync(new PatientId(operationRequest.patientId));
         
 
         await this._repo.AddAsync(operationRequest);
@@ -186,13 +187,13 @@ namespace DDDSample1.Domain.OperationRequest
     
     public async Task<Staff> checkDoctorIdAsync(StaffId doctorId)
     {
-
         var staff = await this._staffRepository.GetByIdAsync(doctorId);
-        
-        if(staff == null || !staff.Category.Equals("Doctor"))
+
+        if(staff == null || !staff.Category.ToString().Equals("Doctor"))
         {
             throw new BusinessRuleValidationException("Doctor invalid");
         }
+
         return staff;
     }
 

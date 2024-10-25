@@ -156,12 +156,16 @@ public static class DataSeeder
     
     var operationRequest = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType.Id.AsString(),new StaffId("D202512345").AsString(),new StaffId("D202512344").AsString());
     
-    var operationRequest2 = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
+    var operationRequest2 = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512345").AsString(),new StaffId("D202512345").AsString());
+
+    var staff = new Staff(new StaffId("D202512345"), "Miguel","12345",specialization1.Id.AsString(),availabilitySlot1.Id.AsString(),"mamarNoC@gmail.com","+351123456789","Doctor");
 
 
     // Seed the operation type into the context
     SeedOperationType(context, operationType);
     SeedOperationType(context, operationType2);
+
+    SeedStaff(context,staff);
   
   
     SeedOperationRequest(context, operationRequest);

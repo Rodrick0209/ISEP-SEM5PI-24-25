@@ -25,6 +25,9 @@ namespace DDDSample1.Domain.OperationRequest
             this.Priority = priority;
         }
 
+        public ChangeOperationRequestDto()
+        {
+        }
 
 
     }
