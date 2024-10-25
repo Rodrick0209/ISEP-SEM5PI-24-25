@@ -1,46 +1,48 @@
 ```plantuml
 @startuml Process_View_Prior_Confirmation
-participant UserRoute as Route <<Route>>
-participant UserController as Controller <<Controller>>
-participant EditingPatientDTO as DTO <<DTO>>
-participant UserService as Service <<Service>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant DTO as DTO <<DTO>>
+participant ConfirmationDTO as ConfirmationDTO <<DTO>>
+participant Service as Service <<Service>>
 participant EmailService as EmailService <<Service>>
-participant UserRepository as Repository <<Repository>>
+participant Repository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>>
-participant User as User <<Domain>>
+participant Domain as Domain <<Domain>>
 participant Patient as Patient <<Domain>>
 [o-> Route: PATCH (/api/users/patients/edit)
 activate Route
 Route -> Controller : PATCH 
 activate Controller
 Controller -> DTO** : recieves request body info
-Controller -> Service : editPatient(EditingPatientDTO)
+Controller -> Service : edits the patient profile
 activate Service
-Service -> Repository : findUserByEmail(email)
+Service -> Repository : finds user by email
 activate Repository
 return user
-Service -> Service : validateEmailIsUnique(email)
+Service -> Service : validate if the new email is unique if not empty
 activate Service
 return flag
-Service -> Service : validatePhoneNumberIsUnique(phoneNumber)
+Service -> Service : validate if the new email is unique if not empty
 activate Service
 return flag
-Service -> PatientRepository : findPatientByAssociatedUser(user)
+Service -> PatientRepository : find patient by email
 activate PatientRepository
 return patient
 alt full name to edit is not null or empty
-Service -> Patient : changeFullName(name)
-Service -> PatientRepository : save(patient)
-Service -> Service : logChanges(patient, "update")
+Service -> Patient : change the full name
+Service -> PatientRepository : saves in DB
+Service -> Service : logs changes
 activate Service
 deactivate Service
 end
 alt information contains sensitive data
-Service -> User : setConfirmationEditPatientToken(token, tokenExpirationDate)
-Service -> EmailService : sendEmail(email, token)
+Service -> Domain : sets confirmation token
+Service -> EmailService : sends email with the confirmation token
 end
+Service -> ConfirmationDTO** : creates DTO with confirmation token and email
+return DTO
 return response
 return response
-<-- Route : response
 @enduml
 ```

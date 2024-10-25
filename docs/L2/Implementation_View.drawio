@@ -1,0 +1,58 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.17 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.17">
+  <diagram name="Página-1" id="kKBKMEyVlORLd3pp8Gom">
+    <mxGraphModel dx="780" dy="496" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Upk1R_LHM_AzDDc6ebxE-3" value="System" style="swimlane;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="1">
+          <mxGeometry x="200" y="80" width="426" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="Upk1R_LHM_AzDDc6ebxE-4" value="SPA" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;whiteSpace=wrap;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="Upk1R_LHM_AzDDc6ebxE-3">
+          <mxGeometry x="36" y="150" width="124" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Upk1R_LHM_AzDDc6ebxE-6" value="Planning" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;whiteSpace=wrap;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="Upk1R_LHM_AzDDc6ebxE-3">
+          <mxGeometry x="276" y="50" width="124" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Upk1R_LHM_AzDDc6ebxE-5" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=47;entryPerimeter=0;exitX=0;exitY=0;exitDx=124;exitDy=14;exitPerimeter=0;" edge="1" parent="Upk1R_LHM_AzDDc6ebxE-3" source="Upk1R_LHM_AzDDc6ebxE-4" target="Upk1R_LHM_AzDDc6ebxE-6">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="166" y="100" as="sourcePoint" />
+            <mxPoint x="276" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Upk1R_LHM_AzDDc6ebxE-8" value="MastersData" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;whiteSpace=wrap;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="Upk1R_LHM_AzDDc6ebxE-3">
+          <mxGeometry x="276" y="260" width="124" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Upk1R_LHM_AzDDc6ebxE-14" value="3D Rendering" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;whiteSpace=wrap;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="Upk1R_LHM_AzDDc6ebxE-3">
+          <mxGeometry x="276" y="150" width="124" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Upk1R_LHM_AzDDc6ebxE-15" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=47;entryPerimeter=0;exitX=0;exitY=0;exitDx=124;exitDy=80;exitPerimeter=0;" edge="1" parent="Upk1R_LHM_AzDDc6ebxE-3" source="Upk1R_LHM_AzDDc6ebxE-4" target="Upk1R_LHM_AzDDc6ebxE-14">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="170" y="107" as="sourcePoint" />
+            <mxPoint x="286" y="107" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="160" y="197" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Upk1R_LHM_AzDDc6ebxE-25" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0.495;entryY=0.188;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="Upk1R_LHM_AzDDc6ebxE-3" source="Upk1R_LHM_AzDDc6ebxE-6" target="Upk1R_LHM_AzDDc6ebxE-14">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="170" y="107" as="sourcePoint" />
+            <mxPoint x="286" y="107" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Upk1R_LHM_AzDDc6ebxE-26" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0.5;entryY=0.146;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="Upk1R_LHM_AzDDc6ebxE-3" source="Upk1R_LHM_AzDDc6ebxE-14" target="Upk1R_LHM_AzDDc6ebxE-8">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="348" y="140" as="sourcePoint" />
+            <mxPoint x="347" y="175" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Upk1R_LHM_AzDDc6ebxE-37" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=47;entryPerimeter=0;exitX=0;exitY=0;exitDx=124;exitDy=80;exitPerimeter=0;" edge="1" parent="Upk1R_LHM_AzDDc6ebxE-3" source="Upk1R_LHM_AzDDc6ebxE-4" target="Upk1R_LHM_AzDDc6ebxE-8">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="170" y="140" as="sourcePoint" />
+            <mxPoint x="286" y="207" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,43 +1,46 @@
 ```plantuml
 @startuml Process_View_Prior_Confirmation
-participant UserRoute as Route <<Route>>
-participant UserController as Controller <<Controller>>
-participant RegisteringPatientDTO as DTO <<DTO>>
-participant ConfirmationRegisterPatientDTO as ConfirmationDTO <<DTO>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant DTO as DTO <<DTO>>
 participant UserService as Service <<Service>>
-participant PasswordPolicy as Policy <<Service>>
-participant PasswordHasher as Hasher <<Service>>
 participant EmailService as EmailService <<Service>>
-participant UserRepository as Repository <<Repository>>
+participant Repository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>> 
-participant User as Domain <<Domain>>
+participant PasswordPolicy as Policy <<Domain Service>>
+participant PasswordHasher as Hasher <<Domain Service>>
+participant Mapper as Mapper <<Domain Service>>
+participant Domain as Domain <<Domain>>
 [o-> Route: POST (/api/users/patients)
 activate Route
 Route -> Controller : POST
 activate Controller
 Controller -> DTO** : recieves request body info
-Controller -> Service : registerPatient(registeringPatientDTO)
+Controller -> Service : register patient's user profile
 activate Service
-Service -> Service : validateEmailIsUnique(email)
+Service -> Service : validates if the email is unique
 activate Service
 return flag
-Service -> Policy : isSatisfiedBy(password)
+Service -> Policy : validates if the password is satisfied
 activate Policy
 return flag
-Service -> PatientRepository : findByNameEmailAndPhoneNumber(name, email, phoneNumber)
+Service -> PatientRepository : finds patient by name, email, phone number and address
 activate PatientRepository
 return patient
-Service -> Service : validatePatientHasNoUser(patient)
+Service -> Service : validates the patient has no user associated
 activate Service
 return flag
-Service -> Hasher : hash(password)
+Service -> Hasher : hash the password
 activate Hasher
 return passwordHash
-Service -> Domain** : createUser(email, "patient", passwordHash)
-Service -> Domain : setConfirmationToken(confirmationToken, confirmationTokenExpiration)
-Service -> Repository : save(user)
-Service -> EmailService : sendConfirmationEmail(token, email)
-return response
+Service -> Domain** : creates patient user with the email and hash
+Service -> Domain : sets the confirmation token
+Service -> Repository : saves user in DB
+Service -> EmailService : sends confirmation email
+Service -> Mapper : entity to DTO
+activate Mapper
+return DTO
+return DTO
 return response
 <-- Route : response
 deactivate Route

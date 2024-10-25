@@ -1,34 +1,38 @@
 ```plantuml
 @startuml Process_View_Posterior_Confirmation
-participant UserRoute as Route <<Route>>
-participant UserController as Controller <<Controller>>
-participant ConfirmationRegisterPatientDTO as ConfirmationDTO <<DTO>>
-participant UserService as Service <<Service>>
-participant UserRepository as Repository <<Repository>>
-participant PatientRepository as PatientRepository <<Repository>> 
-participant User as Domain <<Domain>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant ConfirmationDTO as ConfirmationDTO <<DTO>>
+participant Service as Service <<Service>>
+participant Repository as Repository <<Repository>>
+participant PatientRepository as PatientRepository <<Repository>>
+participant Mapper as Mapper <<Domain Service>>
+participant Domain as Domain <<Domain>>
 participant Patient as Patient <<Domain>>
 [o-> Route : POST(/api/users/patients/confirmation/{token})
 activate Route
 Route -> Controller : POST
 activate Controller
 Controller -> ConfirmationDTO** : recieves request body info
-Controller -> Service : confirmPatientRegistration(confirmationRegisterPatientDTO)
+Controller -> Service : confirms the patient user profile registration
 activate Service
-Service -> Repository : findUserByEmail(email)
+Service -> Repository : finds user by email
 activate Repository
 return user
-Service -> Service : validateToken(user, token)
+Service -> Service : validates confirmation token
 activate Service
 return flag
-Service -> PatientRepository : findPatientByEmail(email)
+Service -> PatientRepository : finds patient profile by email
 activate PatientRepository
 return patient
-Service -> Domain : confirmAccount()
-Service -> Patient : associateUser(user)
-Service -> Repository : save(user)
-Service -> PatientRepository : save(patient)
-return response
+Service -> Domain : confirm the account
+Service -> Patient : associates the user
+Service -> Repository : saves in DB
+Service -> PatientRepository : saves in DB
+Service -> Mapper : entity to DTO
+activate Mapper
+return DTO
+return DTO
 return response
 <-- Route : response
 @enduml

@@ -126,14 +126,15 @@ public class OperationRequestControllerTestWithoutIsolation :
 
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/operationrequest", new OperationRequestDto
-        {
-            DeadLineDate = "2025-01-01",
-            Priority = "eletric",
-            PatientId = patientId,
-            OperationTypeId = operationTypeId,
-            DoctorThatWillPerformId = doctorId
-        });
+        var response = await _client.PostAsJsonAsync("/api/operationrequest", new OperationRequestDto(
+            Guid.NewGuid(),
+            "2025-01-01",
+            "eletric",
+            patientId,
+            operationTypeId,
+            doctorId,
+            doctorId
+        ));
 
         _output.WriteLine($"Response status code: {response.StatusCode}");
 
