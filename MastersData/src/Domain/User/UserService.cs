@@ -180,7 +180,7 @@ namespace DDDSample1.Domain.User
 
         }
 
-        public async Task<UserDTO> RegisterPatientAsync(RegisteringPatientDto dto)
+        public async Task<ConfirmationPatientDto> RegisterPatientAsync(RegisteringPatientDto dto)
         {
             ValidatesEmailIsUnique(dto.Email);
 
@@ -215,10 +215,10 @@ namespace DDDSample1.Domain.User
 
             await _unitOfWork.CommitAsync();
 
-            return UserMapper.ToDto(user);
+            return new ConfirmationPatientDto(token, dto.Email);
         }
 
-        public async Task<PatientDto> ConfirmRegisterPatientAsync(ConfirmationPatientDto dto)
+        public async Task<UserDTO> ConfirmRegisterPatientAsync(ConfirmationPatientDto dto)
         {
             User user = await _repo.GetByEmailAsync(dto.Email);
 
@@ -242,7 +242,7 @@ namespace DDDSample1.Domain.User
 
             await _unitOfWork.CommitAsync();
 
-            return PatientMapper.ToDto(patient);
+            return UserMapper.ToDto(user);
         }
 
         public async Task<ConfirmationEditPatientDto> EditPatientAsync(EditingPatientDto dto)
@@ -263,12 +263,16 @@ namespace DDDSample1.Domain.User
 
             if (!string.IsNullOrWhiteSpace(dto.EmailToEdit))
             {
-                ValidatePatientNewEmailIsUnique(dto.EmailToEdit);
+                bool valid = await ValidatePatientNewEmailIsUnique(dto.EmailToEdit);
+                if (!valid)
+                {
+                    throw new BusinessRuleValidationException("Email already exists in a patient record");
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit))
             {
-                ValidatePatientNewPhoneNumberIsUnique(dto.PhoneNumberToEdit);
+                bool valid = await ValidatePatientNewPhoneNumberIsUnique(dto.PhoneNumberToEdit);
             }
 
             LogPatientChanges(patient, "update");
@@ -333,6 +337,7 @@ namespace DDDSample1.Domain.User
 
             if (!string.IsNullOrWhiteSpace(dto.EmailToEdit))
             {
+                user.ChangeEmail(dto.EmailToEdit);
                 patient.ChangeEmail(dto.EmailToEdit);
             }
 
@@ -441,24 +446,24 @@ namespace DDDSample1.Domain.User
             _emailSender.SendEmailAsync($"Please confirm your deletion here: <a href='{callbackUrl}'>link</a>", email, "Confirm the deletion of your account");
         }
 
-        private void ValidatePatientNewEmailIsUnique(string newEmail)
+        private async Task<bool> ValidatePatientNewEmailIsUnique(string email)
         {
-            var existingPatient = _patientRepo.GetByEmailAsync(newEmail);
-
+            var existingPatient = await _patientRepo.GetByEmailAsync(email);
             if (existingPatient != null)
             {
-                throw new BusinessRuleValidationException("Email already used by other patient record)");
+                return false;
             }
+            return true;
         }
 
-        private void ValidatePatientNewPhoneNumberIsUnique(string newPhoneNumber)
+        private async Task<bool> ValidatePatientNewPhoneNumberIsUnique(string phoneNumber)
         {
-            var existingPatient = _patientRepo.GetByPhoneNumberAsync(newPhoneNumber);
-
+            var existingPatient = await _patientRepo.GetByPhoneNumberAsync(phoneNumber);
             if (existingPatient != null)
             {
-                throw new BusinessRuleValidationException("Phone Number already used by other patient record");
+                return false;
             }
+            return true;
         }
 
         private void LogPatientChanges(Patient patient, string typeOfChange)

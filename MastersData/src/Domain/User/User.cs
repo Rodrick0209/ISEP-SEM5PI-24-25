@@ -154,6 +154,11 @@ namespace DDDSample1.Domain.User
             this.confirmationDeletePatientTokenExpiration = new ConfirmationDeletePatientTokenExpiration(expirationDate);
         }
 
+        public void ChangeEmail(string email)
+        {
+            this.email = new Email(email);
+        }
+
         
 
     }
