@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Infrastructure.Shared;
@@ -15,7 +16,7 @@ namespace DDDSample1.Infrastructure.OperationTypes
         private readonly DDDSample1DbContext context;
 
 
-        public OperationTypeRepository(DDDSample1DbContext context):base(context.OperationTypes)
+        public OperationTypeRepository(DDDSample1DbContext context) : base(context.OperationTypes)
         {
             this.context = context;
         }
@@ -43,7 +44,35 @@ namespace DDDSample1.Infrastructure.OperationTypes
                 .Include(o => o.cleaningPhase)
                 .ToListAsync();
         }
-        
+
+        public async Task<List<OperationType>> GetOperationTypesByFilter(string name, string status, string specialization)
+        {
+            var query = this.context.OperationTypes.AsQueryable();
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(o => o.name == name);
+            }
+
+            if (!string.IsNullOrEmpty(specialization))
+            {
+                query = query.Where(o => o.specialization.Value == specialization);
+            }
+
+            var result = await query
+                .Include(o => o.preparationPhase)
+                .Include(o => o.surgeryPhase)
+                .Include(o => o.cleaningPhase)
+                .ToListAsync();
+
+            // Perform client-side filtering for status
+            if (!string.IsNullOrEmpty(status))
+            {
+                result = result.Where(o => o.GetStatusAsString().ToLower() == status.ToLower()).ToList();
+            }
+
+            return result;
+        }
     }
 
 

@@ -79,6 +79,12 @@ namespace DDDSample1.Domain.OperationTypes
             return await this._repo.GetAllAsync();
         }
 
+
+        public async  Task<List<OperationType>> GetOperationTypesByFilter(string name, string status, string specialization){
+
+            return await this._repo.GetOperationTypesByFilter(name,status,specialization);
+        }
+
         public async Task<OperationType> UpdateAsync(OperationTypeDto dto)
         {
 
