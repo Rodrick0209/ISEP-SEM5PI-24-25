@@ -189,10 +189,12 @@ namespace DDDSample1.Domain.OperationRequest
     {
         var staff = await this._staffRepository.GetByIdAsync(doctorId);
 
-        if(staff == null || !staff.Category.ToString().Equals("Doctor"))
-        {
-            throw new BusinessRuleValidationException("Doctor invalid");
-        }
+        if(staff == null)
+            throw new BusinessRuleValidationException("Doctor not found");
+
+        if(!staff.Category.ToString().Equals("Doctor"))
+            throw new BusinessRuleValidationException("Staff is not a Doctor");    
+
 
         return staff;
     }
