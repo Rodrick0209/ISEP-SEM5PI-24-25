@@ -1,0 +1,46 @@
+@startuml Process_View
+actor Admin 
+participant UI  as UI
+participant OperationTypeController as ctrl <<Controller>>
+participant OperationTypeMapper as mapper <<Mapper>>
+participant OperationType as domain <<Domain>>
+participant OperationTypeDTO as dto <<DTO>>
+participant OperationTypeService as service <<Service>>
+participant OperationTypeRepository as repository <<Repository>>
+
+activate Admin
+
+Admin -> UI: Make a request to search for OperationType(s)
+activate UI
+UI --> Admin : Asks for the OperationType information to search
+Admin -> UI: Provides the OperationType information to search\n(Name and/or Specialization and/or status)
+UI->ctrl: HTTP GET request
+activate ctrl
+
+ctrl-> service: getOperationTypesByFilter(Name,Specialization,status)
+activate service
+service->repository: getOperationTypesByFilter(Name,Specialization,status)
+activate repository
+
+note over repository:  The repository return only results\n that match all specified filters,\n providing the intersection of each\n parameter. If one of the parameters\n is null, will not be taken in\n consideration
+
+repository-->service: listOfOperationTypes
+deactivate repository
+
+service-->ctrl: listOfOperationTypes
+deactivate service
+ctrl->mapper:toDtoList(listOfOperationTypes)
+activate mapper
+loop 
+mapper->dto**:create
+mapper->mapper:addToList(dto)
+end loop
+mapper->ctrl:listOfOperationTypesDTO
+deactivate mapper
+UI<-- ctrl: response with list of OperationTypes
+deactivate ctrl
+UI --> Admin : Returns the list of OperationType 
+deactivate Admin
+
+@enduml
+```
