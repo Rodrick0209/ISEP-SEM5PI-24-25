@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Patients;
+using DDDSample1.Domain.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DDDSample1.Controllers
@@ -20,6 +22,7 @@ namespace DDDSample1.Controllers
 
         // POST: api/Patients
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<PatientDto>> Create(CreatingPatientProfileDto dto)
         {
             try
@@ -58,6 +61,7 @@ namespace DDDSample1.Controllers
 
         // PATCH: api/Patients/{medicalRecordNumber}
         [HttpPatch("{medicalRecordNumber}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<PatientDto>> UpdateAsync(string medicalRecordNumber, EditingPatientProfileDto dto)
         {
             if (medicalRecordNumber != dto.MedicalRecordNumber)
@@ -79,6 +83,7 @@ namespace DDDSample1.Controllers
 
         // DELETE: api/Patients/{medicalRecordNumber}
         [HttpDelete("{medicalRecordNumber}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult> DeleteAsync(string medicalRecordNumber)
         {
             try
@@ -95,6 +100,7 @@ namespace DDDSample1.Controllers
 
         //GET: api/Patients/search
         [HttpGet("search")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<ViewPatientDto>>> SearchAsync(SearchFiltersDto dto)
         {
             return await _service.SearchAsync(dto);
@@ -102,6 +108,7 @@ namespace DDDSample1.Controllers
 
         // GET: api/Patients
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllAsync()
         {
             return await _service.GetAllAsync();
@@ -109,6 +116,7 @@ namespace DDDSample1.Controllers
 
         // GET: api/Patients/MedicalRecordNumber/{medicalRecordNumber}
         [HttpGet("MedicalRecordNumber/{medicalRecordNumber}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<PatientDto>> GetByMedicalRecordNumberAsync(string medicalRecordNumber)
         {
             var patient = await _service.GetByMedicalRecordNumberAsync(medicalRecordNumber);
@@ -123,6 +131,7 @@ namespace DDDSample1.Controllers
 
         // GET: api/Patients/{id}
         [HttpGet("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<PatientDto>> GetGetById(Guid id)
         {
             var patient = await _service.GetByIdAsync(new PatientId(id));
