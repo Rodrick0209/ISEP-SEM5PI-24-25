@@ -66,7 +66,26 @@ The administrator interacts with the following data regarding the operation type
 
 
 ## 3. Implementation
-<br><br><br><br><br><br><br>
+
+
+
+1. **Database Schema Update:**
+  - No changes are required to the `operation_types` table. The existing structure supports the necessary fields (`ID`, `status`). Ensure historical data is preserved by implementing a versioning mechanism or a history table.
+
+2. **Backend Development:**
+  - Update the `OperationType` model to include the method to change `status`.
+  - Enhance `OperationTypeService` to handle status updates while preserving historical data.
+  - Extend `OperationTypeController` to include endpoints for updating the status of operation types.
+
+3. **API Endpoints:**
+  - `PUT /operation-types/{id}/status`: Endpoint to update the status of an existing operation type.
+  - `GET /operation-types`: Endpoint to retrieve a list of all operation types with their statuses.
+
+4. **Validation Logic:**
+  - Ensure the backend validates the status change request.
+  - Validate that the operation type exists before attempting to update its status.
+  - Ensure that the status field is correctly formatted and within the allowed values (e.g., active, inactive).
+
 
 
 ## 4. Testing
