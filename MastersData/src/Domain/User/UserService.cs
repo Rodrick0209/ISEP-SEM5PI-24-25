@@ -23,7 +23,7 @@ using DDDSample1.Domain.PatientLoggers;
 namespace DDDSample1.Domain.User
 {
 
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _repo;

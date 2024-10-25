@@ -1,4 +1,4 @@
-/*using Xunit;
+using Xunit;
 using Moq;
 using DDDSample1.Controllers;
 using DDDSample1.Domain.User;
@@ -11,14 +11,14 @@ using DDDSample1.Domain.PatientLoggers;
 
 public class UsersControllerUnitTests
 {
-    private Mock<UserService>? _mockUserService;
+    private Mock<IUserService>? _mockUserService;
     private UsersController? _controller;
 
     [Fact]
     public async Task RegisterPatientAsync_ValidCreate_ReturnsOk()
     {
         // Arrange
-        _mockUserService = new Mock<UserService>(Mock.Of<IPatientRepository>(), Mock.Of<IPatientLogger>());
+        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
 
         var dto = new RegisteringPatientDto {Name = "John Doe", Email = "john.doe@gmail.com", PhoneNumber = "+351 123456789", Street = "Main Street", PostalCode = "1234-567", City = "Los Angeles", Country = "USA", Password = "123456789"};
@@ -31,7 +31,7 @@ public class UsersControllerUnitTests
         var result = await _controller.RegisterPatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<OkObjectResult>(result);
+        var actionResult = Assert.IsType<OkObjectResult>(result.Result);
         var returnValue = Assert.IsType<ConfirmationPatientDto>(actionResult.Value);
         Assert.Equal(confirmationDto, returnValue);
     }
@@ -39,7 +39,7 @@ public class UsersControllerUnitTests
     [Fact]
     public async Task RegisterPatientAsync_InvalidCreate_ReturnsBadRequest()
     {
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
         // Arrange
         var dto = new RegisteringPatientDto {Name = "John Doe", Email = "john.doe@gmail.com", PhoneNumber = "+351 123456789", Street = "Main Street", PostalCode = "1234-567", City = "Los Angeles", Country = "USA", Password = "123456789"};
@@ -51,36 +51,33 @@ public class UsersControllerUnitTests
         var result = await _controller.RegisterPatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<BadRequestObjectResult>(result);
-        Assert.IsType<NotFoundResult>(actionResult);
+        var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
     }
 
     [Fact]
     public async Task ConfirmRegisterPatientAsync_ValidConfirm_ReturnsOk()
     {
         // Arrange
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
 
         var dto = new ConfirmationPatientDto("token", "john.doe@gmail.com");
-        var patientDto = new PatientDto(Guid.NewGuid(), "John Doe", "2024-10-10", "male", "john.doe@gmail.com", "+351 123456789", "202410000001",
-            new AddressDto("Main Street", "1234-567", "Los Angeles", "USA"), 
-            new EmergencyContactDto("Jane Doe", "jane.doe@gmail.com", "+351 987654321"), null);
+        var userDTO = new UserDTO(Guid.NewGuid(), "patient", "john.doe@gmail.com", "password");
 
         _mockUserService.Setup(service => service.ConfirmRegisterPatientAsync(It.IsAny<ConfirmationPatientDto>()))
-                        .ReturnsAsync(patientDto);
+                        .ReturnsAsync(userDTO);
         
         // Act
         var result = await _controller.ConfirmRegisterPatientAsync("token", dto);
 
         // Assert
-        var actionResult = Assert.IsType<OkObjectResult>(result);
+        var actionResult = Assert.IsType<OkObjectResult>(result.Result);
     }
 
     [Fact]
-    public async Task ConfirmRegisterPatientAsync_InvalidConfirm_ReturnsNotFound()
+    public async Task ConfirmRegisterPatientAsync_InvalidConfirm_ReturnsBadRequest()
     {
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
         // Arrange
         var dto = new ConfirmationPatientDto("token", "john.doe@gmail.com");
@@ -92,7 +89,7 @@ public class UsersControllerUnitTests
         var result = await _controller.ConfirmRegisterPatientAsync("token", dto);
 
         // Assert
-        var actionResult = Assert.IsType<NotFoundResult>(result);
+        var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
     }
 
 
@@ -100,7 +97,7 @@ public class UsersControllerUnitTests
     public async Task EditPatientAsync_ValidEdit_ReturnsOk()
     {
         // Arrange
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
 
         var dto = new EditingPatientDto { Email = "john.doe@gmail.com", EmailToEdit = "john.doing@gmail.com"};
@@ -113,7 +110,7 @@ public class UsersControllerUnitTests
         var result = await _controller.EditPatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<OkObjectResult>(result);
+        var actionResult = Assert.IsType<OkObjectResult>(result.Result);
         var returnValue = Assert.IsType<ConfirmationEditPatientDto>(actionResult.Value);
         Assert.Equal(confirmationDto, returnValue);
     }
@@ -121,7 +118,7 @@ public class UsersControllerUnitTests
     [Fact]
     public async Task EditPatientAsync_InvalidEdit_ReturnsBadRequest()
     {
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
         // Arrange
         var dto = new EditingPatientDto {Email = "error@example.com"} ; // Invalid DTO
@@ -133,7 +130,7 @@ public class UsersControllerUnitTests
         var result = await _controller.EditPatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<BadRequestObjectResult>(result);
+        var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
         Assert.NotNull(actionResult);
     }
 
@@ -141,7 +138,7 @@ public class UsersControllerUnitTests
     public async Task ConfirmEditPatientAsync_ValidConfirm_ReturnsOk()
     {
         // Arrange
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
 
         var dto = new ConfirmationEditPatientDto("token", "john.doe@example.com", "john.doing@example.com", "123456789");
@@ -156,15 +153,15 @@ public class UsersControllerUnitTests
         var result = await _controller.ConfirmEditPatientAsync("token", dto);
 
         // Assert
-        var actionResult = Assert.IsType<OkObjectResult>(result);
+        var actionResult = Assert.IsType<OkObjectResult>(result.Result);
         var returnValue = Assert.IsType<PatientDto>(actionResult.Value);
         Assert.Equal(patientDto, returnValue);
     }
 
     [Fact]
-    public async Task ConfirmEditPatientAsync_InvalidConfirm_ReturnsNotFound()
+    public async Task ConfirmEditPatientAsync_InvalidConfirm_ReturnsBadRequest()
     {
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
         // Arrange
         var dto = new ConfirmationEditPatientDto("token", "john.doe@example.com", "john.doing@example.com", "123456789");
@@ -176,7 +173,7 @@ public class UsersControllerUnitTests
         var result = await _controller.ConfirmEditPatientAsync("token", dto);
 
         // Assert
-        var actionResult = Assert.IsType<NotFoundResult>(result);
+        var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
         Assert.NotNull(actionResult);
     }
 
@@ -184,7 +181,7 @@ public class UsersControllerUnitTests
     public async Task DeletePatientAsync_ValidDelete_ReturnsOk()
     {
         // Arrange
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
 
         var dto = new DeletingPatientDto { Email = "john.doe@example.com"};
@@ -197,13 +194,13 @@ public class UsersControllerUnitTests
         var result = await _controller.DeletePatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<OkObjectResult>(result);
+        var actionResult = Assert.IsType<OkObjectResult>(result.Result);
     }
 
     [Fact]
     public async Task DeletePatientAsync_InvalidDelete_ReturnsBadRequest()
     {
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+       _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
         // Arrange
         var dto = new DeletingPatientDto { Email = "john.doe@example.com"};
@@ -215,7 +212,7 @@ public class UsersControllerUnitTests
         var result = await _controller.DeletePatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<BadRequestObjectResult>(result);
+        var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
         Assert.NotNull(actionResult);
     }
 
@@ -223,7 +220,7 @@ public class UsersControllerUnitTests
     public async Task ConfirmDeletePatientAsync_ValidConfirm_ReturnsNoContent()
     {
         // Arrange
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
 
         var dto = new ConfirmationPatientDto("token", "john.doe@gmail.com");
@@ -241,7 +238,7 @@ public class UsersControllerUnitTests
     public async Task ConfirmDeletePatientAsync_InvalidConfirm_ReturnsNotFound()
     {   
 
-        _mockUserService = new Mock<UserService>(MockBehavior.Loose);
+        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
         // Arrange
         var dto = new ConfirmationPatientDto("token", "john.doe@gmail.com");
@@ -253,10 +250,9 @@ public class UsersControllerUnitTests
         var result = await _controller.ConfirmDeletePatientAsync("token", dto);
 
         // Assert
-        var actionResult = Assert.IsType<NotFoundResult>(result);
+        var actionResult = Assert.IsType<BadRequestObjectResult>(result);
         Assert.NotNull(actionResult);
     }
 
     
 }
-*/

@@ -10,7 +10,7 @@ using Moq;
 
 namespace DDDSample1.Tests.IntegrationTests.Controllers
 {
-    public class PatientsControllerTestWithIsolation
+    public class PatientsControllerTest
     {
         private Mock<IPatientRepository>? _patientRepository;
         private Mock<IPatientLoggerRepository>? _patientLoggerRepository;

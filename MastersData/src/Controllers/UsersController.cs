@@ -17,9 +17,9 @@ namespace DDDSample1.Controllers
     public class UsersController : ControllerBase
     {
 
-        private readonly UserService _service;
+        private readonly IUserService _service;
 
-        public UsersController(UserService service)
+        public UsersController(IUserService service)
         {
             _service = service;
         }
