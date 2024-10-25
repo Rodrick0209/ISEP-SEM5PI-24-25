@@ -20,8 +20,6 @@ public static class DataSeeder
     using var scope = serviceProvider.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<DDDSample1DbContext>();
 
-    SeedUsers(context, new User("admin@teste.com", "admin"), "password");
-
     Patient johnCena = new Patient(
       "John Cena",
       "2022-10-01",
@@ -35,11 +33,7 @@ public static class DataSeeder
       "Jane Cena",
       "jane.cena@example.com",
       "+351 234567234",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(GetLastPatientRegisteredInMont(context)));
-
-    SeedPatients(context, johnCena);
-
-    context.SaveChanges();
+      "202410000001");
 
     Patient johnCena2 = new Patient(
       "John Cena2",
@@ -54,11 +48,7 @@ public static class DataSeeder
       "Jane Cena",
       "jane.cena@example.com",
       "+351 234567234",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(GetLastPatientRegisteredInMont(context)));
-    SeedPatients(context, johnCena2);
-
-    context.SaveChanges();
-
+      "202410000002");
 
     Patient johnCena3 = new Patient(
       "John Cena3",
@@ -73,11 +63,7 @@ public static class DataSeeder
       "Jane Cena",
       "jane.cena@example.com",
       "+351 234567234",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(GetLastPatientRegisteredInMont(context)));
-    SeedPatients(context, johnCena3);
-
-    context.SaveChanges();
-
+      "202410000003");
 
     Patient johnCena4 = new Patient(
       "John Cena",
@@ -92,11 +78,7 @@ public static class DataSeeder
       "Jane Cena",
       "jane.cena@example.com",
       "+351 234567234",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(GetLastPatientRegisteredInMont(context)));
-    SeedPatients(context, johnCena4);
-
-    context.SaveChanges();
-
+      "202410000004");
 
     Patient johnCena5 = new Patient(
       "John Cena",
@@ -111,29 +93,27 @@ public static class DataSeeder
       "Jane Cena",
       "jane.cena@example.com",
       "+351 234567234",
-      MedicalRecordNumberGenerator.GenerateMedicalRecordNumber(GetLastPatientRegisteredInMont(context)));
-    SeedPatients(context, johnCena5);
+      "202410000005");
+    
+    var patients = new List<Patient>{johnCena, johnCena2, johnCena3, johnCena4, johnCena5};
 
-    context.SaveChanges();
-
+    context.Patients.AddRange(patients);
 
     var specialization1 = new Specialization("Ortopedia");
     var specialization2 = new Specialization("Oncologia");
     var specialization3 = new Specialization("Obstetricia");
-    SeedSpecializations(context, specialization1);
-    SeedSpecializations(context, specialization2);
-    SeedSpecializations(context, specialization3);
+    
+    var specializations = new List<Specialization>{specialization1, specialization2, specialization3};
 
+    context.Specializations.AddRange(specializations);
 
     var availabilitySlot1 = new AvailabilitySlot("ola");
     var availabilitySlot2 = new AvailabilitySlot("boas");
     var availabilitySlot3 = new AvailabilitySlot("tudo");
-    SeedAvailabilitySlots(context, availabilitySlot1);
-    SeedAvailabilitySlots(context, availabilitySlot2);
-    SeedAvailabilitySlots(context, availabilitySlot3);
+    
+    var availabilitySlots = new List<AvailabilitySlot>{availabilitySlot1, availabilitySlot2, availabilitySlot3};
 
-   
-
+    context.AvailabilitySlots.AddRange(availabilitySlots);
 
     // Create required staff
     var requiredStaff1 = new RequiredStaff(10, specialization1.Id);
@@ -142,41 +122,36 @@ public static class DataSeeder
     var requiredStaffList2 = new List<RequiredStaff> { new RequiredStaff(20, specialization2.Id) }; // New instance
     var requiredStaffList3 = new List<RequiredStaff> { new RequiredStaff(2, specialization2.Id) }; // New instance
 
-    var user = new User("D202512345@gmail.com", "Doctor");
-    var user2 = new User("D202512344@gmail.com", "Doctor");
+    PasswordHasher hasher = new PasswordHasher();
+    string password = hasher.HashPassword("password");
+    var user = new User("D202512345@gmail.com", "Doctor",password);
+    var user2 = new User("D202512344@gmail.com", "Doctor",password);
+    var user3 = new User("admin@teste.com", "admin",password);
+    var users = new List<User>{user, user2, user3};
+
+    context.Users.AddRange(users);
 
     // Create new phases with required staff
     var phase1 = new Phase(20, requiredStaffList1);
     var phase2 = new Phase(90, requiredStaffList2);
     var phase3 = new Phase(15, requiredStaffList3);
+    var phases = new List<Phase>{phase1, phase2, phase3};
+
+    context.Phases.AddRange(phases);
 
     // Create a new operation type with the phases and specialization
     var operationType = new OperationType("New Operation Type", true, phase1, phase2, phase3, specialization1.Id);
     var operationType2 = new OperationType("New Operation Type2", true, phase1, phase2, phase3, specialization2.Id);
+    var operationTypes = new List<OperationType>{operationType, operationType2};
+
+    context.OperationTypes.AddRange(operationTypes);
     
     var operationRequest = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType.Id.AsString(),new StaffId("D202512345").AsString(),new StaffId("D202512344").AsString());
-    
     var operationRequest2 = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
+    var operationRequests = new List<OperationRequest>{operationRequest, operationRequest2};
 
-
-    // Seed the operation type into the context
-    SeedOperationType(context, operationType);
-    SeedOperationType(context, operationType2);
-  
-  
-    SeedOperationRequest(context, operationRequest);
-    SeedOperationRequest(context,operationRequest2);
-    SeedUsers(context,user,"password");
-    SeedUsers(context,user2,"password");
-
+    context.OperationRequests.AddRange(operationRequest);
     context.SaveChanges();
-  }
-
-  private static Patient GetLastPatientRegisteredInMont(DDDSample1DbContext context){
-        return context.Patients
-                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Substring(0,6) == DateTime.Now.ToString("yyyyMM"))
-                .OrderByDescending(p => p.MedicalRecordNumber._medicalRecordNumber)
-                .FirstOrDefault();
   }
 
   private static void SeedOperationRequest(DDDSample1DbContext context, OperationRequest operationRequest)
