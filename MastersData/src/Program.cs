@@ -140,7 +140,7 @@ namespace DDDSample1.Startup
 
             var app = builder.Build();
 
-            DataSeeder.Seed(app.Services);
+            await DataSeeder.SeedAsync(app.Services);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

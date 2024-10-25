@@ -297,12 +297,12 @@ namespace DDDSample1.Domain.User
 
                 user.SetConfirmationEditPatientToken(token, DateTime.UtcNow.AddHours(24));
 
-                if (!string.IsNullOrWhiteSpace(emailToEdit))
+                if (!string.IsNullOrWhiteSpace(dto.EmailToEdit))
                 {
                     emailToEdit = dto.EmailToEdit;
                 }
 
-                if (!string.IsNullOrWhiteSpace(phoneNumberToEdit))
+                if (!string.IsNullOrWhiteSpace(dto.PhoneNumberToEdit))
                 {
                     phoneNumberToEdit = dto.PhoneNumberToEdit;
                 }
