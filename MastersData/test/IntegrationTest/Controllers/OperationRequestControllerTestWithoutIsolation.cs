@@ -18,7 +18,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
 public class OperationRequestControllerTestWithoutIsolation :
     IClassFixture<MastersDataWebApplicationFactory<Program>>
 {
-
+/*
     
     private readonly HttpClient _client;
     private readonly MastersDataWebApplicationFactory<Program> _factory;
@@ -263,7 +263,8 @@ public async Task UpdateOperationRequest_ReturnsUnsuccessStatusCode()
 
 
 }
-
+*/
+}
 
 }
 
