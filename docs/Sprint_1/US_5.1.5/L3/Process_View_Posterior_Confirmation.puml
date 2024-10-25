@@ -1,10 +1,10 @@
 ```plantuml
 @startuml Process_View_Posterior_Confirmation
-participant UserRoute as Route <<Route>>
-participant UserController as Controller <<Controller>>
-participant ConfirmationPatientDTO as ConfirmationDTO <<DTO>>
-participant UserService as Service <<Service>>
-participant UserRepository as Repository <<Repository>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant ConfirmationDTO as ConfirmationDTO <<DTO>>
+participant Service as Service <<Service>>
+participant Repository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>>
  
 [o-> Route : DELETE (/api/users/patients/delete/confirmation/{token})
@@ -12,20 +12,20 @@ activate Route
 Route -> Controller : DELETE
 activate Controller
 Controller -> ConfirmationDTO** : recieves request body info
-Controller -> Service : confirmPatient(confimationDeletePatientDTO)
+Controller -> Service : confirms the patient user and profile deletion
 activate Service
-Service -> Repository : findUserByEmail(email)
+Service -> Repository : find user by email
 activate Repository
 return user
-Service -> Service : validateToken(user, token)
+Service -> Service : validate token
 activate Service
 return flag
-Service -> PatientRepository : findPatientByEmail(email)
+Service -> PatientRepository : find patient by email
 activate PatientRepository
 return patient
-Service -> Repository : delete(user)
-Service -> PatientRepository : delete(patient)
-Service -> Service: logChanges(patient, "delete")
+Service -> Repository : removes user from DB
+Service -> PatientRepository : removes patient from DB
+Service -> Service: log changes
 activate Service
 deactivate Service
 return response

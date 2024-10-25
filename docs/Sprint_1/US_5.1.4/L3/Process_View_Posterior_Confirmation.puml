@@ -1,33 +1,35 @@
 ```plantuml
 @startuml Process_View_Posterior_Confirmation
-participant UserRoute as Route <<Route>>
-participant UserController as Controller <<Controller>>
-participant ConfirmationEditPatientDTO as ConfirmationDTO <<DTO>>
-participant UserService as Service <<Service>>
-participant UserRepository as Repository <<Repository>>
-participant PatientRepository as PatientRepository <<Repository>> 
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant ConfirmationDTO as ConfirmationDTO <<DTO>>
+participant Service as Service <<Service>>
+participant Repository as Repository <<Repository>>
+participant Repository as PatientRepository <<Repository>>
+participant Mapper as Mapper <<Domain Service>> 
+participant Domain as Domain <<Domain>>
 participant Patient as Patient <<Domain>>
-participant PatientMapper as Mapper <<Mapper>>
 [o-> Route : PATCH (/api/user/patients/edit/confirmation/{token})
 activate Route
 Route -> Controller : PATCH
 activate Controller
 Controller -> ConfirmationDTO** : recieves request body info
-Controller -> Service : confirmEditPatient(confirmationEditPatientDTO)
+Controller -> Service : confirms the edition of the patients profile
 activate Service
-Service -> Repository : findUserByEmail(email)
+Service -> Repository : finds user by email
 activate Repository
 return user
-Service -> Service : validateToken(user, token)
+Service -> Service : validates the confirmation token
 activate Service
 return flag
-Service -> PatientRepository : findPatientByAssociatedUser(user)
+Service -> PatientRepository : finds patient by email
 activate PatientRepository
 return patient
-Service -> Patient : changeEmail(email)
-Service -> Patient : changePhoneNumber(phoneNumber)
-Service -> PatientRepository : save(patient)
-Service -> Service : logChanges(patient, "update")
+Service -> Domain : changes email if not empty
+Service -> Patient : changes email if not empty
+Service -> Patient : changes phone number if not empty
+Service -> PatientRepository : saves patient in DB
+Service -> Service : logs changes in DB
 activate Service
 deactivate Service
 return response

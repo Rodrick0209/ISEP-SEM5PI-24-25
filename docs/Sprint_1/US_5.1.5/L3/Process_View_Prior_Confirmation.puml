@@ -1,13 +1,12 @@
 ```plantuml
 @startuml Process_View_Prior_Confirmation
-participant UserRoute as Route <<Route>>
-participant UserController as Controller <<Controller>>
-participant DeletingPatientDTO as DTO <<DTO>>
-participant ConfirmationDeletePatientDTO as ConfirmationDTO <<DTO>>
-participant UserService as Service <<Service>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant DTO as DTO <<DTO>>
+participant ConfirmationDTO as ConfirmationDTO <<DTO>>
+participant Service as Service <<Service>>
 participant EmailService as EmailService <<Service>>
-participant ConfirmationDeletePatientTokenGenerator as TokenGenerator <<Service>>
-participant UserRepository as Repository <<Repository>>
+participant Repository as Repository <<Repository>>
 participant PatientRepository as PatientRepository <<Repository>>
 participant User as Domain <<Domain>>
 [o-> Route: DELETE (/api/users/patients/delete)
@@ -15,22 +14,17 @@ activate Route
 Route -> Controller : DELETE
 activate Controller
 Controller -> DTO** : recieves request body info
-Controller -> Service : deletePatient(deletingPatientDTO)
+Controller -> Service : deletes the user and associated patient data
 activate Service
-Service -> Repository : findUserByEmail(email)
+Service -> Repository : find user by email
 activate Repository
 return user
-Service -> PatientRepository : findPatientByEmail(email)
+Service -> PatientRepository : find patient by email
 activate PatientRepository
 return patient
-Service -> TokenGenerator : generateToken(user)
-activate TokenGenerator
-return token
-Service -> Domain : setConfirmationDeletePatientToken(token, tokenExpirationDate)
-Service -> Repository : save(user)
-Service -> EmailService : sendEmail(email, token)
-Service -> ConfirmationDTO** : createConfirmationDeletePatientDTO(token, email)
-return confirmationEditPatientDTO
+Service -> EmailService : sends email with the confirmation token
+Service -> ConfirmationDTO** : creates the DTO with confirmation token and email
+return DTO
 return response
 <-- Route : response
 @enduml

@@ -1,35 +1,39 @@
 ```plantuml
 @startuml Process_View
-participant PatientRoute as Route <<Route>>
-participant PatientController as Controller <<Controller>>
-participant EditingPatientDTO as DTO <<DTO>>
-participant PatientService as Service <<Service>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant DTO as DTO <<DTO>>
+participant Service as Service <<Service>>
 participant EmailService as EmailService <<Service>>
-participant PatientRepository as Repository <<Repository>>
+participant Repository as Repository <<Repository>>
+participant Mapper as Mapper <<Domain Service>>
 participant Patient as Domain <<Domain>>
-participant PatientMapper as Mapper <<Mapper>>
 [o-> Route: PATCH (/api/patients/{medicalRecordNumber})
 activate Route
 Route -> Controller : PATCH
 activate Controller
 Controller -> DTO** : recieves request body info
-Controller -> Service : editPatient(medicalRecordNumber, editingPatientDTO)
+Controller -> Service : edits the patient profile
 activate Service
-Service -> Repository : findByMedicalRecordNumber(medicalRecordNumber)
+Service -> Repository : find the patient by medical record number
 activate Repository
 return patient
-Service -> Domain : changeName(newName)
-Service -> Domain : changeEmail(newEmail)
-Service -> Domain : changePhoneNumber(newPhoneNumber)
-Service -> Domain : changeMedicalConditions(newMedicalConditions)
-Service -> Repository : save(patient)
-Service -> Service : logChanges(patient, "update")
+Service -> Domain : changes name if not empty
+Service -> Domain : changes email if not empty
+Service -> Domain : changes phone number if not empty
+Service -> Domain : changes address if not empty
+Service -> Domain : changes medical conditions if not empty
+Service -> Repository : saves the changes
+Service -> Service : log the changes
 activate Service
 deactivate Service
 alt content editable contains sensitive info
-    Service -> EmailService : sendEmail(email)
+    Service -> EmailService : send email notificiation
 end
-return response
+Service -> Mapper : entity to DTO
+activate Mapper
+return DTO
+return DTO
 return response
 <-- Route : response
 

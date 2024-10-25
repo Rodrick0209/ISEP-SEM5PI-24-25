@@ -1,34 +1,38 @@
 ```plantuml
 @startuml Process_View
-participant PatientRoute as Route <<Route>>
-participant PatientController as Controller <<Controller>>
-participant CreatingPatientDTO as DTO <<DTO>>
-participant PatientService as Service <<Service>>
-participant MedicalRecordNumberGenerator as MedicalRecordNumberGenerator <<Service>>
-participant PatientRepository as Repository <<Repository>>
-participant Patient as Domain <<Domain>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant DTO as DTO <<DTO>>
+participant Service as Service <<Service>>
+participant Repository as Repository <<Repository>>
+participant MedicalRecordNumberGenerator as MedicalRecordNumberGenerator <<Domain Service>>
+participant Mapper as Mapper <<Domain Service>>
+participant Aggregate as Domain <<Domain>>
 [o-> Route: POST (/api/patients)
 activate Route
 Route -> Controller : POST
 activate Controller
 Controller -> DTO** : recieves request body info
-Controller -> Service : createPatient(creatingPatientDTO)
+Controller -> Service : creates patient
 activate Service
-Service -> Service : validateEmailIsUnique(email)
+Service -> Service : validate if email is unique
 activate Service
-return flag
-Service -> Service : validatePhoneNumberIsUnique(email)
+return validation
+Service -> Service : validates if phone number is unique
 activate Service
-return flag
-Service -> Repository : getLastPatientRegisteredInMonth()
+return validation
+Service -> Repository : get the last patient registered in this month
 activate Repository
-return lastPatientRegisteredInMonth
-Service -> MedicalRecordNumberGenerator : generateMedicalRecordNumber(lastPatientRegisteredInMonth)
+return last patient registered in month
+Service -> MedicalRecordNumberGenerator : generates medical record number using the last patient
 activate MedicalRecordNumberGenerator
-return medicalRecordNumber
-Service -> Domain** : create(createPatientDTO, medicalRecordNumber)
-Service -> Repository : save(patient)
-return response
+return medical record number
+Service -> Domain** : creates the entity
+Service -> Repository : saves in Database
+Service -> Mapper : entity to DTO
+activate Mapper
+return DTO
+return DTO
 return response
 <-- Route : response
 
