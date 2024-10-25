@@ -104,9 +104,9 @@ public class OperationRequestControllerTestWithoutIsolation :
             var services = scope.ServiceProvider;
             var context = services.GetRequiredService<DDDSample1DbContext>();
             context.Database.EnsureCreated();
-            Utilities.InitializeDbForTests(context);
 
             var operationType = context.OperationTypes.FirstOrDefault();
+            
             if (operationType != null)
             {
                 operationTypeId = operationType.Id.AsString();

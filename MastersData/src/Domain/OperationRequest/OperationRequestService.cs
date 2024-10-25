@@ -48,14 +48,12 @@ namespace DDDSample1.Domain.OperationRequest
 
     public async Task<OperationRequest> AddAsync(OperationRequest operationRequest)
     {
-        await checkOperationTypeIdAsync(operationRequest.operationTypeId); 
-        await checkDoctorIdAsync(new StaffId(operationRequest.doctorThatRequestedId));
-        await checkDoctorIdAsync(new StaffId(operationRequest.doctorThatWillPerformId)); 
+        await CheckOperationTypeIdAsync(operationRequest.operationTypeId); 
+        await CheckDoctorIdAsync(new StaffId(operationRequest.doctorThatRequestedId));
+        await CheckDoctorIdAsync(new StaffId(operationRequest.doctorThatWillPerformId)); 
         await checkPatientAsync(new PatientId(operationRequest.patientId));
         
-
         await this._repo.AddAsync(operationRequest);
-
 
         await this._unitOfWork.CommitAsync();
 
@@ -149,7 +147,7 @@ namespace DDDSample1.Domain.OperationRequest
     }
 
     
-    private async Task<OperationType> checkOperationTypeIdAsync(OperationTypeId operationTypeId)
+    private async Task<OperationType> CheckOperationTypeIdAsync(OperationTypeId operationTypeId)
     {
 
         var opType = await this._operationTypeRepository.GetByIdAsync(operationTypeId);
@@ -161,7 +159,7 @@ namespace DDDSample1.Domain.OperationRequest
         return opType;
     }
 
-    private async Task<OperationType> checkOperationTypeIdAsync(string operationTypeId)
+    private async Task<OperationType> CheckOperationTypeIdAsync(string operationTypeId)
     {
         try
         {
@@ -186,7 +184,7 @@ namespace DDDSample1.Domain.OperationRequest
 
  
     
-    private async Task<Staff> checkDoctorIdAsync(StaffId doctorId)
+    private async Task<Staff> CheckDoctorIdAsync(StaffId doctorId)
     {
         var staff = await this._staffRepository.GetByIdAsync(doctorId);
 
