@@ -15,8 +15,9 @@ using System.Linq;
 
 namespace DDDSample1.Domain.OperationRequest
 {
-    public class OperationRequestService
+    public class OperationRequestService : IOperationRequestService
     {
+        
     private readonly IUnitOfWork _unitOfWork;
 
     private readonly IOperationRequestRepository _repo;
@@ -148,7 +149,7 @@ namespace DDDSample1.Domain.OperationRequest
     }
 
     
-    public async Task<OperationType> checkOperationTypeIdAsync(OperationTypeId operationTypeId)
+    private async Task<OperationType> checkOperationTypeIdAsync(OperationTypeId operationTypeId)
     {
 
         var opType = await this._operationTypeRepository.GetByIdAsync(operationTypeId);
@@ -160,7 +161,7 @@ namespace DDDSample1.Domain.OperationRequest
         return opType;
     }
 
-    public async Task<OperationType> checkOperationTypeIdAsync(string operationTypeId)
+    private async Task<OperationType> checkOperationTypeIdAsync(string operationTypeId)
     {
         try
         {
@@ -185,7 +186,7 @@ namespace DDDSample1.Domain.OperationRequest
 
  
     
-    public async Task<Staff> checkDoctorIdAsync(StaffId doctorId)
+    private async Task<Staff> checkDoctorIdAsync(StaffId doctorId)
     {
         var staff = await this._staffRepository.GetByIdAsync(doctorId);
 
@@ -204,7 +205,7 @@ namespace DDDSample1.Domain.OperationRequest
         return await this._repo.GetAllAsync();
     }
 
-    public async Task<Patient> checkPatientAsync(PatientId id)
+    private async Task<Patient> checkPatientAsync(PatientId id)
     {
         var patient = await this._patientRepository.GetByIdAsync(id);
         if(patient == null)

@@ -140,7 +140,7 @@ namespace DDDSample1.Startup
 
             var app = builder.Build();
 
-            DataSeeder.Seed(app.Services);
+            await DataSeeder.SeedAsync(app.Services);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -189,6 +189,8 @@ namespace DDDSample1.Startup
 
             services.AddTransient<IPatientRepository, PatientRepository>();
             services.AddTransient<IPatientService, PatientService>();
+
+            services.AddTransient<IOperationRequestService, OperationRequestService>();
 
             services.AddTransient<IStaffRepository, StaffRepository>();
             services.AddTransient<StaffService>();
