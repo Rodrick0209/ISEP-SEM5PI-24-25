@@ -169,6 +169,7 @@ namespace DDDSample1.Controllers
 
         // PATCH : api/user/patients/edit
         [HttpPatch("patients/edit")]
+        [Authorize(Roles = "patient")]
         public async Task<ActionResult<ConfirmationEditPatientDto>> EditPatientAsync(EditingPatientDto dto)
         {
 
@@ -186,6 +187,7 @@ namespace DDDSample1.Controllers
 
         // PATCH : api/user/patients/edit/confirmation/{token}
         [HttpPatch("patients/edit/confirmation/{token}")]
+        [Authorize(Roles = "patient")]
         public async Task<ActionResult<PatientDto>> ConfirmEditPatientAsync(string token, ConfirmationEditPatientDto dto)
         {
 
@@ -208,6 +210,7 @@ namespace DDDSample1.Controllers
 
         // DELETE: api/user/patients/delete
         [HttpDelete("patients/delete")]
+        [Authorize(Roles = "patient")]
         public async Task<ActionResult<DeletingPatientProfileConfirmationDto>> DeletePatientAsync(DeletingPatientDto dto)
         {
             try
@@ -224,6 +227,7 @@ namespace DDDSample1.Controllers
 
         // DELETE: api/user/patients/delete/confirmation/{token}
         [HttpDelete("patients/delete/confirmation/{token}")]
+        [Authorize(Roles = "patient")]
         public async Task<ActionResult> ConfirmDeletePatientAsync(string token, ConfirmationPatientDto dto)
         {
 

@@ -1,0 +1,24 @@
+```plantuml
+@startuml Process_View
+actor Admin 
+participant UI 
+participant Backend
+
+activate Admin
+
+Admin -> UI: Make a request to search for OperationType(s)
+activate UI
+UI --> Admin : Asks for the OperationType information to search
+Admin -> UI: Provides the OperationType information to search\n(Name and/or Specialization and/or status)
+UI->Backend: HTTP GET request
+activate Backend
+
+Backend -> Backend: receive request body info,\n and search for OperationType(s)
+
+UI<-- Backend: response with list of OperationTypes
+deactivate Backend
+UI --> Admin : Returns the list of OperationType 
+deactivate Admin
+
+@enduml
+```

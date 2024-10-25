@@ -25,6 +25,7 @@ namespace DDDSample1.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<StaffDto>> Create(StaffDto dto)
         {
             var op = await _service.AddAsync(dto);
@@ -34,6 +35,7 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "admin")]
 
         public async Task<ActionResult<StaffDto>> GetGetById(String id)
         {
@@ -47,6 +49,7 @@ namespace DDDSample1.Controllers
 
 /*
         [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<StaffDto>> Update(StaffId id, EditingStaffProfileDto dto)
         {
             if (id != dto.Id)
@@ -67,6 +70,7 @@ namespace DDDSample1.Controllers
         }*/
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
 
         public async Task<ActionResult<StaffDto>> Delete(Guid id)
         {
@@ -91,6 +95,7 @@ namespace DDDSample1.Controllers
         }
 
          [HttpGet("GetAll")]
+         [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<StaffDto>>> GetAll()
         {
             var list = await  _service.GetAllAsync();
