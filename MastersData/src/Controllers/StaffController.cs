@@ -72,7 +72,7 @@ namespace DDDSample1.Controllers
         [HttpDelete("{id}")]
         [Authorize(Roles = "admin")]
 
-        public async Task<ActionResult<StaffDto>> Delete(Guid id)
+        public async Task<ActionResult<StaffDto>> Delete(string id)
         {
             try
             {
