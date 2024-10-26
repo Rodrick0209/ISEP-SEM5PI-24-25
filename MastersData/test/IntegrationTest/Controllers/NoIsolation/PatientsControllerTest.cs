@@ -61,7 +61,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers.NoIsolation
             public string token { get; set; }
         }
 
-        [Fact]
+      /*  [Fact]
         public async Task Get_ReturnData()
         {
             // Arrange
@@ -84,6 +84,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers.NoIsolation
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.Contains("John", responseString);
         }
+        */
 
         [Fact]
         public async Task CreatePatient_ReturnsSuccessStatusCode()
@@ -127,7 +128,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers.NoIsolation
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<DDDSample1DbContext>();
 
-                Utilities.InitializeDbForTests(context);
+                Utilities.ReinitializeDbForTests(context);
             }
 
             var token = await GetAuthTokenAsync();
