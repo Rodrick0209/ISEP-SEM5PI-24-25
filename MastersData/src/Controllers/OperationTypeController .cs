@@ -28,17 +28,21 @@ namespace DDDSample1.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult<OperationTypeDto>> Create(OperationTypeDto dto)
         {
-            
+            if (dto == null)
+            {
+                return BadRequest("OperationTypeDto cannot be null");
+            }
             var objDomain = OperationTypeMapper.toDomain(dto);
             
             var op = await _service.CreateAsync(objDomain);
 
+            
             return await GetById(op.Id.Value);
            
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<OperationTypeDto>> GetById(String id)
+        public async Task<ActionResult<OperationTypeDto>> GetById(string id)
         {
             var op = await _service.GetByIdAsync(new OperationTypeId(id));
 

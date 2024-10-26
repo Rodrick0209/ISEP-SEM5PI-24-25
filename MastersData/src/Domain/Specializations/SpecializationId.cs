@@ -16,10 +16,12 @@ namespace DDDSample1.Domain.Specializations
 
         public SpecializationId(string value) : base(value)
         {
+
         }
 
         override
         protected  Object createFromString(String text){
+            
             return new Guid(text);
         }
         

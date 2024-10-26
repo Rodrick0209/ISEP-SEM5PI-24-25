@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Specializations;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace DDDSample1.Domain.OperationTypes
 {
@@ -29,8 +30,9 @@ namespace DDDSample1.Domain.OperationTypes
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name), "Name cannot be null or empty.");
+                throw new ArgumentException("Name cannot be null or empty.", nameof(name));
             }
+
 
             this.Id = new OperationTypeId(Guid.NewGuid());
             this.name = name;
