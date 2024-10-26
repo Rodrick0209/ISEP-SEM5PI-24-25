@@ -49,9 +49,8 @@ namespace DDDSample1.Domain.OperationRequest
     public async Task<OperationRequest> AddAsync(OperationRequest operationRequest)
     {
         await CheckOperationTypeIdAsync(operationRequest.operationTypeId); 
-        await CheckDoctorIdAsync(new StaffId(operationRequest.doctorThatRequestedId));
         await CheckDoctorIdAsync(new StaffId(operationRequest.doctorThatWillPerformId)); 
-        await checkPatientAsync(new PatientId(operationRequest.patientId));
+        await CheckPatientAsync(new PatientId(operationRequest.patientId));
         
         await this._repo.AddAsync(operationRequest);
 
@@ -164,7 +163,6 @@ namespace DDDSample1.Domain.OperationRequest
         try
         {
             var id = new OperationTypeId(operationTypeId);
-            Console.WriteLine("ID ->: " + id);
             var opType = await this._operationTypeRepository.GetByIdAsync(id);
 
             if (opType == null)
@@ -203,7 +201,7 @@ namespace DDDSample1.Domain.OperationRequest
         return await this._repo.GetAllAsync();
     }
 
-    private async Task<Patient> checkPatientAsync(PatientId id)
+    private async Task<Patient> CheckPatientAsync(PatientId id)
     {
         var patient = await this._patientRepository.GetByIdAsync(id);
         if(patient == null)
