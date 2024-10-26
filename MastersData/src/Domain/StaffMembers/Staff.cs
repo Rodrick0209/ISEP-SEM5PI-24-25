@@ -56,10 +56,6 @@ namespace DDDSample1.Domain.StaffMembers
         {
             this.PhoneNumber = new PhoneNumber(phoneNumber);
         }
-        public void ChangeCategory(Category category)
-        {
-            this.Category = category;
-        }
     
     }
 }

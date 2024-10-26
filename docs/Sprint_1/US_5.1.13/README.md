@@ -5,7 +5,7 @@
 #### Functional requirements
 
 *Admins can search for and select a staff profile to edit.
-*Editable fields include contact information(email and phone number), specialization, name, ID and license number.
+*Editable fields include contact information(email and phone number), specialization, name and license number.
 *The system logs all profile changes, and any changes to contact information trigger a
 confirmation email to the staff member.
 *The edited data is updated in real-time across the system.
@@ -13,7 +13,7 @@ confirmation email to the staff member.
 
 #### Business rules
 
-*Admin should be able to edit contact information(email and phone number), specialization, name, ID and license number of any staff member.
+*Admin should be able to edit contact information(email and phone number), specialization, name and license number of any staff member.
 *If there is a change of contact information it should trigger a confirmation email to the staff member.
 
 
