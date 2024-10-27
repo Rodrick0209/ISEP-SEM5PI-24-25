@@ -261,5 +261,87 @@ namespace DDDSample1.Domain.StaffMembers
                      DateTime.UtcNow);
         }
 
+       /* public async Task<List<StaffDto>> GetStaffWithFilters(StaffFilterDto filters)
+        {
+            List<Staff> query = null;
+
+
+            // Filtro por LicenseNumber
+            if (!string.IsNullOrWhiteSpace(filters.LicenseNumber))
+            {
+                query = await _staffRepository.GetByLicenseNumberAsync(filters.LicenseNumber);
+
+                if (query == null || query.Count == 0)
+                {
+                    return new List<StaffDto>();
+                }
+            }
+
+            // Filtro por Name
+            if (!string.IsNullOrWhiteSpace(filters.Name))
+            {
+                query = await _staffRepository.GetByNameAsync(filters.Name);
+
+                if (query == null || query.Count == 0)
+                {
+                    return new List<StaffDto>();
+                }
+
+            }
+
+            // Filtro por Email
+            if (!string.IsNullOrWhiteSpace(filters.Email))
+            {
+                query = await _staffRepository.GetByEmailAsync(filters.Email);
+
+                if (query == null || query.Count == 0)
+                {
+                    return new List<StaffDto>();
+                }
+            }
+
+            // Filtro por PhoneNumber
+            if (!string.IsNullOrWhiteSpace(filters.PhoneNumber))
+            {
+                query = await _staffRepository.GetByPhoneNumberAsync(filters.PhoneNumber);
+
+                if (query == null || query.Count == 0)
+                {
+                    return new List<StaffDto>();
+                }
+            }
+
+            //Filtro por Id
+            if (!string.IsNullOrWhiteSpace(filters.Staffid))
+            {
+               query = await _staffRepository.GetByIdsAsync(filters.Staffid);
+
+                if (query == null || query.Count == 0)
+                {
+                    return new List<StaffDto>();
+                }
+            }
+
+
+
+            // Filtro por Specialization
+            if (!string.IsNullOrWhiteSpace(filters.Specialization))
+            {
+                var specialization = await _specializationRepository.GetByNameAsync(filters.Specialization);
+
+                if (specialization != null)
+                {
+                    query = query?.Where(staff => staff.SpecializationId == specialization.Id).ToList();
+                }
+                else
+                {
+                    return new List<StaffDto>();
+                }
+            }
+
+            // Converte para DTO e retorna
+            return query.ConvertAll(staff => StaffMapper.toDTO(staff));
+        }*/
+
     }
 }

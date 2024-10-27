@@ -19,14 +19,18 @@ namespace DDDSample1.Infrastructure.StaffMembers
             this.context = context;
         }
 
-        public async Task<Staff> GetByEmailAsync(string email)
+        public async Task<List<Staff>> GetByEmailAsync(string email)
         {
-            return await this.context.StaffMembers.FirstOrDefaultAsync(p => p.Email.email == email);
+            return await this.context.StaffMembers
+            .Where(p => p.Email.email == email)
+            .ToListAsync();
         }
 
-         public async Task<Staff> GetByPhoneNumberAsync(string phoneNumber)
+         public async Task<List<Staff>> GetByPhoneNumberAsync(string phoneNumber)
         {
-            return await this.context.StaffMembers.FirstOrDefaultAsync(p => p.PhoneNumber.phoneNumber == phoneNumber);
+            return await this.context.StaffMembers
+            .Where(p => p.PhoneNumber.phoneNumber == phoneNumber)
+            .ToListAsync();
         }
         public async Task DeleteAsync(StaffId id)
         {
@@ -37,5 +41,40 @@ namespace DDDSample1.Infrastructure.StaffMembers
             await this.context.SaveChangesAsync();
             }
         }
+
+        public async Task<List<Staff>> GetByLicenseNumberAsync(string licenseNumber)
+        {
+            return await this.context.StaffMembers
+            .Where(p => p.LicenseNumber.licenseNumber == licenseNumber)
+            .ToListAsync();
+        }
+        
+         public async Task<List<Staff>> GetByNameAsync(string name)
+        {
+            return await this.context.StaffMembers
+                .Where(s => s.FullName.fullName == name)
+                .ToListAsync();
+        }
+
+        public async Task<List<Staff>> GetByIdsAsync(string id)
+        {
+            return await this.context.StaffMembers
+                .Where(s => id.Contains(s.Id.AsString()))
+                .ToListAsync();
+        }
+
+
+        /* public Task<List<Staff>> GetByFiltersAsync(string staffId, string name, string licenseNumber, string phoneNumber, string email, string specialization)
+        {
+            return this.context.StaffMembers
+                .Where(s => s.Id.AsString().Contains(staffId) 
+                            && s.FullName.fullName.Contains(name)
+                            && s.PhoneNumber.phoneNumber.Contains(phoneNumber) 
+                            && s.Email.email.Contains(email)
+                            && s.LicenseNumber.licenseNumber.Contains(licenseNumber)
+                            && s.SpecializationId.Value.Contains(specialization))
+                .ToListAsync();
+        }*/
+        
     }
 }
