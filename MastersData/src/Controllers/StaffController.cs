@@ -50,7 +50,7 @@ namespace DDDSample1.Controllers
 
         [HttpPut("{id}")]
         //[Authorize(Roles = "admin")]
-        public async Task<ActionResult<StaffDto>> Update(EditingStaffProfileDto dto, [FromRoute] StaffId id)
+        public async Task<ActionResult<StaffDto>> Update(EditingStaffProfileDto dto,String id)
         {
             if (id != dto.Id)
             {

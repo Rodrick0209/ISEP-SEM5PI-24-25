@@ -73,29 +73,31 @@ namespace DDDSample1.Domain.StaffMembers
 
         public async Task<StaffDto> UpdateAsync(EditingStaffProfileDto dto)
         {
-            var staff = await _staffRepository.GetByIdAsync(dto.Id);
+            var staff = await _staffRepository.GetByIdAsync(new StaffId(dto.Id));
 
             if (staff == null)
             {
                 throw new BusinessRuleValidationException("Staff member not found");
             }
-
+            Console.WriteLine("Erro antes do loggeer");
             var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Update);
+
+            Console.WriteLine("Erro depois do loggeer");
 
             bool hasChanges = false;
 
             string email = staff.Email.email;
 
-            if (!string.IsNullOrWhiteSpace(dto.FullName) && staff.FullName.fullName.Equals(dto.FullName))
+            if (!string.IsNullOrWhiteSpace(dto.FullName) && !staff.FullName.fullName.Equals(dto.FullName))
             {
                 staff.ChangeFullName(dto.FullName);
                 hasChanges = true;
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.Email) && staff.Email.email.Equals(dto.Email))
+            if (!string.IsNullOrWhiteSpace(dto.Email) && !staff.Email.email.Equals(dto.Email))
             {
                 bool emailIsUnique = await validateEmailIsUnique(dto.Email);
-                if (!emailIsUnique)
+                if (!emailIsUnique && !email.Equals(dto.Email))
                 {
                     throw new BusinessRuleValidationException("Email already exists");
                 }
@@ -103,10 +105,10 @@ namespace DDDSample1.Domain.StaffMembers
                 hasChanges = true;
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.PhoneNumber) && staff.PhoneNumber.phoneNumber.Equals(dto.PhoneNumber))
+            if (!string.IsNullOrWhiteSpace(dto.PhoneNumber) && !staff.PhoneNumber.phoneNumber.Equals(dto.PhoneNumber))
             {
                 bool phoneNumberIsUnique = await validatePhoneNumberIsUnique(dto.PhoneNumber);
-                if (!phoneNumberIsUnique)
+                if (!phoneNumberIsUnique && !staff.PhoneNumber.phoneNumber.Equals(dto.PhoneNumber))
                 {
                     throw new BusinessRuleValidationException("Phone Number already exists");
                 }
@@ -115,7 +117,7 @@ namespace DDDSample1.Domain.StaffMembers
             }
 
 
-            if (!string.IsNullOrWhiteSpace(dto.LicenseNumber) && staff.LicenseNumber.licenseNumber.Equals(dto.LicenseNumber))
+            if (!string.IsNullOrWhiteSpace(dto.LicenseNumber) && !staff.LicenseNumber.licenseNumber.Equals(dto.LicenseNumber))
             {
                 staff.ChangeLicenseNumber(dto.LicenseNumber);
                 hasChanges = true;
@@ -132,7 +134,8 @@ namespace DDDSample1.Domain.StaffMembers
 
             if (dto.Email != null || dto.PhoneNumber != null)
             {
-                await _emailSender.SendEmailAsync("Your profile has been updated. If you are not aware of this this change, please contact support immediately.", email, "Profile Update Notification");
+                //isto so vai funcionar se usares um email valido
+               // await _emailSender.SendEmailAsync("Your profile has been updated. If you are not aware of this this change, please contact support immediately.", email, "Profile Update Notification");
             }
 
             return StaffMapper.toDTO(staff);
@@ -252,8 +255,8 @@ namespace DDDSample1.Domain.StaffMembers
         private StaffLogger LogObjectCreate(Staff staff, LoggerTypeOfChange typeOfChange)
         {
             return new StaffLogger(
-                     staff.Id,
-                     staff.FullName,
+                     staff.Id.AsString(),
+                     staff.FullName.fullName,
                      staff.SpecializationId,
                      staff.AvailabilitySlotsId,
                      staff.Email.email,

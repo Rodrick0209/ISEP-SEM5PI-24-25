@@ -9,7 +9,7 @@ namespace DDDSample1.Domain.StaffMembers
 
     public class EditingStaffProfileDto
     {
-        public StaffId Id { get; set; }
+        public String Id { get; set; }
 
         public string FullName { get; set; }
 
@@ -22,7 +22,7 @@ namespace DDDSample1.Domain.StaffMembers
 
         public EditingStaffProfileDto(string id, string fullname, string licenseNumber, string phoneNumber, string email)
         {
-            this.Id = new StaffId(id);
+            this.Id = id;
             this.FullName = fullname;
             this.LicenseNumber = licenseNumber;
             this.PhoneNumber = phoneNumber;

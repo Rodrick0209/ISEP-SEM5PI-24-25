@@ -33,7 +33,7 @@ namespace DDDSample1.Domain.User
             using var smtp = new SmtpClient();
             
             smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-
+            
             smtp.Authenticate("projetolapr5grupo55@gmail.com", "cteyonyvmhzfhiug");
             await smtp.SendAsync(email);             smtp.Disconnect(true);
             _logger.LogInformation("Email enviado com sucesso para {Email}", toEmail);
