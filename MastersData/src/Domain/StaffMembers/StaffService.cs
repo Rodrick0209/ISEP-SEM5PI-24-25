@@ -135,7 +135,7 @@ namespace DDDSample1.Domain.StaffMembers
             if (dto.Email != null || dto.PhoneNumber != null)
             {
                 //isto so vai funcionar se usares um email valido
-               // await _emailSender.SendEmailAsync("Your profile has been updated. If you are not aware of this this change, please contact support immediately.", email, "Profile Update Notification");
+                await _emailSender.SendEmailAsync("Your profile has been updated. If you are not aware of this this change, please contact support immediately.", email, "Profile Update Notification");
             }
 
             return StaffMapper.toDTO(staff);
