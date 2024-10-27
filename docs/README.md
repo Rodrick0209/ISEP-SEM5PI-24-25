@@ -37,7 +37,7 @@ For more details, refer to the [Glossary](glossary.md).
 
 ### 3.1. General Logical View
 
-![Logical_View](Logical_View.jpg)
+![Logical_View](General_Logical_View/Logical_View.jpg)
 
 ### 3.2. Level 1
 
