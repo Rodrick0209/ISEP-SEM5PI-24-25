@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using DDDSample1.Domain.StaffMembers;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DDDSample1.Controllers
 {
@@ -97,7 +98,7 @@ namespace DDDSample1.Controllers
        // GET: api/Patients/search
         [HttpGet("search")]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<IEnumerable<ViewStaffDto>>> SearchAsync(StaffFilterDto dto)
+        public async Task<ActionResult<IEnumerable<ViewStaffDto>>> SearchAsync([FromQuery] StaffFilterDto dto)
         {
             return await _service.SearchAsync(dto);
         }
