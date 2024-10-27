@@ -492,5 +492,19 @@ namespace DDDSample1.Domain.User
 
             _patientLoggerRepository.AddAsync(patientLogger);
         }
+
+        public async Task<string> GenerateGoogleTokenFromJwt(string email)
+        {
+
+            TokenProvider tokenProvider = new TokenProvider(_configuration);
+            string token = tokenProvider.CreateTokenForGoogle(email);
+
+            return token;
+        }
+
+
+
+
+
     }
 }

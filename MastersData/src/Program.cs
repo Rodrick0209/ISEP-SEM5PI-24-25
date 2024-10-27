@@ -38,6 +38,9 @@ using DDDSample1.Domain.StaffLoggers;
 using DDDSample1.Infrastructure.StaffLoggers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 
 
 
@@ -53,35 +56,31 @@ namespace DDDSample1.Startup
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
-                options.AddSecurityDefinition(name: JwtBearerDefaults.AuthenticationScheme,
-                securityScheme: new OpenApiSecurityScheme
+                // Definição para JWT
+                options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
-                    Description = "Enter the Bearer Authorization : 'Bearer Generated-JWT-Tplen'",
+                    Description = "Enter the Bearer Authorization : 'Bearer Generated-JWT-Token'",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
                 });
+                // Adicionando requisitos de segurança para ambos
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
                 {
-                    new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference
+                        new OpenApiSecurityScheme
                         {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = JwtBearerDefaults.AuthenticationScheme
-                        }
-                    },
-                    new List<string>()
-                }
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = JwtBearerDefaults.AuthenticationScheme
+                            }
+                        },
+                        new List<string>()
+                    }
+                });
             });
-            }
-
-
-
-
-            );
 
 
 
@@ -92,9 +91,12 @@ namespace DDDSample1.Startup
                 opt.UseInMemoryDatabase("DDDSample1DB")
                 .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
 
-            builder.Services.AddAuthorization();
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+            builder.Services.AddAuthorization();          
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
             {
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
@@ -109,33 +111,39 @@ namespace DDDSample1.Startup
                     ValidAudience = builder.Configuration["Jwt:Audience"],
                     ClockSkew = TimeSpan.Zero // Reduzir a tolerância
                 };
-
-
                 // Personalização de erro 401
                 options.Events = new JwtBearerEvents
                 {
                     OnChallenge = context =>
-        {
-            // Impedir a resposta padrão
-            context.HandleResponse();
-
-            // Configurar o código de status e a mensagem personalizada
-            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            context.Response.ContentType = "application/json";
-
-            var result = JsonSerializer.Serialize(new { message = "Token de autenticação inválido ou expirado. Por favor, faça login novamente." });
-            return context.Response.WriteAsync(result);
-        }
+                                {
+                                    // Impedir a resposta padrão
+                                    context.HandleResponse();
+                                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                                    context.Response.ContentType = "application/json";
+                                    var result = JsonSerializer.Serialize(new { message = "Token de autenticação inválido ou expirado. Por favor, faça login novamente." });
+                                    return context.Response.WriteAsync(result);
+                                }
                 };
-            });
+            }).AddCookie(options =>
+                {
+                    options.LoginPath = "/google-login"; 
+                })
+            .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+                {
+                    options.ClientId = "240475919297-mafpifo793qgthd1sat4ufn7gtfgfe8r.apps.googleusercontent.com";  
+                    options.ClientSecret = "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";  
+                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.CallbackPath = "/signin-google-callback";
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.Scope.Add("email");
+                    options.SaveTokens = true; 
+
+                });
 
             builder.Services.AddControllers().AddNewtonsoftJson();
 
 
-
-
-
-            // Call the method to configure other services
             ConfigureMyServices(builder.Services);
 
             var app = builder.Build();
@@ -165,6 +173,7 @@ namespace DDDSample1.Startup
             app.UseAuthentication();
 
             app.UseAuthorization();
+            
 
             app.MapControllers();
 
@@ -212,5 +221,11 @@ namespace DDDSample1.Startup
             services.AddTransient<IStaffLoggerRepository, StaffLoggerRepository>();
             services.AddTransient<StaffLoggerService>();
         }
+
+
+
+
     }
+
+
 }
