@@ -150,8 +150,8 @@ namespace DDDSample1.Domain.StaffMembers
                 throw new BusinessRuleValidationException("Staff member not found");
             }
 
-            //var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Delete);
-            //await _staffLoggerRepository.AddAsync(objetoLogger);
+            var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Delete);
+            await _staffLoggerRepository.AddAsync(objetoLogger);
 
             staff.Deactivate();
 
@@ -172,6 +172,8 @@ namespace DDDSample1.Domain.StaffMembers
             return op;
 
         }
+
+        
 
 
 

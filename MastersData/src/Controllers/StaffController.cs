@@ -35,7 +35,7 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
 
         public async Task<ActionResult<StaffDto>> GetGetById(String id)
         {
@@ -49,7 +49,7 @@ namespace DDDSample1.Controllers
 
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<ActionResult<StaffDto>> Update(EditingStaffProfileDto dto, [FromRoute] StaffId id)
         {
             if (id != dto.Id)
@@ -70,7 +70,7 @@ namespace DDDSample1.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
 
         public async Task<ActionResult<StaffDto>> Delete(string id)
         {
@@ -95,7 +95,7 @@ namespace DDDSample1.Controllers
         }
 
          [HttpGet("GetAll")]
-         [Authorize(Roles = "admin")]
+         //[Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<StaffDto>>> GetAll()
         {
             var list = await  _service.GetAllAsync();

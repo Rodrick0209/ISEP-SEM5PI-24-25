@@ -64,6 +64,10 @@ namespace DDDSample1.Domain.StaffMembers
         {
             this.status = false;
         }
+        public void Activate()
+        {
+            this.status = true;
+        }
     
     }
 }
