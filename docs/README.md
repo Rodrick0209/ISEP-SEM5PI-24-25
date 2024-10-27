@@ -35,15 +35,17 @@ For more details, refer to the [Glossary](glossary.md).
 
 ## 3. Views of the application
 
-### 3.1. Level 1
+### 3.1. General Logical View
 
-#### Logical View
+![Logical_View](Logical_View.jpg)
+
+### 3.2. Level 1
 
 #### Logical View
 
 ![Logical_View_Level_1](L1/Logical_View.png)
 
-### 3.2. Level 2
+### 3.3. Level 2
 
 #### Logical View
 
@@ -53,7 +55,7 @@ For more details, refer to the [Glossary](glossary.md).
 
 ![Implementation_View_Level_2](L2/Implementation_View.svg)
 
-### 3.3. Level 3
+### 3.4. Level 3
 
 #### Logical View
 
