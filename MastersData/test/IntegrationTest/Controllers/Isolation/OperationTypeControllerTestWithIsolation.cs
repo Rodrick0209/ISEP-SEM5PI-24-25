@@ -17,7 +17,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
     {
         private readonly ITestOutputHelper _output;
         private readonly OperationTypeService _operationTypeService;
-        private readonly SpecializationService _specializationService;
+        private readonly ISpecializationService _specializationService;
         private readonly OperationTypeController _operationTypeController;
         private readonly Mock<IUnitOfWork> _unitOfWork;
         private readonly Mock<IPhasesRepository> _phaseRepository;
@@ -33,7 +33,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _specializationRepository = new Mock<ISpecializationRepository>();
 
             _operationTypeService = new OperationTypeService(_unitOfWork.Object, _operationTypeRepository.Object, _phaseRepository.Object);
-            _specializationService = new SpecializationService(_unitOfWork.Object, _specializationRepository.Object);
+            _specializationService = (ISpecializationService)new SpecializationService(_unitOfWork.Object, _specializationRepository.Object);
 
             _operationTypeController = new OperationTypeController(
                 _operationTypeService,
