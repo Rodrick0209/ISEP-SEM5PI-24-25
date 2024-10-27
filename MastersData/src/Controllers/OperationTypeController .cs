@@ -16,9 +16,9 @@ namespace DDDSample1.Controllers
     public class OperationTypeController : ControllerBase
     {
         private readonly IOperationTypeService _service;
-        private readonly SpecializationService _Spe_service;
+        private readonly ISpecializationService _Spe_service;
 
-        public OperationTypeController(OperationTypeService service, SpecializationService spe_service)
+        public OperationTypeController(IOperationTypeService service, ISpecializationService spe_service)
         {
             _service = service;
             _Spe_service = spe_service;

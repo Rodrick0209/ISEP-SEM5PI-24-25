@@ -9,7 +9,7 @@ using DDDSample1.Infrastructure;
 
 namespace DDDSample1.Domain.Specializations
 {
-    public class SpecializationService 
+    public class SpecializationService : ISpecializationService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISpecializationRepository _repo;
