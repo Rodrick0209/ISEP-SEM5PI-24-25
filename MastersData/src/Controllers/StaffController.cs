@@ -91,22 +91,32 @@ namespace DDDSample1.Controllers
             }
 
 
-
         }
 
-         [HttpGet("GetAll")]
-         //[Authorize(Roles = "admin")]
+
+        //GET: api/Patients/search
+        /*[HttpGet("search")]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<IEnumerable<StaffDto>>> SearchAsync(StaffFilterDto dto)
+        {
+            return await _service.SearchAsync(dto);
+        }*/
+
+        
+
+        [HttpGet("GetAll")]
+        //[Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<StaffDto>>> GetAll()
         {
-            var list = await  _service.GetAllAsync();
+            var list = await _service.GetAllAsync();
             var listDto = new List<StaffDto>();
-            
+
             foreach (var staff in list)
             {
                 listDto.Add(StaffMapper.toDTO(staff));
             }
 
             return Ok(listDto);
-        } 
+        }
     }
 }

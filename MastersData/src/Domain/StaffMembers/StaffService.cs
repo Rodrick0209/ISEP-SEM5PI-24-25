@@ -263,86 +263,31 @@ namespace DDDSample1.Domain.StaffMembers
                      DateTime.UtcNow);
         }
 
-       /* public async Task<List<StaffDto>> GetStaffWithFilters(StaffFilterDto filters)
+      /* public async Task<List<StaffDto>> SearchAsync(StaffFilterDto dto)
         {
-            List<Staff> query = null;
-
-
-            // Filtro por LicenseNumber
-            if (!string.IsNullOrWhiteSpace(filters.LicenseNumber))
+            var staff = new List<Staff>();
+            if (string.IsNullOrWhiteSpace(dto.Staffid) && string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.LicenseNumber) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.PhoneNumber) && string.IsNullOrWhiteSpace(dto.Specialization))
             {
-                query = await _staffRepository.GetByLicenseNumberAsync(filters.LicenseNumber);
-
-                if (query == null || query.Count == 0)
-                {
-                    return new List<StaffDto>();
-                }
+                staff = await _staffRepository.GetAllAsync();
+            }
+            else
+            {
+                staff = await _staffRepository.GetByFiltersAsync(dto);
             }
 
-            // Filtro por Name
-            if (!string.IsNullOrWhiteSpace(filters.Name))
+            List<StaffDto> listDto = staff.ConvertAll<StaffDto>(sta => new StaffDto
             {
-                query = await _staffRepository.GetByNameAsync(filters.Name);
+                Id = sta.Id,
+                FullName = sta.FullName.fullName,
+                LicenseNumber = sta.LicenseNumber.licenseNumber,
+                Email = sta.Email.email,
+                PhoneNumber = sta.PhoneNumber.phoneNumber,
+                SpecializationId = sta.SpecializationId.ToString(),
+                Category = sta.Category.ToString(),
+                status = sta.status.ToString()
+            });
 
-                if (query == null || query.Count == 0)
-                {
-                    return new List<StaffDto>();
-                }
-
-            }
-
-            // Filtro por Email
-            if (!string.IsNullOrWhiteSpace(filters.Email))
-            {
-                query = await _staffRepository.GetByEmailAsync(filters.Email);
-
-                if (query == null || query.Count == 0)
-                {
-                    return new List<StaffDto>();
-                }
-            }
-
-            // Filtro por PhoneNumber
-            if (!string.IsNullOrWhiteSpace(filters.PhoneNumber))
-            {
-                query = await _staffRepository.GetByPhoneNumberAsync(filters.PhoneNumber);
-
-                if (query == null || query.Count == 0)
-                {
-                    return new List<StaffDto>();
-                }
-            }
-
-            //Filtro por Id
-            if (!string.IsNullOrWhiteSpace(filters.Staffid))
-            {
-               query = await _staffRepository.GetByIdsAsync(filters.Staffid);
-
-                if (query == null || query.Count == 0)
-                {
-                    return new List<StaffDto>();
-                }
-            }
-
-
-
-            // Filtro por Specialization
-            if (!string.IsNullOrWhiteSpace(filters.Specialization))
-            {
-                var specialization = await _specializationRepository.GetByNameAsync(filters.Specialization);
-
-                if (specialization != null)
-                {
-                    query = query?.Where(staff => staff.SpecializationId == specialization.Id).ToList();
-                }
-                else
-                {
-                    return new List<StaffDto>();
-                }
-            }
-
-            // Converte para DTO e retorna
-            return query.ConvertAll(staff => StaffMapper.toDTO(staff));
+            return listDto;
         }*/
 
     }
