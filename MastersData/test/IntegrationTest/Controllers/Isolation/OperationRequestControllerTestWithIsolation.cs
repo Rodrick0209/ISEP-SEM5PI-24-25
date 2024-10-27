@@ -369,7 +369,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<List<OperationRequestDto>>(okResult.Value);
-            Assert.Equal(1, returnValue.Count); // Verifique o número de elementos na lista
+            Assert.Single(returnValue); // Verifique o número de elementos na lista
         }
 
         [Fact]
