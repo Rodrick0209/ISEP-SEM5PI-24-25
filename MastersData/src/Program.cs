@@ -138,7 +138,6 @@ namespace DDDSample1.Startup
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
                     options.SaveTokens = true; 
-
                 });
 
             builder.Services.AddControllers().AddNewtonsoftJson();
