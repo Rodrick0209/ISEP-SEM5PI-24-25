@@ -150,8 +150,8 @@ namespace DDDSample1.Domain.StaffMembers
                 throw new BusinessRuleValidationException("Staff member not found");
             }
 
-            //var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Delete);
-            //await _staffLoggerRepository.AddAsync(objetoLogger);
+            var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Delete);
+            await _staffLoggerRepository.AddAsync(objetoLogger);
 
             staff.Deactivate();
 
@@ -172,6 +172,8 @@ namespace DDDSample1.Domain.StaffMembers
             return op;
 
         }
+
+        
 
 
 
@@ -260,6 +262,33 @@ namespace DDDSample1.Domain.StaffMembers
                      typeOfChange.ToString(),
                      DateTime.UtcNow);
         }
+
+      /* public async Task<List<StaffDto>> SearchAsync(StaffFilterDto dto)
+        {
+            var staff = new List<Staff>();
+            if (string.IsNullOrWhiteSpace(dto.Staffid) && string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.LicenseNumber) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.PhoneNumber) && string.IsNullOrWhiteSpace(dto.Specialization))
+            {
+                staff = await _staffRepository.GetAllAsync();
+            }
+            else
+            {
+                staff = await _staffRepository.GetByFiltersAsync(dto);
+            }
+
+            List<StaffDto> listDto = staff.ConvertAll<StaffDto>(sta => new StaffDto
+            {
+                Id = sta.Id,
+                FullName = sta.FullName.fullName,
+                LicenseNumber = sta.LicenseNumber.licenseNumber,
+                Email = sta.Email.email,
+                PhoneNumber = sta.PhoneNumber.phoneNumber,
+                SpecializationId = sta.SpecializationId.ToString(),
+                Category = sta.Category.ToString(),
+                status = sta.status.ToString()
+            });
+
+            return listDto;
+        }*/
 
     }
 }
