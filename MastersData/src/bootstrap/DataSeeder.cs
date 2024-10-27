@@ -114,7 +114,7 @@ public static class DataSeeder
     
     var availabilitySlots = new List<AvailabilitySlot>{availabilitySlot1, availabilitySlot2, availabilitySlot3};
 
-    context.AvailabilitySlots.AddRange(availabilitySlots);
+
 
     // Create required staff
     var requiredStaff1 = new RequiredStaff(10, specialization1.Id);
@@ -148,8 +148,11 @@ public static class DataSeeder
     context.OperationTypes.AddRange(operationTypes);
     
     var operationRequest = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType.Id.AsString(),new StaffId("D202512345").AsString(),new StaffId("D202512344").AsString());
-    var operationRequest2 = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512344").AsString(),new StaffId("D202512345").AsString());
+    var operationRequest2 = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512345").AsString(),new StaffId("D202512345").AsString());
     var operationRequests = new List<OperationRequest>{operationRequest, operationRequest2};
+
+    Staff staff = new Staff(new StaffId("D202512345"),"staff","12345",specialization1.Id.Value,"","email@gmail.com","+951999999999","Doctor","True");
+    SeedStaff(context,staff);
 
     context.OperationRequests.AddRange(operationRequest);
     context.SaveChanges();

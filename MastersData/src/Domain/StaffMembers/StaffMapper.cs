@@ -8,13 +8,14 @@ namespace DDDSample1.Domain.StaffMembers
         {
             return new StaffDto(
                 obj.Id,
-                obj.FullName.ToString(),
-                obj.LicenseNumber.ToString(),
+                obj.FullName.fullName,
+                obj.LicenseNumber.licenseNumber,
                 obj.SpecializationId,
                 obj.AvailabilitySlotsId,
-                obj.Email.ToString(),
-                obj.PhoneNumber.ToString(),
-                obj.Category.ToString()
+                obj.Email.email,
+                obj.PhoneNumber.phoneNumber,
+                obj.Category.ToString(),
+                obj.status.ToString()
             );
         }
 
@@ -28,8 +29,8 @@ namespace DDDSample1.Domain.StaffMembers
                 dto.AvailabilitySlotsId,
                 dto.Email,
                 dto.PhoneNumber,
-                dto.Category
-                
+                dto.Category,
+                dto.status  
             );
         }
     }

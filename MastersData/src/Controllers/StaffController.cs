@@ -17,7 +17,7 @@ namespace DDDSample1.Controllers
     [ApiController]
     public class StaffController : ControllerBase
     {
-        private readonly StaffService _service;
+        private readonly IStaffService _service;
 
         public StaffController(StaffService service)
         {
@@ -35,7 +35,7 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
 
         public async Task<ActionResult<StaffDto>> GetGetById(String id)
         {
@@ -47,10 +47,10 @@ namespace DDDSample1.Controllers
             return StaffMapper.toDTO(op);
         }
 
-/*
+
         [HttpPut("{id}")]
-        [Authorize(Roles = "admin")]
-        public async Task<ActionResult<StaffDto>> Update(StaffId id, EditingStaffProfileDto dto)
+        //[Authorize(Roles = "admin")]
+        public async Task<ActionResult<StaffDto>> Update(EditingStaffProfileDto dto, [FromRoute] StaffId id)
         {
             if (id != dto.Id)
             {
@@ -59,7 +59,7 @@ namespace DDDSample1.Controllers
 
             try
             {
-                var staff = await _service.UpdateAsync(dto, dto.Id);
+                var staff = await _service.UpdateAsync(dto);
 
                 return Ok(staff);
             }
@@ -67,12 +67,12 @@ namespace DDDSample1.Controllers
             {
                 return BadRequest(new { Message = ex.Message });
             }
-        }*/
+        }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
 
-        public async Task<ActionResult<StaffDto>> Delete(Guid id)
+        public async Task<ActionResult<StaffDto>> Delete(string id)
         {
             try
             {
@@ -91,22 +91,32 @@ namespace DDDSample1.Controllers
             }
 
 
-
         }
 
-         [HttpGet("GetAll")]
-         [Authorize(Roles = "admin")]
+
+        //GET: api/Patients/search
+        /*[HttpGet("search")]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<IEnumerable<StaffDto>>> SearchAsync(StaffFilterDto dto)
+        {
+            return await _service.SearchAsync(dto);
+        }*/
+
+        
+
+        [HttpGet("GetAll")]
+        //[Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<StaffDto>>> GetAll()
         {
-            var list = await  _service.GetAllAsync();
+            var list = await _service.GetAllAsync();
             var listDto = new List<StaffDto>();
-            
+
             foreach (var staff in list)
             {
                 listDto.Add(StaffMapper.toDTO(staff));
             }
 
             return Ok(listDto);
-        } 
+        }
     }
 }

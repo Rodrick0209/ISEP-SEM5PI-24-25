@@ -17,6 +17,12 @@ namespace DDDSample1.Domain.OperationTypes
             this.Duration = duration;
             this.RequiredStaff = requiredStaff;
         }
+
+        public PhaseDTO(int duration, List<RequiredStaffDTO> requiredStaff)
+        {
+            this.Duration = duration;
+            this.RequiredStaff = requiredStaff;
+        }
     }
 
     public class RequiredStaffDTO

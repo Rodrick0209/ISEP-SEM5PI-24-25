@@ -18,13 +18,15 @@ namespace DDDSample1.Domain.StaffMembers
         public Email Email { get; private set; }
         public PhoneNumber PhoneNumber { get; private set; }
         public Category Category { get; private set; }
+
+        public bool status { get; private set; }
         public User.User? User { get; private set; }
 
         private Staff()
         {
         }
 
-        public Staff(StaffId staffId, string fullName, string licenseNumber, String specializationId, String availabilitySlotsId, string email, string phoneNumber, string category)
+        public Staff(StaffId staffId, string fullName, string licenseNumber, String specializationId, String availabilitySlotsId, string email, string phoneNumber, string category, string status)
         {
             this.Id = staffId;
             this.FullName = new FullName(fullName);
@@ -34,6 +36,7 @@ namespace DDDSample1.Domain.StaffMembers
             this.Email = new Email(email);
             this.PhoneNumber = new PhoneNumber(phoneNumber);
             this.Category = Enum.Parse<Category>(category);
+            this.status= bool.Parse(status);
         }
 
         public void ChangeFullName(string fullName)
@@ -56,9 +59,14 @@ namespace DDDSample1.Domain.StaffMembers
         {
             this.PhoneNumber = new PhoneNumber(phoneNumber);
         }
-        public void ChangeCategory(Category category)
+
+        public void Deactivate()
         {
-            this.Category = category;
+            this.status = false;
+        }
+        public void Activate()
+        {
+            this.status = true;
         }
     
     }

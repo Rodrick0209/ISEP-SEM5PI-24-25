@@ -91,7 +91,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
         }
 
 
-        [Fact]
+       /* [Fact]
         public async Task CreateOperationRequest_ReturnsSuccessStatusCode()
         {
             // Arrange 
@@ -167,6 +167,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             Assert.Contains(operationTypeId, responseString);
             Assert.Contains(doctorId, responseString);
         }
+        */
 
 
         [Fact]

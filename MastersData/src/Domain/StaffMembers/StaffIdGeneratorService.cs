@@ -36,10 +36,16 @@ namespace DDDSample1.Domain.StaffMembers
 
             // Incrementa o número sequencial para a categoria correspondente
             int sequentialNumber = _sequentialNumbers[category]++;
+
+
             string sequentialNumberString = sequentialNumber.ToString("D5"); // Formato de 5 dígitos
+            // Gera uma string com 5 números aleatórios
+            Random random = new Random();
+            string randomNumbers = random.Next(0, 100000).ToString("D5");
+
 
             /// Concatena prefixo, ano e número sequencial
-            string staffIdValue = $"{prefix}{year}{sequentialNumberString}";
+            string staffIdValue = $"{prefix}{year}{randomNumbers}";
 
             // Retorna um novo objeto StaffId
             return new StaffId(staffIdValue);

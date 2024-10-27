@@ -16,8 +16,8 @@ public static class Utilities
 
         db.Patients.AddRange(GetSeedingPatients());
         db.Users.AddRange(GetSeedingUsers());
-        db.OperationTypes.AddRange(GetOperationTypes());
-        db.StaffMembers.AddRange(GetStaff());
+        // db.OperationTypes.AddRange(GetOperationTypes());
+        // db.StaffMembers.AddRange(GetStaff());
 
         db.SaveChanges();
     }
@@ -26,14 +26,14 @@ public static class Utilities
     {
         db.Patients.RemoveRange(db.Patients);
         db.Users.RemoveRange(db.Users);
-        db.OperationTypes.RemoveRange(db.OperationTypes);
-        db.StaffMembers.RemoveRange(db.StaffMembers);
+        // db.OperationTypes.RemoveRange(db.OperationTypes);
+        // db.StaffMembers.RemoveRange(db.StaffMembers);
 
         InitializeDbForTests(db);
     }
 
 
-    public static List<Staff> GetStaff()
+    /*public static List<Staff> GetStaff()
     {
         var specialization1 = new Specialization("Ortopedia");
         var availabilitySlot1 = new AvailabilitySlot("ola");
@@ -47,6 +47,7 @@ public static class Utilities
             new Staff(new StaffId("D202512345"), "Miguel", "12345", specialization1.Id.AsString(), availabilitySlot1.Id.AsString(),"test4Mail@gmail.com", "+351133456789", "Doctor")};
 
     }
+
 
 
 
@@ -70,6 +71,7 @@ public static class Utilities
         };
 
     }
+    */
 
 
 

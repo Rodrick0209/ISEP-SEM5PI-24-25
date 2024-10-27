@@ -1,6 +1,7 @@
 using DDDSample1.Application.Dtos;
 using DDDSample1.Domain.Specializations;
 using System;
+using System.Text.Json.Serialization;
 
 namespace DDDSample1.Domain.OperationTypes
 {
@@ -15,9 +16,21 @@ namespace DDDSample1.Domain.OperationTypes
 
         public string Specialization { get; set; }
 
+
+        
         public OperationTypeDto(Guid operationTypeId, string name, string status, PhaseDTO preparationPhase, PhaseDTO surgeryPhase, PhaseDTO cleaningPhase, string specialization)
-        {
+        {            
             Id = operationTypeId;
+            Name = name;
+            Status = status;
+            PreparationPhase = preparationPhase;
+            SurgeryPhase = surgeryPhase;
+            CleaningPhase = cleaningPhase;
+            Specialization = specialization;
+        }
+
+        public OperationTypeDto(string name, string status, PhaseDTO preparationPhase, PhaseDTO surgeryPhase, PhaseDTO cleaningPhase, string specialization)
+        {            
             Name = name;
             Status = status;
             PreparationPhase = preparationPhase;

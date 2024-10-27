@@ -18,9 +18,10 @@ namespace DDDSample1.Domain.StaffMembers
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Category { get; set; }
+        public string status { get; set; }
 
 
-        public StaffDto(StaffId id, string fullName, string licenseNumber, String specializationId, String availabilitySlotsId, string email, string phoneNumber, string category)
+        public StaffDto(StaffId id, string fullName, string licenseNumber, String specializationId, String availabilitySlotsId, string email, string phoneNumber, string category, string status)
         {
             this.Id = id;
             this.FullName = fullName;
@@ -30,6 +31,7 @@ namespace DDDSample1.Domain.StaffMembers
             this.Email = email;
             this.PhoneNumber = phoneNumber;
             this.Category = category;
+            this.status = status;
         }
     }
 }

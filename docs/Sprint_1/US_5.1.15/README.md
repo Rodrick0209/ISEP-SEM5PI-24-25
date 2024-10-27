@@ -4,7 +4,7 @@
 
 #### Functional requirements
 
-*Admins can search staff profiles by attributes such as name, email, or specialization.
+*Admins can search staff profiles by attributes such as name, email, specialization, id, license number or phone number.
 *The system displays search results in a list view with key staff information (name, email,
 specialization).
 *Admins can select a profile from the list to view, edit, or deactivate.
@@ -13,7 +13,7 @@ specialization).
 
 #### Business rules
 
-*Admin should be able to search staff profiles by attributes such as name, email, or specialization.
+*Admin should be able to search staff profiles by attributes such as  name, email, specialization, id, license number or phone number.
 *Admins should be able to select a profile from their search to view, edit, or deactivate.
 *The search results must be paginated if needed.
 

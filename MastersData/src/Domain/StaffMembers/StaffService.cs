@@ -8,12 +8,13 @@ using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.StaffLoggers;
 using System;
 using DDDSample1.Domain.User;
+using Org.BouncyCastle.Asn1.Misc;
 
 
 
 namespace DDDSample1.Domain.StaffMembers
 {
-    public class StaffService
+    public class StaffService : IStaffService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -54,8 +55,8 @@ namespace DDDSample1.Domain.StaffMembers
 
             await checkOSpecializationIdAsync(staffdto.SpecializationId);
 
-
-            await checkAvailabilitySlotIdAsync(staffdto.AvailabilitySlotsId);
+            
+            //await checkAvailabilitySlotIdAsync(staffdto.AvailabilitySlotsId);
 
             DateTime recruitmentDate = DateTime.Now;
 
@@ -70,25 +71,28 @@ namespace DDDSample1.Domain.StaffMembers
             return StaffMapper.toDTO(staff);
         }
 
-        public async Task<StaffDto> UpdateAsync(EditingStaffProfileDto dto, StaffId staffId)
+        public async Task<StaffDto> UpdateAsync(EditingStaffProfileDto dto)
         {
-            var staff = await _staffRepository.GetByIdAsync(staffId);
+            var staff = await _staffRepository.GetByIdAsync(dto.Id);
 
             if (staff == null)
             {
                 throw new BusinessRuleValidationException("Staff member not found");
             }
 
-            LogChanges(staff, "update");
+            var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Update);
+
+            bool hasChanges = false;
 
             string email = staff.Email.email;
 
-            if (!string.IsNullOrWhiteSpace(dto.FullName))
+            if (!string.IsNullOrWhiteSpace(dto.FullName) && staff.FullName.fullName.Equals(dto.FullName))
             {
                 staff.ChangeFullName(dto.FullName);
+                hasChanges = true;
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.Email))
+            if (!string.IsNullOrWhiteSpace(dto.Email) && staff.Email.email.Equals(dto.Email))
             {
                 bool emailIsUnique = await validateEmailIsUnique(dto.Email);
                 if (!emailIsUnique)
@@ -96,9 +100,10 @@ namespace DDDSample1.Domain.StaffMembers
                     throw new BusinessRuleValidationException("Email already exists");
                 }
                 staff.ChangeEmail(dto.Email);
+                hasChanges = true;
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
+            if (!string.IsNullOrWhiteSpace(dto.PhoneNumber) && staff.PhoneNumber.phoneNumber.Equals(dto.PhoneNumber))
             {
                 bool phoneNumberIsUnique = await validatePhoneNumberIsUnique(dto.PhoneNumber);
                 if (!phoneNumberIsUnique)
@@ -106,16 +111,24 @@ namespace DDDSample1.Domain.StaffMembers
                     throw new BusinessRuleValidationException("Phone Number already exists");
                 }
                 staff.ChangePhoneNumber(dto.PhoneNumber);
+                hasChanges = true;
             }
 
 
-            if (!string.IsNullOrWhiteSpace(dto.LicenseNumber))
+            if (!string.IsNullOrWhiteSpace(dto.LicenseNumber) && staff.LicenseNumber.licenseNumber.Equals(dto.LicenseNumber))
             {
                 staff.ChangeLicenseNumber(dto.LicenseNumber);
+                hasChanges = true;
             }
 
 
+            if (hasChanges)
+            {
+                await _staffLoggerRepository.AddAsync(objetoLogger);
+            }
+
             await _unitOfWork.CommitAsync();
+
 
             if (dto.Email != null || dto.PhoneNumber != null)
             {
@@ -137,13 +150,12 @@ namespace DDDSample1.Domain.StaffMembers
                 throw new BusinessRuleValidationException("Staff member not found");
             }
 
-            LogChanges(staff, "delete");
+            var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Delete);
+            await _staffLoggerRepository.AddAsync(objetoLogger);
 
-            _staffRepository.Remove(staff);
+            staff.Deactivate();
 
             await _unitOfWork.CommitAsync();
-
-
 
 
             return staff;
@@ -160,6 +172,8 @@ namespace DDDSample1.Domain.StaffMembers
             return op;
 
         }
+
+        
 
 
 
@@ -228,31 +242,53 @@ namespace DDDSample1.Domain.StaffMembers
             return true;
         }
 
-        private void LogChanges(Staff staff, string loggertype)
+
+
+        public async Task<List<Staff>> GetAllAsync()
         {
-            var staffLogger = new StaffLogger(
-                staff.Id,
-                staff.FullName,
-                staff.SpecializationId,
-                staff.AvailabilitySlotsId,
-                staff.Email.email,
-                staff.PhoneNumber.phoneNumber,
-                staff.Category.ToString(),
-                loggertype,
-                DateTime.UtcNow
-            );
-
-            _staffLoggerRepository.AddAsync(staffLogger);
-        }
-
-
-          public async Task<List<Staff>> GetAllAsync()
-        {    
             return await this._staffRepository.GetAllAsync();
         }
 
+        private StaffLogger LogObjectCreate(Staff staff, LoggerTypeOfChange typeOfChange)
+        {
+            return new StaffLogger(
+                     staff.Id,
+                     staff.FullName,
+                     staff.SpecializationId,
+                     staff.AvailabilitySlotsId,
+                     staff.Email.email,
+                     staff.PhoneNumber.phoneNumber,
+                     staff.Category.ToString(),
+                     typeOfChange.ToString(),
+                     DateTime.UtcNow);
+        }
 
+      /* public async Task<List<StaffDto>> SearchAsync(StaffFilterDto dto)
+        {
+            var staff = new List<Staff>();
+            if (string.IsNullOrWhiteSpace(dto.Staffid) && string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.LicenseNumber) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.PhoneNumber) && string.IsNullOrWhiteSpace(dto.Specialization))
+            {
+                staff = await _staffRepository.GetAllAsync();
+            }
+            else
+            {
+                staff = await _staffRepository.GetByFiltersAsync(dto);
+            }
 
+            List<StaffDto> listDto = staff.ConvertAll<StaffDto>(sta => new StaffDto
+            {
+                Id = sta.Id,
+                FullName = sta.FullName.fullName,
+                LicenseNumber = sta.LicenseNumber.licenseNumber,
+                Email = sta.Email.email,
+                PhoneNumber = sta.PhoneNumber.phoneNumber,
+                SpecializationId = sta.SpecializationId.ToString(),
+                Category = sta.Category.ToString(),
+                status = sta.status.ToString()
+            });
+
+            return listDto;
+        }*/
 
     }
 }
