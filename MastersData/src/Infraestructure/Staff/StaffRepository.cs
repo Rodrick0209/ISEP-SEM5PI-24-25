@@ -64,17 +64,15 @@ namespace DDDSample1.Infrastructure.StaffMembers
         }
 
 
-        /* public Task<List<Staff>> GetByFiltersAsync(string staffId, string name, string licenseNumber, string phoneNumber, string email, string specialization)
+        public Task<List<Staff>> GetByFiltersAsync(string name, string licenseNumber, string phoneNumber, string email)
         {
             return this.context.StaffMembers
-                .Where(s => s.Id.AsString().Contains(staffId) 
-                            && s.FullName.fullName.Contains(name)
-                            && s.PhoneNumber.phoneNumber.Contains(phoneNumber) 
-                            && s.Email.email.Contains(email)
+                .Where(s => s.FullName.fullName.Contains(name)
                             && s.LicenseNumber.licenseNumber.Contains(licenseNumber)
-                            && s.SpecializationId.Value.Contains(specialization))
-                .ToListAsync();
-        }*/
+                            && s.PhoneNumber.phoneNumber.Contains(phoneNumber) 
+                            && s.Email.email.Contains(email))
+                            .ToListAsync();
+        }
         
     }
 }
