@@ -9,6 +9,7 @@ namespace DDDSample1.Domain.StaffMembers
     {
         Task<Staff> GetByEmailAsync(string email);
         Task<Staff> GetByPhoneNumberAsync(string phoneNumber);
+        Task DeleteAsync(StaffId id);
 
     }
 }

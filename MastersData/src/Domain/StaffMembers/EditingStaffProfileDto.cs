@@ -20,9 +20,9 @@ namespace DDDSample1.Domain.StaffMembers
 
 
 
-        public EditingStaffProfileDto(StaffId id, string fullname, string licenseNumber, string phoneNumber, string email)
+        public EditingStaffProfileDto(string id, string fullname, string licenseNumber, string phoneNumber, string email)
         {
-            this.Id = id;
+            this.Id = new StaffId(id);
             this.FullName = fullname;
             this.LicenseNumber = licenseNumber;
             this.PhoneNumber = phoneNumber;

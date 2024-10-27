@@ -114,7 +114,7 @@ public static class DataSeeder
     
     var availabilitySlots = new List<AvailabilitySlot>{availabilitySlot1, availabilitySlot2, availabilitySlot3};
 
-    context.AvailabilitySlots.AddRange(availabilitySlots);
+
 
     // Create required staff
     var requiredStaff1 = new RequiredStaff(10, specialization1.Id);

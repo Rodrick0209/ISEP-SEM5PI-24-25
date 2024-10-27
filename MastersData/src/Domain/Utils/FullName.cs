@@ -39,7 +39,7 @@ namespace DDDSample1.Domain.Utils
 
         public static implicit operator string(FullName v)
         {
-            throw new NotImplementedException();
+            return new FullName(v);
         }
     }
 }

@@ -8,6 +8,7 @@ using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.StaffLoggers;
 using System;
 using DDDSample1.Domain.User;
+using Org.BouncyCastle.Asn1.Misc;
 
 
 
@@ -54,8 +55,8 @@ namespace DDDSample1.Domain.StaffMembers
 
             await checkOSpecializationIdAsync(staffdto.SpecializationId);
 
-
-            await checkAvailabilitySlotIdAsync(staffdto.AvailabilitySlotsId);
+            
+            //await checkAvailabilitySlotIdAsync(staffdto.AvailabilitySlotsId);
 
             DateTime recruitmentDate = DateTime.Now;
 
@@ -149,14 +150,12 @@ namespace DDDSample1.Domain.StaffMembers
                 throw new BusinessRuleValidationException("Staff member not found");
             }
 
-            var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Delete);
-            await _staffLoggerRepository.AddAsync(objetoLogger);
+            //var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Delete);
+            //await _staffLoggerRepository.AddAsync(objetoLogger);
 
-            _staffRepository.Remove(staff);
+            staff.Deactivate();
 
             await _unitOfWork.CommitAsync();
-
-
 
 
             return staff;

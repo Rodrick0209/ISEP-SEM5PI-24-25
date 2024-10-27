@@ -28,6 +28,14 @@ namespace DDDSample1.Infrastructure.StaffMembers
         {
             return await this.context.StaffMembers.FirstOrDefaultAsync(p => p.PhoneNumber.phoneNumber == phoneNumber);
         }
-        
+        public async Task DeleteAsync(StaffId id)
+        {
+            var staff = await this.context.StaffMembers.FindAsync(id);
+            if (staff != null)
+            {
+            this.context.StaffMembers.Remove(staff);
+            await this.context.SaveChangesAsync();
+            }
+        }
     }
 }
