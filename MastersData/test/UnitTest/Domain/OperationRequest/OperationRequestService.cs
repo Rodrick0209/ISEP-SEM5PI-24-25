@@ -75,7 +75,7 @@ public class OperationRequestServiceTests
             .ReturnsAsync(new Patient("Jane Doe", "1990-01-01", "female", "john.doe2@example.com", "+351 1232567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202410000001"));
 
         _staffRepositoryMock.Setup(repo => repo.GetByIdAsync(new StaffId(staffId)))
-            .ReturnsAsync(new Staff(new StaffId("D202512345"), "Miguel", "12345", specialization1.Id.AsString(), availabilitySlot1.Id.AsString(), "mamarNoC@gmail.com", "+351123456789", "Doctor","true","True"));
+            .ReturnsAsync(new Staff(new StaffId("D202512345"), "Miguel", "12345", specialization1.Id.AsString(), availabilitySlot1.Id.AsString(), "mamarNoC@gmail.com", "+351123456789", "Doctor","True"));
 
         _unitOfWorkMock.Setup(uow => uow.CommitAsync()).ReturnsAsync(1);
 
