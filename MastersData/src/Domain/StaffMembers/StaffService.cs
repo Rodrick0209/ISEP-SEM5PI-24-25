@@ -55,7 +55,7 @@ namespace DDDSample1.Domain.StaffMembers
 
             await checkOSpecializationIdAsync(staffdto.SpecializationId);
 
-            
+
             //await checkAvailabilitySlotIdAsync(staffdto.AvailabilitySlotsId);
 
             DateTime recruitmentDate = DateTime.Now;
@@ -135,7 +135,7 @@ namespace DDDSample1.Domain.StaffMembers
             if (dto.Email != null || dto.PhoneNumber != null)
             {
                 //isto so vai funcionar se usares um email valido
-               // await _emailSender.SendEmailAsync("Your profile has been updated. If you are not aware of this this change, please contact support immediately.", email, "Profile Update Notification");
+                await _emailSender.SendEmailAsync("Your profile has been updated. If you are not aware of this this change, please contact support immediately.", email, "Profile Update Notification");
             }
 
             return StaffMapper.toDTO(staff);
@@ -176,7 +176,7 @@ namespace DDDSample1.Domain.StaffMembers
 
         }
 
-        
+
 
 
 
@@ -266,32 +266,29 @@ namespace DDDSample1.Domain.StaffMembers
                      DateTime.UtcNow);
         }
 
-      /* public async Task<List<StaffDto>> SearchAsync(StaffFilterDto dto)
+        public async Task<List<ViewStaffDto>> SearchAsync(StaffFilterDto dto)
         {
             var staff = new List<Staff>();
-            if (string.IsNullOrWhiteSpace(dto.Staffid) && string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.LicenseNumber) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.PhoneNumber) && string.IsNullOrWhiteSpace(dto.Specialization))
+            if (string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.LicenseNumber) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.PhoneNumber))
             {
                 staff = await _staffRepository.GetAllAsync();
             }
             else
             {
-                staff = await _staffRepository.GetByFiltersAsync(dto);
+                staff = await _staffRepository.GetByFiltersAsync(dto.Name, dto.LicenseNumber, dto.Email, dto.PhoneNumber);
             }
 
-            List<StaffDto> listDto = staff.ConvertAll<StaffDto>(sta => new StaffDto
+            List<ViewStaffDto> listDto = staff.ConvertAll<ViewStaffDto>(sta => new ViewStaffDto
             {
-                Id = sta.Id,
-                FullName = sta.FullName.fullName,
+                Name = sta.FullName.fullName,
                 LicenseNumber = sta.LicenseNumber.licenseNumber,
                 Email = sta.Email.email,
                 PhoneNumber = sta.PhoneNumber.phoneNumber,
-                SpecializationId = sta.SpecializationId.ToString(),
-                Category = sta.Category.ToString(),
-                status = sta.status.ToString()
+
             });
 
             return listDto;
-        }*/
+        }
 
     }
 }

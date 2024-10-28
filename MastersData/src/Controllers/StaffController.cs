@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using DDDSample1.Domain.StaffMembers;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DDDSample1.Controllers
 {
@@ -35,7 +36,7 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("{id}")]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
 
         public async Task<ActionResult<StaffDto>> GetGetById(String id)
         {
@@ -49,7 +50,7 @@ namespace DDDSample1.Controllers
 
 
         [HttpPut("{id}")]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<StaffDto>> Update(EditingStaffProfileDto dto,String id)
         {
             if (id != dto.Id)
@@ -70,7 +71,7 @@ namespace DDDSample1.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
 
         public async Task<ActionResult<StaffDto>> Delete(string id)
         {
@@ -94,18 +95,18 @@ namespace DDDSample1.Controllers
         }
 
 
-        //GET: api/Patients/search
-        /*[HttpGet("search")]
+       // GET: api/Patients/search
+        [HttpGet("search")]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<IEnumerable<StaffDto>>> SearchAsync(StaffFilterDto dto)
+        public async Task<ActionResult<IEnumerable<ViewStaffDto>>> SearchAsync([FromQuery] StaffFilterDto dto)
         {
             return await _service.SearchAsync(dto);
-        }*/
+        }
 
         
 
         [HttpGet("GetAll")]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<StaffDto>>> GetAll()
         {
             var list = await _service.GetAllAsync();

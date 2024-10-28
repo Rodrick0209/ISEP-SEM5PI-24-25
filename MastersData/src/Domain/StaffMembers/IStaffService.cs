@@ -16,6 +16,7 @@ namespace DDDSample1.Domain.StaffMembers
         Task<Staff> DeleteAsync(StaffId id);
         Task<List<Staff>> GetAllAsync();
         Task<Staff> GetByIdAsync(StaffId id);
+        Task<List<ViewStaffDto>> SearchAsync(StaffFilterDto staffFilterDto);
 
 
 
