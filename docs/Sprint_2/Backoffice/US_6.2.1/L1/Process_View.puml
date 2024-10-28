@@ -1,0 +1,20 @@
+
+```plantuml
+@startuml Process_View
+actor Patient
+participant System <<System (C4)>>
+
+activate Patient
+
+Patient -> System: Make a request to register a new user
+activate System
+System --> Patient : Request for the necessary information
+Patient -> System: Provides the necessary information
+System --> Patient : Sends an email confirmation
+Patient -> System: Clicks on the confirmation link
+System --> Patient : Success/Error message
+deactivate System
+deactivate Patient
+
+@enduml
+```
