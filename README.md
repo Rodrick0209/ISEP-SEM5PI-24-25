@@ -11,17 +11,19 @@ This project is a web-based surgical appointment and resource management system 
 - **Business Continuity Plan**: Includes provisions for system failover and recovery.
 
 ## Tech Stack
-- **Frontend**: React
-- **Backend**: Node.js + Express
-- **Database**: PostgreSQL
+- **Frontend**: Angular
+- **Backend**: ASP.NET
+- **Database**: MySQL
 - **3D Rendering**: Three.js
 - **Optimization**: Prolog
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js
-- PostgreSQL
+- ASP.NET
+- Angular
+- MySQL
+- Three.js
 - Prolog (for optimization module)
   
 ### Installation
