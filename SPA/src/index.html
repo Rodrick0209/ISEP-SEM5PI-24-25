@@ -6,38 +6,76 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .custom_link {
-        color: black;
-        text-decoration: none;
-        font-size: 20px;
-        font-family: 'Times New Roman', Times, serif;
-      }
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+    header img {
+      height: 50px;
+      vertical-align: middle;
+    }
+    header h1 {
+      display: inline;
+      margin-left: 10px;
+      font-size: 24px;
+    }
+    nav {
+      background-color: #343a40;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 18px;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      padding: 20px;
+    }
+    footer {
+      background-color: #343a40;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
   </style>
 </head>
 <body>
-  <h1></h1>
+  <header>
+    <a href="home">
+      <img src="logo.png" alt="Surgical Appointment and Resource Management">
+    </a>
+    <h1>Surgical Appointment and Resource Management</h1>
+  </header>
   <nav>
     <a href="home" class="custom_link">Home</a>
     <a href="about" class="custom_link">About</a>
     <a href="contact" class="custom_link">Contact</a>
-    <style>
-      nav {
-        display: flex;
-        justify-content: right;
-      }
-      nav a {
-        margin: 0% 16px;
-      }
-    </style>
   </nav>
-  <a href="home">
-    <img src="logo.png" alt="Surgical Appointement and Resource Management" style="height: 100px;">
-  </a>
-  <h1></h1>
-  <hr>
-  </body>
-  
-  <app-root></app-root>
+  <main>
+    <app-root></app-root>
+  </main>
+  <footer>
+    &copy; 2024 Surgical Appointment and Resource Management
+  </footer>
 </body>
 </html>

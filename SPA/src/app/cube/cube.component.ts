@@ -17,7 +17,7 @@ export class CubeComponent implements AfterViewInit {
   @Input() public rotationSpeedX: number = 0.05;
   @Input() public rotationSpeedY: number = 0.01;
   @Input() public size: number = 200;
-  @Input() public texture: string = 'assets/DEI_logo.gif';
+  @Input() public texture: string = 'DEI_logo.gif';
 
   //* Stage Properties
   @Input() public cameraZ: number = 10;
