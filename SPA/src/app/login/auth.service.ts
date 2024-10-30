@@ -4,8 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 interface LoginResponse {
-  // Define response structure if known, or use 'any' if unknown
-  // Example: token: string;
+  token: string;
 }
 
 @Injectable({
@@ -17,7 +16,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<LoginResponse> {
-    const body = { email, password };
+    const body = { email : email, password : password };
     return this.http.post<LoginResponse>(this.loginUrl, body);
   }
 }
