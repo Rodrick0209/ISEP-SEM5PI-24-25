@@ -2,32 +2,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+
+interface LoginResponse {
+  // Define response structure if known, or use 'any' if unknown
+  // Example: token: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://your-backend-url/auth/login'; // Endpoint do backend
+  private loginUrl = '/api/Login/login';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(this.apiUrl, { username, password })
-      .pipe(
-        tap(response => {
-          if (response.token) {
-            localStorage.setItem('authToken', response.token); // Armazena o token
-          }
-        })
-      );
-  }
-
-  logout(): void {
-    localStorage.removeItem('authToken');
-  }
-
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('authToken');
+  login(email: string, password: string): Observable<LoginResponse> {
+    const body = { email, password };
+    return this.http.post<LoginResponse>(this.loginUrl, body);
   }
 }
