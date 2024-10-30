@@ -16,6 +16,14 @@ if %ERRORLEVEL% neq 0 (
     exit /b %ERRORLEVEL%
 )
 
+:: Run tests
+echo Running tests...
+dotnet test
+if %ERRORLEVEL% neq 0 (
+    echo Tests failed, exiting...
+    exit /b %ERRORLEVEL%
+)
+
 :: Run the project
 echo Running MastersData...
 dotnet run --project MastersData/src
