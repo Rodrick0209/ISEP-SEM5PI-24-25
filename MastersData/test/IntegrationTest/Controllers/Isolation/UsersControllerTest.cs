@@ -1,3 +1,4 @@
+using System.Xml;
 using DDDSample1.Controllers;
 using DDDSample1.Domain.PatientLoggers;
 using DDDSample1.Domain.Patients;
@@ -29,7 +30,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _controller = new UsersController(_userService);
 
             // Arrange
-            var dto = new RegisteringPatientDto { Name = "John Doe", Email = "test@example.com", PhoneNumber = "123456789", Password = "Password123!", Street = "Main Street", PostalCode = "12345", City = "City", Country = "Country" };
+            var dto = new RegisteringPatientDto { Name = "John Doe", Email = "test@example.com", PhoneNumber = "123456789", Password = "Password123!"};
             _userRepoMock.Setup(repo => repo.CheckEmail(dto.Email)).ReturnsAsync(true);
 
             // Act
@@ -48,10 +49,10 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _controller = new UsersController(_userService);
 
             // Arrange
-            var dto = new RegisteringPatientDto { Name = "John Doe", Email = "test@example.com", PhoneNumber = "123456789", Password = "Password123!", Street = "Main Street", PostalCode = "12345", City = "City", Country = "Country" };
+            var dto = new RegisteringPatientDto { Name = "John Doe", Email = "test@example.com", PhoneNumber = "123456789", Password = "Password123!"};
 
             _userRepoMock.Setup(repo => repo.CheckEmail(dto.Email)).ReturnsAsync(false);
-            _patientRepoMock.Setup(repo => repo.GetByNameEmailPhoneAddressAsync(dto.Name, dto.Email, dto.PhoneNumber, dto.Street, dto.PostalCode, dto.City, dto.Country)).ReturnsAsync((Patient?)null);
+            _patientRepoMock.Setup(repo => repo.GetByNameEmailPhoneAsync(dto.Name, dto.Email, dto.PhoneNumber)).ReturnsAsync((Patient?)null);
 
             // Act
             var result = await _controller.RegisterPatientAsync(dto);

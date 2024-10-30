@@ -189,7 +189,7 @@ namespace DDDSample1.Domain.User
                 throw new BusinessRuleValidationException("Password does not meet the requirements");
             }
 
-            var patient = await _patientRepo.GetByNameEmailPhoneAddressAsync(dto.Name, dto.Email, dto.PhoneNumber, dto.Street, dto.PostalCode, dto.City, dto.Country);
+            var patient = await _patientRepo.GetByNameEmailPhoneAsync(dto.Name, dto.Email, dto.PhoneNumber);
 
             if (patient == null)
             {
@@ -502,9 +502,11 @@ namespace DDDSample1.Domain.User
             return token;
         }
 
+        public async Task<UserDTO> GetByIdAsync(UserId id)
+        {
+            var user = await _repo.GetByIdAsync(id);
 
-
-
-
+            return user == null ? null : UserMapper.ToDto(user);
+        }
     }
 }

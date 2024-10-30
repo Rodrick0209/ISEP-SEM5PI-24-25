@@ -13,7 +13,7 @@ namespace DDDSample1.Domain.Patients
         Task<List<Patient>> GetByNameAsync(string name);
         Task<Patient> GetByMedicalRecordNumberAsync(string medicalRecordNumber);
         Task<List<Patient>> GetByFiltersAsync(string medicalRecordNumber, string name, string email, string dateOfBirth);
-        Task<Patient> GetByNameEmailPhoneAddressAsync(string name, string email, string phoneNumber, string street, string postalCode, string city, string country);
+        Task<Patient> GetByNameEmailPhoneAsync(string name, string email, string phoneNumber);
         Task<List<Patient>> GetByIdsAsync(List<String> ids);
 
     }

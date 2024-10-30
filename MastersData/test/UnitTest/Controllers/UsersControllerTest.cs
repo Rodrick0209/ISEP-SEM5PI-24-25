@@ -21,7 +21,7 @@ public class UsersControllerUnitTests
         _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
 
-        var dto = new RegisteringPatientDto {Name = "John Doe", Email = "john.doe@gmail.com", PhoneNumber = "+351 123456789", Street = "Main Street", PostalCode = "1234-567", City = "Los Angeles", Country = "USA", Password = "123456789"};
+        var dto = new RegisteringPatientDto {Name = "John Doe", Email = "john.doe@gmail.com", PhoneNumber = "+351 123456789", Password = "123456789"};
         var confirmationDto = new ConfirmationPatientDto("token", "john.doe@gmail.com");
 
         _mockUserService.Setup(service => service.RegisterPatientAsync(It.IsAny<RegisteringPatientDto>()))
@@ -42,7 +42,7 @@ public class UsersControllerUnitTests
         _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
         // Arrange
-        var dto = new RegisteringPatientDto {Name = "John Doe", Email = "john.doe@gmail.com", PhoneNumber = "+351 123456789", Street = "Main Street", PostalCode = "1234-567", City = "Los Angeles", Country = "USA", Password = "123456789"};
+        var dto = new RegisteringPatientDto {Name = "John Doe", Email = "john.doe@gmail.com", PhoneNumber = "+351 123456789", Password = "123456789"};
 
         _mockUserService.Setup(service => service.RegisterPatientAsync(It.IsAny<RegisteringPatientDto>()))
                         .ThrowsAsync(new Exception("Invalid data"));

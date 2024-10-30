@@ -192,7 +192,7 @@ namespace MastersData.test.UnitTest.Domain.User
         {
             _userRepoMock = new Mock<IUserRepository>();
             _userService = new UserService(null, _userRepoMock.Object, null, null, null, null);
-            var dto = new RegisteringPatientDto { Name = "John Doe", Email = "test@example.com", PhoneNumber = "123456789", Password = "Password123!", Street = "Main Street", PostalCode = "12345", City = "City", Country = "Country" };
+            var dto = new RegisteringPatientDto { Name = "John Doe", Email = "test@example.com", PhoneNumber = "123456789", Password = "Password123!"};
             _userRepoMock.Setup(repo => repo.CheckEmail(dto.Email)).ReturnsAsync(true);
 
             await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.RegisterPatientAsync(dto));
@@ -204,10 +204,10 @@ namespace MastersData.test.UnitTest.Domain.User
             _userRepoMock = new Mock<IUserRepository>();
             _patientRepoMock = new Mock<IPatientRepository>();
             _userService = new UserService(null, _userRepoMock.Object, null, null, _patientRepoMock.Object, null);
-            var dto = new RegisteringPatientDto { Name = "John Doe", Email = "test@example.com", PhoneNumber = "123456789", Password = "Password123!", Street = "Main Street", PostalCode = "12345", City = "City", Country = "Country" };
+            var dto = new RegisteringPatientDto { Name = "John Doe", Email = "test@example.com", PhoneNumber = "123456789", Password = "Password123!"};
 
             _userRepoMock.Setup(repo => repo.CheckEmail(dto.Email)).ReturnsAsync(false);
-            _patientRepoMock.Setup(repo => repo.GetByNameEmailPhoneAddressAsync(dto.Name, dto.Email, dto.PhoneNumber, dto.Street, dto.PostalCode, dto.City, dto.Country)).ReturnsAsync((Patient?)null);
+            _patientRepoMock.Setup(repo => repo.GetByNameEmailPhoneAsync(dto.Name, dto.Email, dto.PhoneNumber)).ReturnsAsync((Patient?)null);
 
             await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.RegisterPatientAsync(dto));
         }
