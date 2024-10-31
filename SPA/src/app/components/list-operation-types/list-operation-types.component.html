@@ -1,0 +1,42 @@
+<div class="operation-types-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Specialization</th>
+        <th>Preparation Phase</th>
+        <th>Surgery Phase</th>
+        <th>Cleaning Phase</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let operationType of operationTypes">
+        <td>{{ operationType.name }}</td>
+        <td>{{ operationType.status ? 'Active' : 'Inactive' }}</td>
+        <td>{{ operationType.specialization }}</td>
+        <td>
+          <div>{{ operationType.preparationPhase.duration }} minutes</div>
+          <div *ngFor="let staff of operationType.preparationPhase.requiredStaff">
+            {{ staff.num }} staff members ({{ staff.specialization }})
+          </div>
+          
+        </td>
+        <td>
+          <div>{{ operationType.surgeryPhase.duration }} minutes</div>
+          <div *ngFor="let staff of operationType.surgeryPhase.requiredStaff">
+            {{ staff.num }} staff members ({{ staff.specialization }})
+          </div>
+          
+        </td>
+        <td>
+          <div>{{ operationType.cleaningPhase.duration }} minutes</div>
+          <div *ngFor="let staff of operationType.cleaningPhase.requiredStaff">
+            {{ staff.num }} staff members ({{ staff.specialization }})
+          </div>
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -29,4 +29,9 @@ export class HeaderComponent implements OnInit {
     return this.authService.extractEmailFromToken();
   }
 
+  isAdmin(): boolean {
+    const role = this.authService.extractRoleFromToken();
+    return role === 'admin';
+  }
+
 }

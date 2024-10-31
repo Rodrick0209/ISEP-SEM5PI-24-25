@@ -1,0 +1,16 @@
+<div class="filter-container">
+  <h3>Filter Operation Types</h3>
+  <form (ngSubmit)="applyFilter()">
+    <label for="name">Name:</label>
+    <input id="name" type="text" [(ngModel)]="filter.name" name="name" />
+
+    <label for="status">Status:</label>
+    <select id="status" [(ngModel)]="filter.status" name="status">
+      <option value="">All</option>
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+    </select>
+
+    <button type="submit">Apply Filter</button>
+  </form>
+</div>

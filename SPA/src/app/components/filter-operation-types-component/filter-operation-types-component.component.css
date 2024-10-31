@@ -1,0 +1,33 @@
+.filter-container {
+  padding: 15px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.filter-container h3 {
+  margin-top: 0;
+}
+
+.filter-container label {
+  margin-right: 10px;
+}
+
+.filter-container input,
+.filter-container select {
+  margin-bottom: 10px;
+}
+
+.filter-container button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-container button:hover {
+  background-color: #0056b3;
+}

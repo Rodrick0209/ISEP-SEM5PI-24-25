@@ -52,13 +52,13 @@ namespace DDDSample1.Controllers
             }
 
             
-            /*
+            
             var sp = new SpecializationId(op.specialization.Value);
             var specialization = await _Spe_service.GetByIdAsync(sp);
             var specializationNames = await _Spe_service.GetByNameOperationTypeAsync(op);
             var opDto = OperationTypeMapper.ToDto(op, specialization.Name, specializationNames);
-            */
-            var opDto = OperationTypeMapper.ToDto(op);
+            
+            //var opDto = OperationTypeMapper.ToDto(op);
             return Ok(opDto);
 
         }

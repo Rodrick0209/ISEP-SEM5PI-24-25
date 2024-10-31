@@ -192,8 +192,8 @@ namespace DDDSample1.Startup
             services.AddTransient<OperationRequestService>();
 
             services.AddTransient<IOperationTypeRepository, OperationTypeRepository>();
-            services.AddTransient<OperationTypeService>();
-            services.AddTransient<SpecializationService>();
+            services.AddTransient<IOperationTypeService,OperationTypeService>();
+            services.AddTransient<ISpecializationService,SpecializationService>();
 
             services.AddTransient<IPatientRepository, PatientRepository>();
             services.AddTransient<IPatientService, PatientService>();

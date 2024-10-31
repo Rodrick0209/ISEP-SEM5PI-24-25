@@ -7,6 +7,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { RegisterComponent } from './register/register.component';
 import { ConfirmationErrorComponent } from './components/confirmation-error/confirmation-error.component';
 import { ConfirmationSuccessComponent } from './components/confirmation-success/confirmation-success.component';
+import { OperationTypeComponent } from './components/operation-types/operation-types.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,5 +18,6 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
-    { path: 'confirmation-success', component: ConfirmationSuccessComponent }
+    { path: 'confirmation-success', component: ConfirmationSuccessComponent },
+    { path: 'operationType', component: OperationTypeComponent}
 ];
