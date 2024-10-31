@@ -5,6 +5,8 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { RegisterComponent } from './register/register.component';
+import { ConfirmationErrorComponent } from './confirmation-error/confirmation-error.component';
+import { ConfirmationSuccessComponent } from './confirmation-success/confirmation-success.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -13,5 +15,7 @@ export const routes: Routes = [
     { path: 'contact', component: ContactComponent },
     { path: 'cube', component: CubeComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent }
+    { path: 'register', component: RegisterComponent },
+    { path: 'confirmation-error', component: ConfirmationErrorComponent },
+    { path: 'confirmation-success', component: ConfirmationSuccessComponent }
 ];

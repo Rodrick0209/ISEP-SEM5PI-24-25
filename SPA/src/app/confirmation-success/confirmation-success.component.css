@@ -1,0 +1,15 @@
+.confirmation-success {
+    text-align: center;
+    color: #5cb85c; /* Bootstrap success color for a green confirmation */
+    margin-top: 20px;
+  }
+  
+  .confirmation-success h2 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .confirmation-success p {
+    font-size: 16px;
+  }
+  
