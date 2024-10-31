@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RegisterConfirmationService } from '../services/register-confirmation.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -14,7 +15,7 @@ export class RegisterConfirmationComponent implements OnInit{
   token: string | null = null;
   email: string | null = null;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
+  constructor(private registerConfirmationService: RegisterConfirmationService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -26,9 +27,7 @@ export class RegisterConfirmationComponent implements OnInit{
 
   confirmRegistration() {
     if (this.token && this.email) {
-      const url = `${this.apiUrl}/?token=${this.token}&email=${this.email}`;
-
-      this.http.get(url).subscribe({
+      this.registerConfirmationService.confirmRegistration(this.token, this.email).subscribe({
         next: (response) => {
           // Handle success
           this.router.navigate(['/confirmation-success'], {

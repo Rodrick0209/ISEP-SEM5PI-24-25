@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { RegisterService } from '../services/register.service';
 
 @Component({
   standalone: true,
@@ -18,27 +19,18 @@ export class RegisterComponent {
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private registerService: RegisterService) { }
 
   onRegister() {
-    // Create a new user object
-    const newUser = {
-      name: this.name,
-      email: this.email,
-      phoneNumber: this.phone,
-      password: this.password
-    };
 
-    // Send a POST request to your backend API
-    this.http.post('/api/Users', newUser).subscribe(
-      (response: any) => {
+    this.registerService.register(this.name, this.email, this.phone, this.password).subscribe(
+      (response) => {
         console.log('Registration successful:', response);
-        // Redirect to login or another page on successful registration
-        this.successMessage = 'A confirmation email has been sent. Please check your inbox.'; // Set success message
+        this.successMessage = 'Registration successful! Please check your email to confirm your account.';
       },
       (error) => {
-        console.error('Registration failed:', error);
-        this.errorMessage = 'Registration failed. Please try again.';
+        console.log('Error:', error);
+        this.errorMessage = 'An error occurs when registering the user.\n' + error.error.message;
       }
     );
   }

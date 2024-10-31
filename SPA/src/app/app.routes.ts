@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 import { CubeComponent } from './components/cube/cube.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { ContactComponent } from './components/contact/contact.component';
-import { RegisterComponent } from './components/register/register.component';
+import { RegisterComponent } from './register/register.component';
 import { ConfirmationErrorComponent } from './components/confirmation-error/confirmation-error.component';
 import { ConfirmationSuccessComponent } from './components/confirmation-success/confirmation-success.component';
 
