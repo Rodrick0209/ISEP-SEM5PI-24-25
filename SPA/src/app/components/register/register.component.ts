@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { RegisterService } from '../services/register.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   standalone: true,
@@ -19,11 +18,11 @@ export class RegisterComponent {
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
-  constructor(private registerService: RegisterService) { }
+  constructor(private userService: UserService) { }
 
   onRegister() {
 
-    this.registerService.register(this.name, this.email, this.phone, this.password).subscribe(
+    this.userService.register(this.name, this.email, this.phone, this.password).subscribe(
       (response) => {
         console.log('Registration successful:', response);
         this.successMessage = 'Registration successful! Please check your email to confirm your account.';
