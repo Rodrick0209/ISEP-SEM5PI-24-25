@@ -11,7 +11,7 @@ This project is a web-based surgical appointment and resource management system 
 - **Business Continuity Plan**: Includes provisions for system failover and recovery.
 
 ## Tech Stack
-- **Frontend**: Angular
+- **Frontend**: Node.js + Angular
 - **Backend**: ASP.NET
 - **Database**: MySQL
 - **3D Rendering**: Three.js
@@ -21,6 +21,7 @@ This project is a web-based surgical appointment and resource management system 
 
 ### Prerequisites
 - ASP.NET
+- Node.js
 - Angular
 - MySQL
 - Three.js

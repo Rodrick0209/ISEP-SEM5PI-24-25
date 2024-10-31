@@ -157,9 +157,9 @@ namespace DDDSample1.Controllers
 
             try
             {
-                var patientDto = await _service.ConfirmRegisterPatientAsync(dto);
+                var userDto = await _service.ConfirmRegisterPatientAsync(dto);
 
-                return Ok(patientDto);
+                return Ok(userDto);
             }
             catch (Exception ex)
             {
@@ -246,8 +246,20 @@ namespace DDDSample1.Controllers
             {
                 return BadRequest(new { Message = ex.ToString() });
             }
+        }
 
+        // GET: api/user/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDTO>> GetByIdAsync(Guid id)
+        {
+            var user = await _service.GetByIdAsync(new UserId(id));
 
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
         }
     }
 }
