@@ -1,33 +1,81 @@
-.filter-container {
-  padding: 15px;
-  background-color: #f0f0f0;
+/* search-operation-types.component.css */
+.search-container {  
+  border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
+  
 }
 
-.filter-container h3 {
-  margin-top: 0;
+form{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
 }
 
-.filter-container label {
-  margin-right: 10px;
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.filter-container input,
-.filter-container select {
-  margin-bottom: 10px;
+.search-field label {
+  font-weight: bold;
+  color: #555;
 }
 
-.filter-container button {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
+.search-field input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  width: 180px;
 }
 
-.filter-container button:hover {
+button {
+  
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: auto; /* Move button to the right end */
+
+}
+
+button:hover {
   background-color: #0056b3;
+}
+
+
+label {
+  font-weight: bold;
+  color: #555;
+}
+
+.modern-select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  cursor: pointer;
+  width: 200px;
+  appearance: none; /* Remove estilo padrão para customização */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem top 50%;
+}
+
+.modern-select:hover {
+  background-color: #f1f1f1;
+}
+
+.modern-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }

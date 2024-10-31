@@ -1,16 +1,24 @@
-<div class="filter-container">
-  <h3>Filter Operation Types</h3>
-  <form (ngSubmit)="applyFilter()">
-    <label for="name">Name:</label>
-    <input id="name" type="text" [(ngModel)]="filter.name" name="name" />
+<div class="search-container">
+  <form (submit)="onSearch($event)">
+    <div class="search-field">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" [(ngModel)]="filter.name" placeholder="Enter name..." />
+    </div>
 
-    <label for="status">Status:</label>
-    <select id="status" [(ngModel)]="filter.status" name="status">
-      <option value="">All</option>
-      <option value="Active">Active</option>
-      <option value="Inactive">Inactive</option>
-    </select>
+    <div class="search-field">
+      <label for="specialization">Specialization:</label>
+      <input type="text" id="specialization" name="specialization" [(ngModel)]="filter.specialization" placeholder="Enter specialization..." />
+    </div>
 
-    <button type="submit">Apply Filter</button>
+    <div class="search-field">
+      <label for="status">Status:</label>
+      <select id="status" name="status" [(ngModel)]="filter.status" class="modern-select">
+        <option value="">All</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+    </div>
+    
+    <button type="submit">Search</button>
   </form>
 </div>

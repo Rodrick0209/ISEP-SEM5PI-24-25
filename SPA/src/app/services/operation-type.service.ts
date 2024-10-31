@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface RequiredStaff {
@@ -26,10 +26,25 @@ export interface OperationType {
 })
 export class OperationTypesService {
   private apiUrl = '/api/OperationType/GetAll'; // Update with your API URL
+  private filterApiUrl = '/api/OperationType/Filter'; // Update with your filter API URL
 
   constructor(private http: HttpClient) {}
 
   getOperationTypes(): Observable<OperationType[]> {
     return this.http.get<OperationType[]>(this.apiUrl);
+  }
+
+  filterOperationTypes(name: string, status: string, specialization: string): Observable<OperationType[]> {
+    let params = new HttpParams();
+    if (name) {
+      params = params.set('name', name);
+    }
+    if (status) {
+      params = params.set('status', status);
+    }
+    if (specialization) {
+      params = params.set('specialization', specialization);
+    }
+    return this.http.get<OperationType[]>(this.filterApiUrl, { params });
   }
 }

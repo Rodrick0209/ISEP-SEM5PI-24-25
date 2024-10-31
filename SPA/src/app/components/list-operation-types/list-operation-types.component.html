@@ -1,4 +1,5 @@
 <div class="operation-types-container">
+  <app-filter-operation-types-component (filterChanged)="onFilterChanged($event)"></app-filter-operation-types-component>
   <table>
     <thead>
       <tr>
@@ -11,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let operationType of operationTypes">
+      <tr *ngFor="let operationType of filteredOperationTypes">
         <td>{{ operationType.name }}</td>
         <td>{{ operationType.status ? 'Active' : 'Inactive' }}</td>
         <td>{{ operationType.specialization }}</td>
@@ -20,21 +21,18 @@
           <div *ngFor="let staff of operationType.preparationPhase.requiredStaff">
             {{ staff.num }} staff members ({{ staff.specialization }})
           </div>
-          
         </td>
         <td>
           <div>{{ operationType.surgeryPhase.duration }} minutes</div>
           <div *ngFor="let staff of operationType.surgeryPhase.requiredStaff">
             {{ staff.num }} staff members ({{ staff.specialization }})
           </div>
-          
         </td>
         <td>
           <div>{{ operationType.cleaningPhase.duration }} minutes</div>
           <div *ngFor="let staff of operationType.cleaningPhase.requiredStaff">
             {{ staff.num }} staff members ({{ staff.specialization }})
           </div>
-          
         </td>
       </tr>
     </tbody>
