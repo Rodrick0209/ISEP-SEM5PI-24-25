@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Routing.Constraints;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DDDSample1.Controllers
 {
@@ -26,6 +27,7 @@ namespace DDDSample1.Controllers
 
         // POST: api/OperationType
         [HttpPost("Create")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<OperationTypeDto>> Create(OperationTypeDto dto)
         {
             if (dto == null)
@@ -64,6 +66,7 @@ namespace DDDSample1.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<OperationTypeDto>> Inactivate(string id)
         {
 
@@ -84,6 +87,7 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("GetAll")]
+        
         public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetAll()
         {
             var list = await _service.GetAllAsync();

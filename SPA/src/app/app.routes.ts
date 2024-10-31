@@ -8,6 +8,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { ConfirmationErrorComponent } from './components/confirmation-error/confirmation-error.component';
 import { ConfirmationSuccessComponent } from './components/confirmation-success/confirmation-success.component';
 import { OperationTypeComponent } from './components/operation-types/operation-types.component';
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -19,5 +20,10 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
-    { path: 'operationType', component: OperationTypeComponent}
+    { 
+        path: 'operationType',
+        component: OperationTypeComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    }
 ];
