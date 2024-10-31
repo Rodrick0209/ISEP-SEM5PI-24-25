@@ -16,13 +16,17 @@ header h1 {
   font-size: 24px;
   font-weight: 600;
 }
+
 /* Navigation */
 nav {
   background-color: #004080;
   display: flex;
-  justify-content: center;
-  padding: 15px 0;
+  justify-content: space-between; /* Change to space-between to align items properly */
+  align-items: center; /* Center items vertically */
+  padding: 15px 30px; /* Added some padding to make it look nicer */
 }
+
+/* Navigation links */
 nav a {
   color: #f8f9fa;
   text-decoration: none;
@@ -32,4 +36,26 @@ nav a {
 }
 nav a:hover {
   color: #8fc5fc;
+}
+
+/* User Info */
+.user-info {
+  display: flex; /* Use flexbox to align items */
+  align-items: center; /* Center vertically */
+  margin-left: auto; /* This will push the user info to the right */
+}
+
+.welcome {
+  color: #f8f9fa; /* Make the welcome message color consistent */
+  margin-right: 10px; /* Space between welcome message and logout */
+}
+
+.logout {
+  color: #f8f9fa; /* Logout link color */
+  cursor: pointer; /* Change cursor to pointer */
+  transition: color 0.3s ease; /* Smooth transition on hover */
+}
+
+.logout:hover {
+  color: #8fc5fc; /* Change color on hover */
 }

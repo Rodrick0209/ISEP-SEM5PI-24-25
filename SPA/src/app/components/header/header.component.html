@@ -7,7 +7,12 @@
   <a href="about">About</a>
   <a href="contact">Contact</a>
   <a href="cube">Cube</a>
-  <a *ngIf="!isLoggedIn" href="login">Login</a>
-  <span *ngIf="isLoggedIn">Welcome, {{ getUserEmail() }}</span>
-  <a *ngIf="isLoggedIn" (click)="logout()">Logout</a>
+  
+  
+  <!-- New container for user information -->
+  <div class="user-info">
+    <a *ngIf="!isLoggedIn" href="login">Login</a>
+    <span class="welcome"  *ngIf="isLoggedIn">Welcome, {{ getUserEmail() }}</span>
+    <a class="logout"  *ngIf="isLoggedIn" (click)="logout()">Logout</a>
+  </div>
 </nav>

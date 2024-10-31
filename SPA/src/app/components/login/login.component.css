@@ -69,3 +69,32 @@ button[type="submit"]:hover {
   text-align: center;
   margin-top: 10px;
 }
+
+/* Style the Google Sign-In button container */
+#g_id_onload {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Style the Google Sign-In button */
+.g_id_signin {
+  
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* Optional: Customize the button appearance */
+.g_id_signin button {
+  background-color: #4285f4; /* Google blue */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.g_id_signin button:hover {
+  background-color: #357ae8; /* Darker Google blue */
+}

@@ -28,4 +28,5 @@ export class HeaderComponent implements OnInit {
   getUserEmail(): string | null {
     return this.authService.extractEmailFromToken();
   }
+
 }
