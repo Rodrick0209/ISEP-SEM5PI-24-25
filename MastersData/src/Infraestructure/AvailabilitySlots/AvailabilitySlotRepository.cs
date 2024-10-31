@@ -19,9 +19,9 @@ namespace DDDSample1.Infrastructure.AvailabilitySlots
             this.context = context;
         }
 
-        public async Task<Specialization> GetByIdAsync(SpecializationId id)
+        public async Task<AvailabilitySlot> GetByIdAsync(SpecializationId id)
         {
-            return await this.context.Specializations.FirstOrDefaultAsync(p => p.Id == id);
+            return await this.context.AvailabilitySlots.FirstOrDefaultAsync(p => p.Id == id);
         }
 
        
