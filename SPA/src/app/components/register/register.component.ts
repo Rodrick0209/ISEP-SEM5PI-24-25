@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { RegisterService } from '../services/register.service';
+import { RegisterService } from '../../services/register.service';
 
 @Component({
   standalone: true,
