@@ -5,8 +5,9 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class RegisterService {
-  private url = 'http://localhost:5000/api/users/patients'
+export class UserService {
+  private url = 'http://localhost:5000/api/users/patients';
+  private urlConfirm = 'http://localhost:5000/api/users/patients/confirm'
 
   constructor(private http: HttpClient) { }
 
@@ -18,5 +19,11 @@ export class RegisterService {
       password: password
     }
     return this.http.post(this.url, body);
-  }
+  };
+
+  confirmRegistration(token: string, email: string): Observable<any> {
+    const url = `${this.urlConfirm}?token=${token}&email=${email}`;
+
+    return this.http.get(url);
+  };
 }
