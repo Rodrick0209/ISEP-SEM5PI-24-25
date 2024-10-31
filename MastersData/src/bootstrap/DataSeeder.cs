@@ -95,22 +95,27 @@ public static class DataSeeder
       "jane.cena@example.com",
       "+351 234567234",
       "202410000005");
-    
-    var patients = new List<Patient>{johnCena, johnCena2, johnCena3, johnCena4, johnCena5};
+
+    var patients = new List<Patient> { johnCena, johnCena2, johnCena3, johnCena4, johnCena5 };
 
     context.Patients.AddRange(patients);
 
     var specialization1 = new Specialization("Ortopedia");
     var specialization2 = new Specialization("Oncologia");
     var specialization3 = new Specialization("Obstetricia");
-    
-    var specializations = new List<Specialization>{specialization1, specialization2, specialization3};
+
+    var specializations = new List<Specialization> { specialization1, specialization2, specialization3 };
 
     context.Specializations.AddRange(specializations);
 
-    var availabilitySlot1 = new AvailabilitySlot("2025-01-01", "08:00", "12:00");
-    
-    var availabilitySlots = new List<AvailabilitySlot>{availabilitySlot1};
+    // Exemplo: Convertendo a data para uma string válida antes de passar para AvailabilitySlot
+    string date = "2025-01-01"; // ou extraído de outra fonte como DateTime.Now.ToString("yyyy-MM-dd")
+    string startTime = "08:00";
+    string endTime = "12:00";
+
+    var availabilitySlot1 = new AvailabilitySlot(date, startTime, endTime);
+
+    var availabilitySlots = new List<AvailabilitySlot> { availabilitySlot1 };
 
 
 
@@ -123,11 +128,11 @@ public static class DataSeeder
 
     PasswordHasher hasher = new PasswordHasher();
     string password = hasher.HashPassword("password");
-    var user = new User("D202512345@gmail.com", "Doctor",password);
-    var user2 = new User("D202512344@gmail.com", "Doctor",password);
-    var user3 = new User("admin@teste.com", "admin",password);
-    var user4 = new User("john.cena@gmail.com", "patient",password);
-    var users = new List<User>{user, user2, user3};
+    var user = new User("D202512345@gmail.com", "Doctor", password);
+    var user2 = new User("D202512344@gmail.com", "Doctor", password);
+    var user3 = new User("admin@teste.com", "admin", password);
+    var user4 = new User("john.cena@gmail.com", "patient", password);
+    var users = new List<User> { user, user2, user3 };
 
     context.Users.AddRange(users);
 
@@ -135,23 +140,23 @@ public static class DataSeeder
     var phase1 = new Phase(20, requiredStaffList1);
     var phase2 = new Phase(90, requiredStaffList2);
     var phase3 = new Phase(15, requiredStaffList3);
-    var phases = new List<Phase>{phase1, phase2, phase3};
+    var phases = new List<Phase> { phase1, phase2, phase3 };
 
     context.Phases.AddRange(phases);
 
     // Create a new operation type with the phases and specialization
     var operationType = new OperationType("New Operation Type", true, phase1, phase2, phase3, specialization1.Id);
     var operationType2 = new OperationType("New Operation Type2", true, phase1, phase2, phase3, specialization2.Id);
-    var operationTypes = new List<OperationType>{operationType, operationType2};
+    var operationTypes = new List<OperationType> { operationType, operationType2 };
 
     context.OperationTypes.AddRange(operationTypes);
-    
-    var operationRequest = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType.Id.AsString(),new StaffId("D202512345").AsString(),new StaffId("D202512344").AsString());
-    var operationRequest2 = new OperationRequest("2025-02-18","emergency",johnCena.Id.AsString(),operationType2.Id.AsString(),new StaffId("D202512345").AsString(),new StaffId("D202512345").AsString());
-    var operationRequests = new List<OperationRequest>{operationRequest, operationRequest2};
 
-    Staff staff = new Staff(new StaffId("D202512345"),"staff","12345",specialization1.Id.Value,null,"email@gmail.com","+951999999999","Doctor","True");
-    SeedStaff(context,staff);
+    var operationRequest = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512344").AsString());
+    var operationRequest2 = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    var operationRequests = new List<OperationRequest> { operationRequest, operationRequest2 };
+
+    Staff staff = new Staff(new StaffId("D202512345"), "staff", "12345", specialization1.Id.Value, availabilitySlot1.Id.Value, "email@gmail.com", "+951999999999", "Doctor", "True");
+    SeedStaff(context, staff);
 
     context.OperationRequests.AddRange(operationRequest);
     context.SaveChanges();
@@ -201,11 +206,11 @@ public static class DataSeeder
     }
   }
 
- 
+
   public static void SeedStaff(DDDSample1DbContext context, Staff staff)
- 
+
   {
-    if (! context.Specializations.Any())
+    if (!context.Specializations.Any())
     {
       context.StaffMembers.Add(staff);
     }

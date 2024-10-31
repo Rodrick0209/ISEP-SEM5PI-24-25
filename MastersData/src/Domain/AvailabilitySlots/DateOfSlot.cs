@@ -13,12 +13,11 @@ namespace DDDSample1.Domain.AvailabilitySlots
             this.dateOfSlot = dateOfSlot;
         }
 
-
         private void validateDateOfSlot(DateTime dateOfSlot)
         {
-            if (dateOfSlot > DateTime.Now)
+            if (dateOfSlot < DateTime.Now)
             {
-                throw new ArgumentNullException("Invalid slot date");
+                throw new ArgumentOutOfRangeException(nameof(dateOfSlot), "Invalid slot date: cannot be in the past.");
             }
         }
     }

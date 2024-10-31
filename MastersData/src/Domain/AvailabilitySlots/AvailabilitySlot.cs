@@ -17,10 +17,15 @@ namespace DDDSample1.Domain.AvailabilitySlots
         public TimeSpan StartTime { get; private set; } // Horário de início do slot
         public TimeSpan EndTime { get; private set; } // Horário de término do slot
 
+        private AvailabilitySlot()
+        {
+        }
+
 
 
         public AvailabilitySlot(string date, string startTime, string endTime)
         {
+            
             TimeSpan start = TimeSpan.Parse(startTime);
             TimeSpan end = TimeSpan.Parse(endTime);
 
