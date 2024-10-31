@@ -23,15 +23,12 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) { }
 
   onLogin() {
-    this.authService.login(this.email, this.password).subscribe({
-      next: (response) => {
-        console.log('Login successful', response);
-        // Redirect to another page or handle successful login here
-      },
-      error: (error) => {
-        this.errorMessage = 'Login failed. Please check your credentials.';
-        console.error(error);
-      }
+    this.authService.login(this.email, this.password).subscribe(response => {
+      this.authService.saveToken(response.token); // Salva apenas o token
+      // Redirecionar ou atualizar a interface após o login
+      this.router.navigate(['/home']);
+    }, error => {
+      console.error('Erro no login:', error);
     });
   }
 }

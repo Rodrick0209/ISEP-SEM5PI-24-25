@@ -19,4 +19,20 @@ export class AuthService {
     const body = { email : email, password : password };
     return this.http.post<LoginResponse>(this.loginUrl, body);
   }
+
+  saveToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  isLoggedIn(): boolean {
+    return this.getToken() !== null; // Checks if token exists
+  }
+
+  clearToken(): void {
+    localStorage.removeItem('token');
+  }
 }
