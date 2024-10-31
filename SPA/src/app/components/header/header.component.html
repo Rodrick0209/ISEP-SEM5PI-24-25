@@ -6,8 +6,8 @@
   <a href="home">Home</a>
   <a href="about">About</a>
   <a href="contact">Contact</a>
+  <a href="cube">Cube</a>
   <a *ngIf="!isLoggedIn" href="login">Login</a>
-  <a *ngIf="isLoggedIn" href="cube">Cube</a>
-  <!--span *ngIf="isLoggedIn">Welcome, {{ authService.getUserEmail() }}</span-->
+  <span *ngIf="isLoggedIn">Welcome, {{ getUserEmail() }}</span>
   <a *ngIf="isLoggedIn" (click)="logout()">Logout</a>
 </nav>

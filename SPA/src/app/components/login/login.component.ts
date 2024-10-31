@@ -23,12 +23,21 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) { }
 
   onLogin() {
-    this.authService.login(this.email, this.password).subscribe(response => {
-      this.authService.saveToken(response.token); // Salva apenas o token
-      // Redirecionar ou atualizar a interface após o login
-      this.router.navigate(['/home']);
-    }, error => {
-      console.error('Erro no login:', error);
-    });
+    this.authService.login(this.email, this.password).subscribe(
+      response => {
+        if (response.token) {
+          this.authService.saveToken(response.token); // Salva o token
+          // Redirecionar ou atualizar a interface após o login
+          this.router.navigate(['/home']);
+        } else {
+          // Defina a mensagem de erro se o token não estiver presente
+          this.errorMessage = 'Login falhou. Por favor, tente novamente.';
+        }
+      },
+      error => {
+        console.error('Erro no login:', error);
+        this.errorMessage = 'Erro no login: ' + (error.error?.message || 'Por favor, verifique suas credenciais.');
+      }
+    );
   }
 }
