@@ -6,6 +6,7 @@ using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
 using Microsoft.AspNetCore.Authorization;
 using DDDSample1.Domain.Patients;
+using System.Web;
 
 
 namespace DDDSample1.Controllers
@@ -147,7 +148,7 @@ namespace DDDSample1.Controllers
 
         // POST: api/user/patients/confirmation/{token}
         [HttpPost("patients/confirmation/{token}")]
-        public async Task<ActionResult<PatientDto>> ConfirmRegisterPatientAsync(string token, ConfirmationPatientDto dto)
+        public async Task<ActionResult<UserDTO>> ConfirmRegisterPatientAsync(string token, ConfirmationPatientDto dto)
         {
 
             if (token != dto.Token)
@@ -166,6 +167,33 @@ namespace DDDSample1.Controllers
                 return BadRequest(new { Message = ex.ToString() });
             }
         }
+
+        [HttpGet("patients/confirm")]
+        public async Task<ActionResult> ConfirmRegisterPatientAsync([FromQuery] string token, [FromQuery] string email)
+        {
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+            {
+                return BadRequest(new { Message = "Invalid confirmation link."});
+            }
+
+            var dto = new ConfirmationPatientDto(token, email)
+            {
+                Token = token,
+                Email = email
+            };
+
+            try
+            {
+                var userDto = await _service.ConfirmRegisterPatientAsync(dto);
+
+                return Ok(userDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
 
         // PATCH : api/user/patients/edit
         [HttpPatch("patients/edit")]

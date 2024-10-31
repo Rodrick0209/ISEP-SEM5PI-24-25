@@ -1,0 +1,14 @@
+.confirmation-error {
+    text-align: center;
+    color: #d9534f; /* Bootstrap danger color for a red warning */
+    margin-top: 20px;
+  }
+  
+  .confirmation-error h2 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .confirmation-error p {
+    font-size: 16px;
+  }
