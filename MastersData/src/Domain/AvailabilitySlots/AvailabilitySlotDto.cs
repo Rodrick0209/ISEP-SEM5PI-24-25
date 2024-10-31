@@ -8,15 +8,13 @@ namespace DDDSample1.Domain.AvailabilitySlots
         public string Date { get; set; } // Data do slot de disponibilidade
         public string StartTime { get; set; } // Horário de início do slot
         public string EndTime { get; set; } // Horário de término do slot
-        public String StaffMemberId { get; set; } // ID do membro do staff associado
 
-        public AvailabilitySlotDto(Guid id, string date, string startTime, string endTime, String staffMemberId)
+        public AvailabilitySlotDto(Guid id, string date, string startTime, string endTime)
         {
             this.Id = id;
             this.Date = date;
             this.StartTime = startTime;
             this.EndTime = endTime;
-            this.StaffMemberId = staffMemberId;
         }
     }
 }
