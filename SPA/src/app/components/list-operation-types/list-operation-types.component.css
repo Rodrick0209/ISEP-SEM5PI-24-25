@@ -36,3 +36,22 @@ tbody tr:nth-child(even) {
   background-color: #f9f9f9; /* Cor de fundo para linhas pares */
 }
 
+button {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 0.5rem; /* Space between buttons */
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #ccc; /* Style for disabled buttons */
+  cursor: not-allowed;
+}

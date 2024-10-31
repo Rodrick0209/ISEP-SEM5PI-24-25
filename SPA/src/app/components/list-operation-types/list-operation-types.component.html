@@ -9,6 +9,8 @@
         <th>Preparation Phase</th>
         <th>Surgery Phase</th>
         <th>Cleaning Phase</th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -33,6 +35,12 @@
           <div *ngFor="let staff of operationType.cleaningPhase.requiredStaff">
             {{ staff.num }} staff members ({{ staff.specialization }})
           </div>
+        </td>
+        <td>
+          <button (click)="editOperationType(operationType)">Edit</button>
+        </td>
+        <td>
+          <button (click)="deactivateOperationType(operationType)">Deactivate</button>
         </td>
       </tr>
     </tbody>

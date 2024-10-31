@@ -38,4 +38,15 @@ export class ListOperationTypesComponent implements OnInit {
       }
     });
   }
+
+  editOperationType(operationType: OperationType): void {
+    // Implement your edit logic here
+    console.log('Editing operation type:', operationType);
+  }
+  
+  deactivateOperationType(operationType: OperationType): void {
+    // Implement your deactivate logic here
+    console.log('Deactivating operation type:', operationType);
+    // You may want to update the status or call a service to perform the action
+  }
 }
