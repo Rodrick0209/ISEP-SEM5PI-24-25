@@ -66,7 +66,6 @@ namespace DDDSample1.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "admin")]
         public async Task<ActionResult<OperationTypeDto>> Inactivate(string id)
         {
 
