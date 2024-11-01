@@ -27,7 +27,10 @@ namespace DDDSample1.Infrastructure.Patients
                 ec.OwnsOne(e => e.PhoneNumber);
             });
             builder.OwnsOne(b => b.MedicalRecordNumber);
-            builder.OwnsOne(b => b.MedicalConditions).Property(m => m.medicalConditions).IsRequired(false);
+            builder.OwnsOne(b => b.MedicalHistory, mh =>
+            {
+                mh.OwnsOne(m => m.MedicalConditions);
+            });
             builder.OwnsOne(b => b.Gender).Property(g => g.gender);
         }
     }

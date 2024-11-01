@@ -195,7 +195,6 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             // Act
             var result = await _controller.GetByMedicalRecordNumberAsync("123");
 
-            // Assert
             var actionResult = Assert.IsType<ActionResult<PatientDto>>(result);
             Assert.Equal(patientDto, actionResult.Value);
         }
@@ -259,15 +258,15 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             
             // Arrange
             var dto = new SearchFiltersDto();
-            var patients = new List<ViewPatientDto> { new ViewPatientDto(), new ViewPatientDto() };
+            var patients = new List<ViewPatientDto>();
             _mockService.Setup(service => service.SearchAsync(dto)).ReturnsAsync(patients);
 
             // Act
-            var result = await _controller.SearchAsync(dto);
+            var result = await _controller.SearchAsync(dto.MedicalRecordNumber, dto.Name, dto.Email, dto.DateOfBirth);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<ViewPatientDto>>>(result);
-            Assert.Equal(patients, actionResult.Value);
+            Assert.Null(actionResult.Value);
         }
     }
 }

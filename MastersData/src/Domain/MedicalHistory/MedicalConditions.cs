@@ -10,7 +10,6 @@ namespace DDDSample1.Domain.Patients
         public MedicalConditions(string medicalConditions)
         {
             validateMedicalConditions(medicalConditions);
-            medicalConditions.Trim();
             this.medicalConditions = medicalConditions;
         }
 

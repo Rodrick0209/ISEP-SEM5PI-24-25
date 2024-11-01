@@ -43,6 +43,8 @@ namespace DDDSample1.Infrastructure
 
         public DbSet<Patient> Patients { get; set; }
 
+        public DbSet<MedicalHistory> MedicalHistories { get; set; }
+
         public DbSet<Specialization> Specializations { get; set; }
 
         public DbSet<OperationRequestLogger> OperationRequestLoggers { get; set; }

@@ -68,7 +68,7 @@ namespace DDDSample1.Domain.Patients
                 dto.EmergencyContactPhoneNumber,
                 medicalRecordNumber
             );
-
+            
             await _patientRepository.AddAsync(patient);
             await _unitOfWork.CommitAsync();
 
@@ -117,7 +117,7 @@ namespace DDDSample1.Domain.Patients
 
             if (!string.IsNullOrWhiteSpace(dto.MedicalConditions))
             {
-                patient.ChangeMedicalConditions(dto.MedicalConditions);
+                patient.MedicalHistory.ChangeMedicalConditions(dto.MedicalConditions);
             }
 
             await _unitOfWork.CommitAsync();
@@ -222,22 +222,9 @@ namespace DDDSample1.Domain.Patients
         {
             var patientLogger = new PatientLogger(
                 patient.Id,
-                patient.FullName.fullName,
-                patient.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd"),
-                patient.Gender.gender,
-                patient.Email.email,
-                patient.PhoneNumber.phoneNumber,
-                patient.Address.Street.street,
-                patient.Address.PostalCode.postalCode,
-                patient.Address.City.city,
-                patient.Address.Country.country,
-                patient.EmergencyContact.Name.fullName,
-                patient.EmergencyContact.Email.email,
-                patient.EmergencyContact.PhoneNumber.phoneNumber,
                 patient.MedicalRecordNumber._medicalRecordNumber,
-                patient.MedicalConditions?.medicalConditions ?? null,
-                typeOfChange,
-                DateTime.UtcNow
+                patient.MedicalHistory.MedicalConditions?.medicalConditions ?? null,
+                typeOfChange
             );
 
             _patientLoggerRepository.AddAsync(patientLogger);

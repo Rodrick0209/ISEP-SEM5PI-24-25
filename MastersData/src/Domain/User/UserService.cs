@@ -472,22 +472,9 @@ namespace DDDSample1.Domain.User
         {
             var patientLogger = new PatientLogger(
                 patient.Id,
-                patient.FullName.fullName,
-                patient.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd"),
-                patient.Gender.gender,
-                patient.Email.email,
-                patient.PhoneNumber.phoneNumber,
-                patient.Address.Street.street,
-                patient.Address.PostalCode.postalCode,
-                patient.Address.City.city,
-                patient.Address.Country.country,
-                patient.EmergencyContact.Name.fullName,
-                patient.EmergencyContact.Email.email,
-                patient.EmergencyContact.PhoneNumber.phoneNumber,
                 patient.MedicalRecordNumber._medicalRecordNumber,
-                patient.MedicalConditions?.medicalConditions ?? null,
-                typeOfChange,
-                DateTime.UtcNow
+                patient.MedicalHistory.MedicalConditions?.medicalConditions ?? null,
+                typeOfChange
             );
 
             _patientLoggerRepository.AddAsync(patientLogger);

@@ -143,7 +143,7 @@ namespace UnitTest.Domain.Patient
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("John Doe Updated", result.FullName);
+            Assert.Equal("John Doe Updated", result.Name);
             _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
         }
@@ -280,7 +280,7 @@ namespace UnitTest.Domain.Patient
             // Assert
             Assert.NotNull(result);
             _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
-            Assert.Equal("Asthma, Diabetes", result.MedicalConditions);
+            Assert.Equal("Asthma, Diabetes", result.MedicalHistory.MedicalConditions);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
         }
 
@@ -328,10 +328,10 @@ namespace UnitTest.Domain.Patient
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("John Doe Updated", result.FullName);
+            Assert.Equal("John Doe Updated", result.Name);
             Assert.Equal("john.doe.updated@example.com", result.Email);
             Assert.Equal("+351 098765432", result.PhoneNumber);
-            Assert.Equal("Asthma", result.MedicalConditions);
+            Assert.Equal("Asthma", result.MedicalHistory.MedicalConditions);
             _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
             _emailSenderMock.Verify(sender => sender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
@@ -392,7 +392,7 @@ namespace UnitTest.Domain.Patient
                 MedicalRecordNumber = "2024",
                 Name = "John",
                 Email = "john.",
-                DateOfBirth = "1990"
+                DateOfBirth = "1990-01-01"
             };
 
             var patients = new List<DDDSample1.Domain.Patients.Patient>
