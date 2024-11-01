@@ -149,7 +149,7 @@ namespace DDDSample1.Domain.Patients
         public async Task<List<ViewPatientDto>> SearchAsync(SearchFiltersDto dto)
         {
             var patients = new List<Patient>();
-            if (string.IsNullOrWhiteSpace(dto.MedicalRecordNumber) && string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.DateOfBirth))
+            if (string.IsNullOrWhiteSpace(dto.MedicalRecordNumber) && string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.Email))
             {
                 patients = await _patientRepository.GetAllAsync();
             }

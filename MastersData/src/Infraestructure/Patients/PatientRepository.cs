@@ -24,14 +24,31 @@ namespace DDDSample1.Infrastructure.Patients
             return await this.context.Patients.FirstOrDefaultAsync(p => p.Email.email == email);
         }
 
-        public Task<List<Patient>> GetByFiltersAsync(string medicalRecordNumber, string name, string email, string dateOfBirth)
+        public async Task<List<Patient>> GetByFiltersAsync(string medicalRecordNumber, string name, string email, string dateOfBirth)
         {
-            return this.context.Patients
-                .Where(p => p.MedicalRecordNumber._medicalRecordNumber.Contains(medicalRecordNumber) 
-                            && p.FullName.fullName.Contains(name)
-                            && p.Email.email.Contains(email) 
-                            && p.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd").Contains(dateOfBirth))
-                .ToListAsync();
+            var query = this.context.Patients.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(medicalRecordNumber))
+            {
+                query = query.Where(p => p.MedicalRecordNumber._medicalRecordNumber.Contains(medicalRecordNumber.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(p => p.FullName.fullName.ToLower().Contains(name.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                query = query.Where(p => p.Email.email.ToLower().Contains(email.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(dateOfBirth))
+            {
+                query = query.Where(p => p.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd").Contains(dateOfBirth));
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<Patient> GetByMedicalRecordNumberAsync(string medicalRecordNumber)

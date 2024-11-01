@@ -64,7 +64,7 @@ public class OperationRequestServiceTests
         var phase2 = new Phase(90, requiredStaffList2);
         var phase3 = new Phase(15, requiredStaffList3);
 
-        var availabilitySlot1 = new AvailabilitySlot("test");
+        var availabilitySlot1 = new AvailabilitySlot("2024-10-10", "08:00", "17:00");
 
 
         // Configurar mocks para retornar entidades com esses IDs fixos
@@ -201,7 +201,7 @@ public class OperationRequestServiceTests
         var phase2 = new Phase(90, requiredStaffList2);
         var phase3 = new Phase(15, requiredStaffList3);
 
-        var availabilitySlot1 = new AvailabilitySlot("test");
+        var availabilitySlot1 = new AvailabilitySlot("2024-10-10", "08:00", "17:00");
         
         var filters = new OperationRequestFilterDto { MedicalRecordNumber = "202410000001" };
         var patient = new Patient("Jane Doe", "1990-01-01", "female", "jane.doe@example.com", "+351 1234567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202410000001");

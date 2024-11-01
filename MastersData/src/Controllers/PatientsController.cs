@@ -37,28 +37,6 @@ namespace DDDSample1.Controllers
             }
         }
 
-        // PUT: api/Patients/{medicalRecordNumber}
-        /* [HttpPut("{medicalRecordNumber}")]
-         public async Task<ActionResult<PatientDto>> Replace(string medicalRecordNumber, ReplacingPatientProfileDto dto)
-         {
-             if (medicalRecordNumber != dto.MedicalRecordNumber)
-             {
-             return BadRequest();
-             }
-
-             try
-             {
-             var patient = await _service.ReplaceAsync(dto);
-
-             return Ok(patient);
-             }
-             catch (Exception ex)
-             {
-             return BadRequest(new { Message = ex.Message });
-             }
-         }
-         */
-
         // PATCH: api/Patients/{medicalRecordNumber}
         [HttpPatch("{medicalRecordNumber}")]
         [Authorize(Roles = "admin")]
@@ -101,8 +79,14 @@ namespace DDDSample1.Controllers
         //GET: api/Patients/search
         [HttpGet("search")]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<IEnumerable<ViewPatientDto>>> SearchAsync(SearchFiltersDto dto)
+        public async Task<ActionResult<IEnumerable<ViewPatientDto>>> SearchAsync([FromQuery] string medicalRecordNumber,[FromQuery] string name,[FromQuery] string email,[FromQuery] string dateOfBirth)
         {
+            var dto = new SearchFiltersDto{
+                MedicalRecordNumber = medicalRecordNumber, 
+                Name = name, 
+                Email = email, 
+                DateOfBirth = dateOfBirth
+            };
             return await _service.SearchAsync(dto);
         }
 

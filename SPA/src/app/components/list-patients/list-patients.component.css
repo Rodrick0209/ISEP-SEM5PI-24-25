@@ -1,0 +1,57 @@
+.list-patients-container {
+  
+    margin: 20px auto; /* Centralizando a lista na página */
+    padding: 20px; /* Adicionando padding ao contêiner */
+    
+    border-radius: 8px; /* Arredondando os cantos */
+    background-color: #ffffff; /* Cor de fundo */
+  }
+  
+  h2 {
+    text-align: center; /* Centralizando o título */
+    color: #333; /* Cor do título */
+    margin-bottom: 20px; /* Espaçamento inferior */
+  }
+  
+  table {
+    width: 100%; /* Tabela ocupa 100% do contêiner */
+    border-collapse: collapse; /* Remover espaço entre as células */
+    margin-top: 10px; /* Espaçamento superior */
+  }
+  
+  thead {
+    background-color: #007bff; /* Cor de fundo do cabeçalho */
+    color: white; /* Cor do texto do cabeçalho */
+  }
+  
+  th, td {
+    padding: 12px; /* Espaçamento interno das células */
+    text-align: left; /* Alinhamento do texto */
+    border-bottom: 1px solid #e0e0e0; /* Borda inferior das células */
+  }
+  
+  
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Cor de fundo para linhas pares */
+  }
+  
+  button {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 0.5rem; /* Space between buttons */
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button:disabled {
+    background-color: #ccc; /* Style for disabled buttons */
+    cursor: not-allowed;
+  }
+

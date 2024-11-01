@@ -1,0 +1,34 @@
+<div class="list-patients-container">
+    <app-filter-patients (filterChanged)="onFilterChanged($event)"></app-filter-patients>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Medical Record Number</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Date Of Birth</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let patient of filteredPatients">
+                <td>{{ patient.medicalRecordNumber }}</td>
+                <td>{{ patient.name }}</td>
+                <td>{{ patient.email | slice:0:3 }}***&#64;***.com</td>
+                <td>{{ patient.dateOfBirth | date:'yyyy-MM-dd' }}</td>
+                <td>
+                    <button (click)="seeDetails(patient)">Details</button>
+                </td>
+                <td>
+                    <button (click)="editPatient(patient)">Edit</button>
+                </td>
+                <td>
+                    <button (click)="deletePatient(patient)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

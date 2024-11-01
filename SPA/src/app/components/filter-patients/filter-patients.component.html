@@ -1,0 +1,25 @@
+<div class="search-container">
+  <form (submit)="onSearch($event)">
+    <div class="search-field">
+      <label for="name">Medical Record Number: </label>
+      <input type="text" id="medicalRecordNumber" name="medicalRecordNumber" [(ngModel)]="filter.medicalRecordNumber" placeholder="Enter medical record number..." />
+    </div>
+
+    <div class="search-field">
+      <label for="name">Name: </label>
+      <input type="text" id="name" name="name" [(ngModel)]="filter.name" placeholder="Enter name..." />
+    </div>
+
+    <div class="search-field">
+      <label for="email">Email: </label>
+      <input type="text" id="email" name="email" [(ngModel)]="filter.email" placeholder="Enter email..." />
+    </div>
+
+    <div class="dateOfBirth">
+      <label for="dateOfBirth">Date of Birth: </label>
+      <input type="date" id="dateOfBirth" name="dateOfBirth" [(ngModel)]="filter.dateOfBirth" />
+    </div>
+    
+    <button type="submit">Search</button>
+  </form>
+</div>

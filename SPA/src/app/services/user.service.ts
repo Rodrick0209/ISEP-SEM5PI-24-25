@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private url = 'http://localhost:5000/api/users/patients';
-  private urlConfirm = 'http://localhost:5000/api/users/patients/confirm'
+  private url = '/api/users/patients';
+  private urlConfirm = '/api/users/patients/confirm'
 
   constructor(private http: HttpClient) { }
 

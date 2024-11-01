@@ -1,0 +1,122 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core'
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
+
+export interface Patient {
+  medicalRecordNumber: string;
+  name: string;
+  dateOfBirth: Date;
+  email: string;
+  phoneNumber: string;
+  gender: string;
+  address: Address;
+  emergencyContact: EmergencyContact;
+  medicalHistory: MedicalHistory;
+}
+
+export interface Address {
+  street: string;
+  postalCode: string;
+  city: string;
+  country: string;
+}
+
+export interface EmergencyContact {
+  name: string;
+  phoneNumber: string;
+}
+
+export interface MedicalHistory {
+  medicalConditions: string;
+  // appointments: Appointment[];
+}
+
+export interface PatientsView{
+  medicalRecordNumber: string;
+  name: string;
+  dateOfBirth: Date;
+  email: string
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PatientService {
+  private url = '/api/patients';
+  private urlMedicalRecordNumber = '/api/patients/MedicalRecordNumber';
+  private searchUrl = '/api/patients/search';
+
+  constructor(private http: HttpClient, private authService: AuthService) { }
+
+  getPatients(): Observable<PatientsView[]> {
+    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
+    console.log(headers)
+    return this.http.get<PatientsView[]>(this.url, { headers });
+  }
+
+  getPatient(medicalRecordNumber: string): Observable<Patient> {
+    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
+    return this.http.get<Patient>(`${this.urlMedicalRecordNumber}/${medicalRecordNumber}`, { headers });
+  }
+
+  createPatient(firstName: string, lastName: string, fullName: string, dateOfBirth: string, email: string, phoneNumber: string,
+    street: string, postalCode: string, city: string, country: string,
+    emergencyContactName: string, emergencyContactEmail: string, emergencyContactPhoneNumber: string): Observable<any> {
+    const body = {
+      firstName: firstName,
+      lastName: lastName,
+      fullName: fullName,
+      dateOfBirth: dateOfBirth,
+      email: email,
+      phoneNumber: phoneNumber,
+      street: street,
+      postalCode: postalCode,
+      city: city,
+      country: country,
+      emergencyContactName: emergencyContactName,
+      emergencyContactEmail: emergencyContactEmail,
+      emergencyContactPhoneNumber: emergencyContactPhoneNumber
+    }
+
+    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
+    return this.http.post<Patient>(this.url, body, { headers });
+  }
+
+  editPatient(medicalRecordNumber: string, name: string, email: string, phoneNumber: string, medicalConditions: string) : Observable<any> {
+    const body = {
+      medicalRecordNumber: medicalRecordNumber,
+      name: name,
+      email: email,
+      phoneNumber: phoneNumber,
+      medicalConditions: medicalConditions
+    }
+
+    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
+    return this.http.patch(this.url, { headers });
+  }
+
+  deletePatient(medicalRecordNumber: string) : Observable<any> {
+    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
+    return this.http.delete(`/api/patients/${medicalRecordNumber}`, { headers });
+  }
+
+  filterPatients(medicalRecordNumber: string, name: string, dateOfBirth: string, email: string): Observable<PatientsView[]> {
+    let params = new HttpParams();
+    if (medicalRecordNumber) {
+      params = params.set('medicalRecordNumber', medicalRecordNumber);
+    }
+    if (name) {
+      params = params.set('name', name);
+    }
+    if (dateOfBirth) {
+      params = params.set('dateOfBirth', dateOfBirth);
+    }
+    if (email) {
+      params = params.set('email', email);
+    }
+
+    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
+    return this.http.get<PatientsView[]>(this.searchUrl, { params, headers });
+  }
+}

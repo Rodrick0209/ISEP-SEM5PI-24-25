@@ -8,7 +8,7 @@ namespace DDDSample1.Domain.Patients
     public class PatientDto
     {
         public Guid Id { get; set; }
-        public string FullName { get; set; }
+        public string Name { get; set; }
         public string DateOfBirth { get; set; }
         public string Gender { get; set; }
         public string Email { get; set; }
@@ -18,10 +18,10 @@ namespace DDDSample1.Domain.Patients
         public string MedicalRecordNumber { get; set; }
         public string? MedicalConditions { get; set; }
             
-        public PatientDto(Guid id, string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string medicalRecordNumber, AddressDto address, EmergencyContactDto emergencyContact, string? medicalConditions = null)
+        public PatientDto(Guid id, string Name, string dateOfBirth, string gender, string email, string phoneNumber, string medicalRecordNumber, AddressDto address, EmergencyContactDto emergencyContact, string? medicalConditions = null)
         {
             this.Id = id;
-            this.FullName = fullName;
+            this.Name = Name;
             this.DateOfBirth = dateOfBirth;
             this.Gender = gender;
             this.Email = email;

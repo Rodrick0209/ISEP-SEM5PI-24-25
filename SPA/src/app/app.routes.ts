@@ -9,6 +9,7 @@ import { ConfirmationErrorComponent } from './components/confirmation-error/conf
 import { ConfirmationSuccessComponent } from './components/confirmation-success/confirmation-success.component';
 import { OperationTypeComponent } from './components/operation-types/operation-types.component';
 import { AuthGuard } from './auth.guard';
+import { PatientsComponent } from './components/patients/patients.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -23,6 +24,12 @@ export const routes: Routes = [
     { 
         path: 'operationType',
         component: OperationTypeComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    {
+        path: 'patients',
+        component: PatientsComponent,
         canActivate: [AuthGuard],
         data: { role: 'admin' }
     }
