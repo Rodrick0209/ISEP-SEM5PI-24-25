@@ -24,7 +24,8 @@ export interface Address {
 
 export interface EmergencyContact {
   name: string;
-  phoneNumber: string;
+  email: string;
+  phoneNumber: string
 }
 
 export interface MedicalHistory {
@@ -32,7 +33,7 @@ export interface MedicalHistory {
   // appointments: Appointment[];
 }
 
-export interface PatientsView{
+export interface PatientsView {
   medicalRecordNumber: string;
   name: string;
   dateOfBirth: Date;
@@ -55,7 +56,7 @@ export class PatientService {
     return this.http.get<PatientsView[]>(this.url, { headers });
   }
 
-  getPatient(medicalRecordNumber: string): Observable<Patient> {
+  getPatientByMedicalRecordNumber(medicalRecordNumber: string): Observable<Patient> {
     const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
     return this.http.get<Patient>(`${this.urlMedicalRecordNumber}/${medicalRecordNumber}`, { headers });
   }

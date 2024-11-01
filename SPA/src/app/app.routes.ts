@@ -10,6 +10,7 @@ import { ConfirmationSuccessComponent } from './components/confirmation-success/
 import { OperationTypeComponent } from './components/operation-types/operation-types.component';
 import { AuthGuard } from './auth.guard';
 import { PatientsComponent } from './components/patients/patients.component';
+import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -30,6 +31,12 @@ export const routes: Routes = [
     {
         path: 'patients',
         component: PatientsComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    {
+        path: 'patient/details/:medicalRecordNumber',
+        component: PatientDetailsComponent,
         canActivate: [AuthGuard],
         data: { role: 'admin' }
     }

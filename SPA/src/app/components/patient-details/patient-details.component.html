@@ -1,22 +1,31 @@
-<div class="patient-card" *ngIf="patient">
+<div class="patient-details" *ngIf="patient">
     <div class="patient-header">
         <h2>Patient Details</h2>
     </div>
 
     <div class="patient-info">
+        <h3>Patient Information</h3>
         <div class="patient-field"><strong>Medical Record Number:</strong> {{ patient.medicalRecordNumber }}</div>
         <div class="patient-field"><strong>Name:</strong> {{ patient.name }}</div>
-        <div class="patient-field"><strong>Email:</strong> {{ patient.email | slice:0:3 }}***@***.com</div>
-        <div class="patient-field"><strong>Phone Number:</strong> {{ patient.phoneNumber | slice:0:3 }}***{{ patient.phoneNumber | slice:-2 }}</div>
+        <div class="patient-field"><strong>Email:</strong> {{ patient.email | slice:0:3 }}***&#64;***.com</div>
+        <div class="patient-field"><strong>Phone Number:</strong> {{ patient.phoneNumber | slice:0:3 }}***{{
+            patient.phoneNumber | slice:-2 }}</div>
         <div class="patient-field"><strong>Date of Birth:</strong> {{ patient.dateOfBirth }}</div>
         <div class="emergency-contact">
-            <h3>Emergency Contact</h3>
+            <h4>Emergency Contact</h4>
             <div class="patient-field"><strong>Name:</strong> {{ patient.emergencyContact.name }}</div>
-            <div class="patient-field"><strong>Email:</strong> {{ patient.emergencyContact.email | slice:0:3 }}***@***.com</div>
+            <div class="patient-field"><strong>Email:</strong> {{ patient.emergencyContact.email | slice:0:3
+                }}***&#64;***.com</div>
             <div class="patient-field"><strong>Phone Number:</strong> {{ patient.emergencyContact.phoneNumber | slice:0:3 }}***{{ patient.emergencyContact.phoneNumber | slice:-2 }}</div>
         </div>
-        <div class="medical-history">
-            <h3>Medical History</h3>
-            <div class="patient-field"><strong>Medical Conditions:</strong> {{ patient.medicalHistory.medcialConditions }}</div>
+    </div>
+    <div class="medical-history">
+        <h3>Medical History</h3>
+        <div class="patient-field"><strong>Medical Conditions:</strong> {{ patient.medicalHistory.medicalConditions }}
+        </div>
+    </div>
+
+    <div class="back-button">
+        <button onclick="history.back()">← Back</button>
     </div>
 </div>

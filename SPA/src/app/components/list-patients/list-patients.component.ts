@@ -33,7 +33,7 @@ export class ListPatientsComponent implements OnInit {
   onFilterChanged(filter: { medicalRecordNumber: string, name: string, email: string, dateOfBirth: string }): void {
     this.patientService.filterPatients(filter.medicalRecordNumber, filter.name, filter.dateOfBirth, filter.email).subscribe({
       next: (data: PatientsView[]) => this.filteredPatients = data,
-      error: (err: PatientsView[]) => {
+      error: (err: any) => {
         console.error('Failed to filter patients', err);
         this.filteredPatients = []; // Clear the list on error
       }
@@ -42,7 +42,7 @@ export class ListPatientsComponent implements OnInit {
 
   seeDetails(patient: PatientsView): void {
     // Navigate to the patient details page
-    this.router.navigate(['/patient-details', patient.medicalRecordNumber]);
+    this.router.navigate(['/patient/details', patient.medicalRecordNumber]);
     console.log('Details of patient:', patient);
   }
 

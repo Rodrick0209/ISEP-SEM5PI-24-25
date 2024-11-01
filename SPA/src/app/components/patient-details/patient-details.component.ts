@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Patient, PatientService } from '../../services/patient.service';
 import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-patient-details',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './patient-details.component.html',
   styleUrl: './patient-details.component.css'
 })
@@ -19,13 +20,15 @@ export class PatientDetailsComponent implements OnInit {
     const medicalRecordNumber = this.route.snapshot.paramMap.get('medicalRecordNumber');
     if (medicalRecordNumber) {
       this.getPatientDetails(medicalRecordNumber);
+    } else {
+      this.errorMessage = 'Invalid patient';
     }
   }
 
   getPatientDetails(medicalRecordNumber: string): void {
     this.errorMessage = '';
 
-    this.patientService.getPatient(medicalRecordNumber).subscribe({
+    this.patientService.getPatientByMedicalRecordNumber(medicalRecordNumber).subscribe({
       next: (data: Patient) => this.patient = data,
       error: (err: any) => {
         console.log('Failed to fetch patient details', err);
@@ -34,5 +37,5 @@ export class PatientDetailsComponent implements OnInit {
     });
   };
 
-  
+
 }
