@@ -1,57 +1,80 @@
 .list-patients-container {
-  
-    margin: 20px auto; /* Centralizando a lista na página */
-    padding: 20px; /* Adicionando padding ao contêiner */
-    
-    border-radius: 8px; /* Arredondando os cantos */
-    background-color: #ffffff; /* Cor de fundo */
-  }
-  
-  h2 {
-    text-align: center; /* Centralizando o título */
-    color: #333; /* Cor do título */
-    margin-bottom: 20px; /* Espaçamento inferior */
-  }
-  
-  table {
-    width: 100%; /* Tabela ocupa 100% do contêiner */
-    border-collapse: collapse; /* Remover espaço entre as células */
-    margin-top: 10px; /* Espaçamento superior */
-  }
-  
-  thead {
-    background-color: #007bff; /* Cor de fundo do cabeçalho */
-    color: white; /* Cor do texto do cabeçalho */
-  }
-  
-  th, td {
-    padding: 12px; /* Espaçamento interno das células */
-    text-align: left; /* Alinhamento do texto */
-    border-bottom: 1px solid #e0e0e0; /* Borda inferior das células */
-  }
-  
-  
-  tbody tr:nth-child(even) {
-    background-color: #f9f9f9; /* Cor de fundo para linhas pares */
-  }
-  
-  button {
+    margin: 20px auto; /* Center the list on the page */
+    padding: 20px; /* Add padding to the container */
+    border-radius: 8px; /* Round the corners */
+    background-color: #ffffff; /* Background color */
+}
+
+h2 {
+    text-align: center; /* Center the title */
+    color: #333; /* Title color */
+    margin-bottom: 20px; /* Bottom spacing */
+}
+
+table {
+    width: 100%; /* Table occupies 100% of the container */
+    border-collapse: collapse; /* Remove space between cells */
+    margin-top: 10px; /* Top spacing */
+}
+
+thead {
+    background-color: #007bff; /* Header background color */
+    color: white; /* Header text color */
+}
+
+th, td {
+    padding: 12px; /* Cell padding */
+    text-align: left; /* Text alignment */
+    border-bottom: 1px solid #e0e0e0; /* Bottom border of cells */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Background color for even rows */
+}
+
+button {
     padding: 0.3rem 0.5rem;
     font-size: 0.8rem;
     color: #fff;
-    background-color: #007bff;
+    background-color: #007bff; /* Button background color */
     border: none;
     border-radius: 5px;
     cursor: pointer;
     margin-right: 0.5rem; /* Space between buttons */
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  button:disabled {
-    background-color: #ccc; /* Style for disabled buttons */
-    cursor: not-allowed;
-  }
+}
 
+button:hover {
+    background-color: #0056b3; /* Darker background on hover */
+}
+
+button:disabled {
+    background-color: #ccc; /* Style for disabled buttons */
+    cursor: not-allowed; /* Not-allowed cursor for disabled buttons */
+}
+
+/* Pagination controls styles */
+.pagination-controls {
+    display: flex; /* Use flexbox for pagination controls */
+    justify-content: center; /* Center pagination controls */
+    margin-top: 20px; /* Top margin for spacing */
+}
+
+.pagination-controls button {
+    padding: 10px 15px; /* Padding for pagination buttons */
+    background-color: #1a73e8; /* Pagination button color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin: 0 5px; /* Margin between pagination buttons */
+    font-size: 0.9rem; /* Font size for buttons */
+}
+
+.pagination-controls button:hover {
+    background-color: #155ab6; /* Darker color on hover */
+}
+
+.pagination-controls button:disabled {
+    background-color: #ccc; /* Style for disabled pagination buttons */
+    cursor: not-allowed; /* Not-allowed cursor for disabled buttons */
+}

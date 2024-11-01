@@ -14,6 +14,11 @@ import { FilterPatientsComponent } from '../filter-patients/filter-patients.comp
 export class ListPatientsComponent implements OnInit {
   patients: PatientsView[] = [];
   filteredPatients: PatientsView[] = [];
+  paginatedPatients: PatientsView[] = [];
+  
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalPages: number = 0;
 
   constructor(private patientService: PatientService, private router: Router) { }
 
@@ -22,6 +27,8 @@ export class ListPatientsComponent implements OnInit {
       next: (data: PatientsView[]) => {
         this.patients = data;
         this.filteredPatients = data;
+        this.totalPages = Math.ceil(this.filteredPatients.length / this.itemsPerPage);
+        this.updatePagination();
       },
       error: (err: PatientsView[]) => {
         console.error('Failed to fetch patients', err);
@@ -32,12 +39,36 @@ export class ListPatientsComponent implements OnInit {
 
   onFilterChanged(filter: { medicalRecordNumber: string, name: string, email: string, dateOfBirth: string }): void {
     this.patientService.filterPatients(filter.medicalRecordNumber, filter.name, filter.dateOfBirth, filter.email).subscribe({
-      next: (data: PatientsView[]) => this.filteredPatients = data,
+      next: (data: PatientsView[]) => {
+        this.filteredPatients = data,
+        this.totalPages = Math.ceil(this.filteredPatients.length / this.itemsPerPage);
+        this.currentPage = 1;
+        this.updatePagination();
+      },
       error: (err: any) => {
         console.error('Failed to filter patients', err);
-        this.filteredPatients = []; // Clear the list on error
+        this.filteredPatients = [];
       }
     });
+  }
+
+  updatePagination() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    this.paginatedPatients = this.filteredPatients.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
   }
 
   seeDetails(patient: PatientsView): void {

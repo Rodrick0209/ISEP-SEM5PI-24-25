@@ -98,6 +98,10 @@ public static class DataSeeder
 
     var patients = new List<Patient> { johnCena, johnCena2, johnCena3, johnCena4, johnCena5 };
 
+    johnCena.MedicalHistory.ChangeMedicalConditions("Healthy");
+    johnCena2.MedicalHistory.ChangeMedicalConditions("Ashma");
+    johnCena3.MedicalHistory.ChangeMedicalConditions("Covid");
+
     context.Patients.AddRange(patients);
 
     var specialization1 = new Specialization("Ortopedia");
