@@ -1,1 +1,5 @@
-<p>confirmation works!</p>
+<div class="confirmation-container">
+    <h2>Confirming Your Registration</h2>
+    <p *ngIf="!token || !email">Please wait while we confirm your registration...</p>
+    <p *ngIf="token && email">Validating your information...</p>
+</div>
