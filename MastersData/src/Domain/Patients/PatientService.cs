@@ -149,14 +149,18 @@ namespace DDDSample1.Domain.Patients
         public async Task<List<ViewPatientDto>> SearchAsync(SearchFiltersDto dto)
         {
             var patients = new List<Patient>();
-            if (string.IsNullOrWhiteSpace(dto.MedicalRecordNumber) && string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.Email))
+            if (string.IsNullOrWhiteSpace(dto.MedicalRecordNumber) && string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.DateOfBirth))
             {
                 patients = await _patientRepository.GetAllAsync();
             }
             else
             {
+                if (!string.IsNullOrWhiteSpace(dto.DateOfBirth))
+                {
+                    dto.DateOfBirth = dto.DateOfBirth.Substring(0, 10);
+                }
                 patients = await _patientRepository.GetByFiltersAsync(dto.MedicalRecordNumber, dto.Name, dto.Email, dto.DateOfBirth);
-            }
+           }
 
             List<ViewPatientDto> listDto = patients.ConvertAll<ViewPatientDto>(pat => new ViewPatientDto
             {

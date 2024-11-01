@@ -45,7 +45,7 @@ namespace DDDSample1.Infrastructure.Patients
 
             if (!string.IsNullOrWhiteSpace(dateOfBirth))
             {
-                query = query.Where(p => p.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd").Contains(dateOfBirth));
+                query = query.Where(p => p.DateOfBirth.dateOfBirth.ToString("yyyy-MM-dd") == dateOfBirth);
             }
 
             return await query.ToListAsync();
