@@ -1,4 +1,4 @@
-# US 5.1.3 - As a Patient, I want to register for the healthcare application
+# US 6.2.1 - As a Patient, I want to register for the healthcare application
 
 ## 1. Context
 
@@ -6,7 +6,7 @@ This US creates the functionality to a patient register in healthcare applicatio
 
 ## 2. Requirements
 
-**5.1.3** As a Patient, I want to register for the healthcare application, so that I can create a user profile and book appointments online.
+**6.2.1** As a Patient, I want to register for the healthcare application, so that I can create a user profile and book appointments online.
 
 ### 2.1. Acceptance Criteria
 
@@ -17,7 +17,7 @@ This US creates the functionality to a patient register in healthcare applicatio
 
 ### 2.2. User Story Dependencies
 
-**US 5.1.8** - The patient profile must be created on the system.
+**US 6.2.6** - The patient profile must be created on the system.
 
 ## 3. Analysis
 

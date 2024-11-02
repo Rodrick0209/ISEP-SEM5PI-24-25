@@ -1,0 +1,35 @@
+```plantuml
+@startuml Process_View
+participant SPA as SPA <<Container (C4)>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant DTO as DTO <<DTO>>
+participant Service as Service <<Service>>
+participant Repository as Repository <<Repository>>
+participant ViewDTO as ViewDTO <<DTO>>
+activate SPA
+SPA -> Route: GET (/api/patients/search)
+activate Route
+Route -> Controller : GET
+activate Controller
+Controller -> DTO** : recieves request body info
+Controller -> Service : search the patients by filters
+activate Service
+alt multiple filters are provided
+Service -> Repository : get the patients by the filters
+activate Repository
+else no filters provided
+Service -> Repository : get all patients
+end alt
+return patients
+loop for each patient found
+Service -> ViewDTO** : create the DTO with patient's\nmedical record number, name,\nemail and date of birth
+end loop
+Service --> Controller : DTO
+deactivate Service
+Controller --> Route : response
+deactivate Controller
+return response
+
+@enduml
+```

@@ -1,0 +1,16 @@
+```plantuml
+@startuml Process_View
+actor Admin 
+participant System <<System (C4)>>
+
+activate Admin
+
+Admin -> System: Make a request to search for patient(s)
+activate System
+System --> Admin : Asks for the patient information to search
+Admin -> System: Provides the patient information to search
+System --> Admin : Returns the list of patients with the view of\nmedical record number, name,\nemail and date of birth
+deactivate Admin
+
+@enduml
+```
