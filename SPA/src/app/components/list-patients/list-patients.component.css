@@ -78,3 +78,26 @@ button:disabled {
     background-color: #ccc; /* Style for disabled pagination buttons */
     cursor: not-allowed; /* Not-allowed cursor for disabled buttons */
 }
+
+.create-patient-button {
+    padding: 10px 20px;
+    background-color: #28a745; /* Green color for the create button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 20px; /* Space below the button */
+    display: inline-block; /* Ensures it's above the table */
+}
+
+.create-patient-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.required-note {
+    text-align: center;
+    color: #d9534f;
+    font-weight: bold;
+    margin-bottom: 20px;
+}

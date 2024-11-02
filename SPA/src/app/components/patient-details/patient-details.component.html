@@ -7,10 +7,11 @@
         <h3>Patient Information</h3>
         <div class="patient-field"><strong>Medical Record Number:</strong> {{ patient.medicalRecordNumber }}</div>
         <div class="patient-field"><strong>Name:</strong> {{ patient.name }}</div>
+        <div class="patient-field"><strong>Date of Birth:</strong> {{ patient.dateOfBirth }}</div>
+        <div class="patient-field"><strong>Gender:</strong>{{ patient.gender }}</div>
         <div class="patient-field"><strong>Email:</strong> {{ patient.email | slice:0:3 }}***&#64;***.com</div>
         <div class="patient-field"><strong>Phone Number:</strong> {{ patient.phoneNumber | slice:0:3 }}***{{
             patient.phoneNumber | slice:-2 }}</div>
-        <div class="patient-field"><strong>Date of Birth:</strong> {{ patient.dateOfBirth }}</div>
         <div class="emergency-contact">
             <h4>Emergency Contact</h4>
             <div class="patient-field"><strong>Name:</strong> {{ patient.emergencyContact.name }}</div>

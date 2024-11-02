@@ -61,7 +61,7 @@ export class PatientService {
     return this.http.get<Patient>(`${this.urlMedicalRecordNumber}/${medicalRecordNumber}`, { headers });
   }
 
-  createPatient(firstName: string, lastName: string, fullName: string, dateOfBirth: string, email: string, phoneNumber: string,
+  createPatient(firstName: string, lastName: string, fullName: string, dateOfBirth: string, gender: string, email: string, phoneNumber: string,
     street: string, postalCode: string, city: string, country: string,
     emergencyContactName: string, emergencyContactEmail: string, emergencyContactPhoneNumber: string): Observable<any> {
     const body = {
@@ -69,6 +69,7 @@ export class PatientService {
       lastName: lastName,
       fullName: fullName,
       dateOfBirth: dateOfBirth,
+      gender: gender,
       email: email,
       phoneNumber: phoneNumber,
       street: street,
@@ -81,7 +82,7 @@ export class PatientService {
     }
 
     const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
-    return this.http.post<Patient>(this.url, body, { headers });
+    return this.http.post(this.url, body, { headers });
   }
 
   editPatient(medicalRecordNumber: string, name: string, email: string, phoneNumber: string, medicalConditions: string) : Observable<any> {

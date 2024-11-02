@@ -1,1 +1,102 @@
-<p>create-patient works!</p>
+<div class="create-patient-container">
+    <h2>Create New Patient</h2>
+    <p class="required-note"><span class="required">*</span> Required</p>
+    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <form (ngSubmit)="confirmSubmission()" #patientForm="ngForm">
+        <h3>Patient Information</h3>
+        <div class="patient-information">
+            <div class="form-group">
+                <label for="firstName">First Name <span class="required">*</span></label>
+                <input type="text" id="firstName" name="firstName" [(ngModel)]="submitForm.firstName" required />
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name <span class="required">*</span></label>
+                <input type="text" id="lastName" name="lastName" [(ngModel)]="submitForm.lastName" required />
+            </div>
+            <div class="form-group">
+                <label for="fullName">Full Name <span class="required">*</span></label>
+                <input type="text" id="fullName" name="fullName" [(ngModel)]="submitForm.fullName" required />
+            </div>
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth <span class="required">*</span></label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" [(ngModel)]="submitForm.dateOfBirth" required />
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender <span class="required">*</span></label>
+                <select id="gender" name="gender" [(ngModel)]="submitForm.gender" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" [(ngModel)]="submitForm.email" required />
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">Phone Number <span class="required">*</span></label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" [(ngModel)]="submitForm.phoneNumber" required />
+        </div>
+
+        <h3>Address</h3>
+        <div class="address">
+            <div class="form-group">
+                <label for="street">Street <span class="required">*</span></label>
+                <input type="text" id="street" name="street" [(ngModel)]="submitForm.street" required />
+            </div>
+            <div class="form-group">
+                <label for="postalCode">Postal Code <span class="required">*</span></label>
+                <input type="text" id="postalCode" name="postalCode" [(ngModel)]="submitForm.postalCode" required />
+            </div>
+            <div class="form-group">
+                <label for="city">City <span class="required">*</span></label>
+                <input type="text" id="city" name="city" [(ngModel)]="submitForm.city" required />
+            </div>
+            <div class="form-group">
+                <label for="country">Country <span class="required">*</span></label>
+                <select id="country" name="country" [(ngModel)]="submitForm.country" required>
+                    <option value="" disabled selected>Select Country</option>
+                    <option value="United States">United States</option>
+                    <option value="Canada">Canada</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Portugal">Portugal</option>
+                </select>
+            </div>
+        </div>
+
+        <h3>Emergency Contact</h3>
+        <div class="emergency-contact">
+            <div class="form-group">
+                <label for="emergencyContactName">Name <span class="required">*</span></label>
+                <input type="text" id="emergencyContactName" name="emergencyContactName" [(ngModel)]="submitForm.emergencyContactName" required />
+            </div>
+            <div class="form-group">
+                <label for="emergencyContactEmail">Email <span class="required">*</span></label>
+                <input type="email" id="emergencyContactEmail" name="emergencyContactEmail" [(ngModel)]="submitForm.emergencyContactEmail" required />
+            </div>
+            <div class="form-group">
+                <label for="emergencyContactPhone">Phone Number <span class="required">*</span></label>
+                <input type="tel" id="emergencyContactPhone" name="emergencyContactPhone" [(ngModel)]="submitForm.emergencyContactPhoneNumber" required />
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" [disabled]="!patientForm.form.valid" class="btn-submit">Create Patient</button>
+            <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+        </div>
+    </form>
+
+    <div class="modal" *ngIf="showConfirmation">
+        <div class="modal-content">
+            <h3>Confirm Submission</h3>
+            <p>Are you sure you want to create this patient profile?</p>
+            <div class="modal-actions">
+                <button (click)="onSubmit(patientForm)" class="btn-confirm">Yes</button>
+                <button (click)="closeConfirmationModal()" class="btn-cancel">No</button>
+            </div>
+        </div>
+    </div>
+</div>

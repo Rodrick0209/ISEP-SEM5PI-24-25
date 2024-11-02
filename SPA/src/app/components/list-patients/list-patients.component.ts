@@ -15,7 +15,7 @@ export class ListPatientsComponent implements OnInit {
   patients: PatientsView[] = [];
   filteredPatients: PatientsView[] = [];
   paginatedPatients: PatientsView[] = [];
-  
+
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalPages: number = 0;
@@ -30,18 +30,22 @@ export class ListPatientsComponent implements OnInit {
         this.totalPages = Math.ceil(this.filteredPatients.length / this.itemsPerPage);
         this.updatePagination();
       },
-      error: (err: PatientsView[]) => {
+      error: (err: any) => {
         console.error('Failed to fetch patients', err);
         this.filteredPatients = []; // Clear the list on error
       }
     });
   }
 
+  createPatient(): void {
+    this.router.navigate(['/patient/create']); // Adjust this route as needed
+  }
+
   onFilterChanged(filter: { medicalRecordNumber: string, name: string, email: string, dateOfBirth: string }): void {
     this.patientService.filterPatients(filter.medicalRecordNumber, filter.name, filter.dateOfBirth, filter.email).subscribe({
       next: (data: PatientsView[]) => {
         this.filteredPatients = data,
-        this.totalPages = Math.ceil(this.filteredPatients.length / this.itemsPerPage);
+          this.totalPages = Math.ceil(this.filteredPatients.length / this.itemsPerPage);
         this.currentPage = 1;
         this.updatePagination();
       },
