@@ -1,0 +1,42 @@
+```plantuml
+@startuml Process_View
+participant SPA as SPA <<Container (C4)>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant DTO as DTO <<DTO>>
+participant Service as Service <<Service>>
+participant Repository as Repository <<Repository>>
+participant MedicalRecordNumberGenerator as MedicalRecordNumberGenerator <<Domain Service>>
+participant Mapper as Mapper <<Domain Service>>
+participant Aggregate as Domain <<Domain>>
+activate SPA
+SPA -> Route: POST (/api/patients)
+activate Route
+Route -> Controller : POST
+activate Controller
+Controller -> DTO** : recieves request body info
+Controller -> Service : creates patient
+activate Service
+Service -> Service : validate if email is unique
+activate Service
+return validation
+Service -> Service : validates if phone number is unique
+activate Service
+return validation
+Service -> Repository : get the last patient registered in this month
+activate Repository
+return last patient registered in month
+Service -> MedicalRecordNumberGenerator : generates medical record number using the last patient
+activate MedicalRecordNumberGenerator
+return medical record number
+Service -> Domain** : creates the entity
+Service -> Repository : saves in Database
+Service -> Mapper : entity to DTO
+activate Mapper
+return DTO
+return DTO
+return response
+return response
+
+@enduml
+```
