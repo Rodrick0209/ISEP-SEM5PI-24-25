@@ -17,7 +17,11 @@ namespace DDDSample1.Domain.OperationTypes
         public string Specialization { get; set; }
 
 
-        
+        public OperationTypeDto()
+        {            
+            
+        }
+
         public OperationTypeDto(Guid operationTypeId, string name, string status, PhaseDTO preparationPhase, PhaseDTO surgeryPhase, PhaseDTO cleaningPhase, string specialization)
         {            
             Id = operationTypeId;
@@ -29,8 +33,10 @@ namespace DDDSample1.Domain.OperationTypes
             Specialization = specialization;
         }
 
+        [JsonConstructor]
         public OperationTypeDto(string name, string status, PhaseDTO preparationPhase, PhaseDTO surgeryPhase, PhaseDTO cleaningPhase, string specialization)
         {            
+            Id = Guid.NewGuid();
             Name = name;
             Status = status;
             PreparationPhase = preparationPhase;

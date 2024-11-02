@@ -14,5 +14,7 @@ namespace DDDSample1.Domain.OperationTypes
 
         Task<Dictionary<Guid, string>> GetByNameOperationTypeAsync(OperationType op);
 
+        Task<Dictionary<string, Guid>> GetSpecializationMapAsync();
+
     }
 }

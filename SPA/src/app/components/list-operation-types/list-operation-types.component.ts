@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OperationTypesService, OperationType } from '../../services/operation-type.service';
 import { FilterOperationTypesComponent } from '../filter-operation-types-component/filter-operation-types-component.component';
+import { AddOperationTypeComponent } from '../add-operation-type/add-operation-type.component';
 
 @Component({
   selector: 'app-list-operation-types',
   standalone: true,
-  imports: [CommonModule, FilterOperationTypesComponent],
+  imports: [CommonModule, FilterOperationTypesComponent, AddOperationTypeComponent],
   templateUrl: './list-operation-types.component.html',
   styleUrls: ['./list-operation-types.component.css']
 })

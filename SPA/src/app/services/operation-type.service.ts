@@ -29,6 +29,7 @@ export class OperationTypesService {
   private apiUrl = '/api/OperationType/GetAll'; // Update with your API URL
   private filterApiUrl = '/api/OperationType/Filter'; // Update with your filter API URL
   private deactivateApiUrl = '/api/OperationType'; // Update with your deactivate API URL
+  private createApiUrl = '/api/OperationType/Create'; // Update with your deactivate API URL
 
   constructor(private http: HttpClient) {}
 
@@ -52,5 +53,9 @@ export class OperationTypesService {
 
   deactivateOperationType(id: string): Observable<void> {
     return this.http.delete<void>(`${this.deactivateApiUrl}/${id}`);
+  }
+
+  addOperationType(operationType: OperationType): Observable<OperationType> {
+    return this.http.post<OperationType>(this.createApiUrl, operationType);
   }
 }

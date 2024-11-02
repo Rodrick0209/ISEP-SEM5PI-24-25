@@ -22,3 +22,29 @@
   padding-bottom: 5px;
   margin-bottom: 15px;
 }
+
+
+/* Flexbox for header and button */
+.header-container {
+  display: flex;
+  justify-content: space-between; /* Space between the title and button */
+  align-items: center;            /* Vertically center items */
+  margin-bottom: 20px;           /* Space below the header */
+}
+
+/* Button styles */
+.add-operation-btn {
+  background-color: #1a73e8;     /* Match the header color */
+  color: white;                  /* Button text color */
+  border: none;                  /* Remove border */
+  padding: 10px 20px;            /* Add padding */
+  border-radius: 4px;            /* Rounded corners */
+  cursor: pointer;                /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background transition */
+  margin-left: auto;              /* Push the button to the right */
+}
+
+/* Button hover effect */
+.add-operation-btn:hover {
+  background-color: #0056b3;     /* Darker blue on hover */
+}

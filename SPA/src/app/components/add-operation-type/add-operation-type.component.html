@@ -1,1 +1,82 @@
-<p>add-operation-type works!</p>
+<div class="add-operation-type-container">
+  <h2>Add New Operation Type</h2>
+  <form (ngSubmit)="onSubmit(operationTypeForm)" #operationTypeForm="ngForm">
+
+    <!-- Main Fields -->
+    <div class="form-group">
+      <label for="name">Operation Type Name:</label>
+      <input type="text" id="name" name="name" class="form-control" required [(ngModel)]="operationType.name">
+    </div>
+
+    <div class="form-group">
+      <label for="status">Status:</label>
+      <select id="status" name="status" class="form-control" required [(ngModel)]="operationType.status">
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="specialization">Specialization:</label>
+      <input type="text" id="specialization" name="specialization" class="form-control" required [(ngModel)]="operationType.specialization">
+    </div>
+
+    <!-- Preparation Phase -->
+    <h3>Preparation Phase</h3>
+    <div class="form-group">
+      <label for="prep-duration">Duration:</label>
+      <input type="number" id="prep-duration" name="prepDuration" class="form-control" [(ngModel)]="operationType.preparationPhase.duration">
+    </div>
+
+    <!-- Required Staff for Preparation Phase -->
+    <div *ngFor="let staff of operationType.preparationPhase.requiredStaff; let i = index" class="form-group">
+      <label>Preparation Staff #{{ i + 1 }}</label>
+      <input type="text" placeholder="Num" [(ngModel)]="staff.num" [name]="'prepStaffNum' + i" class="form-control">
+      <input type="text" placeholder="Specialization" [(ngModel)]="staff.specialization" [name]="'prepStaffSpec' + i" class="form-control">
+      <button *ngIf="i > 0" type="button" (click)="removePreparationStaff(i)">Remove</button>
+    </div>
+    <button type="button" (click)="addPreparationStaff()">Add Preparation Staff</button>
+
+    <!-- Surgery Phase -->
+    <h3>Surgery Phase</h3>
+    <div class="form-group">
+      <label for="surgery-duration">Duration:</label>
+      <input type="number" id="surgery-duration" name="surgeryDuration" class="form-control" [(ngModel)]="operationType.surgeryPhase.duration">
+    </div>
+
+    <!-- Required Staff for Surgery Phase -->
+    <div *ngFor="let staff of operationType.surgeryPhase.requiredStaff; let i = index" class="form-group">
+      <label>Surgery Staff #{{ i + 1 }}</label>
+      <input type="text" placeholder="Num" [(ngModel)]="staff.num" [name]="'surgeryStaffNum' + i" class="form-control">
+      <input type="text" placeholder="Specialization" [(ngModel)]="staff.specialization" [name]="'surgeryStaffSpec' + i" class="form-control">
+      <button *ngIf="i > 0" type="button" (click)="removeSurgeryStaff(i)">Remove</button>
+    </div>
+    <button type="button" (click)="addSurgeryStaff()">Add Surgery Staff</button>
+
+    <!-- Cleaning Phase -->
+    <h3>Cleaning Phase</h3>
+    <div class="form-group">
+      <label for="cleaning-duration">Duration:</label>
+      <input type="number" id="cleaning-duration" name="cleaningDuration" class="form-control" [(ngModel)]="operationType.cleaningPhase.duration">
+    </div>
+
+    <!-- Required Staff for Cleaning Phase -->
+    <div *ngFor="let staff of operationType.cleaningPhase.requiredStaff; let i = index" class="form-group">
+      <label>Cleaning Staff #{{ i + 1 }}</label>
+      <input type="text" placeholder="Num" [(ngModel)]="staff.num" [name]="'cleaningStaffNum' + i" class="form-control">
+      <input type="text" placeholder="Specialization" [(ngModel)]="staff.specialization" [name]="'cleaningStaffSpec' + i" class="form-control">
+      <button *ngIf="i > 0" type="button" (click)="removeCleaningStaff(i)">Remove</button>
+    </div>
+    <button type="button" (click)="addCleaningStaff()">Add Cleaning Staff</button>
+
+    <!-- Form Actions -->
+     
+    <div class="form-group">
+      <button type="submit" class="btn btn-success">Add Operation Type</button>
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+    </div>
+    <div *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
+    </div>
+  </form>
+</div>

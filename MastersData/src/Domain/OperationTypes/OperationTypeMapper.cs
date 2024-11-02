@@ -49,16 +49,16 @@ namespace DDDSample1.Domain.OperationTypes
             };
         }
 
-        public static OperationType toDomain(OperationTypeDto operationTypeDto)
+        public static OperationType toDomain(OperationTypeDto operationTypeDto, Dictionary<string, Guid> map)
         {
 
             return new OperationType(
                 operationTypeDto.Name,
                 operationTypeDto.Status == "active", // Mapping string status back to boolean
-                PhaseMapper.ToPhaseEntity(operationTypeDto.PreparationPhase),
-                PhaseMapper.ToPhaseEntity(operationTypeDto.SurgeryPhase),
-                PhaseMapper.ToPhaseEntity(operationTypeDto.CleaningPhase),
-                new SpecializationId(operationTypeDto.Specialization)
+                PhaseMapper.ToPhaseEntity(operationTypeDto.PreparationPhase, map),
+                PhaseMapper.ToPhaseEntity(operationTypeDto.SurgeryPhase,map),
+                PhaseMapper.ToPhaseEntity(operationTypeDto.CleaningPhase, map),
+                new SpecializationId(map[operationTypeDto.Specialization])
             );
         }
 
