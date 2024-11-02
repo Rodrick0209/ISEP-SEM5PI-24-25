@@ -13,8 +13,9 @@ export interface Phase {
 }
 
 export interface OperationType {
+  id: string; // Assuming there's an ID field
   name: string;
-  status: boolean;
+  status: string;
   specialization: string;
   preparationPhase: Phase;
   surgeryPhase: Phase;
@@ -27,6 +28,7 @@ export interface OperationType {
 export class OperationTypesService {
   private apiUrl = '/api/OperationType/GetAll'; // Update with your API URL
   private filterApiUrl = '/api/OperationType/Filter'; // Update with your filter API URL
+  private deactivateApiUrl = '/api/OperationType'; // Update with your deactivate API URL
 
   constructor(private http: HttpClient) {}
 
@@ -46,5 +48,9 @@ export class OperationTypesService {
       params = params.set('specialization', specialization);
     }
     return this.http.get<OperationType[]>(this.filterApiUrl, { params });
+  }
+
+  deactivateOperationType(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.deactivateApiUrl}/${id}`);
   }
 }

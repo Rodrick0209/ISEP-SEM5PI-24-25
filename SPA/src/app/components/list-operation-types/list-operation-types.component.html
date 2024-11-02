@@ -16,7 +16,7 @@
     <tbody>
       <tr *ngFor="let operationType of filteredOperationTypes">
         <td>{{ operationType.name }}</td>
-        <td>{{ operationType.status ? 'Active' : 'Inactive' }}</td>
+        <td>{{ operationType.status }}</td>
         <td>{{ operationType.specialization }}</td>
         <td>
           <div>{{ operationType.preparationPhase.duration }} minutes</div>
@@ -40,7 +40,7 @@
           <button (click)="editOperationType(operationType)">Edit</button>
         </td>
         <td>
-          <button (click)="deactivateOperationType(operationType)">Deactivate</button>
+          <button *ngIf="isActive(operationType)" (click)="deactivateOperationType(operationType)">Deactivate</button>
         </td>
       </tr>
     </tbody>

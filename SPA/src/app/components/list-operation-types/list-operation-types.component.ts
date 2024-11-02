@@ -14,7 +14,7 @@ export class ListOperationTypesComponent implements OnInit {
   operationTypes: OperationType[] = [];
   filteredOperationTypes: OperationType[] = [];
 
-  constructor(private operationTypesService: OperationTypesService) {}
+  constructor(private operationTypesService: OperationTypesService) { }
 
   ngOnInit(): void {
     this.operationTypesService.getOperationTypes().subscribe({
@@ -43,10 +43,24 @@ export class ListOperationTypesComponent implements OnInit {
     // Implement your edit logic here
     console.log('Editing operation type:', operationType);
   }
-  
+
   deactivateOperationType(operationType: OperationType): void {
-    // Implement your deactivate logic here
-    console.log('Deactivating operation type:', operationType);
-    // You may want to update the status or call a service to perform the action
+    this.operationTypesService.deactivateOperationType(operationType.id).subscribe({
+      next: () => {
+        this.ngOnInit();
+      },
+      error: (err) => {
+        if (err.status === 401) {
+          alert('Authentication token is invalid or expired. Please log in again.');
+          // Redirect to login page or handle re-authentication
+        } else {
+          console.error('Failed to deactivate operation type', err);
+        }
+      }
+    });
+  }
+
+  isActive(operationType: OperationType): boolean {
+    return operationType.status=='active';
   }
 }
