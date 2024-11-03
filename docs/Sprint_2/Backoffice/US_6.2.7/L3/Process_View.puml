@@ -1,0 +1,43 @@
+```plantuml
+@startuml Process_View
+participant SPA as FE <<Container (C4)>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant DTO as DTO <<DTO>>
+participant Service as Service <<Service>>
+participant EmailService as EmailService <<Service>>
+participant Repository as Repository <<Repository>>
+participant Mapper as Mapper <<Domain Service>>
+participant Patient as Domain <<Domain>>
+activate FE
+FE -> Route: PATCH (/api/patients/{medicalRecordNumber})
+activate Route
+Route -> Controller : PATCH
+activate Controller
+Controller -> DTO** : recieves request body info
+Controller -> Service : edits the patient profile
+activate Service
+Service -> Repository : find the patient by medical record number
+activate Repository
+return patient
+Service -> Domain : changes name if not empty
+Service -> Domain : changes email if not empty
+Service -> Domain : changes phone number if not empty
+Service -> Domain : changes address if not empty
+Service -> Domain : changes medical conditions if not empty
+Service -> Repository : saves the changes
+Service -> Service : log the changes
+activate Service
+deactivate Service
+alt content editable contains sensitive info
+    Service -> EmailService : send email notificiation
+end
+Service -> Mapper : entity to DTO
+activate Mapper
+return DTO
+return DTO
+return response
+return response
+
+@enduml
+```
