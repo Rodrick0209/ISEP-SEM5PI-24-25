@@ -116,7 +116,7 @@ namespace UnitTest.Domain.Patient
             var dto = new EditingPatientProfileDto
             {
                 MedicalRecordNumber = "202410000001",
-                FullName = "John Doe Updated"
+                Name = "John Doe Updated"
             };
 
             var existingPatient = new DDDSample1.Domain.Patients.Patient(
@@ -297,7 +297,7 @@ namespace UnitTest.Domain.Patient
             var dto = new EditingPatientProfileDto
             {
                 MedicalRecordNumber = "202410000001",
-                FullName = "John Doe Updated",
+                Name = "John Doe Updated",
                 Email = "john.doe.updated@example.com",
                 PhoneNumber = "+351 098765432",
                 MedicalConditions = "Asthma"

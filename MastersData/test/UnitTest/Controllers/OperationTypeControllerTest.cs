@@ -73,7 +73,8 @@ namespace DDDSample1.Tests.UnitTests.Controllers
                 specialization.Name
             );
 
-            var operationType = OperationTypeMapper.toDomain(dto,specialization.Id);
+            var specializationDict = new Dictionary<string, Guid> { { specialization.Name, specialization.Id.AsGuid() } };
+            var operationType = OperationTypeMapper.toDomain(dto, specializationDict);
             _mockService.Setup(s => s.CreateAsync(It.IsAny<OperationType>())).ReturnsAsync(operationType);
             _mockService.Setup(s => s.GetByIdAsync(It.IsAny<OperationTypeId>())).ReturnsAsync(operationType);
 

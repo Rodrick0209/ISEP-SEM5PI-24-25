@@ -523,7 +523,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -542,7 +543,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"medicalConditions\": \"Diabetes\"\r\n}",
+					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"street\": \"Local Street\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -626,7 +627,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -645,7 +647,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"fullName\": \"John Doe\",\r\n    \"email\": \"rodrigopontescardoso@gmail.com\",\r\n    \"phoneNumber\": \"+351 123456789\",\r\n    \"medicalCondition\": \"Ashma\"\r\n}",
+					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"postalCode\": \"9876-543\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -670,6 +672,421 @@
 		},
 		{
 			"name": "Get Patient By Id Works 6",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/Patients/{{id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Patients",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Patient 6",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"city\": \"Lisbon\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Patients",
+						"{{MedicalRecordNumber}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient By Id Works 7",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/Patients/{{id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Patients",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Patient 7",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"country\": \"Spain\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Patients",
+						"{{MedicalRecordNumber}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient By Id Works 8",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/Patients/{{id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Patients",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Patient 8",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"medicalConditions\": \"Diabetes\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Patients",
+						"{{MedicalRecordNumber}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient By Id Works 9",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/Patients/{{id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Patients",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Patient 9",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"console.log(jsonData);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"fullName\": \"John Doe\",\r\n    \"email\": \"rodrigopontescardoso@gmail.com\",\r\n    \"phoneNumber\": \"+351 123456789\",\r\n    \"street\": \"Main Street\",\r\n    \"postalCode\": \"1234-123\",\r\n    \"city\": \"Porto\",\r\n    \"country\": \"Portugal\",\r\n    \"medicalCondition\": \"Ashma\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Patients",
+						"{{MedicalRecordNumber}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient By Id Works 10",
 			"event": [
 				{
 					"listen": "test",
