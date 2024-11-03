@@ -14,6 +14,7 @@ import { MessageService } from '../../services/message.service';
 })
 export class ListPatientsComponent implements OnInit {
   successMessage: string | null = null;
+  errorMessage: string | null = null;
 
   patients: PatientsView[] = [];
   filteredPatients: PatientsView[] = [];
@@ -36,6 +37,7 @@ export class ListPatientsComponent implements OnInit {
       error: (err: any) => {
         console.error('Failed to fetch patients', err);
         this.filteredPatients = []; // Clear the list on error
+        this.errorMessage = 'An error occurred while fetching patients: ' + err.error.message;
       }
     });
     this.successMessage = this.messageService.getMessage();
@@ -93,6 +95,8 @@ export class ListPatientsComponent implements OnInit {
 
   deletePatient(patient: PatientsView): void {
     // Implement the delete patient functionality
+    this.router.navigate(['/patient/delete', patient.medicalRecordNumber]);
+    console.log('Deleting patient:', patient);
   }
 
 }

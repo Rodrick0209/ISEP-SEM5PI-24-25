@@ -13,6 +13,7 @@ import { PatientsComponent } from './components/patients/patients.component';
 import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
 import { CreatePatientComponent } from './components/create-patient/create-patient.component';
 import { EditPatientComponent } from './components/edit-patient/edit-patient.component';
+import { DeletePatientComponent } from './components/delete-patient/delete-patient.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -51,6 +52,12 @@ export const routes: Routes = [
     {
         path: 'patient/edit/:medicalRecordNumber',
         component: EditPatientComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    {
+        path: 'patient/delete/:medicalRecordNumber',
+        component: DeletePatientComponent,
         canActivate: [AuthGuard],
         data: { role: 'admin' }
     }

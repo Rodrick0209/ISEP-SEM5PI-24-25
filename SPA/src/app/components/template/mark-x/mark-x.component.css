@@ -1,0 +1,40 @@
+.mark-container {
+    display: flex;
+    align-items: center; /* Center align items vertically */
+    cursor: pointer; /* Change cursor on hover */
+    transition: transform 0.2s ease; /* Smooth transition for scaling */
+}
+
+.square {
+    width: 30px; /* Size of the checkbox */
+    height: 30px; /* Size of the checkbox */
+    background-color: #fff; /* White background */
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    border: 2px solid #007bff; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    margin-right: 10px; /* Space between square and input */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.mark-x {
+    font-size: 20px; /* Size of the "X" */
+    color: #d9534f; /* Color for the mark */
+}
+
+.mark-input {
+    font-size: 16px; /* Font size for input */
+    color: #333; /* Dark color for text */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 5px; /* Padding for the input */
+    width: 100%; /* Full width */
+    max-width: 200px; /* Maximum width for input */
+    transition: border-color 0.2s ease; /* Smooth transition */
+}
+
+.mark-input:focus {
+    border-color: #007bff; /* Border color on focus */
+    outline: none; /* Remove default outline */
+}
