@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Infrastructure.Shared;
@@ -26,6 +27,12 @@ namespace DDDSample1.Infrastructure.Specializations
         public async Task<Specialization> GetByNameAsync(string name)
         {
             return await this.context.Specializations.FirstOrDefaultAsync(p => p.Name == name);
+        }
+
+        public async Task<Dictionary<string, SpecializationId>> GetSpecializationMapAsync()
+        {
+            return await this.context.Set<Specialization>()
+                                 .ToDictionaryAsync(s => s.Name, s => s.Id);
         }
     }
 

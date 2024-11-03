@@ -1,5 +1,9 @@
 
 <div class="operation-types-container">
   <h1>Manage Operation Types</h1>
-  <app-list-operation-types></app-list-operation-types>
+  <div class="header-container">
+    <button class="add-operation-btn" (click)="toggleAddOperationType()">Add Operation Type</button>
+  </div>
+  <app-add-operation-type *ngIf="isAddingOperationType" (formClosed)="onFormClosed()"></app-add-operation-type>
+  <app-list-operation-types *ngIf="!isAddingOperationType"></app-list-operation-types>
 </div>

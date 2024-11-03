@@ -20,26 +20,33 @@ namespace DDDSample1.Domain.OperationTypes
             );
         }
 
-        public static Phase ToPhaseEntity(PhaseDTO phaseDto)
+        public static Phase ToPhaseEntity(PhaseDTO phaseDto,Dictionary<string, Guid> map)
         {
             if (phaseDto == null)
             {
                 throw new ArgumentNullException(nameof(phaseDto), "PhaseDto cannot be null");
             }
 
-            return new Phase(Guid.NewGuid(),phaseDto.Duration, phaseDto.RequiredStaff.Select(ToRequiredStaffEntity).ToList());
+            return new Phase(
+                Guid.NewGuid(),
+                phaseDto.Duration, 
+                phaseDto.RequiredStaff.Select(dto => ToRequiredStaffEntity(dto, map)).ToList()
+                );
 
         }
 
 
-        private static RequiredStaff ToRequiredStaffEntity(RequiredStaffDTO dto)
+        private static RequiredStaff ToRequiredStaffEntity(RequiredStaffDTO dto,Dictionary<string, Guid> map)
         {
             if (dto == null)
             {
                 throw new ArgumentNullException(nameof(dto), "RequiredStaffDTO cannot be null");
             }
 
-            return new RequiredStaff(int.Parse(dto.num), new SpecializationId(dto.Specialization));
+            return new RequiredStaff(
+                int.Parse(dto.num),
+                new SpecializationId(map[dto.Specialization])
+                );
         }
 
 

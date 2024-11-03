@@ -37,6 +37,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _mockService = new Mock<IOperationTypeService>();
             _mockSpecializationService = new Mock<ISpecializationService>();
             _controller = new OperationTypeController(_mockService.Object, _mockSpecializationService.Object);
+            Specialization specialization = new Specialization("Ortopedia");
 
             // Arrange
             var dto = new OperationTypeDto
@@ -69,10 +70,10 @@ namespace DDDSample1.Tests.UnitTests.Controllers
                         new RequiredStaffDTO("2", Guid.NewGuid().ToString())
                     }
                 ),
-                Guid.NewGuid().ToString()
+                specialization.Name
             );
 
-            var operationType = OperationTypeMapper.toDomain(dto);
+            var operationType = OperationTypeMapper.toDomain(dto,specialization.Id);
             _mockService.Setup(s => s.CreateAsync(It.IsAny<OperationType>())).ReturnsAsync(operationType);
             _mockService.Setup(s => s.GetByIdAsync(It.IsAny<OperationTypeId>())).ReturnsAsync(operationType);
 

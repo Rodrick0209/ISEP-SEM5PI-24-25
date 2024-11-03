@@ -19,11 +19,11 @@ namespace DDDSample1.Domain.Specializations
             _unitOfWork = unitOfWork;
             _repo = SpecializationRepository;
         }
-        
+
 
         public async Task<Specialization> GetByIdAsync(SpecializationId id)
-        {   
-    
+        {
+
             var op = await this._repo.GetByIdAsync(id);
             if (op == null)
                 return null;
@@ -33,8 +33,8 @@ namespace DDDSample1.Domain.Specializations
         }
 
         public async Task<Specialization> GetByNameAsync(string name)
-        {   
-    
+        {
+
             var op = await this._repo.GetByNameAsync(name);
             if (op == null)
                 throw new Exception($"No specialization found with the name '{name}'.");
@@ -60,6 +60,12 @@ namespace DDDSample1.Domain.Specializations
             }
 
             return specializationNames;
+        }
+
+        public async Task<Dictionary<string, Guid>> GetSpecializationMapAsync()
+        {
+            var specializations = await _repo.GetSpecializationMapAsync();
+            return specializations.ToDictionary(s => s.Key, s => s.Value.AsGuid());
         }
 
     }

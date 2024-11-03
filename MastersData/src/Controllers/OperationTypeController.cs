@@ -27,14 +27,16 @@ namespace DDDSample1.Controllers
 
         // POST: api/OperationType
         [HttpPost("Create")]
-        [Authorize(Roles = "admin")]
         public async Task<ActionResult<OperationTypeDto>> Create(OperationTypeDto dto)
         {
             if (dto == null)
             {
                 return BadRequest("OperationTypeDto cannot be null");
             }
-            var objDomain = OperationTypeMapper.toDomain(dto);
+
+            var map = await _Spe_service.GetSpecializationMapAsync();
+
+            var objDomain = OperationTypeMapper.toDomain(dto,map);
             
             var op = await _service.CreateAsync(objDomain);
 
