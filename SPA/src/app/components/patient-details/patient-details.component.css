@@ -17,7 +17,7 @@
     font-weight: bold;
 }
 
-.patient-info h3, .emergency-contact h4, .medical-history h3 {
+.patient-info h3, .emergency-contact h4, .address h4, .medical-history h3 {
     font-size: 1.6rem;
     color: #333;
     margin: 25px 0 15px;
@@ -38,7 +38,7 @@
     color: #555;
 }
 
-.emergency-contact, .medical-history {
+.emergency-contact, .address, .medical-history {
     background-color: #f7faff;
     padding: 20px;
     border-radius: 8px;
@@ -68,10 +68,10 @@
     transform: translateY(-2px);
 }
 
-.patient-info .patient-field, .medical-history .patient-field, .emergency-contact .patient-field {
+.patient-info .patient-field, .medical-history .patient-field, .emergency-contact .patient-field, .address .patient-field {
     padding-bottom: 12px;
 }
 
-.patient-info .patient-field:last-child, .medical-history .patient-field:last-child, .emergency-contact .patient-field:last-child {
+.patient-info .patient-field:last-child, .medical-history .patient-field:last-child, .emergency-contact .patient-field:last-child, .address .patient-field:last-child {
     border-bottom: none;
 }

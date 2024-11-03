@@ -83,6 +83,7 @@ export class ListPatientsComponent implements OnInit {
 
   editPatient(patient: PatientsView): void {
     // Navigate to the edit patient page
+    this.router.navigate(['/patient/edit', patient.medicalRecordNumber]);
     console.log('Editing patient:', patient);
   }
 

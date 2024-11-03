@@ -8,16 +8,24 @@
         <div class="patient-field"><strong>Medical Record Number:</strong> {{ patient.medicalRecordNumber }}</div>
         <div class="patient-field"><strong>Name:</strong> {{ patient.name }}</div>
         <div class="patient-field"><strong>Date of Birth:</strong> {{ patient.dateOfBirth }}</div>
-        <div class="patient-field"><strong>Gender:</strong>{{ patient.gender }}</div>
+        <div class="patient-field"><strong>Gender:</strong>{{ patient.gender | titlecase }}</div>
         <div class="patient-field"><strong>Email:</strong> {{ patient.email | slice:0:3 }}***&#64;***.com</div>
         <div class="patient-field"><strong>Phone Number:</strong> {{ patient.phoneNumber | slice:0:3 }}***{{
             patient.phoneNumber | slice:-2 }}</div>
+        <div class="address">
+            <h4>Address</h4>
+            <div class="patient-field"><strong>Street:</strong> {{ patient.address.street }}</div>
+            <div class="patient-field"><strong>Postal Code:</strong> {{ patient.address.postalCode }}</div>
+            <div class="patient-field"><strong>City:</strong> {{ patient.address.city }}</div>
+            <div class="patient-field"><strong>Country:</strong> {{ patient.address.country }}</div>
+        </div>
         <div class="emergency-contact">
             <h4>Emergency Contact</h4>
             <div class="patient-field"><strong>Name:</strong> {{ patient.emergencyContact.name }}</div>
             <div class="patient-field"><strong>Email:</strong> {{ patient.emergencyContact.email | slice:0:3
                 }}***&#64;***.com</div>
-            <div class="patient-field"><strong>Phone Number:</strong> {{ patient.emergencyContact.phoneNumber | slice:0:3 }}***{{ patient.emergencyContact.phoneNumber | slice:-2 }}</div>
+            <div class="patient-field"><strong>Phone Number:</strong> {{ patient.emergencyContact.phoneNumber |
+                slice:0:3 }}***{{ patient.emergencyContact.phoneNumber | slice:-2 }}</div>
         </div>
     </div>
     <div class="medical-history">
