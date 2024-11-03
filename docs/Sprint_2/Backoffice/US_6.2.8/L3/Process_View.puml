@@ -1,0 +1,29 @@
+```plantuml
+@startuml Process_View
+participant SPA as FE <<Container (C4)>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant DTO as DTO <<DTO>>
+participant Service as Service <<Service>>
+participant Repository as Repository <<Repository>>
+activate FE
+FE -> Route: DELETE (/api/patients/{medicalRecordNumber})
+activate Route
+Route -> Controller : DELETE
+activate Controller
+Controller -> DTO** : recieves request body info
+Controller -> Service : deletes the patient profile
+activate Service
+Service -> Repository : find patient by his medical record number
+activate Repository
+return patient
+Service -> Repository : removes the patient from database
+Service -> Service : logs the deletion
+activate Service
+deactivate Service
+return response
+return response
+return response
+
+@enduml
+```
