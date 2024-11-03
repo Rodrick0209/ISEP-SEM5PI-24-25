@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { PatientService } from '../../services/patient.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-edit-patient',
@@ -27,7 +28,7 @@ export class EditPatientComponent implements OnInit {
   errorMessage: string = '';
   showConfirmation: boolean = false;
   
-  constructor(private router: Router, private patientService: PatientService, private route: ActivatedRoute) { }
+  constructor(private router: Router, private patientService: PatientService, private route: ActivatedRoute, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.medicalRecordNumber = this.route.snapshot.paramMap.get('medicalRecordNumber');
@@ -61,10 +62,13 @@ export class EditPatientComponent implements OnInit {
           patientData.medicalConditions
         ).subscribe(
           (response) => {
+            console.log("Patient edited successfully", response);
+            this.messageService.setMessage(`Patient nº ${this.medicalRecordNumber} successfully edited!`);
             this.router.navigate(['/patients']);
           },
           (error) => {
             this.errorMessage = error.error.message;
+            console.error("Failed to edit patient", error);
           }
         );
       } else {

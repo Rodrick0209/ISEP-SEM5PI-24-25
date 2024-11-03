@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { PatientService } from '../../services/patient.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-create-patient',
@@ -32,7 +33,7 @@ export class CreatePatientComponent {
   showConfirmation: boolean = false;
   errorMessage: string = '';
 
-  constructor(private router: Router, private patientService: PatientService) { }
+  constructor(private router: Router, private patientService: PatientService, private messageService: MessageService) { }
 
   confirmSubmission(): void {
     this.showConfirmation = true; // Show confirmation modal
@@ -68,6 +69,7 @@ export class CreatePatientComponent {
       ).subscribe({
         next: (data: any) => {
           console.log('Patient created successfully', data);
+          this.messageService.setMessage(`Patient ${patientData.fullName} successfully created!`);
           this.router.navigate(['/patients']);
         },
         error: (err: any) => {

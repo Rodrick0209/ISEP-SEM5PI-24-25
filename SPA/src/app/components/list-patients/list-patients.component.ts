@@ -3,6 +3,7 @@ import { PatientsView, PatientService } from '../../services/patient.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FilterPatientsComponent } from '../filter-patients/filter-patients.component';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-list-patients',
@@ -12,6 +13,8 @@ import { FilterPatientsComponent } from '../filter-patients/filter-patients.comp
   styleUrl: './list-patients.component.css'
 })
 export class ListPatientsComponent implements OnInit {
+  successMessage: string | null = null;
+
   patients: PatientsView[] = [];
   filteredPatients: PatientsView[] = [];
   paginatedPatients: PatientsView[] = [];
@@ -20,7 +23,7 @@ export class ListPatientsComponent implements OnInit {
   itemsPerPage: number = 10;
   totalPages: number = 0;
 
-  constructor(private patientService: PatientService, private router: Router) { }
+  constructor(private patientService: PatientService, private router: Router, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.patientService.getPatients().subscribe({
@@ -35,6 +38,7 @@ export class ListPatientsComponent implements OnInit {
         this.filteredPatients = []; // Clear the list on error
       }
     });
+    this.successMessage = this.messageService.getMessage();
   }
 
   createPatient(): void {

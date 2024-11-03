@@ -47,6 +47,13 @@ label {
     margin-bottom: 20px;
 }
 
+.error-message {
+    text-align: center;
+    color: #d9534f;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
 input[type="text"],
 input[type="email"],
 input[type="tel"],

@@ -101,3 +101,10 @@ button:disabled {
     font-weight: bold;
     margin-bottom: 20px;
 }
+
+.success-message {
+    text-align: center;
+    color: #28a745;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
