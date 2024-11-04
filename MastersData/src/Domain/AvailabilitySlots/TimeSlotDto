@@ -1,0 +1,21 @@
+
+
+namespace DDDSample1.Domain.AvailabilitySlots
+{
+
+    public class TimeSlotDto
+    {
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
+
+        public TimeSlotDto(string startTime, string endTime)
+        {
+            this.StartTime = startTime;
+            this.EndTime = endTime;
+        }
+    }
+
+
+
+
+}

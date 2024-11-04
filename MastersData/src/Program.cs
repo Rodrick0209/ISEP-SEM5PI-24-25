@@ -201,6 +201,8 @@ namespace DDDSample1.Startup
             services.AddTransient<IMedicalHistoryRepository, MedicalHistoryRepository>();
 
             services.AddTransient<IOperationRequestService, OperationRequestService>();
+            services.AddTransient<IDailyAvailabilityRepository, DailyAvailabilityRepository>();
+            services.AddTransient<AvailabilitySlotService>();
 
             services.AddTransient<IStaffRepository, StaffRepository>();
             services.AddTransient<StaffService>();

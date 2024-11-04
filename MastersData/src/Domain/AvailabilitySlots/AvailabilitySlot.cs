@@ -3,50 +3,51 @@ using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Domain.StaffMembers;
+using System.Linq;
 
 namespace DDDSample1.Domain.AvailabilitySlots
 {
     public class AvailabilitySlot : Entity<AvailabilitySlotsId>, IAggregateRoot
     {
+        public String StaffId { get; private set; } // Referência ao Staff
+        public List<DailyAvailability> Availability { get; private set; }
 
 
 
+        private AvailabilitySlot() { }
 
-
-        public DateOfSlot Date { get; private set; } // Data do slot de disponibilidade
-        public TimeSpan StartTime { get; private set; } // Horário de início do slot
-        public TimeSpan EndTime { get; private set; } // Horário de término do slot
-
-        private AvailabilitySlot()
+        public AvailabilitySlot(String staffId)
         {
+            this.Id = new AvailabilitySlotsId(Guid.NewGuid());
+            this.StaffId = staffId;
+            this.Availability = new List<DailyAvailability>();
+        }
+
+        public AvailabilitySlot(String staffId, List<DailyAvailability> availability)
+        {
+            this.Id = new AvailabilitySlotsId(Guid.NewGuid());
+            this.StaffId = staffId;
+            this.Availability = availability;
         }
 
 
 
-        public AvailabilitySlot(string date, string startTime, string endTime)
+        public void AddAvailability(DateOnly date, int startMinute, int endMinute)
         {
-            
-            TimeSpan start = TimeSpan.Parse(startTime);
-            TimeSpan end = TimeSpan.Parse(endTime);
+            TimeSlot timeSlot = new TimeSlot(startMinute, endMinute);
 
-            if (end <= start)
-                throw new ArgumentException("End time must be after start time.");
-
-            Id = new AvailabilitySlotsId(Guid.NewGuid());
-            Date = new DateOfSlot(DateTime.Parse(date));
-            StartTime = start;
-            EndTime = end;
+            var dailyAvailability = this.Availability.FirstOrDefault(avail => avail.Date == date);
+            if (dailyAvailability == null)
+            {
+                dailyAvailability = new DailyAvailability(date);
+                dailyAvailability.AddTimeSlot(startMinute, endMinute);
+                this.Availability.Add(dailyAvailability);
+            }
+            else
+            {
+                dailyAvailability.AddTimeSlot(startMinute, endMinute);
+            }
         }
 
-        public bool IsAvailable(DateTime appointmentDate, string appointmentStartTime, string appointmentEndTime)
-        {
-
-            TimeSpan appointmentStartTimes = TimeSpan.Parse(appointmentStartTime);
-            TimeSpan appointmentEndTimes = TimeSpan.Parse(appointmentEndTime);
-            // Check if the slot is on the same day and the time is within the availability range
-            return Date.dateOfSlot == appointmentDate.Date &&
-                   appointmentStartTimes >= StartTime &&
-                   appointmentEndTimes <= EndTime;
-        }
     }
 }

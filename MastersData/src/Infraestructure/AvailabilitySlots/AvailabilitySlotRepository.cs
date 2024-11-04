@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Domain.Specializations;
@@ -14,7 +15,7 @@ namespace DDDSample1.Infrastructure.AvailabilitySlots
         private readonly DDDSample1DbContext context;
 
 
-        public AvailabilitySlotRepository(DDDSample1DbContext context):base(context.AvailabilitySlots)
+        public AvailabilitySlotRepository(DDDSample1DbContext context) : base(context.AvailabilitySlots)
         {
             this.context = context;
         }
@@ -24,7 +25,16 @@ namespace DDDSample1.Infrastructure.AvailabilitySlots
             return await this.context.AvailabilitySlots.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-       
+        public async Task<List<AvailabilitySlot>> GetAllAsync()
+        {
+            return await this.context.AvailabilitySlots
+                .Include(slot => slot.Availability) // Inclui a lista de DailyAvailability
+                .ToListAsync(); // Retorna uma lista
+        }
+
+
+
+
     }
 
 }
