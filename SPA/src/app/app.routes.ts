@@ -14,6 +14,7 @@ import { PatientDetailsComponent } from './components/patient-details/patient-de
 import { CreatePatientComponent } from './components/create-patient/create-patient.component';
 import { EditPatientComponent } from './components/edit-patient/edit-patient.component';
 import { DeletePatientComponent } from './components/delete-patient/delete-patient.component';
+import { RegisterConfirmationComponent } from './components/register-confirmation/register-confirmation.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -23,6 +24,7 @@ export const routes: Routes = [
     { path: 'cube', component: CubeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'register/confirm', component: RegisterConfirmationComponent },
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
     { 

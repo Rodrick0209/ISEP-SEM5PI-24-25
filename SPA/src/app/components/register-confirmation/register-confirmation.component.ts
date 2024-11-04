@@ -4,14 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-confirmation',
+  selector: 'app-register-confirmation',
   standalone: true,
   imports: [],
-  templateUrl: './confirmation.component.html',
-  styleUrl: './confirmation.component.css'
+  templateUrl: './register-confirmation.component.html',
+  styleUrl: './register-confirmation.component.css'
 })
 export class RegisterConfirmationComponent implements OnInit{
-  private apiUrl = 'http://localhost:5000/api/users/patients/confirm';
   token: string | null = null;
   email: string | null = null;
 
@@ -30,12 +29,14 @@ export class RegisterConfirmationComponent implements OnInit{
       this.userService.confirmRegistration(this.token, this.email).subscribe({
         next: (response) => {
           // Handle success
+          console.log('Account confirmed:', response);
           this.router.navigate(['/confirmation-success'], {
             queryParams: { message: 'Your account has been confirmed succesfully.' }
           });
         },
         error: (error) => {
           // Handle error
+          console.log('Error:', error);
           this.router.navigate(['/confirmation-error'], {
             queryParams: { message: error.error.message || 'An error occurred.' }
           });

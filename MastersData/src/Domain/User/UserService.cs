@@ -432,7 +432,7 @@ namespace DDDSample1.Domain.User
 
         private void SendEmailWithUrlConfirmationRegisterPatient(string email, string token)
         {
-            string callbackUrl = $"http://localhost:4200/confirmation?token={token}&email={email}";
+            string callbackUrl = $"http://localhost:4200/register/confirm?token={token}&email={email}";
             _emailSender.SendEmailAsync($"Please confirm your register here: <a href='{callbackUrl}'>link</a>", email, "Confirm the register og your account");
         }
 
