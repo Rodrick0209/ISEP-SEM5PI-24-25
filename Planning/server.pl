@@ -3,7 +3,7 @@
 :- use_module(library(http/http_json)).
 :- use_module(library(http/http_parameters)).  % Necessário para manipular parâmetros da solicitação
 
-:- http_handler(root(greet), greet_handler, []).
+:- http_handler('/greet', greet_handler, []).
 
 greet_handler(Request) :-
     % Define os cabeçalhos CORS
