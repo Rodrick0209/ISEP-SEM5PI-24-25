@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.Utils;
+
 
 
 namespace DDDSample1.Domain.AvailabilitySlots

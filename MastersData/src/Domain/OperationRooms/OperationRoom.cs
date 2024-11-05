@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.OperationRooms;
+using DDDSample1.Domain.Utils; // Esta linha deve estar presente
 using System.Linq; // Ajuste conforme necessário para o namespace correto
 
 namespace DDDSample1.Domain.OperationRooms

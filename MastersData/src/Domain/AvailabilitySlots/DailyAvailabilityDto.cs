@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using DDDSample1.Domain.Utils;
+
 
 namespace DDDSample1.Domain.AvailabilitySlots
 {
@@ -17,15 +19,6 @@ namespace DDDSample1.Domain.AvailabilitySlots
         }
     }
 
-    public class TimeSlotDto
-    {
-        public int StartMinute { get; set; }
-        public int EndMinute { get; set; }
 
-        public TimeSlotDto(int startMinute, int endMinute)
-        {
-            StartMinute = startMinute;
-            EndMinute = endMinute;
-        }
-    }
+
 }

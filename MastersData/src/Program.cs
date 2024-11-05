@@ -36,11 +36,14 @@ using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Infrastructure.AvailabilitySlots;
 using DDDSample1.Domain.StaffLoggers;
 using DDDSample1.Infrastructure.StaffLoggers;
+using DDDSample1.Domain.OperationRooms;
+using DDDSample1.Infrastructure.OperationRooms;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.BearerToken;
+
 
 
 
@@ -234,6 +237,9 @@ namespace DDDSample1.Startup
 
             services.AddTransient<IStaffLoggerRepository, StaffLoggerRepository>();
             services.AddTransient<StaffLoggerService>();
+
+            services.AddTransient<IOperationRoomRepository, OperationRoomRepository>();
+            services.AddTransient<OperationRoomService>();
         }
 
 

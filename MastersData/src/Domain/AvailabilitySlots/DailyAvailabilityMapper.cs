@@ -1,8 +1,7 @@
-
-
-
 using System;
 using System.Collections.Generic;
+using DDDSample1.Domain.Utils;
+
 
 namespace DDDSample1.Domain.AvailabilitySlots
 {
