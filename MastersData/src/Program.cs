@@ -142,6 +142,15 @@ namespace DDDSample1.Startup
 
             builder.Services.AddControllers().AddNewtonsoftJson();
 
+            builder.Services.AddCors(options =>
+                {
+                    options.AddPolicy("AllowAngularApp", builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200") // Angular's URL
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+                });
 
             ConfigureMyServices(builder.Services);
 
@@ -176,6 +185,8 @@ namespace DDDSample1.Startup
 
             app.MapControllers();
 
+            app.UseCors("AllowAngularApp");
+
             app.Run();
         }
 
@@ -201,6 +212,8 @@ namespace DDDSample1.Startup
             services.AddTransient<IMedicalHistoryRepository, MedicalHistoryRepository>();
 
             services.AddTransient<IOperationRequestService, OperationRequestService>();
+            services.AddTransient<IDailyAvailabilityRepository, DailyAvailabilityRepository>();
+            services.AddTransient<AvailabilitySlotService>();
 
             services.AddTransient<IStaffRepository, StaffRepository>();
             services.AddTransient<StaffService>();

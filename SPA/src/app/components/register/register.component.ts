@@ -21,7 +21,6 @@ export class RegisterComponent {
   constructor(private userService: UserService) { }
 
   onRegister() {
-
     this.userService.register(this.name, this.email, this.phone, this.password).subscribe(
       (response) => {
         console.log('Registration successful:', response);
@@ -29,7 +28,7 @@ export class RegisterComponent {
       },
       (error) => {
         console.log('Error:', error);
-        this.errorMessage = 'An error occurs when registering the user.\n' + error.error.message;
+        this.errorMessage = 'An error occurs when registering the user: ' + error.error.message;
       }
     );
   }

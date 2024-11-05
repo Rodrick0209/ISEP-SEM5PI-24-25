@@ -12,6 +12,10 @@ import { AuthGuard } from './auth.guard';
 import { PatientsComponent } from './components/patients/patients.component';
 import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
 import { CreatePatientComponent } from './components/create-patient/create-patient.component';
+import { EditPatientComponent } from './components/edit-patient/edit-patient.component';
+import { DeletePatientComponent } from './components/delete-patient/delete-patient.component';
+import { RegisterConfirmationComponent } from './components/register-confirmation/register-confirmation.component';
+import { PlanningComponent } from './components/planning/planning.component';
 import { EditOperationTypeComponent } from './edit-operation-type/edit-operation-type.component';
 
 export const routes: Routes = [
@@ -45,6 +49,18 @@ export const routes: Routes = [
     {
         path: 'patient/create',
         component: CreatePatientComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    {
+        path: 'patient/edit/:medicalRecordNumber',
+        component: EditPatientComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    {
+        path: 'patient/delete/:medicalRecordNumber',
+        component: DeletePatientComponent,
         canActivate: [AuthGuard],
         data: { role: 'admin' }
     },

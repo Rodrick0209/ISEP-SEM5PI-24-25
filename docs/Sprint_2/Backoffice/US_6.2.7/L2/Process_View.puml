@@ -1,0 +1,13 @@
+```plantuml
+@startuml Process_View
+participant "SPA" as FE <<Container (C4)>>
+participant "MastersData" as BE <<Container (C4)>>
+
+activate FE
+FE -> BE: PATCH (/api/patients/{medicalRecordNumber})
+activate BE
+BE -> BE: receive request body info,\nedits patient profile\nand saves in DB
+return response
+deactivate BE
+@enduml
+```

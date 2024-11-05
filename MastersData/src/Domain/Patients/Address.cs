@@ -18,6 +18,26 @@ namespace DDDSample1.Domain.Patients
             this.City = new City(city);
             this.Country = new Country(country);
         }
+
+        public void ChangeStreet(string street)
+        {
+            this.Street = new Street(street);
+        }
+
+        public void ChangePostalCode(string postalCode)
+        {
+            this.PostalCode = new PostalCode(postalCode);
+        }
+
+        public void ChangeCity(string city)
+        {
+            this.City = new City(city);
+        }
+
+        public void ChangeCountry(string country)
+        {
+            this.Country = new Country(country);
+        }
     }
 
     public class Street : IValueObject

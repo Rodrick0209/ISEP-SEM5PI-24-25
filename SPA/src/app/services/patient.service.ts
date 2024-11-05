@@ -85,22 +85,25 @@ export class PatientService {
     return this.http.post(this.url, body, { headers });
   }
 
-  editPatient(medicalRecordNumber: string, name: string, email: string, phoneNumber: string, medicalConditions: string) : Observable<any> {
-    const body = {
-      medicalRecordNumber: medicalRecordNumber,
-      name: name,
-      email: email,
-      phoneNumber: phoneNumber,
-      medicalConditions: medicalConditions
-    }
+  editPatient(medicalRecordNumber: string, name: string, email: string, phoneNumber: string, street: string, postalCode: string, city: string, country: string, medicalConditions: string) : Observable<any> {
+    const body: any = {};
+    body.medicalRecordNumber = medicalRecordNumber;
+    if (name) body.name = name;
+    if (email) body.email = email;
+    if (phoneNumber) body.phoneNumber = phoneNumber;
+    if (street) body.street = street;
+    if (postalCode) body.postalCode = postalCode;
+    if (city) body.city = city;
+    if (country) body.country = country;
+    if (medicalConditions) body.medicalConditions = medicalConditions;
 
     const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
-    return this.http.patch(this.url, { headers });
+    return this.http.patch(`${this.url}/${medicalRecordNumber}`, body, { headers });
   }
 
   deletePatient(medicalRecordNumber: string) : Observable<any> {
     const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
-    return this.http.delete(`/api/patients/${medicalRecordNumber}`, { headers });
+    return this.http.delete(`${this.url}/${medicalRecordNumber}`, { headers });
   }
 
   filterPatients(medicalRecordNumber: string, name: string, dateOfBirth: string, email: string): Observable<PatientsView[]> {

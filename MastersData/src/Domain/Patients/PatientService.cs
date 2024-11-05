@@ -89,9 +89,9 @@ namespace DDDSample1.Domain.Patients
 
             string email = patient.Email.email;
 
-            if (!string.IsNullOrWhiteSpace(dto.FullName))
+            if (!string.IsNullOrWhiteSpace(dto.Name))
             {
-                patient.ChangeFullName(dto.FullName);
+                patient.ChangeFullName(dto.Name);
             }
 
             if (!string.IsNullOrWhiteSpace(dto.Email))
@@ -112,6 +112,26 @@ namespace DDDSample1.Domain.Patients
                     throw new BusinessRuleValidationException("Phone Number already exists");
                 }
                 patient.ChangePhoneNumber(dto.PhoneNumber);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.Street))
+            {
+                patient.Address.ChangeStreet(dto.Street);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.PostalCode))
+            {
+                patient.Address.ChangePostalCode(dto.PostalCode);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.City))
+            {
+                patient.Address.ChangeCity(dto.City);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.Country))
+            {
+                patient.Address.ChangeCountry(dto.Country);
             }
 
 

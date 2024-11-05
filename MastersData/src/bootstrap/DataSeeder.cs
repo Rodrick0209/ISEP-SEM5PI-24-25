@@ -117,11 +117,6 @@ public static class DataSeeder
     string startTime = "08:00";
     string endTime = "12:00";
 
-    var availabilitySlot1 = new AvailabilitySlot(date, startTime, endTime);
-
-    var availabilitySlots = new List<AvailabilitySlot> { availabilitySlot1 };
-
-
 
     // Create required staff
     var requiredStaff1 = new RequiredStaff(10, specialization1.Id);
@@ -159,8 +154,21 @@ public static class DataSeeder
     var operationRequest2 = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
     var operationRequests = new List<OperationRequest> { operationRequest, operationRequest2 };
 
-    Staff staff = new Staff(new StaffId("D202512345"), "staff", "12345", specialization1.Id.Value, availabilitySlot1.Id.Value, "email@gmail.com", "+951999999999", "Doctor", "True");
+    Staff staff = new Staff(new StaffId("D202512345"), "staff", "12345", specialization1.Id.Value, "cobrirErroMario", "email@gmail.com", "+951999999999", "Doctor", "True");
     SeedStaff(context, staff);
+
+
+    var availableSlot2 = new AvailabilitySlot(staff.Id.AsString());
+    DailyAvailability dailyAvailability = new DailyAvailability(new DateOnly(2024, 10, 28));
+    dailyAvailability.AddTimeSlot(720, 840);
+    dailyAvailability.AddTimeSlot(1080, 1200);
+    dailyAvailability.AddTimeSlot(1200, 1300);
+    SeedDailyAvailability(context, dailyAvailability);
+  
+    availableSlot2.Availability.Add(dailyAvailability);
+    
+    
+    SeedAvailabilitySlots(context, availableSlot2);
 
     context.OperationRequests.AddRange(operationRequest);
     context.SaveChanges();
@@ -174,6 +182,22 @@ public static class DataSeeder
     }
   }
 
+  private static void SeedAvailabilitySlots(DDDSample1DbContext context, AvailabilitySlot availabilitySlot)
+  {
+    if (!context.AvailabilitySlots.Any())
+    {
+      context.AvailabilitySlots.Add(availabilitySlot);
+    }
+  }
+
+
+  private static void SeedDailyAvailability(DDDSample1DbContext context, DailyAvailability dailyAvailability)
+  {
+    if (!context.DailyAvailabilities.Any())
+    {
+      context.DailyAvailabilities.Add(dailyAvailability);
+    }
+  }
 
   private static void SeedUsers(DDDSample1DbContext context, User user, string pass)
   {
@@ -219,16 +243,4 @@ public static class DataSeeder
       context.StaffMembers.Add(staff);
     }
   }
-
-
-
-  private static void SeedAvailabilitySlots(DDDSample1DbContext context, AvailabilitySlot availabilitySlot)
-  {
-    if (!context.AvailabilitySlots.Any())
-    {
-      context.AvailabilitySlots.Add(availabilitySlot);
-    }
-  }
-
-
 }

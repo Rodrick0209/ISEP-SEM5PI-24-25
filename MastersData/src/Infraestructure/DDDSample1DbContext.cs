@@ -20,6 +20,8 @@ using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Infrastructure.StaffMembers;
 using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Infrastructure.AvailabilitySlots;
+using DDDSample1.Infrastructure.OperationRooms;
+using DDDSample1.Domain.OperationRooms;
 
 namespace DDDSample1.Infrastructure
 {
@@ -35,7 +37,8 @@ namespace DDDSample1.Infrastructure
         public DbSet<Staff> StaffMembers { get; set; }
         public DbSet<AvailabilitySlot> AvailabilitySlots { get; set; }
 
-
+        public DbSet<DailyAvailability> DailyAvailabilities { get; set; } 
+        public DbSet<OperationRoom> OperationRooms {get; set;}
 
         public DbSet<OperationType> OperationTypes { get; set; }
 
@@ -72,6 +75,8 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new StaffLoggerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AvailabilitySlotEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PhaseEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OperationRoomEntityTypeConfiguration());
+            
             modelBuilder.Entity<Phase>(entity =>
             {
                 entity.OwnsMany(p => p.requiredStaff, rs =>
@@ -81,6 +86,19 @@ namespace DDDSample1.Infrastructure
                     rs.HasKey("Id");
                 });
             });
+            
+            modelBuilder.ApplyConfiguration(new DailyAvailabilityEntityTypeConfiguration());
+
+            modelBuilder.Entity<DailyAvailability>(entity =>
+            {
+                entity.OwnsMany(p => p.TimeSlots, rs =>
+                {
+                    rs.WithOwner().HasForeignKey("DailyAvailabilityId");
+                    rs.Property<int>("Id");
+                    rs.HasKey("Id");
+                });
+            });
+
             
             base.OnModelCreating(modelBuilder);
             

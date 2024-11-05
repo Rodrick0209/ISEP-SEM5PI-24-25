@@ -1,0 +1,19 @@
+```plantuml
+@startuml Process_View
+actor Admin 
+participant System <<System (C4)>>
+
+activate Admin
+
+Admin -> System: Make a request to delete a patient profile
+activate System
+System --> Admin : Asks the patient's ID
+Admin -> System: Provides the patient's ID
+System --> Admin : Asks the patient's ID to connfirm
+Admin -> System: Provides the patient's ID to confirm
+System --> Admin : Success/Error message
+deactivate System
+deactivate Admin
+
+@enduml
+```

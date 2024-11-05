@@ -1,0 +1,6 @@
+<div class="mark-container">
+    <div class="square" (click)="onMarkClick()">
+        <div class="mark-x" *ngIf="showMark">X</div>
+    </div>
+    <span class="mark-text">{{ markText }}</span> <!-- Display the passed markText -->
+</div>
