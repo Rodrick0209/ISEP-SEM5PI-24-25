@@ -7,6 +7,9 @@ namespace DDDSample1.Domain.OperationRooms
     {
         public string roomCapacity { get; private set; }
 
+        private RoomCapacity() { }
+    
+
         public RoomCapacity(string capacity)
         {
             int capacityValue;

@@ -30,6 +30,21 @@ namespace DDDSample1.Infrastructure.OperationRooms
                 rc.Property(r => r.roomCapacity).IsRequired(); // Assume que RoomCapacity tem uma propriedade Capacity
             });
 
+            // Configurando o MaintenanceSlots como um objeto próprio
+            builder.OwnsMany(b => b.MaintenanceSlots, ms =>
+            {
+                ms.WithOwner().HasForeignKey("OperationRoomId"); // Relaciona com OperationRoom
+                ms.Property(m => m.Date).IsRequired(); // Propriedade Date em MaintenanceSlots
+
+                ms.OwnsMany(m => m.TimeSlots, ts =>
+                {
+                    ts.WithOwner(); // Relaciona com MaintenanceSlots
+                    ts.Property(t => t.StartMinute).IsRequired();
+                    ts.Property(t => t.EndMinute).IsRequired();
+                });
+            });
+
+
 
 
         }

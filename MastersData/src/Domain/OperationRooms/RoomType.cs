@@ -7,6 +7,8 @@ namespace DDDSample1.Domain.OperationRooms
     {
         public string roomType { get; private set; }
 
+        private RoomType() { }
+
         public RoomType(string type)
         {
             if (string.IsNullOrWhiteSpace(type))
