@@ -1,0 +1,150 @@
+/* Container styling for the edit operation type form */
+.edit-operation-type-container {
+  margin: 20px auto;
+  padding: 25px;
+  max-width: 600px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e3e3e3;
+}
+
+/* Form header styling */
+.edit-operation-type-container h2 {
+  text-align: center;
+  color: #222;
+  margin-bottom: 25px;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+/* Form group styling */
+.edit-operation-type-container .form-group {
+  margin-bottom: 15px;
+}
+
+/* Label styling */
+.edit-operation-type-container label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+/* Input and textarea styling */
+.edit-operation-type-container input[type="text"],
+.edit-operation-type-container input[type="number"],
+.edit-operation-type-container select {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #fff;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Input focus effect */
+.edit-operation-type-container input[type="text"]:focus,
+.edit-operation-type-container input[type="number"]:focus,
+.edit-operation-type-container select:focus {
+  border-color: #0069d9;
+  box-shadow: 0 0 5px rgba(0, 105, 217, 0.2);
+  outline: none;
+}
+
+/* Button styling */
+.edit-operation-type-container button {
+  padding: 10px 25px;
+  font-size: 1rem;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background-color 0.3s;
+}
+
+/* Primary button styling */
+.edit-operation-type-container .btn-success {
+  background-color: #28a745;
+}
+
+.edit-operation-type-container .btn-success:hover {
+  background-color: #218838;
+}
+
+/* Secondary button styling */
+.edit-operation-type-container .btn-secondary {
+  background-color: #6c757d;
+}
+
+.edit-operation-type-container .btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Additional header styling for phases */
+.edit-operation-type-container h3 {
+  color: #555;
+  font-size: 1.25rem;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+/* Error message styling */
+.edit-operation-type-container .error-message {
+  color: #d9534f;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Style for nested required staff fields */
+.edit-operation-type-container .form-group.required-staff {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Button styles for add/remove actions */
+.edit-operation-type-container .btn-danger {
+  background-color: #ff4d4d;
+  color: white;
+  margin-top: 5px;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-operation-type-container .btn-danger:hover {
+  background-color: #ff1a1a;
+}
+
+.edit-operation-type-container .btn-secondary {
+  background-color: #4CAF50;
+  color: white;
+  margin: 10px 0;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-operation-type-container .btn-secondary:hover {
+  background-color: #45a049;
+}
+
+/* General button styling */
+button {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}

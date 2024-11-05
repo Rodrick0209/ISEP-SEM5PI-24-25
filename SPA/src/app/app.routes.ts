@@ -12,6 +12,7 @@ import { AuthGuard } from './auth.guard';
 import { PatientsComponent } from './components/patients/patients.component';
 import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
 import { CreatePatientComponent } from './components/create-patient/create-patient.component';
+import { EditOperationTypeComponent } from './edit-operation-type/edit-operation-type.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -44,6 +45,12 @@ export const routes: Routes = [
     {
         path: 'patient/create',
         component: CreatePatientComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    {
+        path: 'operation-types/edit/:id', // Add this route
+        component: EditOperationTypeComponent,
         canActivate: [AuthGuard],
         data: { role: 'admin' }
     }
