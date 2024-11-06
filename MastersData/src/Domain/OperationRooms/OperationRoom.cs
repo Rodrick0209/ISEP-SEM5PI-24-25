@@ -41,7 +41,7 @@ namespace DDDSample1.Domain.OperationRooms
             RoomStatus = newStatus;
         }
 
-        
+
         public void EnsureWithinCapacity(int numberOfPeople)
         {
             RoomCapacity.EnsureWithinCapacity(numberOfPeople);
@@ -63,5 +63,28 @@ namespace DDDSample1.Domain.OperationRooms
                 maintenanceAvailability.AddTimeSlot(startMinute, endMinute);
             }
         }
+
+
+
+        public bool IsAvailable(DateTime currentTime)
+        {
+            var currentDate = DateOnly.FromDateTime(currentTime);
+            var currentMinute = currentTime.Hour * 60 + currentTime.Minute;
+
+            // Verifica se existe uma manutenção no horário atual
+            var maintenanceToday = this.MaintenanceSlots.FirstOrDefault(slot => slot.Date == currentDate);
+
+            if (maintenanceToday != null && maintenanceToday.TimeSlots.Any(ts => ts.StartMinute <= currentMinute && ts.EndMinute >= currentMinute))
+            {
+                ChangeStatus(RoomStatus.UnderMaintenance);
+                return false;
+            }
+
+            // Atualiza status para disponível, se não houver manutenção
+            ChangeStatus(RoomStatus.Available);
+            return true;
+        }
+
+
     }
 }
