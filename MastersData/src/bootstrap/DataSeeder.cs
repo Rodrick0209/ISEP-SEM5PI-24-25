@@ -10,6 +10,7 @@ using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Domain.User;
+using DDDSample1.Domain.OperationRooms;
 using DDDSample1.Domain.Utils;
 using DDDSample1.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
@@ -172,6 +173,13 @@ public static class DataSeeder
 
     context.OperationRequests.AddRange(operationRequest);
     context.SaveChanges();
+
+
+    var operationRoom = new OperationRoom("or1", "boas", "10");
+    operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 720, 840);
+    operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1080, 1200);
+    operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1200, 1300);
+    SeedOperationRoom(context, operationRoom);
   }
 
   private static void SeedOperationRequest(DDDSample1DbContext context, OperationRequest operationRequest)
@@ -241,6 +249,14 @@ public static class DataSeeder
     if (!context.Specializations.Any())
     {
       context.StaffMembers.Add(staff);
+    }
+  }
+
+  public static void SeedOperationRoom(DDDSample1DbContext context, OperationRoom operationRoom)
+  {
+    if (!context.OperationRooms.Any())
+    {
+      context.OperationRooms.Add(operationRoom);
     }
   }
 }

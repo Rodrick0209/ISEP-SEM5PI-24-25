@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OperationTypesService, OperationType } from '../../services/operation-type.service';
+import { Router } from '@angular/router';
 import { FilterOperationTypesComponent } from '../filter-operation-types-component/filter-operation-types-component.component';
 import { AddOperationTypeComponent } from '../add-operation-type/add-operation-type.component';
 
@@ -15,7 +16,7 @@ export class ListOperationTypesComponent implements OnInit {
   operationTypes: OperationType[] = [];
   filteredOperationTypes: OperationType[] = [];
 
-  constructor(private operationTypesService: OperationTypesService) { }
+  constructor(private operationTypesService: OperationTypesService, private router: Router) { }
 
   ngOnInit(): void {
     this.operationTypesService.getOperationTypes().subscribe({
@@ -42,7 +43,8 @@ export class ListOperationTypesComponent implements OnInit {
 
   editOperationType(operationType: OperationType): void {
     // Implement your edit logic here
-    console.log('Editing operation type:', operationType);
+    this.router.navigate(['/operation-types/edit', operationType.id]);
+
   }
 
   deactivateOperationType(operationType: OperationType): void {

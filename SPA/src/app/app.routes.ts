@@ -15,6 +15,8 @@ import { CreatePatientComponent } from './components/create-patient/create-patie
 import { EditPatientComponent } from './components/edit-patient/edit-patient.component';
 import { DeletePatientComponent } from './components/delete-patient/delete-patient.component';
 import { RegisterConfirmationComponent } from './components/register-confirmation/register-confirmation.component';
+import { PlanningComponent } from './components/planning/planning.component';
+import { EditOperationTypeComponent } from './edit-operation-type/edit-operation-type.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -24,7 +26,6 @@ export const routes: Routes = [
     { path: 'cube', component: CubeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'register/confirm', component: RegisterConfirmationComponent },
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
     { 
@@ -60,6 +61,12 @@ export const routes: Routes = [
     {
         path: 'patient/delete/:medicalRecordNumber',
         component: DeletePatientComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    {
+        path: 'operation-types/edit/:id', // Add this route
+        component: EditOperationTypeComponent,
         canActivate: [AuthGuard],
         data: { role: 'admin' }
     }

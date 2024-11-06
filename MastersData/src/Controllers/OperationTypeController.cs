@@ -55,8 +55,7 @@ namespace DDDSample1.Controllers
                 return NotFound();
             }
 
-            
-            
+    
             var sp = new SpecializationId(op.specialization.Value);
             var specialization = await _Spe_service.GetByIdAsync(sp);
             var specializationNames = await _Spe_service.GetByNameOperationTypeAsync(op);
@@ -115,9 +114,12 @@ namespace DDDSample1.Controllers
                 return BadRequest();
             }
 
+            var map = await _Spe_service.GetSpecializationMapAsync();
+
+
             try
             {
-                var op = await _service.UpdateAsync(dto);
+                var op = await _service.UpdateAsync(dto,map);
                 if (op == null)
                 {
                     return NotFound();

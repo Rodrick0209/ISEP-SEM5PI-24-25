@@ -1,24 +1,27 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Utils;
+using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.OperationRooms;
 
-
-
-namespace DDDSample1.Domain.AvailabilitySlots
+namespace DDDSample1.Domain.OperationRooms
 {
-    public class DailyAvailability : Entity<DailyAvailabilityId>
+    public class MaintenanceSlots : IValueObject
     {
-        public DateOnly  Date { get; private set; }
+        public DateOnly Date { get; private set; }
         public List<TimeSlot> TimeSlots { get; private set; }
 
-        public DailyAvailability(DateOnly  date)
+
+        public MaintenanceSlots(DateOnly date)
         {
-            Id = new DailyAvailabilityId(Guid.NewGuid());
-            Date = date; // Armazenar apenas a data
+
+
+            Date = date;
             TimeSlots = [];
+
         }
+
 
         public void AddTimeSlot(int startMinute, int endMinute)
         {
@@ -33,8 +36,7 @@ namespace DDDSample1.Domain.AvailabilitySlots
             return TimeSlots.Any(slot =>
                 startMinute < slot.EndMinute && endMinute > slot.StartMinute);
         }
-
-
+        
 
     }
 }

@@ -85,7 +85,7 @@ namespace DDDSample1.Domain.OperationTypes
             return await this._repo.GetOperationTypesByFilter(name,status,specialization);
         }
 
-        public async Task<OperationType> UpdateAsync(OperationTypeDto dto)
+        public async Task<OperationType> UpdateAsync(OperationTypeDto dto,Dictionary<string, Guid> map)
         {
 
             var op = await this._repo.GetByIdAsync(new OperationTypeId(dto.Id));
@@ -95,12 +95,13 @@ namespace DDDSample1.Domain.OperationTypes
             op.changeName(dto.Name);
 
 
-
-
             var preparation = await _phaseRepo.GetByIdAsync(new PhasesId(dto.PreparationPhase.Id));
             preparation.ChangeDuration(dto.PreparationPhase.Duration);
+            
             var preparationRequiredStaffEntities = dto.PreparationPhase.RequiredStaff
-                .Select(rsDto => new RequiredStaff(int.Parse(rsDto.num), new Specializations.SpecializationId(Guid.Parse(rsDto.Specialization))))
+                .Select(rsDto => new RequiredStaff(int.Parse(rsDto.num), new Specializations.SpecializationId(map[rsDto.Specialization])))
+
+                
                 .ToList();
 
             // Change the required staff for preparation phase
@@ -109,7 +110,7 @@ namespace DDDSample1.Domain.OperationTypes
             var surgery = await _phaseRepo.GetByIdAsync(new PhasesId(dto.SurgeryPhase.Id));
             surgery.ChangeDuration(dto.SurgeryPhase.Duration);
             var surgeryRequiredStaffEntities = dto.SurgeryPhase.RequiredStaff
-                .Select(rsDto => new RequiredStaff(int.Parse(rsDto.num), new Specializations.SpecializationId(Guid.Parse(rsDto.Specialization))))
+                .Select(rsDto => new RequiredStaff(int.Parse(rsDto.num), new Specializations.SpecializationId(map[rsDto.Specialization])))
                 .ToList();
 
             // Change the required staff for surgery phase
@@ -118,7 +119,7 @@ namespace DDDSample1.Domain.OperationTypes
             var cleaning = await _phaseRepo.GetByIdAsync(new PhasesId(dto.CleaningPhase.Id));
             cleaning.ChangeDuration(dto.CleaningPhase.Duration);
             var cleaningRequiredStaffEntities = dto.CleaningPhase.RequiredStaff
-                .Select(rsDto => new RequiredStaff(int.Parse(rsDto.num), new Specializations.SpecializationId(Guid.Parse(rsDto.Specialization))))
+                .Select(rsDto => new RequiredStaff(int.Parse(rsDto.num), new Specializations.SpecializationId(map[rsDto.Specialization])))
                 .ToList();
 
             // Change the required staff for cleaning phase

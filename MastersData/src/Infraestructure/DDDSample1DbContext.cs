@@ -20,6 +20,8 @@ using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Infrastructure.StaffMembers;
 using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Infrastructure.AvailabilitySlots;
+using DDDSample1.Infrastructure.OperationRooms;
+using DDDSample1.Domain.OperationRooms;
 
 namespace DDDSample1.Infrastructure
 {
@@ -36,6 +38,7 @@ namespace DDDSample1.Infrastructure
         public DbSet<AvailabilitySlot> AvailabilitySlots { get; set; }
 
         public DbSet<DailyAvailability> DailyAvailabilities { get; set; } 
+        public DbSet<OperationRoom> OperationRooms {get; set;}
 
         public DbSet<OperationType> OperationTypes { get; set; }
 
@@ -72,6 +75,7 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new StaffLoggerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AvailabilitySlotEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PhaseEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OperationRoomEntityTypeConfiguration());
             
             modelBuilder.Entity<Phase>(entity =>
             {

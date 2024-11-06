@@ -1,0 +1,6 @@
+<div class="planning-container">
+    <h1>Greeting Component</h1>
+    <input [(ngModel)]="name" placeholder="Enter your name" />
+    <button (click)="greet()">Get Greeting</button>
+    <p *ngIf="greetingMessage">Message: {{ greetingMessage }}</p>
+</div>

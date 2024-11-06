@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register-confirmation',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './register-confirmation.component.html',
   styleUrl: './register-confirmation.component.css'
 })
