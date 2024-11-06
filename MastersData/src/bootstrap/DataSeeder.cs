@@ -180,6 +180,7 @@ public static class DataSeeder
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1080, 1200);
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1200, 1300);
     SeedOperationRoom(context, operationRoom);
+    context.SaveChanges();
   }
 
   private static void SeedOperationRequest(DDDSample1DbContext context, OperationRequest operationRequest)
