@@ -42,7 +42,6 @@ namespace DDDSample1.Controllers
         {
             var list = await  _service.GetAllAsync();
             var listDto = new List<AvailabilitySlotDto>();
-            Console.WriteLine("Agendas disponiveis "+ list.Count);
             foreach (var op in list)
             {
                 listDto.Add(AvailabilitySlotMapper.ToDTO(op));
