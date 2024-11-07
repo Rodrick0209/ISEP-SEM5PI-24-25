@@ -14,7 +14,7 @@ namespace DDDSample1.Domain.OperationRooms
 
 
             return new OperationRoomDto(
-                operationRoom.Id.AsString(),
+                operationRoom.Id.AsGuid(),
                 operationRoom.RoomNumber.roomNumber,
                 operationRoom.RoomType.roomType,
                 operationRoom.RoomCapacity.roomCapacity,

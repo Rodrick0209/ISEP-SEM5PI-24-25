@@ -18,6 +18,8 @@ using DDDSample1.Domain.StaffLoggers;
 using DDDSample.Infrastructure.StaffLoggers;
 using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Infrastructure.StaffMembers;
+using DDDSample1.Domain.Appointments;
+using DDDSample1.Infrastructure.Appointments;
 using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Infrastructure.AvailabilitySlots;
 using DDDSample1.Infrastructure.OperationRooms;
@@ -29,7 +31,7 @@ namespace DDDSample1.Infrastructure
     {
         /*public DbSet<Category> Categories { get; set; }*/
 
-  
+
 
         public DbSet<User> Users { get; set; }
 
@@ -37,8 +39,8 @@ namespace DDDSample1.Infrastructure
         public DbSet<Staff> StaffMembers { get; set; }
         public DbSet<AvailabilitySlot> AvailabilitySlots { get; set; }
 
-        public DbSet<DailyAvailability> DailyAvailabilities { get; set; } 
-        public DbSet<OperationRoom> OperationRooms {get; set;}
+        public DbSet<DailyAvailability> DailyAvailabilities { get; set; }
+        public DbSet<OperationRoom> OperationRooms { get; set; }
 
         public DbSet<OperationType> OperationTypes { get; set; }
 
@@ -55,7 +57,9 @@ namespace DDDSample1.Infrastructure
         public DbSet<OperationTypeLogger> OperationTypeLoggers { get; set; }
 
         public DbSet<PatientLogger> PatientLoggers { get; set; }
-        public DbSet<StaffLogger> StaffLoggers { get; set; } 
+
+        public DbSet<StaffLogger> StaffLoggers { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
 
         public DDDSample1DbContext(DbContextOptions options) : base(options)
         {
@@ -76,7 +80,8 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new AvailabilitySlotEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PhaseEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRoomEntityTypeConfiguration());
-            
+            modelBuilder.ApplyConfiguration(new OperationRoomEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new AppointmentEntityTypeConfiguration());
             modelBuilder.Entity<Phase>(entity =>
             {
                 entity.OwnsMany(p => p.requiredStaff, rs =>
@@ -86,7 +91,7 @@ namespace DDDSample1.Infrastructure
                     rs.HasKey("Id");
                 });
             });
-            
+
             modelBuilder.ApplyConfiguration(new DailyAvailabilityEntityTypeConfiguration());
 
             modelBuilder.Entity<DailyAvailability>(entity =>
@@ -99,11 +104,11 @@ namespace DDDSample1.Infrastructure
                 });
             });
 
-            
-            base.OnModelCreating(modelBuilder);
-            
 
-           
+            base.OnModelCreating(modelBuilder);
+
+
+
         }
     }
 }

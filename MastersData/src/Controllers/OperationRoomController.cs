@@ -9,7 +9,7 @@ namespace DDDSample1.Controllers
     [ApiController]
     public class OperationRoomController : ControllerBase
     {
-        private readonly OperationRoomService _service;
+        private readonly IOperationRoomService _service;
 
         public OperationRoomController(OperationRoomService service)
         {

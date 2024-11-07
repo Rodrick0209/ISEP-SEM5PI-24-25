@@ -11,6 +11,7 @@ using DDDSample1.Domain.Specializations;
 using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Domain.User;
 using DDDSample1.Domain.OperationRooms;
+using DDDSample1.Domain.Appointments;
 using DDDSample1.Domain.Utils;
 using DDDSample1.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
@@ -180,6 +181,12 @@ public static class DataSeeder
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1080, 1200);
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1200, 1300);
     SeedOperationRoom(context, operationRoom);
+    context.SaveChanges();
+
+    var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(2025, 02, 18), new TimeSlot(720, 840));
+    var appointment = new Appointment(appointmentTimeSlot, operationRoom.Id.AsString(), operationRequest.Id.AsString());
+    SeedAppointments(context, appointment);
+    context.SaveChanges();
   }
 
   private static void SeedOperationRequest(DDDSample1DbContext context, OperationRequest operationRequest)
@@ -257,6 +264,14 @@ public static class DataSeeder
     if (!context.OperationRooms.Any())
     {
       context.OperationRooms.Add(operationRoom);
+    }
+  }
+
+  public static void SeedAppointments(DDDSample1DbContext context, Appointment appointment)
+  {
+    if (!context.Appointments.Any())
+    {
+      context.Appointments.Add(appointment);
     }
   }
 }
