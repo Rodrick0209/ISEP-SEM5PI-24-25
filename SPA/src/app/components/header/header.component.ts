@@ -34,4 +34,9 @@ export class HeaderComponent implements OnInit {
     return role === 'admin';
   }
 
+  isPatientUser(): boolean {
+    const role = this.authService.extractRoleFromToken();
+    return role === 'patient';
+  }
+
 }

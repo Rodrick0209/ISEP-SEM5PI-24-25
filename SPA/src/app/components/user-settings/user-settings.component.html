@@ -1,0 +1,13 @@
+<div class="user-settings" *ngIf="user">
+    <div class="user-header">
+        <h2>User Settings</h2>
+    </div>
+
+    <div class="edit-user">
+        <button (click)="editUser()">Settings</button>
+    </div>
+</div>
+
+<div class="error-message" *ngIf="error-message">
+    <p>{{ error-message }}</p>
+</div>

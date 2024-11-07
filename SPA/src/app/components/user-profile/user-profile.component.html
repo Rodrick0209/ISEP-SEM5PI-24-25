@@ -1,0 +1,17 @@
+<div class="user-profile" *ngIf="user">
+    <div class="user-header">
+        <h2>User Details</h2>
+    </div>
+
+    <div class="success-message" *ngIf="successMessage">
+        <p>{{ successMessage }}</p>
+    </div>
+
+    <div class="user-settings">
+        <button (click)="userSettings()">Settings</button>
+    </div>
+</div>
+
+<div class="error-message" *ngIf="error-message">
+    <p>{{ error-message }}</p>
+</div>

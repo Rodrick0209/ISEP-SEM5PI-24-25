@@ -1,0 +1,117 @@
+.user-settings{
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 25px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    font-family: 'Roboto', sans-serif;
+    color: #222;
+}
+
+.user-header h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #1a73e8;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.user-info h3 {
+    font-size: 1.6rem;
+    color: #333;
+    margin: 25px 0 15px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #1a73e8;
+}
+
+.user-field {
+    font-size: 1.1rem;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.user-field strong {
+    font-weight: 500;
+    color: #555;
+}
+
+.emergency-contact, .address, .medical-history {
+    background-color: #f7faff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 1px solid #e0e8f1;
+}
+
+.reset-password {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.reset-password button {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    background-color: #1a73e8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+}
+
+.reset-password button:hover {
+    background-color: #155bb5;
+    transform: translateY(-2px);
+}
+
+.user-info .user-field {
+    padding-bottom: 12px;
+}
+
+.patient-info .patient-field:last-child {
+    border-bottom: none;
+}
+
+.user-settings {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.user-settings button {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    background-color: #4caf50;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+}
+
+.user-settings button:hover {
+    background-color: #388e3c;
+    transform: translateY(-2px);
+}
+.error-message {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #ffdddd;
+    color: #d8000c;
+    border: 1px solid #d8000c;
+    font-family: 'Roboto', sans-serif;
+    box-shadow: 0 4px 10px rgba(216, 0, 12, 0.1);
+    text-align: center;
+}
+
+.error-message p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}

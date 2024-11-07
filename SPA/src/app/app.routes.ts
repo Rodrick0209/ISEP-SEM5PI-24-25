@@ -17,6 +17,10 @@ import { DeletePatientComponent } from './components/delete-patient/delete-patie
 import { RegisterConfirmationComponent } from './components/register-confirmation/register-confirmation.component';
 import { PlanningComponent } from './components/planning/planning.component';
 import { EditOperationTypeComponent } from './edit-operation-type/edit-operation-type.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UserSettingsComponent } from './components/user-settings/user-settings.component';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
+import { EditConfirmationComponent } from './components/edit-confirmation/edit-confirmation.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -26,6 +30,7 @@ export const routes: Routes = [
     { path: 'cube', component: CubeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'register-confirmation', component: RegisterConfirmationComponent },
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
     { 
@@ -69,5 +74,29 @@ export const routes: Routes = [
         component: EditOperationTypeComponent,
         canActivate: [AuthGuard],
         data: { role: 'admin' }
+    },
+    {
+        path: 'profile',
+        component: UserProfileComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'patient' }
+    },
+    {
+        path: 'settings/:email',
+        component: UserSettingsComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'patient' }
+    },
+    {
+        path: 'edit/:email',
+        component: EditUserComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'patient' }
+    },
+    {
+        path: 'edit-confirmation',
+        component: EditConfirmationComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'patient' }
     }
 ];
