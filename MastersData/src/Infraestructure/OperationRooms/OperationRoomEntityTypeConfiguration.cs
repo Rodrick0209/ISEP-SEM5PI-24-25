@@ -33,7 +33,7 @@ namespace DDDSample1.Infrastructure.OperationRooms
             // Configurando o MaintenanceSlots como um objeto próprio
             builder.OwnsMany(b => b.MaintenanceSlots, ms =>
             {
-                ms.WithOwner().HasForeignKey("OperationRoomId"); // Relaciona com OperationRoom
+                ms.WithOwner(); // Relaciona com OperationRoom
                 ms.Property(m => m.Date).IsRequired(); // Propriedade Date em MaintenanceSlots
 
                 ms.OwnsMany(m => m.TimeSlots, ts =>

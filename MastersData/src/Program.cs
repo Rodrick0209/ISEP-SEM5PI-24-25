@@ -43,6 +43,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.BearerToken;
+using DDDSample1.Domain.Appointments;
+using DDDSample1.Infrastructure.Appointments;
 
 
 
@@ -240,6 +242,9 @@ namespace DDDSample1.Startup
 
             services.AddTransient<IOperationRoomRepository, OperationRoomRepository>();
             services.AddTransient<OperationRoomService>();
+
+            services.AddTransient<IAppointmentRepository, AppointmentRepository>();
+            services.AddTransient<AppointmentService>();
         }
 
 

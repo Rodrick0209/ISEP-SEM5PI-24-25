@@ -5,7 +5,7 @@ using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.OperationRooms
 {
-    public class OperationRoomService
+    public class OperationRoomService : IOperationRoomService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IOperationRoomRepository _operationRoomRepository;
