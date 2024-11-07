@@ -4,6 +4,7 @@
 :- dynamic agenda_staff1/3.
 :-dynamic agenda_operation_room/3.
 :-dynamic agenda_operation_room1/3.
+:-dynamic better_sol/5.
 
 
 agenda_staff(d001,20241028,[(720,790,m01),(1080,1140,c01)]).
@@ -128,6 +129,7 @@ schedule_all_surgeries(Room,Day):-
     agenda_operation_room(Or,Date,Agenda),assert(agenda_operation_room1(Or,Date,Agenda)),
     findall(_,(agenda_staff1(D,Date,L),free_agenda0(L,LFA),adapt_timetable(D,Date,LFA,LFA2),assertz(availability(D,Date,LFA2))),_),
     findall(OpCode,surgery_id(OpCode,_),LOpCode),
+
     availability_all_surgeries(LOpCode,Room,Day),!.
 
 availability_all_surgeries([],_,_).
@@ -174,45 +176,57 @@ insert_agenda_doctors((TinS,TfinS,OpCode),Day,[Doctor|LDoctors]):-
 
 
 
+obtain_better_sol(Room,Day,AgOpRoomBetter,LAgDoctorsBetter,TFinOp):-
+		get_time(Ti),
+		(obtain_better_sol1(Room,Day);true),
+		retract(better_sol(Day,Room,AgOpRoomBetter,LAgDoctorsBetter,TFinOp)),
+            write('Final Result: AgOpRoomBetter='),write(AgOpRoomBetter),nl,
+            write('LAgDoctorsBetter='),write(LAgDoctorsBetter),nl,
+            write('TFinOp='),write(TFinOp),nl,
+		get_time(Tf),
+		T is Tf-Ti,
+		write('Tempo de geracao da solucao:'),write(T),nl.
 
 
+obtain_better_sol1(Room,Day):-
+    asserta(better_sol(Day,Room,_,_,1441)),
+    findall(OpCode,surgery_id(OpCode,_),LOC),!,
+    permutation(LOC,LOpCode),
+    retractall(agenda_staff1(_,_,_)),
+    retractall(agenda_operation_room1(_,_,_)),
+    retractall(availability(_,_,_)),
+    findall(_,(agenda_staff(D,Day,Agenda),assertz(agenda_staff1(D,Day,Agenda))),_),
+    agenda_operation_room(Room,Day,Agenda),assert(agenda_operation_room1(Room,Day,Agenda)),
+    findall(_,(agenda_staff1(D,Day,L),free_agenda0(L,LFA),adapt_timetable(D,Day,LFA,LFA2),assertz(availability(D,Day,LFA2))),_),
+    availability_all_surgeries(LOpCode,Room,Day),
+    agenda_operation_room1(Room,Day,AgendaR),
+		update_better_sol(Day,Room,AgendaR,LOpCode),
+		fail.
 
-% Predicado para gerar o melhor agendamento para um conjunto de cirurgias em uma sala e dia específicos.
-best_schedule(Room, Day, BestSchedule) :-
-    findall(OpCode, surgery_id(OpCode, _), LOpCode),          % Obtemos todas as cirurgias a serem agendadas.
-    findall(Schedule, possible_schedule(Room, Day, LOpCode, Schedule), Schedules),  % Gera todas as possibilidades de agendamento.
-    earliest_finish_schedule(Schedules, BestSchedule).        % Seleciona o agendamento que termina mais cedo.
+update_better_sol(Day,Room,Agenda,LOpCode):-
+                better_sol(Day,Room,_,_,FinTime),
+                reverse(Agenda,AgendaR),
+                evaluate_final_time(AgendaR,LOpCode,FinTime1),
+             write('Analysing for LOpCode='),write(LOpCode),nl,
+             write('now: FinTime1='),write(FinTime1),write(' Agenda='),write(Agenda),nl,
+		FinTime1<FinTime,
+             write('best solution updated'),nl,
+                retract(better_sol(_,_,_,_,_)),
+                findall(Doctor,assignment_surgery(_,Doctor),LDoctors1),
+                remove_equals(LDoctors1,LDoctors),
+                list_doctors_agenda(Day,LDoctors,LDAgendas),
+		asserta(better_sol(Day,Room,Agenda,LDAgendas,FinTime1)).
 
-% Gera um possível agendamento para uma permutação específica das cirurgias.
-possible_schedule(Room, Day, LOpCode, Schedule) :-
-    permutation(LOpCode, Perm),                               % Gera uma permutação de todas as cirurgias.
-    schedule_permutation(Room, Day, Perm, Schedule).          % Agenda as cirurgias na sequência da permutação.
+evaluate_final_time([],_,1441).
+evaluate_final_time([(_,Tfin,OpCode)|_],LOpCode,Tfin):-member(OpCode,LOpCode),!.
+evaluate_final_time([_|AgR],LOpCode,Tfin):-evaluate_final_time(AgR,LOpCode,Tfin).
 
-% Agenda as cirurgias de uma permutação e retorna o agendamento resultante.
-schedule_permutation(Room, Day, [OpCode|RestOps], [(OpCode, Start, End)|ScheduleRest]) :-
-    availability_operation(OpCode, Room, Day, Possibilities, _),
-    schedule_first_interval(OpCode, Possibilities, (Start, End)), % Agenda a cirurgia no primeiro intervalo disponível.
-    retract(agenda_operation_room1(Room, Day, Agenda)),           % Atualiza a agenda da sala de operações.
-    insert_agenda((Start, End, OpCode), Agenda, NewAgenda),
-    assertz(agenda_operation_room1(Room, Day, NewAgenda)),
-    schedule_permutation(Room, Day, RestOps, ScheduleRest).       % Agenda as cirurgias restantes recursivamente.
-schedule_permutation(_, _, [], []).
+list_doctors_agenda(_,[],[]).
+list_doctors_agenda(Day,[D|LD],[(D,AgD)|LAgD]):-agenda_staff1(D,Day,AgD),list_doctors_agenda(Day,LD,LAgD).
 
-% Seleciona o agendamento que termina mais cedo entre todos os possíveis.
-earliest_finish_schedule([Schedule|Rest], BestSchedule) :-
-    total_end_time(Schedule, EndTime),                          % Calcula o tempo de término do agendamento.
-    find_best_schedule(Rest, Schedule, EndTime, BestSchedule).
-
-find_best_schedule([], Best, _, Best).
-find_best_schedule([Schedule|Rest], CurrentBest, CurrentBestTime, BestSchedule) :-
-    total_end_time(Schedule, EndTime),
-    (EndTime < CurrentBestTime -> 
-        find_best_schedule(Rest, Schedule, EndTime, BestSchedule)
-    ;   find_best_schedule(Rest, CurrentBest, CurrentBestTime, BestSchedule)).
-
-% Calcula o tempo de término de um agendamento.
-total_end_time(Schedule, EndTime) :-
-    last(Schedule, (_, _, EndTime)).                            % O tempo final é o fim da última cirurgia.
+remove_equals([],[]).
+remove_equals([X|L],L1):-member(X,L),!,remove_equals(L,L1).
+remove_equals([X|L],[X|L1]):-remove_equals(L,L1).
 
 
 
