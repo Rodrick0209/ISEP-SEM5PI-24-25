@@ -1,0 +1,21 @@
+```plantuml
+@startuml Process_View
+participant "SPA" as FE <<Container (C4)>>
+participant "MastersData" as BE <<Container (C4)>>
+
+activate FE
+FE -> BE: PATCH (/api/user/patients/edit)
+activate BE
+BE -> BE: receive request body info, validates, \nedits user info
+return response
+deactivate FE
+alt information contains sensitive data
+FE -> BE: PATCH (/api/user/patients/edit/confirmation/{token})
+activate FE
+activate BE
+BE -> BE : receive token and \nsensitive data to edit, \nedits sensitive data info
+return response
+deactivate FE
+end
+@enduml
+```

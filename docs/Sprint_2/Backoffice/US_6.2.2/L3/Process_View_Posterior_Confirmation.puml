@@ -1,0 +1,41 @@
+```plantuml
+@startuml Process_View_Posterior_Confirmation
+participant SPA as SPA <<Container (C4)>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant ConfirmationDTO as ConfirmationDTO <<DTO>>
+participant Service as Service <<Service>>
+participant Repository as Repository <<Repository>>
+participant Repository as PatientRepository <<Repository>>
+participant Mapper as Mapper <<Domain Service>> 
+participant Domain as Domain <<Domain>>
+participant Patient as Patient <<Domain>>
+activate SPA
+SPA -> Route : PATCH (/api/user/patients/edit/confirmation/{token})
+activate Route
+Route -> Controller : PATCH
+activate Controller
+Controller -> ConfirmationDTO** : recieves request body info
+Controller -> Service : confirms the edition of the patients profile
+activate Service
+Service -> Repository : finds user by email
+activate Repository
+return user
+Service -> Service : validates the confirmation token
+activate Service
+return flag
+Service -> PatientRepository : finds patient by email
+activate PatientRepository
+return patient
+Service -> Domain : changes email if not empty
+Service -> Patient : changes email if not empty
+Service -> Patient : changes phone number if not empty
+Service -> PatientRepository : saves patient in DB
+Service -> Service : logs changes in DB
+activate Service
+deactivate Service
+return response
+return response
+return response
+@enduml
+```
