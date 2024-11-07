@@ -19,3 +19,22 @@ This US creates the functionality to patients update their profile
 
 **US 6.2.1** - The patient must be registered on the system.
 **US 6.2.5** - The patient must be logged on the system.
+
+## 3. Analysis
+
+The patient can only change the data if he is logged into the system (the system has provided a login token).
+
+Editable fields are:
+- Name
+- Email
+- Phone Number
+
+In case of editing sensitive data, an email confirmation is sent to the patient. Then, the patient must click on confirm, and the changes of sensitive data are done.
+
+### 3.1. Client-relevant questions
+
+N/A
+
+### 3.2. Domain model references
+
+N/A
