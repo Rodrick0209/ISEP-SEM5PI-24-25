@@ -10,7 +10,7 @@
   <a href="planning">Planning</a>
   <a href="patients" *ngIf="isAdmin()">Patients</a>
   <a href="operationType" *ngIf="isAdmin()">Operation Types</a>
-  <a href="profile" *ngIf="isPatientUser()">Profile</a>
+  <a [routerLink]="['/profile', getUserEmail()]" *ngIf="isPatientUser()">Profile</a>
   
   
   <!-- New container for user information -->

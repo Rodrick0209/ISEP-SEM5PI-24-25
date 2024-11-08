@@ -1,3 +1,4 @@
+#nullable enable
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System;
@@ -233,6 +234,34 @@ namespace DDDSample1.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { Message = ex.ToString() });
+            }
+        }
+
+        [HttpPatch("patients/edit/confirm")]
+        public async Task<ActionResult<PatientDto>> ConfirmEditPatientAsync([FromQuery] string token, [FromQuery] string email, [FromQuery] string? emailToEdit, [FromQuery] string? phoneNumberToEdit)
+        {
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+            {
+                return BadRequest(new { Message = "Invalid confirmation link."});
+            }
+
+            var dto = new ConfirmationEditPatientDto(token, email, emailToEdit, phoneNumberToEdit)
+            {
+                Token = token,
+                Email = email,
+                EmailToEdit = emailToEdit,
+                PhoneNumberToEdit = phoneNumberToEdit
+            };
+
+            try
+            {
+                var patientDto = await _service.ConfirmEditPatientAsync(dto);
+
+                return Ok(patientDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
             }
         }
 

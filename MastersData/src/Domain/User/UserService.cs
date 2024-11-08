@@ -308,7 +308,7 @@ namespace DDDSample1.Domain.User
                 }
 
                 email = dto.Email;
-                SendEmailWithUrlConfirmationEdtPatient(dto.Email, token);
+                SendEmailWithUrlConfirmationEdtPatient(dto.Email, token, dto.EmailToEdit, dto.PhoneNumberToEdit);
             }
 
             await _unitOfWork.CommitAsync();
@@ -433,12 +433,12 @@ namespace DDDSample1.Domain.User
         private void SendEmailWithUrlConfirmationRegisterPatient(string email, string token)
         {
             string callbackUrl = $"http://localhost:4200/register/confirm?token={token}&email={email}";
-            _emailSender.SendEmailAsync($"Please confirm your register here: <a href='{callbackUrl}'>link</a>", email, "Confirm the register og your account");
+            _emailSender.SendEmailAsync($"Please confirm your register here: <a href='{callbackUrl}'>link</a>", email, "Confirm the register of your account");
         }
 
-        private void SendEmailWithUrlConfirmationEdtPatient(string email, string token)
+        private void SendEmailWithUrlConfirmationEdtPatient(string email, string token, string emailToEdit, string phoneNumberToEdit)
         {
-            string callbackUrl = $"http://localhost:5000/api/users/patients/edit/confirmation/{token}";
+            string callbackUrl = $"http://localhost:4200/edit/confirm?token={token}&email={email}&emailToEdit={emailToEdit}&phoneNumberToEdit={phoneNumberToEdit}";
             _emailSender.SendEmailAsync($"Please confirm your edition here: <a href='{callbackUrl}'>link</a>", email, "Confirm the edition of your account");
         }
 

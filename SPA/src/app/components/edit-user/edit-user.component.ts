@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { User, UserService } from '../../services/user.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { MessageService } from '../../services/message.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-edit-user',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, CommonModule],
   templateUrl: './edit-user.component.html',
   styleUrl: './edit-user.component.css'
 })
@@ -20,6 +22,7 @@ export class EditUserComponent implements OnInit {
   email: string | null = null;
   errorMessage = '';
   successMessage = '';
+  showConfirmation: boolean = false;
 
   constructor(private userService: UserService, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
 
@@ -27,7 +30,17 @@ export class EditUserComponent implements OnInit {
     this.email = this.route.snapshot.paramMap.get('email');
   }
 
-  onEdit(userForm: any): void {
+  confirmSubmission(): void {
+    this.showConfirmation = true;
+  }
+
+  closeConfirmationModal(): void {
+    this.showConfirmation = false;
+  }
+
+  
+  editUser(userForm: any): void {
+    this.showConfirmation = false;
     if (userForm.valid) {
       const userData = {
         ...this.submitForm
@@ -46,7 +59,7 @@ export class EditUserComponent implements OnInit {
               this.successMessage = 'Please check your email to confirm the changes to your email and/or phone number.';
             } else {
               this.messageService.setMessage('User updated successfully');
-              this.router.navigate(['/user-profile']);
+              this.router.navigate(['/profile', this.email]);
             }
           },
           error: (err: any) => {
@@ -58,5 +71,10 @@ export class EditUserComponent implements OnInit {
         this.errorMessage = 'User not found';
       }
     }
+  }
+
+  onCancel(): void {
+    this.showConfirmation = false;
+    this.router.navigate(['/profile', this.email]);
   }
 }

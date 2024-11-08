@@ -97,8 +97,22 @@ public static class DataSeeder
       "jane.cena@example.com",
       "+351 234567234",
       "202410000005");
+    Patient rodrick = new Patient(
+      "Rodrick",
+      "2022-10-01",
+      "male",
+      "1221083@isep.ipp.pt",
+      "+351 123456123",
+      "Main Street 123",
+      "1234-567",
+      "Los Angeles",
+      "USA",
+      "Jane Cena",
+      "jane.cena@gmail.com",
+      "+351 234567234",
+      "202410000006");
 
-    var patients = new List<Patient> { johnCena, johnCena2, johnCena3, johnCena4, johnCena5 };
+    var patients = new List<Patient> { johnCena, johnCena2, johnCena3, johnCena4, johnCena5, rodrick };
 
     johnCena.MedicalHistory.ChangeMedicalConditions("Healthy");
     johnCena2.MedicalHistory.ChangeMedicalConditions("Ashma");

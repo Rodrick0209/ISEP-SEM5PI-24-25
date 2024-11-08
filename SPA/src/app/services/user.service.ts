@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 export interface User {
   email: string;
@@ -16,7 +17,7 @@ export class UserService {
   private editUrl = '/api/users/patients/edit'
   private editUrlConfirm = '/api/users/patients/edit/confirm'
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getUserByEmail(email: string): Observable<User> {
     return this.http.get<User>(`${this.url}?email=${email}`);
@@ -45,6 +46,14 @@ export class UserService {
     if (newEmail) body.emailToEdit = newEmail;
     if (phone) body.phoneNumberToEdit = phone;
 
-    return this.http.patch(this.editUrl, body);
+    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
+    return this.http.patch(this.editUrl, body, { headers });
+  }
+
+  confirmEdit(token: string, email: string, newEmail: string, phone: string): Observable<any> {
+    const url = `${this.editUrlConfirm}?token=${token}&email=${email}&emailToEdit=${newEmail}&phoneNumberToEdit=${phone}`;
+
+    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
+    return this.http.patch(url, { headers });
   }
 }

@@ -30,7 +30,7 @@ export const routes: Routes = [
     { path: 'cube', component: CubeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'register-confirmation', component: RegisterConfirmationComponent },
+    { path: 'register/confirm', component: RegisterConfirmationComponent },
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
     { 
@@ -76,7 +76,7 @@ export const routes: Routes = [
         data: { role: 'admin' }
     },
     {
-        path: 'profile',
+        path: 'profile/:email',
         component: UserProfileComponent,
         canActivate: [AuthGuard],
         data: { role: 'patient' }
@@ -88,15 +88,16 @@ export const routes: Routes = [
         data: { role: 'patient' }
     },
     {
-        path: 'edit/:email',
-        component: EditUserComponent,
+        path: 'edit/confirm',
+        component: EditConfirmationComponent,
         canActivate: [AuthGuard],
         data: { role: 'patient' }
     },
     {
-        path: 'edit-confirmation',
-        component: EditConfirmationComponent,
+        path: 'edit/:email',
+        component: EditUserComponent,
         canActivate: [AuthGuard],
         data: { role: 'patient' }
     }
+    
 ];
