@@ -20,7 +20,7 @@ namespace DDDSample1.Controllers
     {
         private readonly IStaffService _service;
 
-        public StaffController(StaffService service)
+        public StaffController(IStaffService service)
         {
             _service = service;
         }

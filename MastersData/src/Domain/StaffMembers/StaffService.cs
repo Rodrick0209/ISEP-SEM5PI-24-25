@@ -56,7 +56,7 @@ namespace DDDSample1.Domain.StaffMembers
             await checkOSpecializationIdAsync(staffdto.SpecializationId);
 
 
-            //await checkAvailabilitySlotIdAsync(staffdto.AvailabilitySlotsId);
+            await checkAvailabilitySlotIdAsync(staffdto.AvailabilitySlotsId);
 
             DateTime recruitmentDate = DateTime.Now;
 
