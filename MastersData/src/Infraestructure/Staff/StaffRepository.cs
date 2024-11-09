@@ -19,18 +19,15 @@ namespace DDDSample1.Infrastructure.StaffMembers
             this.context = context;
         }
 
-        public async Task<List<Staff>> GetByEmailAsync(string email)
+        public async Task<Staff> GetByEmailAsync(string email)
         {
-            return await this.context.StaffMembers
-            .Where(p => p.Email.email == email)
-            .ToListAsync();
+            return await this.context.StaffMembers.FirstOrDefaultAsync(e => e.Email.email == email);
+            
         }
 
-         public async Task<List<Staff>> GetByPhoneNumberAsync(string phoneNumber)
+          public async Task<Staff> GetByPhoneNumberAsync(string phoneNumber)
         {
-            return await this.context.StaffMembers
-            .Where(p => p.PhoneNumber.phoneNumber == phoneNumber)
-            .ToListAsync();
+            return await this.context.StaffMembers.FirstOrDefaultAsync(p => p.PhoneNumber.phoneNumber == phoneNumber);
         }
         public async Task DeleteAsync(StaffId id)
         {
@@ -42,25 +39,22 @@ namespace DDDSample1.Infrastructure.StaffMembers
             }
         }
 
-        public async Task<List<Staff>> GetByLicenseNumberAsync(string licenseNumber)
+        public async Task<Staff> GetByLicenseNumberAsync(string licenseNumber)
         {
-            return await this.context.StaffMembers
-            .Where(p => p.LicenseNumber.licenseNumber == licenseNumber)
-            .ToListAsync();
+           return await this.context.StaffMembers.FirstOrDefaultAsync(ln => ln.LicenseNumber.licenseNumber == licenseNumber);
         }
         
-         public async Task<List<Staff>> GetByNameAsync(string name)
+         public async Task<Staff> GetByNameAsync(string name)
         {
-            return await this.context.StaffMembers
-                .Where(s => s.FullName.fullName == name)
-                .ToListAsync();
+            return await this.context.StaffMembers.FirstOrDefaultAsync(n => n.FullName.fullName == name);
         }
 
-        public async Task<List<Staff>> GetByIdsAsync(string id)
+        public async Task<Staff> GetByIdsAsync(string id)
         {
-            return await this.context.StaffMembers
-                .Where(s => id.Contains(s.Id.AsString()))
-                .ToListAsync();
+            return await this.context.StaffMembers.FirstOrDefaultAsync(s => s.Id.AsString() == id);
+                
+
+;
         }
 
 
