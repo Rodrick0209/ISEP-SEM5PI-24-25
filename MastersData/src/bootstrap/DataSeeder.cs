@@ -167,8 +167,43 @@ public static class DataSeeder
     context.OperationTypes.AddRange(operationTypes);
 
     var operationRequest = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512344").AsString());
-    var operationRequest2 = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
-    var operationRequests = new List<OperationRequest> { operationRequest, operationRequest2 };
+    SeedOperationRequest(context, operationRequest);
+    Console.WriteLine("test1");
+    var operationRequest2 = new OperationRequest("2025-02-19", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest2);
+    Console.WriteLine("test2");
+
+    var operationRequest3 = new OperationRequest("2025-02-20", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest3);
+    Console.WriteLine("test3");
+
+    var operationRequest4 = new OperationRequest("2025-02-23", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest4);
+
+    var operationRequest5 = new OperationRequest("2025-02-24", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest5);
+    var operationRequest6 = new OperationRequest("2025-02-25", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest6);
+    var operationRequest7 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest7);
+    var operationRequest8 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest8);
+
+    var operationRequest9 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest9);
+
+    var operationRequest10 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest10);
+
+    var operationRequest11 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest11);
+
+    var operationRequest12 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest12);
+
+    var operationRequest13 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest13);
+
 
     Staff staff = new Staff(new StaffId("D202512345"), "staff", "12345", specialization1.Id.Value, "cobrirErroMario", "email@gmail.com", "+951999999999", "Doctor", "True");
     SeedStaff(context, staff);
@@ -180,14 +215,12 @@ public static class DataSeeder
     dailyAvailability.AddTimeSlot(1080, 1200);
     dailyAvailability.AddTimeSlot(1200, 1300);
     SeedDailyAvailability(context, dailyAvailability);
-  
+
     availableSlot2.Availability.Add(dailyAvailability);
-    
-    
+
+
     SeedAvailabilitySlots(context, availableSlot2);
 
-    context.OperationRequests.AddRange(operationRequest);
-    context.SaveChanges();
 
 
     var operationRoom = new OperationRoom("or1", "boas", "10");

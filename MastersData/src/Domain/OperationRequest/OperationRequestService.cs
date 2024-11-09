@@ -307,6 +307,20 @@ namespace DDDSample1.Domain.OperationRequest
     }
 
 
+    public async Task<List<OperationRequestDto>> GetAllForUiAsync()
+    {    
+        List<OperationRequest> operationRequests = await this._repo.GetAllAsync();
+        List<OperationRequestDto> operationRequestDtos = new List<OperationRequestDto>();
+        foreach (OperationRequest operationRequest in operationRequests)
+        {
+            var patientMedicalRecordNumber = _patientRepository.GetByIdAsync(new PatientId(operationRequest.patientId)).Result.MedicalRecordNumber._medicalRecordNumber;
+            var operationTypeDesignation = _operationTypeRepository.GetByIdAsync(new OperationTypeId(operationRequest.operationTypeId)).Result.name;
+           operationRequestDtos.Add(OperationRequestMapper.toDtoForUI(operationRequest,patientMedicalRecordNumber,operationTypeDesignation));
+        }
+        return operationRequestDtos;
+    }
+
+
 
 
 

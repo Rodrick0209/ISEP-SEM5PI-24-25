@@ -13,6 +13,8 @@ import { MessageService } from '../../services/message.service';
   styleUrls: ['./create-patient.component.css'] // Ensure this is plural
 })
 export class CreatePatientComponent {
+  
+  
   submitForm = {
     firstName: '',
     lastName: '',

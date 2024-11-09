@@ -16,6 +16,7 @@ namespace DDDSample1.Domain.OperationRequest
         Task<OperationRequest> DeleteAsync(OperationRequestId id);
         Task<List<OperationRequestDto>> GetOperationRequestsWithFilters(OperationRequestFilterDto filters, string doctorIdEmail);
         Task<List<OperationRequest>> GetAllAsync();
+        Task<List<OperationRequestDto>> GetAllForUiAsync();
 
         Task<OperationRequest> GetByIdAsync(OperationRequestId id);
 

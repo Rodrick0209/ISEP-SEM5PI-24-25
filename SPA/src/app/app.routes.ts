@@ -21,6 +21,9 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { EditConfirmationComponent } from './components/edit-confirmation/edit-confirmation.component';
+import { OperationRequestsComponent } from './components/operationRequests/operationRequests.component';
+
+
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -33,6 +36,7 @@ export const routes: Routes = [
     { path: 'register/confirm', component: RegisterConfirmationComponent },
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
+    { path: 'operationRequests', component: OperationRequestsComponent },
     { 
         path: 'operationType',
         component: OperationTypeComponent,
@@ -99,5 +103,4 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         data: { role: 'patient' }
     }
-    
 ];

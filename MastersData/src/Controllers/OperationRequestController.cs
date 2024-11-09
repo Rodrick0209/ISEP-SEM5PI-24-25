@@ -140,7 +140,6 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("GetAll")]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetAll()
         {
             var list = await  _service.GetAllAsync();
@@ -153,6 +152,13 @@ namespace DDDSample1.Controllers
 
             return Ok(listDto);
         } 
+
+
+        [HttpGet("GetAllForUi")]
+        public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetAllForUi()
+        {
+            return await _service.GetAllForUiAsync();
+        }
 
 
 

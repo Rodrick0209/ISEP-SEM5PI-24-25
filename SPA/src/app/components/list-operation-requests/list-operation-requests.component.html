@@ -1,0 +1,40 @@
+<div class="operation-requests-container">
+    <div class="table-wrapper">
+      <div class="table-header">
+        <table>
+          <thead>
+            <tr>
+              <th>DeadlineDate</th>
+              <th>Doctor</th>
+              <th>Priority</th>
+              <th>OperationType</th>
+              <th>Patient</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+  
+      <div class="table-body">
+        <table>
+          <tbody>
+            <tr *ngFor="let operationRequest of operationRequests">
+              <td>{{ operationRequest.deadLineDate }}</td>
+              <td>{{ operationRequest.doctorThatWillPerformId }}</td>
+              <td>{{ operationRequest.priority }}</td>
+              <td>{{ operationRequest.operationTypeId }}</td>
+              <td>{{ operationRequest.patientId }}</td>
+              <td>
+                <button>Edit</button>
+              </td>
+              <td>
+                <button>Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
