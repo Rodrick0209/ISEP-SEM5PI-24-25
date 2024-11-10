@@ -209,6 +209,7 @@ public static class DataSeeder
     SeedStaff(context, staff);
 
 
+
     var availableSlot2 = new AvailabilitySlot(staff.Id.AsString());
     DailyAvailability dailyAvailability = new DailyAvailability(new DateOnly(2024, 10, 28));
     dailyAvailability.AddTimeSlot(720, 840);
@@ -220,6 +221,9 @@ public static class DataSeeder
 
 
     SeedAvailabilitySlots(context, availableSlot2);
+
+    Staff staff2 = new Staff(new StaffId("D202512344"), "staffMario", "12346", specialization1.Id.Value, availableSlot2.Id.Value, "emaill@gmail.com", "+951999999998", "Doctor", "True");
+    SeedStaff(context, staff2);
 
 
 
