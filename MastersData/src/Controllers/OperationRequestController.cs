@@ -102,7 +102,6 @@ namespace DDDSample1.Controllers
 
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<ActionResult<OperationRequestDto>> Delete(Guid id)
         {
             try

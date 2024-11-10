@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 
 
 export interface OperationRequest {
+    id: string;
     doctorThatWillPerformId: string;
     deadLineDate: Date;
     priority: string;
@@ -25,6 +26,9 @@ export class OperationRequestService {
         return this.http.get<OperationRequest[]>(this.url);
     }
 
+    deleteOperationRequest(id: string): Observable<any> {
+        return this.http.delete(`/api/OperationRequest/${id}`);
+    }
 
 
 }

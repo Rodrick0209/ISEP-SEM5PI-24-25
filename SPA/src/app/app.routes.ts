@@ -22,6 +22,7 @@ import { UserSettingsComponent } from './components/user-settings/user-settings.
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { EditConfirmationComponent } from './components/edit-confirmation/edit-confirmation.component';
 import { OperationRequestsComponent } from './components/operationRequests/operationRequests.component';
+import { DeleteOperationRequestsComponent } from './components/delete-operation-requests/delete-operation-requests.component';
 
 
 
@@ -37,6 +38,8 @@ export const routes: Routes = [
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
     { path: 'operationRequests', component: OperationRequestsComponent },
+    { path : 'operationRequests/delete/:id', component: DeleteOperationRequestsComponent },
+    
     { 
         path: 'operationType',
         component: OperationTypeComponent,

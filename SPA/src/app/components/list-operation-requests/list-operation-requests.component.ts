@@ -35,6 +35,12 @@ export class ListOperationRequestsComponent implements OnInit {
 
   }
 
+  deleteOpRequest(operationRequest: OperationRequest): void {
+    this.router.navigate(['/operationRequests/delete',operationRequest.id]); // Adjust this route as needed
+  }
+
+
+
 
 
 

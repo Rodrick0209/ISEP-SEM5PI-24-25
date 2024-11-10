@@ -1,0 +1,89 @@
+.delete-operationRequest {
+    text-align: center; /* Center-align text */
+    padding: 40px; /* Increased padding for a spacious feel */
+    border: 1px solid #e0e0e0; /* Light gray border */
+    border-radius: 12px; /* Slightly more rounded corners */
+    max-width: 600px; /* Increased max width for larger screens */
+    margin: 30px auto; /* Center in the viewport with more margin */
+    background-color: #ffffff; /* Pure white for a clean look */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* More pronounced shadow for depth */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font family */
+}
+
+h3 {
+    margin-bottom: 24px; /* Space below the heading */
+    font-size: 24px; /* Larger font size for the heading */
+    color: #222; /* Darker color for better contrast */
+}
+
+p {
+    margin-bottom: 24px; /* Space below the paragraph */
+    font-size: 16px; /* Slightly larger font size for readability */
+    color: #555; /* Medium gray for text */
+}
+
+.delete-button,
+.cancel-button {
+    padding: 12px 20px; /* Padding for button */
+    border: none; /* No border */
+    border-radius: 6px; /* Rounded corners */
+    font-size: 16px; /* Font size for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    margin: 0 10px; /* Space between buttons */
+}
+
+.delete-button {
+    background-color: #ff4d4d; /* Bright red background for delete button */
+    color: #ffffff; /* White text */
+}
+
+.delete-button:disabled {
+    background-color: #f1f1f1; /* Light gray background when disabled */
+    color: #b0b0b0; /* Gray color for text */
+    cursor: not-allowed; /* Not allowed cursor */
+}
+
+.delete-button:not(:disabled):hover {
+    background-color: #d9534f; /* Darker red on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+.cancel-button {
+    background-color: #007bff; /* Bright blue background for cancel button */
+    color: #ffffff; /* White text */
+}
+
+.cancel-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+/* Style for the MarkXComponent */
+.square {
+    width: 30px; /* Size of the checkbox */
+    height: 30px; /* Size of the checkbox */
+    border: 2px solid #007bff; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    margin-right: 10px; /* Space between checkbox and text */
+    display: inline-flex; /* Center the mark inside */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background-color: #ffffff; /* White background */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.square:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue background on hover */
+}
+
+.mark-x {
+    font-size: 20px; /* Font size for "X" */
+    color: #d9534f; /* Red color for the "X" */
+    transition: transform 0.2s ease; /* Smooth transform */
+}
+
+.square.active .mark-x {
+    transform: scale(1.2); /* Slightly larger when active */
+}
