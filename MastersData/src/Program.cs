@@ -218,10 +218,10 @@ namespace DDDSample1.Startup
 
             services.AddTransient<IOperationRequestService, OperationRequestService>();
             services.AddTransient<IDailyAvailabilityRepository, DailyAvailabilityRepository>();
-            services.AddTransient<AvailabilitySlotService>();
+            
 
             services.AddTransient<IStaffRepository, StaffRepository>();
-            services.AddTransient<StaffService>();
+            services.AddTransient<IStaffService, StaffService>();
 
             services.AddTransient<IAvailabilitySlotsRepository, AvailabilitySlotRepository>();
 
@@ -234,6 +234,7 @@ namespace DDDSample1.Startup
             services.AddTransient<IPatientLoggerRepository, PatientLoggerRepository>();
 
             services.AddTransient<IAvailabilitySlotsRepository, AvailabilitySlotRepository>();
+            services.AddTransient<AvailabilitySlotService>();
 
             services.AddTransient<IPhasesRepository, PhasesRepository>(); // Register IPhasesRepository
 
@@ -241,10 +242,10 @@ namespace DDDSample1.Startup
             services.AddTransient<StaffLoggerService>();
 
             services.AddTransient<IOperationRoomRepository, OperationRoomRepository>();
-            services.AddTransient<OperationRoomService>();
+            services.AddTransient<IOperationRoomService, OperationRoomService>();
 
             services.AddTransient<IAppointmentRepository, AppointmentRepository>();
-            services.AddTransient<AppointmentService>();
+            services.AddTransient<IAppointmentService, AppointmentService>();
         }
 
 
