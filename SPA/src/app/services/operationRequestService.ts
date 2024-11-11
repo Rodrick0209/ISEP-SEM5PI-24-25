@@ -31,4 +31,10 @@ export class OperationRequestService {
     }
 
 
+    editOperationRequest(data: any): Observable<any> {
+        console.log(data);
+        return this.http.put(`/api/OperationRequest/${data.Id}`,data);
+    }
+
+
 }

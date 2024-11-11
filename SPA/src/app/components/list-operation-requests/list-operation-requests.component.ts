@@ -40,6 +40,10 @@ export class ListOperationRequestsComponent implements OnInit {
   }
 
 
+  updateOpRequest(operationRequest: OperationRequest): void {
+    this.router.navigate(['/operationRequests/edit',operationRequest.id]); // Adjust this route as needed
+  } 
+
 
 
 

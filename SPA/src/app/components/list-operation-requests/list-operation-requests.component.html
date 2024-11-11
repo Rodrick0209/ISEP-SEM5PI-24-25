@@ -26,7 +26,7 @@
               <td>{{ operationRequest.operationTypeId }}</td>
               <td>{{ operationRequest.patientId }}</td>
               <td>
-                <button>Edit</button>
+                <button (click) = "updateOpRequest(operationRequest)"> Edit</button>
               </td>
               <td>
                 <button (click) ="deleteOpRequest(operationRequest)"> Delete</button>

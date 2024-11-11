@@ -8,12 +8,10 @@
   <a href="contact">Contact</a>
   <a href="cube">Cube</a>
   <a href="planning">Planning</a>
-  <a href="operationRequests">Operation Requests</a>
+  <a href="operationRequests" *ngIf="isDoctorUser()">Operation Requests</a>
   <a href="patients" *ngIf="isAdmin()">Patients</a>
   <a href="operationType" *ngIf="isAdmin()">Operation Types</a>
   <a [routerLink]="['/profile', getUserEmail()]" *ngIf="isPatientUser()">Profile</a>
-  
-  
   <!-- New container for user information -->
   <div class="user-info">
     <a *ngIf="!isLoggedIn" href="login">Login</a>
