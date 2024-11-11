@@ -1,0 +1,40 @@
+<div class="filter-container">
+    <form (submit)="onSearch($event)">
+      
+      <div class="filter-field">
+        <label for="operationType">Operation Type:</label>
+        <input type="text" id="operationType" name="operationType" [(ngModel)]="filter.operationType" placeholder="Enter operation type..." />
+      </div>
+  
+      <div class="filter-field">
+        <label for="patientName">Patient Name:</label>
+        <input type="text" id="patientName" name="patientName" [(ngModel)]="filter.patientName" placeholder="Enter patient name..." />
+      </div>
+  
+      <div class="filter-field">
+        <label for="medicalRecordNumber">Medical Record Number:</label>
+        <input type="text" id="medicalRecordNumber" name="medicalRecordNumber" [(ngModel)]="filter.medicalRecordNumber" placeholder="Enter medical record number..." />
+      </div>
+  
+      <div class="filter-field">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" [(ngModel)]="filter.startDate" />
+      </div>
+  
+      <div class="filter-field">
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" [(ngModel)]="filter.endDate" />
+      </div>
+  
+      <button type="submit">Apply Filter</button>
+    </form>
+    
+
+
+
+    
+  </div>
+
+
+  
+  

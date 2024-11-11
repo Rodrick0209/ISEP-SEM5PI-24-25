@@ -1,7 +1,7 @@
 <div class="edit-operationRequest-container">
     <h2>Edit Operation Request</h2>
     <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
-    <form (ngSubmit)="confirmSubmission()" #patientForm="ngForm">
+    <form (ngSubmit)="confirmSubmission()" #operationRequestForm="ngForm">
         <h3>Operation Request Information</h3>
         <div class="operationRequest-information">
             <div class="form-group">
@@ -20,9 +20,9 @@
     <div class="modal" *ngIf="showConfirmation">
         <div class="modal-content">
             <h3>Confirm Submission</h3>
-            <p>Are you sure you want to save the changes to this patient profile?</p>
+            <p>Are you sure you want to save the changes to this operation request?</p>
             <div class="modal-actions">
-                <button (click)="onSubmit(patientForm)" class="btn-confirm">Yes</button>
+                <button (click)="onSubmit(operationRequestForm)" class="btn-confirm">Yes</button>
                 <button (click)="closeConfirmationModal()" class="btn-cancel">No</button>
             </div>
         </div>

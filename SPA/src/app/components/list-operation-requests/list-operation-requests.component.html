@@ -1,4 +1,5 @@
 <div class="operation-requests-container">
+  <app-filter-operation-requests-component (filterChanged)="onFilterChanged($event)"></app-filter-operation-requests-component>
     <div class="table-wrapper">
       <div class="table-header">
         <table>
@@ -35,6 +36,10 @@
           </tbody>
         </table>
       </div>
+    </div>
+
+    <div *ngIf="isLoading" class="spinner-container">
+      <div class="spinner"></div>
     </div>
   </div>
   

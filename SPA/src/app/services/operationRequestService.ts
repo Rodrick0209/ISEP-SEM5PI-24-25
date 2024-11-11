@@ -13,6 +13,15 @@ export interface OperationRequest {
     operationTypeId: string;
 }
 
+export interface OperationRequestView {
+    doctorThatWillPerformId: string;
+    deadLineDate: Date;
+    priority: string;
+    patientId: string;
+    operationTypeId: string;
+}
+
+
 
 @Injectable({
     providedIn: 'root'
@@ -35,6 +44,31 @@ export class OperationRequestService {
         console.log(data);
         return this.http.put(`/api/OperationRequest/${data.Id}`,data);
     }
+
+
+    filterOperationRequests(filter: { operationType: string; patientName: string, medicalRecordNumber: string, startDate: string, endDate: string}): Observable<OperationRequest[]> {
+        let params = new HttpParams();
+        if (filter.operationType) {
+            params = params.set('OperationType', filter.operationType);
+        }
+        if (filter.patientName) {
+            params = params.set('PatientName', filter.patientName);
+        }
+        if (filter.medicalRecordNumber) {
+            params = params.set('MedicalRecordNumber', filter.medicalRecordNumber);
+        }
+        if (filter.startDate) {
+            params = params.set('StartDate', filter.startDate);
+        }
+        if (filter.endDate) {
+            params = params.set('EndDate', filter.endDate);
+        }
+        console.debug('Filtering Request Entered');
+        return this.http.get<OperationRequest[]>('/api/OperationRequest/getWithFilters', { params });
+    }
+
+
+
 
 
 }

@@ -20,7 +20,7 @@ using DDDSample1.Domain.Utils;
 
 namespace DDDSample1.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
 
@@ -35,7 +35,7 @@ namespace DDDSample1.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "doctor")]
         public async Task<ActionResult<OperationRequestDto>> Create(OperationRequestDto dto)
         {
             try
@@ -74,9 +74,11 @@ namespace DDDSample1.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "doctor")]
         public async Task<ActionResult<OperationRequestDto>> Update(Guid id, ChangeOperationRequestDto dto)
         {
+            Console.WriteLine("ID cabeçalho: " + id);
+            Console.WriteLine("ID corpo: " + dto.Id);
             if (id != dto.Id)
             {
                 return BadRequest("ID mismatch");
@@ -85,7 +87,7 @@ namespace DDDSample1.Controllers
             try
             {
                 var emailDoctorQuerEditar = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-                
+
                 var op = await _service.UpdateAsync(dto, emailDoctorQuerEditar);
                 if (op == null)
                 {
@@ -102,12 +104,13 @@ namespace DDDSample1.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "doctor")]
         public async Task<ActionResult<OperationRequestDto>> Delete(Guid id)
         {
             try
             {
                 var op = await _service.DeleteAsync(new OperationRequestId(id));
-                
+
                 return Ok(OperationRequestMapper.toDTO(op));
 
             }
@@ -122,41 +125,38 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("getWithFilters")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "doctor")]
         public async Task<IActionResult> GetOperationRequests([FromQuery] OperationRequestFilterDto filters)
         {
-        var emailDoctorQuerEditar = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-
-
-        var operationRequests = await _service.GetOperationRequestsWithFilters(filters, emailDoctorQuerEditar);
-        if(operationRequests == null || operationRequests.Count == 0)
-        {
-            return NotFound();
+            var emailDoctorQuerEditar = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var operationRequests = await _service.GetOperationRequestsWithFilters(filters, emailDoctorQuerEditar);
+            Console.WriteLine("Size opRequests: " + operationRequests.Count);
+            return Ok(operationRequests);
         }
-        
-        return Ok(operationRequests);
-    }
 
 
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetAll()
         {
-            var list = await  _service.GetAllAsync();
+            var list = await _service.GetAllAsync();
             var listDto = new List<OperationRequestDto>();
-            
+
             foreach (var op in list)
             {
                 listDto.Add(OperationRequestMapper.toDTO(op));
             }
 
             return Ok(listDto);
-        } 
+        }
 
 
         [HttpGet("GetAllForUi")]
+        [Authorize(Roles = "doctor")]
+
         public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetAllForUi()
         {
-            return await _service.GetAllForUiAsync();
+            var emailDoctorQuerEditar = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            return await _service.GetAllForUiAsync(emailDoctorQuerEditar);
         }
 
 
