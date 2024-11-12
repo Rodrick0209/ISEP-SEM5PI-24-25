@@ -1,4 +1,14 @@
 <div class="operation-requests-container">
+  <button class="create-operationRequest-button" (click)="createOpRequest()">Create Operation Request</button>
+  
+  
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+  </div>
+  
   <app-filter-operation-requests-component (filterChanged)="onFilterChanged($event)"></app-filter-operation-requests-component>
     <div class="table-wrapper">
       <div class="table-header">

@@ -38,7 +38,7 @@ export class DeleteOperationRequestsComponent {
           if(this.operationRequestId){
             this.operationRequestService.deleteOperationRequest(this.operationRequestId).subscribe({
                 next: () => {
-                    this.messageService.setMessage(`Operation request nº ${this.route.snapshot.paramMap.get('id')} successfully deleted!`); // Set the success message
+                    this.messageService.setMessage(`Operation request successfully deleted!`); // Set the success message
                     this.router.navigate(['/operationRequests']); // Redirect to the operation requests list
                 },
                 error: (err: any) => {

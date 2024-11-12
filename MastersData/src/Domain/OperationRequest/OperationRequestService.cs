@@ -60,6 +60,28 @@ namespace DDDSample1.Domain.OperationRequest
 
         }
 
+        public async Task<OperationRequestDto> AddAsyncUi(OperationRequestDto operationRequest, string doctorThatWantsToCreateEmail)
+        {
+            await CheckOperationTypeNameAsync(operationRequest.OperationTypeId, operationRequest);
+            await CheckDoctorIdAsync(new StaffId(operationRequest.DoctorThatWillPerformId));
+            await CheckPatientMedicalRecordAsync(operationRequest.PatientId, operationRequest);
+            OperationRequest op = OperationRequestMapper.toDomain(operationRequest);
+            
+
+
+            await this._repo.AddAsync(op);
+            await this._unitOfWork.CommitAsync();
+            return operationRequest;
+
+        }
+
+
+        
+
+
+
+
+
         public async Task<OperationRequest> UpdateAsync(ChangeOperationRequestDto dto, string doctorThatWantsToUpdateEmail)
         {
             var op = await this._repo.GetByIdAsync(new OperationRequestId(dto.Id));
@@ -166,6 +188,24 @@ namespace DDDSample1.Domain.OperationRequest
             }
         }
 
+        private async Task<OperationType> CheckOperationTypeNameAsync(string operationTypeName, OperationRequestDto operationRequest)
+        {
+            try
+            {
+                var opType = await this._operationTypeRepository.GetByNameAsync(operationTypeName);
+
+                if (opType == null)
+                {
+                    throw new BusinessRuleValidationException("Operation Type not found");
+                }
+                operationRequest.OperationTypeId = opType.Id.AsString();
+                return opType;
+            }
+            catch (Exception e)
+            {
+                throw new BusinessRuleValidationException("Operation Type Not Found");
+            }
+        }
 
 
 
@@ -189,13 +229,31 @@ namespace DDDSample1.Domain.OperationRequest
             return await this._repo.GetAllAsync();
         }
 
-        private async Task<Patient> CheckPatientAsync(PatientId id)
+        private async Task<Patient> CheckPatientAsync(PatientId id )
         {
             var patient = await this._patientRepository.GetByIdAsync(id);
             if (patient == null)
                 throw new BusinessRuleValidationException("Patient not found");
             return patient;
         }
+
+        private async Task<Patient> CheckPatientMedicalRecordAsync(string mr, OperationRequestDto operationRequest)
+        {
+            var patient = await this._patientRepository.GetByMedicalRecordNumberAsync(mr);
+            if (patient == null)
+                throw new BusinessRuleValidationException("Patient not found");
+
+            operationRequest.PatientId = patient.Id.AsString();    
+            return patient;
+        }
+
+
+
+
+
+
+
+
 
 
         public async Task<List<OperationRequestDto>> GetOperationRequestsWithFilters(OperationRequestFilterDto filters, string doctorIdEmail)
@@ -312,7 +370,6 @@ namespace DDDSample1.Domain.OperationRequest
             Email email = new Email(doctor);
             var doctorThatRequestedId = email.getFirstPartOfEmail();
             List<OperationRequest> operationRequests = await this._repo.GetOperationRequestsByDoctorIdRequested(doctorThatRequestedId);
-            
             List<OperationRequestDto> operationRequestDtos = new List<OperationRequestDto>();
             foreach (OperationRequest operationRequest in operationRequests)
             {
@@ -320,12 +377,14 @@ namespace DDDSample1.Domain.OperationRequest
                 var operationTypeDesignation = _operationTypeRepository.GetByIdAsync(new OperationTypeId(operationRequest.operationTypeId)).Result.name;
                 operationRequestDtos.Add(OperationRequestMapper.toDtoForUI(operationRequest, patientMedicalRecordNumber, operationTypeDesignation));
             }
+            Console.WriteLine("Erro aqui3");
+
             return operationRequestDtos;
         }
 
         public List<OperationRequestDto> TransformOperationRequestsForUi(List<OperationRequest> operationRequests)
         {
-            
+
             List<OperationRequestDto> operationRequestDtos = new List<OperationRequestDto>();
             foreach (OperationRequest operationRequest in operationRequests)
             {

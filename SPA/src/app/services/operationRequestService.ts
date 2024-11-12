@@ -68,6 +68,17 @@ export class OperationRequestService {
     }
 
 
+    createOperationRequest(deadLineDate: string, priority: string, patientId: string, operationTypeId: string, doctorThatWillPerformId: string): Observable<any> {
+        const data = {
+            deadLineDate,
+            priority,
+            patientId,
+            operationTypeId,
+            doctorThatWillPerformId
+        };
+        return this.http.post('/api/OperationRequest/CreateUi', data);
+    }
+
 
 
 

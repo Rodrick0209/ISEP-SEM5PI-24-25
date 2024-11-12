@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { OperationRequest, OperationRequestService } from '../../services/operationRequestService';
 import { FilterOperationRequestsComponent } from '../filter-operation-requests/filter-operation-requests.component';
-
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-list-operation-requests',
@@ -18,8 +18,10 @@ export class ListOperationRequestsComponent implements OnInit {
   filteredOperationRequests: OperationRequest[] = [];
   isLoading = false;
 
+  successMessage: string | null = null;
 
-  constructor(private operationRequestService: OperationRequestService, private router: Router) { }
+
+  constructor(private operationRequestService: OperationRequestService, private router: Router, private messageService: MessageService) { }
 
   ngOnInit(): void {  
     this.operationRequestService.getOperationRequests().subscribe({
@@ -34,10 +36,13 @@ export class ListOperationRequestsComponent implements OnInit {
       }
 
     });
-
+    this.successMessage = this.messageService.getMessage();
 
   }
 
+  createOpRequest(): void {
+    this.router.navigate(['/operationRequests/create']); // Adjust this route as needed
+  }
 
 
 

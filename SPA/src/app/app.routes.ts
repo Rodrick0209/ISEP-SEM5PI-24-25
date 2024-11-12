@@ -24,6 +24,7 @@ import { EditConfirmationComponent } from './components/edit-confirmation/edit-c
 import { OperationRequestsComponent } from './components/operationRequests/operationRequests.component';
 import { DeleteOperationRequestsComponent } from './components/delete-operation-requests/delete-operation-requests.component';
 import { EditOperationRequestsComponent } from './components/edit-operation-requests/edit-operation-requests.component';
+import { CreateOperationRequestsComponent } from './components/create-operation-requests/create-operation-requests.component';
 
 
 
@@ -40,6 +41,12 @@ export const routes: Routes = [
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
     { path: 'operationRequests', 
         component: OperationRequestsComponent, 
+        canActivate: [AuthGuard],
+        data: { role: 'doctor' }
+    },
+    {
+        path: 'operationRequests/create',
+        component: CreateOperationRequestsComponent,
         canActivate: [AuthGuard],
         data: { role: 'doctor' }
     },

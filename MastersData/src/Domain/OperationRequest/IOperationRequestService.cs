@@ -12,6 +12,8 @@ namespace DDDSample1.Domain.OperationRequest
     public interface IOperationRequestService
     {
         Task<OperationRequest> AddAsync(OperationRequest operationRequest);
+        Task<OperationRequestDto> AddAsyncUi(OperationRequestDto operationRequest, string doctorThatWantsToCreateEmail);
+
         Task<OperationRequest> UpdateAsync(ChangeOperationRequestDto dto, string doctorThatWantsToUpdateEmail);
         Task<OperationRequest> DeleteAsync(OperationRequestId id);
         Task<List<OperationRequestDto>> GetOperationRequestsWithFilters(OperationRequestFilterDto filters, string doctorIdEmail);

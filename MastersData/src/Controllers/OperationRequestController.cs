@@ -61,6 +61,37 @@ namespace DDDSample1.Controllers
             }
         }
 
+        [HttpPost("CreateUi")]
+        [Authorize (Roles = "doctor")]
+
+        public async Task<ActionResult<OperationRequestDto>> CreateUi(OperationRequestDto dto)
+        {
+            try
+            {
+                var emailDoctorQuerCriar = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                if (emailDoctorQuerCriar == null)
+                {
+                    throw new Exception("Email do doutor não encontrado.");
+                }
+                dto.DoctorThatRequestedId =  new Email(emailDoctorQuerCriar).getFirstPartOfEmail().ToString();
+                var op = await _service.AddAsyncUi(dto, emailDoctorQuerCriar);
+                return CreatedAtAction(nameof(GetGetById), new { id = dto.Id }, dto);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+
+
+            }
+        
+
+
+
         [HttpGet("{id}")]
 
         public async Task<ActionResult<OperationRequestDto>> GetGetById(String id)
