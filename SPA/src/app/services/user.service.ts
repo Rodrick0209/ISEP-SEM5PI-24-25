@@ -46,14 +46,12 @@ export class UserService {
     if (newEmail) body.emailToEdit = newEmail;
     if (phone) body.phoneNumberToEdit = phone;
 
-    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
-    return this.http.patch(this.editUrl, body, { headers });
+    return this.http.patch(this.editUrl, body);
   }
 
   confirmEdit(token: string, email: string, newEmail: string, phone: string): Observable<any> {
     const url = `${this.editUrlConfirm}?token=${token}&email=${email}&emailToEdit=${newEmail}&phoneNumberToEdit=${phone}`;
 
-    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
-    return this.http.patch(url, { headers });
+    return this.http.get(url);
   }
 }
