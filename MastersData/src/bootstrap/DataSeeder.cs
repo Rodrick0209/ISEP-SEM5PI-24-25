@@ -102,7 +102,7 @@ public static class DataSeeder
       "2022-10-01",
       "male",
       "1221083@isep.ipp.pt",
-      "+351 123456123",
+      "+351 123456788",
       "Main Street 123",
       "1234-567",
       "Los Angeles",
@@ -325,4 +325,54 @@ public static class DataSeeder
       context.Appointments.Add(appointment);
     }
   }
+
+  public static async Task UnseedAsync(IServiceProvider serviceProvider)
+  {
+    using var scope = serviceProvider.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<DDDSample1DbContext>();
+
+    // Remove appointments
+    var appointments = context.Appointments.ToList();
+    context.Appointments.RemoveRange(appointments);
+
+    // Remove availability slots
+    var availabilitySlots = context.AvailabilitySlots.ToList();
+    context.AvailabilitySlots.RemoveRange(availabilitySlots);
+
+    // Remove operation rooms
+    var operationRooms = context.OperationRooms.ToList();
+    context.OperationRooms.RemoveRange(operationRooms);
+
+    // Remove staff
+    var staffMembers = context.StaffMembers.ToList();
+    context.StaffMembers.RemoveRange(staffMembers);
+
+    // Remove operation requests
+    var operationRequests = context.OperationRequests.ToList();
+    context.OperationRequests.RemoveRange(operationRequests);
+
+    // Remove operation types
+    var operationTypes = context.OperationTypes.ToList();
+    context.OperationTypes.RemoveRange(operationTypes);
+
+    // Remove phases
+    var phases = context.Phases.ToList();
+    context.Phases.RemoveRange(phases);
+
+    // Remove specializations
+    var specializations = context.Specializations.ToList();
+    context.Specializations.RemoveRange(specializations);
+
+    // Remove patients
+    var patients = context.Patients.ToList();
+    context.Patients.RemoveRange(patients);
+
+    // Remove users
+    var users = context.Users.ToList();
+    context.Users.RemoveRange(users);
+
+    // Save the changes to the database
+    await context.SaveChangesAsync();
+  }
+
 }

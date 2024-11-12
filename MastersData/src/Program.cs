@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using DDDSample1.Infrastructure;
 using DDDSample1.Infrastructure.Shared;
 using DDDSample1.Domain.Shared;
@@ -45,6 +46,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using DDDSample1.Domain.Appointments;
 using DDDSample1.Infrastructure.Appointments;
+using Microsoft.Extensions.Configuration;
 
 
 
@@ -92,11 +94,24 @@ namespace DDDSample1.Startup
             //CRIAR INTERFACE PARA TOKEN PROVIDER
             builder.Services.AddSingleton<TokenProvider>();
             // Add services to the container.
-            builder.Services.AddDbContext<DDDSample1DbContext>(opt =>
-                opt.UseInMemoryDatabase("DDDSample1DB")
-                .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
+            var useInMemoryDatabase = builder.Configuration.GetValue<bool>("DatabaseSettings:UseInMemoryDatabase");
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-            builder.Services.AddAuthorization();          
+            builder.Services.AddDbContext<DDDSample1DbContext>(opt =>
+            {
+                if (useInMemoryDatabase)
+                {
+                    opt.UseInMemoryDatabase("DDDSample1DB");
+                }
+                else
+                {
+                    opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+                }
+
+                opt.ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>();
+            });
+
+            builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -131,18 +146,18 @@ namespace DDDSample1.Startup
                 };
             }).AddCookie(options =>
                 {
-                    options.LoginPath = "/google-login"; 
+                    options.LoginPath = "/google-login";
                 })
             .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
                 {
-                    options.ClientId = "240475919297-mafpifo793qgthd1sat4ufn7gtfgfe8r.apps.googleusercontent.com";  
-                    options.ClientSecret = "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";  
+                    options.ClientId = "240475919297-mafpifo793qgthd1sat4ufn7gtfgfe8r.apps.googleusercontent.com";
+                    options.ClientSecret = "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";
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.CallbackPath = "/signin-google-callback";
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
-                    options.SaveTokens = true; 
+                    options.SaveTokens = true;
                 });
 
             builder.Services.AddControllers().AddNewtonsoftJson();
@@ -186,7 +201,7 @@ namespace DDDSample1.Startup
             app.UseAuthentication();
 
             app.UseAuthorization();
-            
+
 
             app.MapControllers();
 
@@ -208,8 +223,8 @@ namespace DDDSample1.Startup
             services.AddTransient<OperationRequestService>();
 
             services.AddTransient<IOperationTypeRepository, OperationTypeRepository>();
-            services.AddTransient<IOperationTypeService,OperationTypeService>();
-            services.AddTransient<ISpecializationService,SpecializationService>();
+            services.AddTransient<IOperationTypeService, OperationTypeService>();
+            services.AddTransient<ISpecializationService, SpecializationService>();
 
             services.AddTransient<IPatientRepository, PatientRepository>();
             services.AddTransient<IPatientService, PatientService>();
@@ -218,7 +233,7 @@ namespace DDDSample1.Startup
 
             services.AddTransient<IOperationRequestService, OperationRequestService>();
             services.AddTransient<IDailyAvailabilityRepository, DailyAvailabilityRepository>();
-            
+
 
             services.AddTransient<IStaffRepository, StaffRepository>();
             services.AddTransient<IStaffService, StaffService>();
