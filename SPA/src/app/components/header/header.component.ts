@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
 export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router ) {}
 
   ngOnInit(): void {
     // Observe o estado de autenticação
@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit {
 
   logout(): void {
     this.authService.clearToken();
+    this.router.navigate(['/home']);
   }
 
   getUserEmail(): string | null {
