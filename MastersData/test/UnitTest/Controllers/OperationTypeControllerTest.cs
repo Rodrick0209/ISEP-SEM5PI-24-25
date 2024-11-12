@@ -129,7 +129,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _mockService.Setup(s => s.GetByIdAsync(It.IsAny<OperationTypeId>())).ReturnsAsync(operationType);
 
             // Act
-            var result = await _controller.Inactivate(Guid.NewGuid().ToString());
+            var result = await _controller.Inactivate(operationType.Id.AsGuid().ToString());
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<OperationTypeDto>>(result);
@@ -227,7 +227,8 @@ namespace DDDSample1.Tests.UnitTests.Controllers
                 ),
                 Guid.NewGuid().ToString()
             );
-            _mockService.Setup(s => s.UpdateAsync(dto)).ReturnsAsync((OperationType)null);
+            var specializationDict = new Dictionary<string, Guid> { { "Ortopedia", Guid.NewGuid() } };
+            _mockService.Setup(s => s.UpdateAsync(dto, specializationDict)).ReturnsAsync((OperationType)null);
 
             // Act
             var result = await _controller.Update(dto.Id, dto);

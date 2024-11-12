@@ -237,7 +237,7 @@ namespace DDDSample1.Controllers
             }
         }
 
-        [HttpPatch("patients/edit/confirm")]
+        [HttpGet("patients/edit/confirm")]
         public async Task<ActionResult<PatientDto>> ConfirmEditPatientAsync([FromQuery] string token, [FromQuery] string email, [FromQuery] string? emailToEdit, [FromQuery] string? phoneNumberToEdit)
         {
             if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
