@@ -147,7 +147,9 @@ public static class DataSeeder
     var user2 = new User("D202512344@gmail.com", "doctor", password);
     var user3 = new User("admin@teste.com", "admin", password);
     var user4 = new User("john.cena@gmail.com", "patient", password);
-    var users = new List<User> { user, user2, user3 };
+    var user5 = new User("rodrigocastro2004@gmail.com", "admin", password);
+
+    var users = new List<User> { user, user2, user3, user4, user5 };
 
     context.Users.AddRange(users);
 

@@ -66,49 +66,26 @@ namespace DDDSample1.Controllers
         }
 
 
-        [Route("Forgot Password")]
+        [Route("Forgot-Password")]
         [HttpPost]
         public async Task<ActionResult> ForgotPassword(RequestForgotPasswordDto dto)
         {
+            var user = await _service.GetByEmailAsync(dto.Email);
 
-
-            if (ModelState.IsValid)
+            if (user == null)
             {
-                var user = await _service.GetByEmailAsync(dto.Email);
-
-                if (user == null)
-                {
-                    return BadRequest("Invalid payload");
-                }
-
-                var token = _service.GenerateResetPasswordToken(user);
-
-                if (token == null)
-                    return BadRequest("Something went wrong");
-
-
-
-                string callbackUrl = $"http://localhost:9999/resetpassword?code={token}&Email={user.email.email}";
-
-                await _service.sendEmailWithUrlResetPassword(user.email.email, callbackUrl);
-                Console.WriteLine("Parte do email passada");
-
-                return Ok(new
-                {
-                    token = token,
-                    email = user.email.email,
-                });
-
-
-
+                return BadRequest(new { Message = "Invalid email" });
             }
-            return BadRequest(ModelState);
 
+            await _service.sendEmailWithUrlResetPassword(user.email.email);
 
-
+            return Ok(new
+            {
+                email = user.email.email,
+            });
         }
 
-        [Route("Reset Password")]
+        [Route("Reset-Password")]
         [HttpPost]
         public async Task<ActionResult> ResetPassword(ResetPasswordRequestDto dto)
         {
@@ -120,14 +97,23 @@ namespace DDDSample1.Controllers
             {
                 return BadRequest("Invalid payload");
             }
+            if (dto.NewPassword == null || dto.Token == null)
+            {
+                return BadRequest("Invalid payload");
+            }
 
-            var result = await _service.ResetPassword(user, dto.NewPassword, dto.Token);
+            try
+            {
+                var result = await _service.ResetPassword(user, dto.NewPassword, dto.Token);
 
-            if (result.Equals("Success"))
-                return Ok("Password reset successful");
+                return Ok(new { Message = "Password reset successfully" });
 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.ToString() });
+            }
 
-            return BadRequest("Something went wrong");
 
         }
 
@@ -174,7 +160,7 @@ namespace DDDSample1.Controllers
         {
             if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
             {
-                return BadRequest(new { Message = "Invalid confirmation link."});
+                return BadRequest(new { Message = "Invalid confirmation link." });
             }
 
             var dto = new ConfirmationPatientDto(token, email)
@@ -242,7 +228,7 @@ namespace DDDSample1.Controllers
         {
             if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
             {
-                return BadRequest(new { Message = "Invalid confirmation link."});
+                return BadRequest(new { Message = "Invalid confirmation link." });
             }
 
             var dto = new ConfirmationEditPatientDto(token, email, emailToEdit, phoneNumberToEdit)

@@ -124,14 +124,10 @@ namespace DDDSample1.Domain.User
             return await _repo.GetByEmailAsync(email);
         }
 
-        public async Task<string> GenerateResetPasswordToken(User user)
+        private string GenerateResetPasswordToken(User user)
         {
             TokenProvider tokenProvider = new TokenProvider(_configuration);
             string token = tokenProvider.CreatePasswordResetToken(user);
-
-            //definir o tempo de expiração do token num config file 
-            user.SetResetPasswordToken(token, DateTime.UtcNow.AddHours(24));
-            await this._unitOfWork.CommitAsync();
 
             return token;
 
@@ -142,27 +138,24 @@ namespace DDDSample1.Domain.User
             await _emailSender.SendEmailAsync("Account with username " + accountBlockedEmail + " has been blocked due to abusive access / failing consequitive logins", (_configuration["Admin:Email"]), "Account Blocked");
             return "Email sent";
         }
-
-
-
-
         public async Task<string> ResetPassword(User user, string newPassword, string token)
         {
-
+            Console.WriteLine("Ver se password sao diff");
             if (!user.resetPasswordToken.resetPasswordToken.Equals(token))
             {
                 throw new Exception("Invalid token");
             }
 
-            //FALTA VERIFICAR SE O TOKEN AINDA É VALIDO EM TEMPO ?
+            Console.WriteLine("Passou Ver se password sao diff");
 
-            //DEFINIR O PASSWORD HASHER COM O AWAIT qnd tiver tempo
+
             PasswordHasher passwordHasher = new PasswordHasher();
-            string newPasswordHash = passwordHasher.HashPassword(newPassword);
             user.SetPassword(passwordHasher.HashPassword(newPassword));
 
+            Console.WriteLine("Passou SetPassword");
             user.ClearResetPasswordToken();
 
+            Console.WriteLine("Passou ClearResetPasswordToken");
             await this._unitOfWork.CommitAsync();
 
             return "Success"; ;
@@ -170,9 +163,16 @@ namespace DDDSample1.Domain.User
         }
 
 
-        public async Task<string> sendEmailWithUrlResetPassword(string email, string url)
+        public async Task<string> sendEmailWithUrlResetPassword(string email)
         {
+            User user = await _repo.GetByEmailAsync(email);
+            string token = GenerateResetPasswordToken(user);
+            user.SetResetPasswordToken(token, DateTime.UtcNow.AddMinutes(5));
+            
+            string url = $"http://localhost:4200/reset-password?token={token}&email={email}";
             await _emailSender.SendEmailAsync($"Please reset your password by clicking here: <a href='{url}'>link</a>", email, "ResetPassword");
+            await _unitOfWork.CommitAsync();
+
 
             return "Email sent";
 
