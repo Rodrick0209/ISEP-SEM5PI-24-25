@@ -113,7 +113,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             var dto = new EditingPatientProfileDto
             {
                 MedicalRecordNumber = "202410000001",
-                FullName = "Jane Doe",
+                Name = "Jane Doe",
 
             };
 
@@ -145,7 +145,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             var dto = new EditingPatientProfileDto
             {
                 MedicalRecordNumber = "202410000006",
-                FullName = "Jane Doe"
+                Name = "Jane Doe"
             };
 
             _patientRepository.Setup(pr => pr.GetByMedicalRecordNumberAsync(dto.MedicalRecordNumber)).Throws(new BusinessRuleValidationException("Patient not found"));

@@ -1,0 +1,30 @@
+<div class="edit-operationRequest-container">
+    <h2>Edit Operation Request</h2>
+    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <form (ngSubmit)="confirmSubmission()" #operationRequestForm="ngForm">
+        <h3>Operation Request Information</h3>
+        <div class="operationRequest-information">
+            <div class="form-group">
+                <label for="deadlineDate">Deadline Date</label>
+                <input type="date" id="deadlineDate" name="deadlineDate" [(ngModel)]="submitForm.deadline" placeholder="Optional" />            </div>
+            <div class="form-group">
+                <label for="priority">Priority</label>
+                <input type="text" id="priority" name="priority" [(ngModel)]="submitForm.priority" placeholder="Optional" />            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">Save Changes</button>
+            <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+        </div>
+    </form>
+    <div class="modal" *ngIf="showConfirmation">
+        <div class="modal-content">
+            <h3>Confirm Submission</h3>
+            <p>Are you sure you want to save the changes to this operation request?</p>
+            <div class="modal-actions">
+                <button (click)="onSubmit(operationRequestForm)" class="btn-confirm">Yes</button>
+                <button (click)="closeConfirmationModal()" class="btn-cancel">No</button>
+            </div>
+        </div>
+    </div>
+</div>

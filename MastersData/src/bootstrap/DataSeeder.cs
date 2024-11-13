@@ -102,7 +102,7 @@ public static class DataSeeder
       "2022-10-01",
       "male",
       "1221083@isep.ipp.pt",
-      "+351 123456123",
+      "+351 123456788",
       "Main Street 123",
       "1234-567",
       "Los Angeles",
@@ -143,11 +143,13 @@ public static class DataSeeder
 
     PasswordHasher hasher = new PasswordHasher();
     string password = hasher.HashPassword("password");
-    var user = new User("D202512345@gmail.com", "Doctor", password);
-    var user2 = new User("D202512344@gmail.com", "Doctor", password);
+    var user = new User("D202512345@gmail.com", "doctor", password);
+    var user2 = new User("D202512344@gmail.com", "doctor", password);
     var user3 = new User("admin@teste.com", "admin", password);
     var user4 = new User("john.cena@gmail.com", "patient", password);
-    var users = new List<User> { user, user2, user3 };
+    var user5 = new User("rodrigocastro2004@gmail.com", "admin", password);
+
+    var users = new List<User> { user, user2, user3, user4, user5 };
 
     context.Users.AddRange(users);
 
@@ -209,6 +211,7 @@ public static class DataSeeder
     SeedStaff(context, staff);
 
 
+
     var availableSlot2 = new AvailabilitySlot(staff.Id.AsString());
     DailyAvailability dailyAvailability = new DailyAvailability(new DateOnly(2024, 10, 28));
     dailyAvailability.AddTimeSlot(720, 840);
@@ -220,6 +223,9 @@ public static class DataSeeder
 
 
     SeedAvailabilitySlots(context, availableSlot2);
+
+    Staff staff2 = new Staff(new StaffId("D202512344"), "staffMario", "12346", specialization1.Id.Value, availableSlot2.Id.Value, "emaill@gmail.com", "+951999999998", "Doctor", "True");
+    SeedStaff(context, staff2);
 
 
 
@@ -342,4 +348,54 @@ public static class DataSeeder
       context.Appointments.Add(appointment);
     }
   }
+
+  public static async Task UnseedAsync(IServiceProvider serviceProvider)
+  {
+    using var scope = serviceProvider.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<DDDSample1DbContext>();
+
+    // Remove appointments
+    var appointments = context.Appointments.ToList();
+    context.Appointments.RemoveRange(appointments);
+
+    // Remove availability slots
+    var availabilitySlots = context.AvailabilitySlots.ToList();
+    context.AvailabilitySlots.RemoveRange(availabilitySlots);
+
+    // Remove operation rooms
+    var operationRooms = context.OperationRooms.ToList();
+    context.OperationRooms.RemoveRange(operationRooms);
+
+    // Remove staff
+    var staffMembers = context.StaffMembers.ToList();
+    context.StaffMembers.RemoveRange(staffMembers);
+
+    // Remove operation requests
+    var operationRequests = context.OperationRequests.ToList();
+    context.OperationRequests.RemoveRange(operationRequests);
+
+    // Remove operation types
+    var operationTypes = context.OperationTypes.ToList();
+    context.OperationTypes.RemoveRange(operationTypes);
+
+    // Remove phases
+    var phases = context.Phases.ToList();
+    context.Phases.RemoveRange(phases);
+
+    // Remove specializations
+    var specializations = context.Specializations.ToList();
+    context.Specializations.RemoveRange(specializations);
+
+    // Remove patients
+    var patients = context.Patients.ToList();
+    context.Patients.RemoveRange(patients);
+
+    // Remove users
+    var users = context.Users.ToList();
+    context.Users.RemoveRange(users);
+
+    // Save the changes to the database
+    await context.SaveChangesAsync();
+  }
+
 }

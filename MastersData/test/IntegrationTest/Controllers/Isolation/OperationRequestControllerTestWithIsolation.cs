@@ -95,7 +95,8 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
 
 
 
-            var availabilitySlot1 = new AvailabilitySlot("2024-10-10", "10:10", "17:10");
+            var availabilitySlot1 = new AvailabilitySlot(staffId);
+            availabilitySlot1.AddAvailability(DateOnly.Parse("2025-01-01"), 610, 720);
 
 
             // Configurar mocks para retornar entidades com esses IDs fixos

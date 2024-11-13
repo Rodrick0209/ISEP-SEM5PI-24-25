@@ -83,10 +83,10 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _controller = new StaffController(_mockService.Object);
 
             // Arrange
-            var dto = new EditingStaffProfileDto("d202412345", "John Doe", "12345", "john.doe@example.com", "+351 1234567890");
+            var dto = new EditingStaffProfileDto("D202412345", "John Doe", "12345", "john.doe@example.com", "+351 1234567890");
             var staffDto = new StaffDto
             (
-                new StaffId("d202412345"),
+                new StaffId("D202412345"),
                 "John Doe",
                 "12345",
                 "11111111-1111-1111-1111-111111111113",
@@ -99,7 +99,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _mockService.Setup(service => service.UpdateAsync(dto)).ReturnsAsync(staffDto);
 
             // Act
-            var result = await _controller.Update(dto, "123");
+            var result = await _controller.Update(dto, "D202412345");
 
             // Assert
             var actionResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -114,7 +114,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
 
 
             // Arrange
-            var dto = new EditingStaffProfileDto("d202412345", "John Doe", "12345", "john.doe@example.com", "+351 1234567890");
+            var dto = new EditingStaffProfileDto("D202412345", "John Doe", "12345", "john.doe@example.com", "+351 1234567890");
 
             // Act
             var result = await _controller.Update(dto, "456");
@@ -130,9 +130,9 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _controller = new StaffController(_mockService.Object);
 
             // Arrange
-            var staff = new Staff
+            var staff = new StaffDto
             (
-                new StaffId("d202412345"),
+                new StaffId("D202412345"),
                 "John Doe",
                 "12345",
                 "11111111-1111-1111-1111-111111111113",
@@ -145,11 +145,10 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _mockService.Setup(service => service.DeleteAsync(It.IsAny<StaffId>())).ReturnsAsync(staff);
 
             // Act
-            var result = await _controller.Delete("123");
+            var result = await _controller.Delete("D202412345");
 
-            // Assert
-            var actionResult = Assert.IsType<OkObjectResult>(result.Result);
-            Assert.Equal(staff, actionResult.Value);
+             // Assert
+            Assert.IsType<NoContentResult>(result);
         }
 
         [Fact]
@@ -159,9 +158,9 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _controller = new StaffController(_mockService.Object);
 
             // Arrange
-            var staff = new Staff
+            var staff = new StaffDto
             (
-                new StaffId("d202412345"),
+                new StaffId("D202412345"),
                 "John Doe",
                 "12345",
                 "11111111-1111-1111-1111-111111111113",
@@ -174,10 +173,10 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _mockService.Setup(service => service.GetByIdAsync(It.IsAny<StaffId>())).ReturnsAsync(staff);
 
             // Act
-            var result = await _controller.GetGetById("123");
+            var result = await _controller.GetGetById("D202412345");
 
             // Assert
-            var actionResult = Assert.IsType<ActionResult<Staff>>(result);
+            var actionResult = Assert.IsType<ActionResult<StaffDto>>(result);
             Assert.Equal(staff, actionResult.Value);
         }
 
@@ -188,10 +187,10 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _controller = new StaffController(_mockService.Object);
 
             // Arrange
-            _mockService.Setup(service => service.GetByIdAsync(It.IsAny<StaffId>())).ReturnsAsync((Staff?)null);
+            _mockService.Setup(service => service.GetByIdAsync(It.IsAny<StaffId>())).ReturnsAsync((StaffDto?)null);
 
             // Act
-            var result = await _controller.GetGetById("123");
+            var result = await _controller.GetGetById("D202412345");
 
             // Assert
             Assert.IsType<NotFoundResult>(result.Result);
@@ -204,10 +203,10 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _controller = new StaffController(_mockService.Object);
 
             // Arrange
-            var staffList = new List<Staff> {
-                new Staff
+            var staffList = new List<StaffDto> {
+                new StaffDto
                 (
-                new StaffId("d202412345"),
+                new StaffId("D202412345"),
                 "John Doe",
                 "12345",
                 "11111111-1111-1111-1111-111111111113",
@@ -217,8 +216,8 @@ namespace DDDSample1.Tests.UnitTests.Controllers
                 "Doctor",
                 "true"
             ) ,
-                new Staff
-                (new StaffId("d202412345"),
+                new StaffDto
+                (new StaffId("D202412345"),
                 "John Doe",
                 "12345",
                 "11111111-1111-1111-1111-111111111113",
@@ -234,7 +233,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             var result = await _controller.GetAll();
 
             // Assert
-            var actionResult = Assert.IsType<ActionResult<IEnumerable<Staff>>>(result);
+            var actionResult = Assert.IsType<ActionResult<IEnumerable<StaffDto>>>(result);
             Assert.Equal(staffList, actionResult.Value);
         }
 
