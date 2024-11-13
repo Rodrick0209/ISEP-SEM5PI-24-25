@@ -49,7 +49,7 @@ assignment_surgery(so100005,d003).
 
 
 %Facto que registar a agenda da sala em formato (idSala, data, Lista(tInicial,tFinal,idCirurgia))
-agenda_operation_room(or1,20241028,[(520,579,so100000),(1000,1059,so099999)]).
+agenda_operation_room(or1,20241028,[]).
 
 
 %Predicado para retornar a agenda livre
@@ -234,22 +234,3 @@ list_doctors_agenda(Day,[D|LD],[(D,AgD)|LAgD]):-agenda_staff1(D,Day,AgD),list_do
 remove_equals([],[]).
 remove_equals([X|L],L1):-member(X,L),!,remove_equals(L,L1).
 remove_equals([X|L],[X|L1]):-remove_equals(L,L1).
-
-
-% Heuristic to find the next surgery for the doctor that is available early
-next_surgery_for_early_doctor(Room, Day, OpCode, TinS, TfinS, LDoctors) :-
-    surgery_id(OpCode, OpType),
-    surgery(OpType, _, TSurgery, _),
-    findall((Doctor, Tin, Tfin), (
-        assignment_surgery(OpCode, Doctor),
-        availability(Doctor, Day, LFA),
-        member((Tin, Tfin), LFA),
-        Tfin - Tin + 1 >= TSurgery
-    ), AvailableDoctors),
-    sort(2, @=<, AvailableDoctors, SortedDoctors),
-    SortedDoctors = [(Doctor, Tin, Tfin) | _],
-    TinS is Tin,
-    TfinS is Tin + TSurgery - 1,
-    findall(D, assignment_surgery(OpCode, D), LDoctors).
-
-% next_surgery_for_early_doctor(or1, 20241028, so100001, TinS, TfinS, LDoctors).
