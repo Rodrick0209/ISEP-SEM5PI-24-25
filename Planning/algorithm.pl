@@ -8,20 +8,26 @@
 
 
 %Factos  agenda staff
-agenda_staff(d001,20241028,[(720,790,m01),(1080,1140,c01)]). 
+agenda_staff(d001,20241028,[(720,790,m01)]). 
 agenda_staff(d002,20241028,[(850,900,m02),(901,960,m02),(1380,1440,c02)]). 
 agenda_staff(d003,20241028,[(720,790,m01),(910,980,m02)]).
+agenda_staff(d004,20241028,[]).
+agenda_staff(d005,20241028,[]).
+
 
 %Horas de saida e entrada de cada staff
-timetable(d001,20241028,(480,1200)).
+timetable(d001,20241028,(480,1400)).
 timetable(d002,20241028,(500,1440)).
 timetable(d003,20241028,(520,1320)).
+timetable(d004,20241028,(480,1440)).
+timetable(d005,20241028,(480,1440)).
 
 %Registar o staff na base de conhecimento
 staff(d001,doctor,orthopaedist,[so2,so3,so4]).
 staff(d002,doctor,orthopaedist,[so2,so3,so4]).
 staff(d003,doctor,orthopaedist,[so2,so3,so4]).
-
+staff(d004,doctor,anesthesist,[so2,so3,so4]).
+staff(d005,doctor,anesthesist,[so2,so3,so4]).
 
 %surgery(SurgeryType,TAnesthesia,TSurgery,TCleaning). 
 %Registar tipos de cirurgia na base de conhecimento 
@@ -29,12 +35,19 @@ surgery(so2,45,60,45).
 surgery(so3,45,90,45).
 surgery(so4,45,75,45).
 
+surgery_specializationsRequired(so2,[[1,anesthesist]]).
+
+
+
 %Criar cirurgias na base de conhecimento em formato (idCirurgia,idTipoCirurgia)
 surgery_id(so100001,so2).
-surgery_id(so100002,so3).
-surgery_id(so100003,so4).
-surgery_id(so100004,so2).
-surgery_id(so100005,so4).
+%surgery_id(so100002,so3).
+%surgery_id(so100003,so4).
+%surgery_id(so100004,so2).
+%surgery_id(so100005,so4).
+
+
+surgery_specializations(so2,[anesthesist]).
 
 
 %Atribuicao da cirurgia a cada staff em formato (idCirurgia, idStaff)
@@ -134,7 +147,7 @@ schedule_all_surgeries(Room,Day):-
     findall(_,(agenda_staff(D,Day,Agenda),assertz(agenda_staff1(D,Day,Agenda))),_), %Procura todos os factos agenda_staff e cria factos agenda_staff1 a partir dos mesmos
     agenda_operation_room(Or,Date,Agenda),assert(agenda_operation_room1(Or,Date,Agenda)),   %cria o facto agenda_operation_room1 a partir Do facots agenda_operation_room
     findall(_,(agenda_staff1(D,Date,L), %encontra todas As agenda_staff1
-    free_agenda0(L,LFA),adapt_timetable(D,Date,LFA,LFA2), %Procura a agenda livre e adaptar o agenda de acordo com horarios de entrada e saida
+    free_agenda0(L,LFA),adapt_timetable(D,Date,LFA,LFA2), %Procura a agenda livre e adapta a agenda de acordo com horarios de entrada e saida
     assertz(availability(D,Date,LFA2))),_), %cria availability de acordo com a agenda resultante processos anteriores 
     findall(OpCode,surgery_id(OpCode,_),LOpCode), % Vai buscar todas As cirurgias por marcar
     availability_all_surgeries(LOpCode,Room,Day),!. 
@@ -152,13 +165,55 @@ availability_all_surgeries([OpCode|LOpCode],Room,Day):- surgery_id(OpCode,OpType
 
 
 
-availability_operation(OpCode,Room,Day,LPossibilities,LDoctors):-surgery_id(OpCode,OpType),surgery(OpType,_,TSurgery,_),
-    findall(Doctor,assignment_surgery(OpCode,Doctor),LDoctors),
-    intersect_all_agendas(LDoctors,Day,LA),
-    agenda_operation_room1(Room,Day,LAgenda),
-    free_agenda0(LAgenda,LFAgRoom),
-    intersect_2_agendas(LA,LFAgRoom,LIntAgDoctorsRoom),
-    remove_unf_intervals(TSurgery,LIntAgDoctorsRoom,LPossibilities).
+availability_operation(OpCode,Room,Day,LPossibilities,LDoctors):-
+    surgery_id(OpCode,OpType),
+    surgery(OpType,TAnesthesia,TSurgery,_),
+    TAnesthesiaAndSurgery is TAnesthesia + TSurgery, %Calcular o tempo total da cirurgia
+    write('TAnesthesiaAndSurgery='),write(TAnesthesiaAndSurgery),nl,
+    findall(Doctor,assignment_surgery(OpCode,Doctor),LDoctors), %Vai buscar todos os medicos que tem a cirurgia atribuida
+    intersect_all_agendas(LDoctors,Day,LA), %Vai intersetar todas As agendas dos medicos
+    write('Agenda livre medicos atribuidas a cirugia='),write(LA),nl,
+    find_available_staff(OpType, Day, LStaffDynamic), %Vai buscar o staff necessario para a cirurgia
+    write('LStaffDynamic='),write(LStaffDynamic),nl,
+    intersect_all_agendas(LStaffDynamic,Day,LAgendaResultAnestesia),
+    write('LAgendaResultAnestesia livre='),write(LAgendaResultAnestesia),nl,
+
+    agenda_operation_room1(Room,Day,LAgenda), %Vai buscar a agenda da sala
+    free_agenda0(LAgenda,LFAgRoom), %Vai buscar a agenda livre da sala
+    write('Agenda livre da sala='),write(LFAgRoom),nl,
+    %intersect_2_agendas(LA,LFAgRoom,LIntAgDoctorsRoom), %Vai intersetar a agenda dos medicos com a agenda livre da sala
+    intersect_2_agendas(LAgendaResultAnestesia,LFAgRoom,LIntAgDoctorsRoom), %Vai intersetar a agenda dos medicos com a agenda livre da sala
+    write('Lista intersecao salas e anestesia='),write(LIntAgDoctorsRoom),nl,
+    remove_unf_intervals(TAnesthesiaAndSurgery,LIntAgDoctorsRoom,LPossibilities), %Vai remover os intervalos que nao sao suficientes para a cirurgia
+    write('Lista possibilidades='),write(LPossibilities),nl,
+    write('Lista agenda doctors= '),write(LA),nl,
+    available_schedule_doctor_anesthesy(LPossibilities,LA,TAnesthesia,TSurgery,LPossibilities1, LPossibilitiesDoctor),
+    write('Lista possibilidades final='),write(LPossibilities1),nl,
+    write('Lista possibilidades doctors= '),write(LPossibilitiesDoctor),nl.
+
+
+available_schedule_doctor_anesthesy([], _, _, _, [],[]).
+available_schedule_doctor_anesthesy([(Start, End)|Rest], LAgendaDoctors, TAnesthesia, TSurgery, [(Start, End)|LPossibilities1], LPossibilitiesDoctor) :-
+    SurgeryStart is Start + TAnesthesia,
+    SurgeryEnd is End,
+    
+    write('TEmpo cirurgia= '), write(TSurgery), nl,
+    write('SurgeryStart='), write(SurgeryStart), write(', SurgeryEnd='), write(SurgeryEnd), nl,
+    write('LAgendaDoctors='), write(LAgendaDoctors), nl,
+    intersect_2_agendas([(SurgeryStart, SurgeryEnd)], LAgendaDoctors, AvailableIntervals),
+    write('AvailableIntervals='), write(AvailableIntervals), nl,
+    AvailableIntervals \= [],
+    findall((IntStart, IntEnd), 
+            (member((IntStart, IntEnd), AvailableIntervals), 
+             IntervalDuration is IntEnd - IntStart,
+             IntervalDuration >= TSurgery),
+            ValidIntervals),!,
+    write('ValidIntervals='), write(ValidIntervals), nl,
+    ValidIntervals \= [],
+    append(ValidIntervals, LPossibilitiesDoctorRest, LPossibilitiesDoctor),
+    available_schedule_doctor_anesthesy(Rest, LAgendaDoctors, TAnesthesia, TSurgery, LPossibilities1, LPossibilitiesDoctorRest).
+available_schedule_doctor_anesthesy([_|Rest], LAgendaDoctors, TAnesthesia, TSurgery, LPossibilities1, LPossibilitiesDoctor) :-
+    available_schedule_doctor_anesthesy(Rest, LAgendaDoctors, TAnesthesia, TSurgery, LPossibilities1, LPossibilitiesDoctor).
 
 
 remove_unf_intervals(_,[],[]).
@@ -182,7 +237,6 @@ insert_agenda_doctors((TinS,TfinS,OpCode),Day,[Doctor|LDoctors]):-
     insert_agenda_doctors((TinS,TfinS,OpCode),Day,LDoctors).
 
 
-
 obtain_better_sol(Room,Day,AgOpRoomBetter,LAgDoctorsBetter,TFinOp):-
 		get_time(Ti),
 		(obtain_better_sol1(Room,Day);true),
@@ -194,7 +248,6 @@ obtain_better_sol(Room,Day,AgOpRoomBetter,LAgDoctorsBetter,TFinOp):-
 		T is Tf-Ti,
 		write('Tempo de geracao da solucao:'),write(T),nl.
 
-
 obtain_better_sol1(Room,Day):-
     asserta(better_sol(Day,Room,_,_,1441)),
     findall(OpCode,surgery_id(OpCode,_),LOC),!,
@@ -204,7 +257,10 @@ obtain_better_sol1(Room,Day):-
     retractall(availability(_,_,_)),
     findall(_,(agenda_staff(D,Day,Agenda),assertz(agenda_staff1(D,Day,Agenda))),_),
     agenda_operation_room(Room,Day,Agenda),assert(agenda_operation_room1(Room,Day,Agenda)),
-    findall(_,(agenda_staff1(D,Day,L),free_agenda0(L,LFA),adapt_timetable(D,Day,LFA,LFA2),assertz(availability(D,Day,LFA2))),_),
+    findall(_,(agenda_staff1(D,Day,L),
+    free_agenda0(L,LFA),
+    adapt_timetable(D,Day,LFA,LFA2),
+    assertz(availability(D,Day,LFA2))),_),
     availability_all_surgeries(LOpCode,Room,Day),
     agenda_operation_room1(Room,Day,AgendaR),
 		update_better_sol(Day,Room,AgendaR,LOpCode),
@@ -236,20 +292,33 @@ remove_equals([X|L],L1):-member(X,L),!,remove_equals(L,L1).
 remove_equals([X|L],[X|L1]):-remove_equals(L,L1).
 
 
-% Heuristic to find the next surgery for the doctor that is available early
-next_surgery_for_early_doctor(Room, Day, OpCode, TinS, TfinS, LDoctors) :-
-    surgery_id(OpCode, OpType),
-    surgery(OpType, _, TSurgery, _),
-    findall((Doctor, Tin, Tfin), (
-        assignment_surgery(OpCode, Doctor),
-        availability(Doctor, Day, LFA),
-        member((Tin, Tfin), LFA),
-        Tfin - Tin + 1 >= TSurgery
-    ), AvailableDoctors),
-    sort(2, @=<, AvailableDoctors, SortedDoctors),
-    SortedDoctors = [(Doctor, Tin, Tfin) | _],
-    TinS is Tin,
-    TfinS is Tin + TSurgery - 1,
-    findall(D, assignment_surgery(OpCode, D), LDoctors).
 
-% next_surgery_for_early_doctor(or1, 20241028, so100001, TinS, TfinS, LDoctors).
+
+
+
+
+
+%Estes 2 predicados servem para irmos buscar o staff necessario para uma cirurgia.
+find_available_staff(OpType, Day, LStaff) :-
+    % Obter As especializações e quantidades necessárias para a cirurgia
+    surgery_specializationsRequired(OpType, RequiredStaff),
+    write('Passo 1: Especializações necessárias: '), write(RequiredStaff), nl,
+    % Encontrar staff disponível para cada requisito
+    findall(StaffForSpec, (
+        member([Count, Specialization], RequiredStaff),
+        find_staff_for_specialization(Specialization, Count, Day, StaffForSpec)
+    ), StaffLists),
+    % Concatenar listas para obter todos os staffs necessários
+    flatten(StaffLists, LStaff).
+
+
+
+find_staff_for_specialization(Specialization, Count, Day, LStaff) :-
+    write('Passo 1: Especialização: '), write(Specialization), nl,
+    write('Passo 2: Quantidade necessária: '), write(Count), nl,
+    % Encontrar todos os staffs disponíveis com a especialização no dia especificado
+    findall(StaffID, (staff(StaffID, _, Specialization, _)), AvailableStaff),
+    write('Passo 3: Staff disponível: '), write(AvailableStaff), nl,
+    % Selecionar apenas a quantidade necessária de staff
+    length(LStaff, Count),
+    append(LStaff, _, AvailableStaff).
