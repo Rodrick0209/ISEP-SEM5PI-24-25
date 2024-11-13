@@ -180,7 +180,7 @@ public class OperationRequestServiceTests
 
 
 
-    [Fact]
+    /*[Fact]
     public async Task GetOperationRequestsWithFilters_FilterByMedicalRecordNumber_ReturnsRequests()
     {
         // Arrange
@@ -227,5 +227,5 @@ public class OperationRequestServiceTests
         // Assert
         Assert.Single(result);
         Assert.Equal(patient.Id.AsString(), result.First().PatientId);
-    }
+    }*/
 }

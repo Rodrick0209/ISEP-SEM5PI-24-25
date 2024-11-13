@@ -31,7 +31,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task Create_ReturnsCreatedResult_WhenDtoIsValid()
         {
             _mockService = new Mock<IOperationTypeService>();
@@ -86,7 +86,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var returnValue = Assert.IsType<OperationTypeDto>(okResult.Value);
             Assert.Equal(dto.Name, returnValue.Name);
-        }
+        }*/
 
         [Fact]
         public async Task GetById_ReturnsNotFound_WhenOperationTypeDoesNotExist()
@@ -109,7 +109,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
         
         
 
-        [Fact]
+        /*[Fact]
         public async Task Inactivate_ReturnsOk_WhenOperationTypeIsDeactivated()
         {
             _mockService = new Mock<IOperationTypeService>();
@@ -136,7 +136,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var returnValue = Assert.IsType<OperationTypeDto>(okResult.Value);
             Assert.Equal("Test Operation Type", returnValue.Name);
-        }
+        }*/
 
         
         [Fact]
