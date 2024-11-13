@@ -61,5 +61,9 @@ namespace DDDSample1.Domain.Appointments
             return HashCode.Combine(Id, AppointmentTimeSlot.Date, AppointmentTimeSlot.TimeSlot);
         }
 
+        public bool isHappening(){
+            return AppointmentTimeSlot.IsTodayAndWithinTimeSlot();
+        }
+
     }
 }

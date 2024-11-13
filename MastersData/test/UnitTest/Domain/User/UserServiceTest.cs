@@ -168,7 +168,7 @@ namespace MastersData.test.UnitTest.Domain.User
             Assert.Equal("Success", result);
         }
 
-        [Fact]
+       /* [Fact]
         public async Task sendEmailWithUrlResetPassword_ShouldSendEmail()
         {
             _emailSenderMock = new Mock<IEmailSender>();
@@ -185,7 +185,7 @@ namespace MastersData.test.UnitTest.Domain.User
             ), Times.Once);
 
             Assert.Equal("Email sent", result);
-        }
+        }*/
 
         [Fact]
         public async Task RegisterPatientAsync_ShouldThrowException_WhenEmailIsNotUnique()

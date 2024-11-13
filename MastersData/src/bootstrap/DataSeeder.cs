@@ -234,10 +234,31 @@ public static class DataSeeder
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1080, 1200);
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1200, 1300);
     SeedOperationRoom(context, operationRoom);
+
+    OperationRoom teste  = new OperationRoom("or8", "description8", "10");
+
+    var rooms = new List<OperationRoom>
+    {
+      new OperationRoom("or1", "description1", "10"),
+      new OperationRoom("or2", "description2", "10"),
+      new OperationRoom("or3", "description3", "10"),
+      new OperationRoom("or4", "description4", "10"),
+      new OperationRoom("or5", "description5", "10"),
+      new OperationRoom("or6", "description6", "10"),
+      new OperationRoom("or7", "description7", "10"),
+      teste,
+      new OperationRoom("or9", "description9", "10"),
+      new OperationRoom("or10", "description10", "10")
+    };
+
+    context.OperationRooms.AddRange(rooms);
+
     context.SaveChanges();
 
-    var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(2025, 02, 18), new TimeSlot(720, 840));
-    var appointment = new Appointment(appointmentTimeSlot, operationRoom.Id.AsString(), operationRequest.Id.AsString());
+    var currentHourInMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+
+    var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(2024, 11, 13), new TimeSlot(currentHourInMinutes+1, currentHourInMinutes+100));
+    var appointment = new Appointment(appointmentTimeSlot, operationRoom.Id.Value, operationRequest.Id.AsString());
     SeedAppointments(context, appointment);
     context.SaveChanges();
   }

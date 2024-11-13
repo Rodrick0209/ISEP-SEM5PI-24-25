@@ -62,7 +62,7 @@ assignment_surgery(so100005,d003).
 
 
 %Facto que registar a agenda da sala em formato (idSala, data, Lista(tInicial,tFinal,idCirurgia))
-agenda_operation_room(or1,20241028,[(520,579,so100000),(1000,1059,so099999)]).
+agenda_operation_room(or1,20241028,[]).
 
 
 %Predicado para retornar a agenda livre
