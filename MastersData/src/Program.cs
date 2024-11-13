@@ -151,7 +151,7 @@ namespace DDDSample1.Startup
                 {
                     options.AddPolicy("AllowAngularApp", builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200") // Angular's URL
+                        builder.WithOrigins("http://localhost:4200", "http://127.0.0.1:5501") // Angular's URL
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });
@@ -242,10 +242,11 @@ namespace DDDSample1.Startup
             services.AddTransient<StaffLoggerService>();
 
             services.AddTransient<IOperationRoomRepository, OperationRoomRepository>();
-            services.AddTransient<IOperationRoomService, OperationRoomService>();
+            services.AddTransient<OperationRoomService>();
 
             services.AddTransient<IAppointmentRepository, AppointmentRepository>();
-            services.AddTransient<IAppointmentService, AppointmentService>();
+            services.AddTransient<AppointmentService>();
+            services.AddTransient<OperationRoomService>();
         }
 
 

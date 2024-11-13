@@ -18,6 +18,13 @@ namespace DDDSample1.Domain.Utils
             StartMinute = startMinute;
             EndMinute = endMinute;
         }
+
+
+        public bool IsBetween(TimeOnly hour)
+        {
+            int minuteInMinutes = hour.Hour * 60 + hour.Minute;
+            return minuteInMinutes >= StartMinute && minuteInMinutes <= EndMinute;
+        }
     }
 
 }
