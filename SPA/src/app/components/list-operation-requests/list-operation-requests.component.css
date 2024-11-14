@@ -1,0 +1,107 @@
+.operation-requests-container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-height: 380px;  /* Ajustar altura do contêiner para 300px */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* Garante que o conteúdo ocupe toda a largura disponível */
+  padding: 0;  /* Remove o padding para evitar o distanciamento excessivo */
+}
+
+.table-wrapper {
+  width: 100%; /* A largura do wrapper deve ser 100% */
+  position: relative;
+}
+
+.table-header {
+  background-color: #007bff;
+  color: white;
+  border-bottom: 1px solid #ddd;
+  z-index: 1; /* Garante que o cabeçalho fique acima do conteúdo */
+  position: sticky;
+  top: 0;
+}
+
+.table-header table {
+  width: 100%; /* A tabela do cabeçalho ocupa 100% */
+  border-collapse: collapse;
+}
+
+.table-body {
+  max-height: 200px;  /* Diminuir a altura máxima do corpo da tabela para 220px */
+  overflow-y: auto;   /* Aplica a rolagem apenas no corpo da tabela */
+  width: 100%;  /* Garante que o corpo da tabela tenha 100% da largura */
+}
+
+.table-body table {
+  width: 100%;  /* O corpo da tabela ocupa 100% da largura */
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 6px 8px;  /* Diminuir mais o padding para reduzir a altura das células */
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #007bff; /* Cor do cabeçalho */
+  color: white;
+}
+
+td {
+  background-color: #f9f9f9;
+}
+
+.table-body td {
+  text-align: center;
+}
+
+.table-body td,
+.table-header th {
+  width: 14.28%;  /* Distribui igualmente a largura entre as colunas */
+  word-wrap: break-word;  /* Garante que o conteúdo não ultrapasse as células */
+  text-align: center;
+}
+
+button {
+  padding: 0.5rem 1rem; /* Aumenta o tamanho do botão */
+  font-size: 1rem; /* Aumenta o tamanho da fonte */
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 0.3rem; /* Diminui a margem entre os botões */
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #ccc; /* Style for disabled buttons */
+  cursor: not-allowed;
+}
+
+.spinner-container {
+  position: fixed; /* Muda de absolute para fixed, para garantir que o spinner fique fixo na tela */
+  top: 80%; /* Ajuste a posição para ficar mais embaixo na tela */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;  /* Garantir que o spinner apareça por cima de outros elementos */
+}
+
+.spinner {
+  border: 6px solid rgba(0, 0, 0, 0.1); /* Aumente a espessura da borda */
+  border-top: 6px solid #007bff;  /* Cor da borda do spinner */
+  border-radius: 50%;
+  width: 80px;  /* Aumente o tamanho do spinner */
+  height: 80px; /* Aumente o tamanho do spinner */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

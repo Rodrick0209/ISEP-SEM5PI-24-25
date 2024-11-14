@@ -1,0 +1,55 @@
+<div class="operation-requests-container">
+  <button class="create-operationRequest-button" (click)="createOpRequest()">Create Operation Request</button>
+  
+  
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+  </div>
+  
+  <app-filter-operation-requests-component (filterChanged)="onFilterChanged($event)"></app-filter-operation-requests-component>
+    <div class="table-wrapper">
+      <div class="table-header">
+        <table>
+          <thead>
+            <tr>
+              <th>DeadlineDate</th>
+              <th>Doctor</th>
+              <th>Priority</th>
+              <th>OperationType</th>
+              <th>Patient</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+  
+      <div class="table-body">
+        <table>
+          <tbody>
+            <tr *ngFor="let operationRequest of operationRequests">
+              <td>{{ operationRequest.deadLineDate }}</td>
+              <td>{{ operationRequest.doctorThatWillPerformId }}</td>
+              <td>{{ operationRequest.priority }}</td>
+              <td>{{ operationRequest.operationTypeId }}</td>
+              <td>{{ operationRequest.patientId }}</td>
+              <td>
+                <button (click) = "updateOpRequest(operationRequest)"> Edit</button>
+              </td>
+              <td>
+                <button (click) ="deleteOpRequest(operationRequest)"> Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="spinner-container">
+      <div class="spinner"></div>
+    </div>
+  </div>
+  

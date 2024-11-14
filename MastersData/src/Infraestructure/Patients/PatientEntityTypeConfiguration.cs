@@ -32,6 +32,7 @@ namespace DDDSample1.Infrastructure.Patients
                 mh.OwnsOne(m => m.MedicalConditions);
             });
             builder.OwnsOne(b => b.Gender).Property(g => g.gender);
+            builder.OwnsOne(b => b.MedicalRecordNumber).HasIndex(mrn => mrn._medicalRecordNumber).IsUnique();
         }
     }
-}
+}   

@@ -1,0 +1,194 @@
+/* Container styling */
+.create-operationRequest-container {
+    max-width: 500px; /* Define uma largura menor para o formulário */
+    margin: 40px auto; /* Centraliza o formulário na tela */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e3e3e3;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Header styling */
+h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/* Section title */
+h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Information container styling */
+.operationRequest-information {
+    max-width: 600px; /* Limita a largura do formulário */
+    margin: 0 auto 20px; /* Centraliza dentro do container principal */
+    padding: 15px 20px; /* Adiciona padding lateral consistente */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Form group styling */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: space-between; /* Garante que os itens sejam distribuídos */
+}
+
+/* Label styling */
+label {
+    font-weight: 500;
+    color: #444;
+    width: 120px; /* Defina uma largura fixa para a label */
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+/* Input and select styling */
+input[type="text"],
+input[type="date"],
+select {
+    flex-grow: 1; /* Faz com que o input ocupe o restante do espaço */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    min-width: 200px; /* Garante que o campo de entrada tenha uma largura mínima */
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.2);
+    outline: none;
+}
+
+/* Form actions styling */
+.form-actions {
+    display: flex;
+    justify-content: center; /* Centraliza os botões */
+    gap: 15px; /* Adiciona espaçamento entre os botões */
+    margin-top: 20px;
+}
+
+/* Botão styling */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+.btn-submit {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.btn-submit:disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
+}
+
+.btn-submit:hover:enabled {
+    background-color: #218838;
+}
+
+.btn-cancel {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-cancel:hover {
+    background-color: #c82333;
+}
+
+/* Modal styling */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+}
+
+.modal.fadeOut {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 280px;
+    text-align: center;
+    animation: slideIn 0.3s ease;
+}
+
+.modal-content h3 {
+    margin: 0 0 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.modal-content p {
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.btn-confirm,
+.btn-cancel {
+    margin: 0 5px;
+    padding: 8px 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-confirm {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-confirm:hover {
+    background-color: #0056b3;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

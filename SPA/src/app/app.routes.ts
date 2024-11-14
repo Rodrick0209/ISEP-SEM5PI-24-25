@@ -21,6 +21,13 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { EditConfirmationComponent } from './components/edit-confirmation/edit-confirmation.component';
+import { OperationRequestsComponent } from './components/operationRequests/operationRequests.component';
+import { DeleteOperationRequestsComponent } from './components/delete-operation-requests/delete-operation-requests.component';
+import { EditOperationRequestsComponent } from './components/edit-operation-requests/edit-operation-requests.component';
+import { CreateOperationRequestsComponent } from './components/create-operation-requests/create-operation-requests.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+
+
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -33,6 +40,30 @@ export const routes: Routes = [
     { path: 'register/confirm', component: RegisterConfirmationComponent },
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
+    { path: 'reset-password', component: ResetPasswordComponent},
+    { path: 'operationRequests', 
+        component: OperationRequestsComponent, 
+        canActivate: [AuthGuard],
+        data: { role: 'doctor' }
+    },
+    {
+        path: 'operationRequests/create',
+        component: CreateOperationRequestsComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'doctor' }
+    },
+    { path : 'operationRequests/delete/:id',
+        component: DeleteOperationRequestsComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'doctor' }  
+    },
+    
+    { path : 'operationRequests/edit/:id',
+        component: EditOperationRequestsComponent, 
+        canActivate: [AuthGuard],
+        data: { role: 'doctor' }
+    }, 
+        
     { 
         path: 'operationType',
         component: OperationTypeComponent,
@@ -99,5 +130,4 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         data: { role: 'patient' }
     }
-    
 ];

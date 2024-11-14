@@ -102,7 +102,7 @@ public static class DataSeeder
       "2022-10-01",
       "male",
       "1221083@isep.ipp.pt",
-      "+351 123456123",
+      "+351 123456788",
       "Main Street 123",
       "1234-567",
       "Los Angeles",
@@ -143,11 +143,13 @@ public static class DataSeeder
 
     PasswordHasher hasher = new PasswordHasher();
     string password = hasher.HashPassword("password");
-    var user = new User("D202512345@gmail.com", "Doctor", password);
-    var user2 = new User("D202512344@gmail.com", "Doctor", password);
+    var user = new User("D202512345@gmail.com", "doctor", password);
+    var user2 = new User("D202512344@gmail.com", "doctor", password);
     var user3 = new User("admin@teste.com", "admin", password);
     var user4 = new User("john.cena@gmail.com", "patient", password);
-    var users = new List<User> { user, user2, user3 };
+    var user5 = new User("rodrigocastro2004@gmail.com", "admin", password);
+
+    var users = new List<User> { user, user2, user3, user4, user5 };
 
     context.Users.AddRange(users);
 
@@ -167,11 +169,47 @@ public static class DataSeeder
     context.OperationTypes.AddRange(operationTypes);
 
     var operationRequest = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512344").AsString());
-    var operationRequest2 = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
-    var operationRequests = new List<OperationRequest> { operationRequest, operationRequest2 };
+    SeedOperationRequest(context, operationRequest);
+    Console.WriteLine("test1");
+    var operationRequest2 = new OperationRequest("2025-02-19", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest2);
+    Console.WriteLine("test2");
+
+    var operationRequest3 = new OperationRequest("2025-02-20", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest3);
+    Console.WriteLine("test3");
+
+    var operationRequest4 = new OperationRequest("2025-02-23", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest4);
+
+    var operationRequest5 = new OperationRequest("2025-02-24", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest5);
+    var operationRequest6 = new OperationRequest("2025-02-25", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest6);
+    var operationRequest7 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest7);
+    var operationRequest8 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest8);
+
+    var operationRequest9 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest9);
+
+    var operationRequest10 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest10);
+
+    var operationRequest11 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest11);
+
+    var operationRequest12 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest12);
+
+    var operationRequest13 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    SeedOperationRequest(context, operationRequest13);
+
 
     Staff staff = new Staff(new StaffId("D202512345"), "staff", "12345", specialization1.Id.Value, "cobrirErroMario", "email@gmail.com", "+951999999999", "Doctor", "True");
     SeedStaff(context, staff);
+
 
 
     var availableSlot2 = new AvailabilitySlot(staff.Id.AsString());
@@ -180,14 +218,15 @@ public static class DataSeeder
     dailyAvailability.AddTimeSlot(1080, 1200);
     dailyAvailability.AddTimeSlot(1200, 1300);
     SeedDailyAvailability(context, dailyAvailability);
-  
+
     availableSlot2.Availability.Add(dailyAvailability);
-    
-    
+
+
     SeedAvailabilitySlots(context, availableSlot2);
 
-    context.OperationRequests.AddRange(operationRequest);
-    context.SaveChanges();
+    Staff staff2 = new Staff(new StaffId("D202512344"), "staffMario", "12346", specialization1.Id.Value, availableSlot2.Id.Value, "emaill@gmail.com", "+951999999998", "Doctor", "True");
+    SeedStaff(context, staff2);
+
 
 
     var operationRoom = new OperationRoom("or1", "boas", "10");
@@ -195,10 +234,31 @@ public static class DataSeeder
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1080, 1200);
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1200, 1300);
     SeedOperationRoom(context, operationRoom);
+
+    OperationRoom teste  = new OperationRoom("or8", "description8", "10");
+
+    var rooms = new List<OperationRoom>
+    {
+      new OperationRoom("or1", "description1", "10"),
+      new OperationRoom("or2", "description2", "10"),
+      new OperationRoom("or3", "description3", "10"),
+      new OperationRoom("or4", "description4", "10"),
+      new OperationRoom("or5", "description5", "10"),
+      new OperationRoom("or6", "description6", "10"),
+      new OperationRoom("or7", "description7", "10"),
+      teste,
+      new OperationRoom("or9", "description9", "10"),
+      new OperationRoom("or10", "description10", "10")
+    };
+
+    context.OperationRooms.AddRange(rooms);
+
     context.SaveChanges();
 
-    var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(2025, 02, 18), new TimeSlot(720, 840));
-    var appointment = new Appointment(appointmentTimeSlot, operationRoom.Id.AsString(), operationRequest.Id.AsString());
+    var currentHourInMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+
+    var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(2024, 11, 13), new TimeSlot(currentHourInMinutes+1, currentHourInMinutes+100));
+    var appointment = new Appointment(appointmentTimeSlot, operationRoom.Id.Value, operationRequest.Id.AsString());
     SeedAppointments(context, appointment);
     context.SaveChanges();
   }
@@ -288,4 +348,54 @@ public static class DataSeeder
       context.Appointments.Add(appointment);
     }
   }
+
+  public static async Task UnseedAsync(IServiceProvider serviceProvider)
+  {
+    using var scope = serviceProvider.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<DDDSample1DbContext>();
+
+    // Remove appointments
+    var appointments = context.Appointments.ToList();
+    context.Appointments.RemoveRange(appointments);
+
+    // Remove availability slots
+    var availabilitySlots = context.AvailabilitySlots.ToList();
+    context.AvailabilitySlots.RemoveRange(availabilitySlots);
+
+    // Remove operation rooms
+    var operationRooms = context.OperationRooms.ToList();
+    context.OperationRooms.RemoveRange(operationRooms);
+
+    // Remove staff
+    var staffMembers = context.StaffMembers.ToList();
+    context.StaffMembers.RemoveRange(staffMembers);
+
+    // Remove operation requests
+    var operationRequests = context.OperationRequests.ToList();
+    context.OperationRequests.RemoveRange(operationRequests);
+
+    // Remove operation types
+    var operationTypes = context.OperationTypes.ToList();
+    context.OperationTypes.RemoveRange(operationTypes);
+
+    // Remove phases
+    var phases = context.Phases.ToList();
+    context.Phases.RemoveRange(phases);
+
+    // Remove specializations
+    var specializations = context.Specializations.ToList();
+    context.Specializations.RemoveRange(specializations);
+
+    // Remove patients
+    var patients = context.Patients.ToList();
+    context.Patients.RemoveRange(patients);
+
+    // Remove users
+    var users = context.Users.ToList();
+    context.Users.RemoveRange(users);
+
+    // Save the changes to the database
+    await context.SaveChangesAsync();
+  }
+
 }

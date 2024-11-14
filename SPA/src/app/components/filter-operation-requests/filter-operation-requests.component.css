@@ -1,0 +1,90 @@
+/* search-operation-types.component.css */
+.filter-container {  
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+.filter-field {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.filter-field label {
+    font-weight: bold;
+    color: #555;
+}
+
+.filter-field input {
+    padding: 0.25rem;
+    font-size: 0.875rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 120px;
+}
+
+.filter-field input::placeholder {
+    font-size: 0.75rem; /* Tamanho menor para o texto do placeholder */
+    color: #888; /* Cor mais clara para o texto do placeholder */
+}
+
+button {
+    padding: 0.4rem 1rem;
+    font-size: 0.875rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+label {
+    font-weight: bold;
+    color: #555;
+}
+
+.modern-select {
+    padding: 0.25rem;
+    font-size: 0.875rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #333;
+    cursor: pointer;
+    width: 150px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem top 50%;
+}
+
+.modern-select::placeholder {
+    font-size: 0.75rem; /* Tamanho menor para o texto do placeholder */
+    color: #888; /* Cor mais clara para o texto do placeholder */
+}
+
+.modern-select:hover {
+    background-color: #f1f1f1;
+}
+
+.modern-select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+  

@@ -9,8 +9,7 @@ public interface IUserService
     Task<User> AddAsync(User user);
     Task<List<User>> GetAllAsync();
     Task<User> GetByEmailAsync(string email);
-    Task<string> GenerateResetPasswordToken(User user);
-    Task<string> sendEmailWithUrlResetPassword(string email, string callbackUrl);
+    Task<string> sendEmailWithUrlResetPassword(string email);
     Task<string> ResetPassword(User user, string newPassword, string token);
     Task<ConfirmationPatientDto> RegisterPatientAsync(RegisteringPatientDto dto);
     Task<UserDTO> ConfirmRegisterPatientAsync(ConfirmationPatientDto dto);

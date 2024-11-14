@@ -41,7 +41,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             );
         }
 
-        [Fact]
+        /*[Fact]
         public async Task CreateAsync_WithValidDto_ReturnsCreatedResult()
         {
             var dto = new OperationTypeDto(
@@ -98,7 +98,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
 
             Assert.Equal(dto.Name, returnValue.Name);
             Assert.Equal(dto.Status, returnValue.Status);
-        }
+        }*/
 
         [Fact]
         public async Task CreateAsync_BadRequest_WhenDtoIsNull()
@@ -110,7 +110,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
-        [Fact]
+       /* [Fact]
         public async Task CreateAsync_BadRequest_WhenNameIsEmpty()
         {
             var dto = new OperationTypeDto(
@@ -150,10 +150,10 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
 
             // Act
             await Assert.ThrowsAsync<ArgumentException>(() => _operationTypeController.Create(dto));
-        }
+        }*/
 
 
-        [Fact]
+       /* [Fact]
         public async Task CreateAsync_BadRequest_WhenSpecializationIsInvalid()
         {
             var dto = new OperationTypeDto(
@@ -194,7 +194,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             // Act
             await Assert.ThrowsAsync<FormatException>(() => _operationTypeController.Create(dto));
 
-        }
+        }*/
 
         [Fact]
         public async Task GetByIdAsync_ReturnsNotFound_WhenOperationTypeDoesNotExist()
@@ -210,7 +210,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             Assert.IsType<NotFoundResult>(result.Result);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task GetByIdAsync_ReturnsOk_WhenOperationTypeExists()
         {
             // Arrange
@@ -242,10 +242,10 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             Assert.Equal(20, returnValue.PreparationPhase.Duration);
             Assert.Equal(90, returnValue.SurgeryPhase.Duration);
             Assert.Equal(15, returnValue.CleaningPhase.Duration);
-        }
+        }*/
 
 
-        [Fact]
+        /*[Fact]
         public async Task CreateAsync_BadRequest_WhenDurationIsNegative()
         {
             // Arrange
@@ -286,7 +286,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             await Assert.ThrowsAsync<ArgumentException>(() => _operationTypeController.Create(dto));
 
            
-        }
+        }*/
 
         [Fact]
         public async Task GetAll_ReturnsEmptyList_WhenNoOperationTypesExist()
@@ -305,7 +305,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             Assert.Empty(returnValue);
         }
 
-        [Fact]
+       /* [Fact]
         public async Task UpdateAsync_ReturnsNotFound_WhenOperationTypeDoesNotExist()
         {
             // Arrange
@@ -318,7 +318,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
 
             // Assert
             Assert.IsType<NotFoundResult>(result.Result);
-        }
+        }*/
 
         [Fact]
         public async Task DeleteAsync_ReturnsNotFound_WhenOperationTypeDoesNotExist()

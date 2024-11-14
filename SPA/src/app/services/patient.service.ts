@@ -51,14 +51,11 @@ export class PatientService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   getPatients(): Observable<PatientsView[]> {
-    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
-    console.log(headers)
-    return this.http.get<PatientsView[]>(this.url, { headers });
+    return this.http.get<PatientsView[]>(this.url);
   }
 
   getPatientByMedicalRecordNumber(medicalRecordNumber: string): Observable<Patient> {
-    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
-    return this.http.get<Patient>(`${this.urlMedicalRecordNumber}/${medicalRecordNumber}`, { headers });
+    return this.http.get<Patient>(`${this.urlMedicalRecordNumber}/${medicalRecordNumber}`);
   }
 
   createPatient(firstName: string, lastName: string, fullName: string, dateOfBirth: string, gender: string, email: string, phoneNumber: string,
@@ -81,8 +78,7 @@ export class PatientService {
       emergencyContactPhoneNumber: emergencyContactPhoneNumber
     }
 
-    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
-    return this.http.post(this.url, body, { headers });
+    return this.http.post(this.url, body);
   }
 
   editPatient(medicalRecordNumber: string, name: string, email: string, phoneNumber: string, street: string, postalCode: string, city: string, country: string, medicalConditions: string) : Observable<any> {
@@ -97,13 +93,11 @@ export class PatientService {
     if (country) body.country = country;
     if (medicalConditions) body.medicalConditions = medicalConditions;
 
-    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
-    return this.http.patch(`${this.url}/${medicalRecordNumber}`, body, { headers });
+    return this.http.patch(`${this.url}/${medicalRecordNumber}`, body);
   }
 
   deletePatient(medicalRecordNumber: string) : Observable<any> {
-    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
-    return this.http.delete(`${this.url}/${medicalRecordNumber}`, { headers });
+    return this.http.delete(`${this.url}/${medicalRecordNumber}`);
   }
 
   filterPatients(medicalRecordNumber: string, name: string, dateOfBirth: string, email: string): Observable<PatientsView[]> {
@@ -121,7 +115,6 @@ export class PatientService {
       params = params.set('email', email);
     }
 
-    const headers = { 'Authorization': 'Bearer ' + this.authService.getToken() };
-    return this.http.get<PatientsView[]>(this.searchUrl, { params, headers });
+    return this.http.get<PatientsView[]>(this.searchUrl, { params });
   }
 }

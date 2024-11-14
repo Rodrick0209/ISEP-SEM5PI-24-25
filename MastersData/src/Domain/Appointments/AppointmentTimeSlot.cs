@@ -51,6 +51,13 @@ namespace DDDSample1.Domain.Appointments
             // Compara a data e hora
             return appointmentDateTime < currentDateTime;
         }
+
+        public bool IsTodayAndWithinTimeSlot()
+        {
+            var currentDate = DateOnly.FromDateTime(DateTime.Now);
+            var currentTime = TimeOnly.FromDateTime(DateTime.Now);
+            return Date == currentDate && TimeSlot.IsBetween(currentTime);
+        }
     }
 
 

@@ -56,7 +56,7 @@ namespace DDDSample1.Domain.StaffMembers
             await checkOSpecializationIdAsync(staffdto.SpecializationId);
 
 
-            //await checkAvailabilitySlotIdAsync(staffdto.AvailabilitySlotsId);
+            await checkAvailabilitySlotIdAsync(staffdto.AvailabilitySlotsId);
 
             DateTime recruitmentDate = DateTime.Now;
 
@@ -144,7 +144,7 @@ namespace DDDSample1.Domain.StaffMembers
 
         }
 
-        public async Task<Staff> DeleteAsync(StaffId id)
+        public async Task<StaffDto> DeleteAsync(StaffId id)
         {
             var staff = await _staffRepository.GetByIdAsync(id);
 
@@ -161,18 +161,16 @@ namespace DDDSample1.Domain.StaffMembers
             await _unitOfWork.CommitAsync();
 
 
-            return staff;
+            return StaffMapper.toDTO(staff);
         }
 
 
-        public async Task<Staff> GetByIdAsync(StaffId id)
+        public async Task<StaffDto> GetByIdAsync(StaffId id)
         {
 
-            var op = await this._staffRepository.GetByIdAsync(id);
-            if (op == null)
-                return null;
+           var staff = await _staffRepository.GetByIdAsync(id);
 
-            return op;
+            return staff == null ? null : StaffMapper.toDTO(staff);
 
         }
 
@@ -247,9 +245,13 @@ namespace DDDSample1.Domain.StaffMembers
 
 
 
-        public async Task<List<Staff>> GetAllAsync()
+        public async Task<List<StaffDto>> GetAllAsync()
         {
-            return await this._staffRepository.GetAllAsync();
+            var list = await _staffRepository.GetAllAsync();
+
+            List<StaffDto> listDto = list.ConvertAll<StaffDto>(sta => StaffMapper.toDTO(sta));
+
+            return listDto;
         }
 
         private StaffLogger LogObjectCreate(Staff staff, LoggerTypeOfChange typeOfChange)

@@ -107,3 +107,10 @@
     font-size: 1.1rem;
     font-weight: 500;
 }
+
+.success-message {
+    text-align: center;
+    color: #28a745;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
