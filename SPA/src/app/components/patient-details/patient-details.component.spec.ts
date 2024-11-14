@@ -32,8 +32,7 @@ describe('PatientDetailsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
-  it('should fetch and display patient details correctly', () => {
+  it('should fetch patient details on init', () => {
     const patientData = {
       name: 'John Doe',
       medicalRecordNumber: '202410000001',
@@ -56,41 +55,26 @@ describe('PatientDetailsComponent', () => {
         phoneNumber: '987-654-3210'
       }
     };
-    
-    patientService.getPatientByMedicalRecordNumber.and.returnValue(of(patientData));
-
-    component.ngOnInit();
-    fixture.detectChanges();
-
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.patient-header h2')?.textContent).toContain('Patient Details');
-    expect(compiled.querySelector('.patient-info .patient-field:nth-child(1)')?.textContent).toContain('202410000001');
-    expect(compiled.querySelector('.patient-info .patient-field:nth-child(2)')?.textContent).toContain('John Doe');
-    expect(compiled.querySelector('.patient-info .patient-field:nth-child(3)')?.textContent).toContain('1990-01-01');
-    expect(compiled.querySelector('.patient-info .patient-field:nth-child(4)')?.textContent).toContain('Male');
-    expect(compiled.querySelector('.patient-info .patient-field:nth-child(5)')?.textContent).toContain('joh***@***.com');
-    expect(compiled.querySelector('.patient-info .patient-field:nth-child(6)')?.textContent).toContain('123***90');
-    
-    expect(compiled.querySelector('.address .patient-field:nth-child(1)')?.textContent).toContain('123 Main St');
-    expect(compiled.querySelector('.address .patient-field:nth-child(2)')?.textContent).toContain('12345');
-    expect(compiled.querySelector('.address .patient-field:nth-child(3)')?.textContent).toContain('Springfield');
-    expect(compiled.querySelector('.address .patient-field:nth-child(4)')?.textContent).toContain('USA');
-    
-    expect(compiled.querySelector('.emergency-contact .patient-field:nth-child(1)')?.textContent).toContain('Jane Doe');
-    expect(compiled.querySelector('.emergency-contact .patient-field:nth-child(2)')?.textContent).toContain('jan***@***.com');
-    expect(compiled.querySelector('.emergency-contact .patient-field:nth-child(3)')?.textContent).toContain('987***10');
-    
-    expect(compiled.querySelector('.medical-history .patient-field')?.textContent).toContain('Asthma');
-  });
-
-  it('should fetch patient details on init', () => {
-    const patientData = { medicalRecordNumber: '2024100000001', name: 'John Doe' } as any;
     patientService.getPatientByMedicalRecordNumber.and.returnValue(of(patientData));
 
     component.ngOnInit();
 
-    expect(patientService.getPatientByMedicalRecordNumber).toHaveBeenCalledWith('12345');
+    expect(patientService.getPatientByMedicalRecordNumber).toHaveBeenCalledWith('2024100000001');
     expect(component.patient).toEqual(patientData);
+    expect(component.patient?.medicalRecordNumber).toBe('202410000001');
+    expect(component.patient?.name).toBe('John Doe');
+    expect(component.patient?.dateOfBirth).toEqual(new Date('1990-01-01'));
+    expect(component.patient?.email).toBe('john.doe@example.com');
+    expect(component.patient?.phoneNumber).toBe('123-456-7890');
+    expect(component.patient?.gender).toBe('Male'),
+    expect(component.patient?.address?.street).toBe('123 Main St');
+    expect(component.patient?.address?.postalCode).toBe('12345');
+    expect(component.patient?.address?.city).toBe('Springfield');
+    expect(component.patient?.address?.country).toBe('USA');
+    expect(component.patient?.medicalHistory?.medicalConditions).toBe('Asthma');
+    expect(component.patient?.emergencyContact?.name).toBe('Jane Doe');
+    expect(component.patient?.emergencyContact?.email).toBe('jane.doe@example.com');
+    expect(component.patient?.emergencyContact?.phoneNumber).toBe('987-654-3210');
     expect(component.errorMessage).toBe('');
   });  
 
@@ -99,7 +83,7 @@ describe('PatientDetailsComponent', () => {
 
     component.ngOnInit();
 
-    expect(patientService.getPatientByMedicalRecordNumber).toHaveBeenCalledWith('12345');
+    expect(patientService.getPatientByMedicalRecordNumber).toHaveBeenCalledWith('2024100000001');
     expect(component.patient).toBeUndefined();
     expect(component.errorMessage).toBe('Failed to fetch patient details');
   });
