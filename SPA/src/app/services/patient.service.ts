@@ -48,7 +48,7 @@ export class PatientService {
   private urlMedicalRecordNumber = '/api/patients/MedicalRecordNumber';
   private searchUrl = '/api/patients/search';
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient) { }
 
   getPatients(): Observable<PatientsView[]> {
     return this.http.get<PatientsView[]>(this.url);

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FilterOperationTypesComponentComponent } from './filter-operation-types-component.component';
+import { FilterOperationTypesComponent } from './filter-operation-types-component.component';
 
 describe('FilterOperationTypesComponentComponent', () => {
-  let component: FilterOperationTypesComponentComponent;
-  let fixture: ComponentFixture<FilterOperationTypesComponentComponent>;
+  let component: FilterOperationTypesComponent;
+  let fixture: ComponentFixture<FilterOperationTypesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FilterOperationTypesComponentComponent]
+      imports: [FilterOperationTypesComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FilterOperationTypesComponentComponent);
+    fixture = TestBed.createComponent(FilterOperationTypesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

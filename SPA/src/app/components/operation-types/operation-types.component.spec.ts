@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OperationTypesComponent } from './operation-types.component';
+import { OperationTypeComponent } from './operation-types.component';
 
 describe('OperationTypesComponent', () => {
-  let component: OperationTypesComponent;
-  let fixture: ComponentFixture<OperationTypesComponent>;
+  let component: OperationTypeComponent;
+  let fixture: ComponentFixture<OperationTypeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OperationTypesComponent]
+      imports: [OperationTypeComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(OperationTypesComponent);
+    fixture = TestBed.createComponent(OperationTypeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
