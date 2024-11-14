@@ -11,7 +11,6 @@ namespace DDDSample1.Domain.StaffLoggers
         public string StaffId { get; private set; }
         public string LicenseNumber { get; private set; }
         public string SpecializationId { get; private set; }
-        public string AvailabilitySlotsId { get; private set; }
         public string Email { get; private set; }
         public string PhoneNumber { get; private set; }
         public string Category { get; private set; }
@@ -25,12 +24,11 @@ namespace DDDSample1.Domain.StaffLoggers
 
         }
 
-        public StaffLoggerDto(string staffId, string licenseNumber, string specializationId, string availabilitySlotsId, string email, string phoneNumber, string category, string loggerType, DateTime modificationDate)
+        public StaffLoggerDto(string staffId, string licenseNumber, string specializationId, string email, string phoneNumber, string category, string loggerType, DateTime modificationDate)
         {
             this.StaffId = staffId;
             this.LicenseNumber = licenseNumber;
             this.SpecializationId = specializationId;
-            this.AvailabilitySlotsId = availabilitySlotsId;
             this.Email = email;
             this.PhoneNumber = phoneNumber;
             this.Category = category;

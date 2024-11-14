@@ -55,9 +55,6 @@ namespace DDDSample1.Domain.StaffMembers
 
             await checkOSpecializationIdAsync(staffdto.SpecializationId);
 
-
-            await checkAvailabilitySlotIdAsync(staffdto.AvailabilitySlotsId);
-
             DateTime recruitmentDate = DateTime.Now;
 
             StaffIdGeneratorService staffIdGeneratorService = new StaffIdGeneratorService();
@@ -200,27 +197,6 @@ namespace DDDSample1.Domain.StaffMembers
             }
         }
 
-        public async Task<AvailabilitySlot> checkAvailabilitySlotIdAsync(string availabilitySlotsId)
-        {
-
-            try
-            {
-                var id = new AvailabilitySlotsId(availabilitySlotsId);
-                Console.WriteLine("ID ->: " + id);
-                var slot = await this._availabilitySlotsRepository.GetByIdAsync(id);
-
-                if (slot == null)
-                {
-                    throw new BusinessRuleValidationException("Availability Slot does not exist");
-                }
-
-                return slot;
-            }
-            catch (Exception e)
-            {
-                throw new BusinessRuleValidationException("Availability Slot does not exist");
-            }
-        }
 
 
         private async Task<bool> validateEmailIsUnique(string email)
@@ -260,7 +236,6 @@ namespace DDDSample1.Domain.StaffMembers
                      staff.Id.AsString(),
                      staff.FullName.fullName,
                      staff.SpecializationId,
-                     staff.AvailabilitySlotsId,
                      staff.Email.email,
                      staff.PhoneNumber.phoneNumber,
                      staff.Category.ToString(),

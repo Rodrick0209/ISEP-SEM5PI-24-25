@@ -207,13 +207,13 @@ public static class DataSeeder
     SeedOperationRequest(context, operationRequest13);
 
 
-    Staff staff = new Staff(new StaffId("D202512345"), "staff", "12345", specialization1.Id.Value, "cobrirErroMario", "email@gmail.com", "+951999999999", "Doctor", "True");
+    Staff staff = new Staff(new StaffId("D202512345"), "staff", "12345", specialization1.Id.Value, "email@gmail.com", "+951999999999", "Doctor", "True");
     SeedStaff(context, staff);
 
 
 
     var availableSlot2 = new AvailabilitySlot(staff.Id.AsString());
-    DailyAvailability dailyAvailability = new DailyAvailability(new DateOnly(2024, 10, 28));
+    DailyAvailability dailyAvailability = new DailyAvailability(new DateOnly(2025, 10, 28));
     dailyAvailability.AddTimeSlot(720, 840);
     dailyAvailability.AddTimeSlot(1080, 1200);
     dailyAvailability.AddTimeSlot(1200, 1300);
@@ -224,7 +224,7 @@ public static class DataSeeder
 
     SeedAvailabilitySlots(context, availableSlot2);
 
-    Staff staff2 = new Staff(new StaffId("D202512344"), "staffMario", "12346", specialization1.Id.Value, availableSlot2.Id.Value, "emaill@gmail.com", "+951999999998", "Doctor", "True");
+    Staff staff2 = new Staff(new StaffId("D202512344"), "staffMario", "12346", specialization1.Id.Value,"emaill@gmail.com", "+951999999998", "Doctor", "True");
     SeedStaff(context, staff2);
 
 
@@ -257,7 +257,7 @@ public static class DataSeeder
 
     var currentHourInMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
 
-    var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(2024, 11, 13), new TimeSlot(currentHourInMinutes+1, currentHourInMinutes+100));
+    var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(2025, 11, 13), new TimeSlot(currentHourInMinutes+1, currentHourInMinutes+100));
     var appointment = new Appointment(appointmentTimeSlot, operationRoom.Id.Value, operationRequest.Id.AsString());
     SeedAppointments(context, appointment);
     context.SaveChanges();
