@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PatientService } from '../../services/patient.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Patient } from '../../interfaces/patient';
+import { Patient } from '../../models/patient';
 
 @Component({
   selector: 'app-patient-details',
