@@ -19,6 +19,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.AspNetCore.Routing;
 using DDDSample1.Domain.PatientLoggers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DDDSample1.Domain.User
 {
@@ -316,7 +317,7 @@ namespace DDDSample1.Domain.User
             return new ConfirmationEditPatientDto(token, email, emailToEdit, phoneNumberToEdit);
         }
 
-        public async Task<PatientDto> ConfirmEditPatientAsync(ConfirmationEditPatientDto dto)
+        public async Task<UserDTO> ConfirmEditPatientAsync(ConfirmationEditPatientDto dto)
         {
             User user = await _repo.GetByEmailAsync(dto.Email);
 
@@ -354,12 +355,12 @@ namespace DDDSample1.Domain.User
 
             await _unitOfWork.CommitAsync();
 
-            return PatientMapper.ToDto(patient);
+            return UserMapper.ToDto(user);
         }
 
-        public async Task<ConfirmationPatientDto> DeletePatientAsync(DeletingPatientDto dto)
+        public async Task<ConfirmationPatientDto> DeletePatientAsync(string email)
         {
-            User user = await _repo.GetByEmailAsync(dto.Email);
+            User user = await _repo.GetByEmailAsync(email);
 
             if (user == null)
             {
@@ -370,11 +371,11 @@ namespace DDDSample1.Domain.User
             string token = tokenProvider.CreateConfirmationDeletePatientToken(user);
             user.SetConfirmationDeletePatientToken(token, DateTime.UtcNow.AddHours(24));
 
-            SendEmailWithUrlConfirmationDeletePatient(dto.Email, token);
+            SendEmailWithUrlConfirmationDeletePatient(email, token);
 
             await _unitOfWork.CommitAsync();
 
-            return new ConfirmationPatientDto(token, dto.Email);
+            return new ConfirmationPatientDto(token, email);
         }
 
         public async Task ConfirmDeletePatientAsync(ConfirmationPatientDto dto)

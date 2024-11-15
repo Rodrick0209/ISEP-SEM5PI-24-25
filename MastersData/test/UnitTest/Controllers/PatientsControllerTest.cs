@@ -56,7 +56,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _mockService.Setup(service => service.CreateAsync(dto)).ReturnsAsync(patientDto);
 
             // Act
-            var result = await _controller.Create(dto);
+            var result = await _controller.CreateAsync(dto);
             
             // Assert
             var actionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
@@ -91,7 +91,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _mockService.Setup(service => service.CreateAsync(dto)).ThrowsAsync(new Exception("Error"));
 
             // Act
-            var result = await _controller.Create(dto);
+            var result = await _controller.CreateAsync(dto);
 
             // Assert
             var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
@@ -262,7 +262,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _mockService.Setup(service => service.SearchAsync(dto)).ReturnsAsync(patients);
 
             // Act
-            var result = await _controller.SearchAsync(dto.MedicalRecordNumber, dto.Name, dto.Email, dto.DateOfBirth);
+            var result = await _controller.SearchAsync(dto);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<ViewPatientDto>>>(result);

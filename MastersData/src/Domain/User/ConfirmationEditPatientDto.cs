@@ -10,6 +10,8 @@ namespace DDDSample1.Domain.User
         public string? EmailToEdit { get; set; }
         public string? PhoneNumberToEdit { get; set; }
 
+        public ConfirmationEditPatientDto() { }
+
         public ConfirmationEditPatientDto(string token, string email, string? emailToEdit, string? phoneNumberToEdit)
         {
             this.Token = token;

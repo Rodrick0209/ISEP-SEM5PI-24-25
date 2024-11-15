@@ -14,8 +14,8 @@ public interface IUserService
     Task<ConfirmationPatientDto> RegisterPatientAsync(RegisteringPatientDto dto);
     Task<UserDTO> ConfirmRegisterPatientAsync(ConfirmationPatientDto dto);
     Task<ConfirmationEditPatientDto> EditPatientAsync(EditingPatientDto dto);
-    Task<PatientDto> ConfirmEditPatientAsync(ConfirmationEditPatientDto dto);
-    Task<ConfirmationPatientDto> DeletePatientAsync(DeletingPatientDto dto);
+    Task<UserDTO> ConfirmEditPatientAsync(ConfirmationEditPatientDto dto);
+    Task<ConfirmationPatientDto> DeletePatientAsync(string email);
     Task ConfirmDeletePatientAsync(ConfirmationPatientDto dto);
     Task<string> GenerateGoogleTokenFromJwt(string email);
     Task<UserDTO> GetByIdAsync(UserId id);

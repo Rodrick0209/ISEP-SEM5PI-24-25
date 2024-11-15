@@ -31,7 +31,7 @@ public class UsersControllerUnitTests
         var result = await _controller.RegisterPatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<OkObjectResult>(result.Result);
+        var actionResult = Assert.IsType<OkObjectResult>(result);
         var returnValue = Assert.IsType<ConfirmationPatientDto>(actionResult.Value);
         Assert.Equal(confirmationDto, returnValue);
     }
@@ -51,7 +51,7 @@ public class UsersControllerUnitTests
         var result = await _controller.RegisterPatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+        var actionResult = Assert.IsType<BadRequestObjectResult>(result);
     }
 
     [Fact]
@@ -68,10 +68,10 @@ public class UsersControllerUnitTests
                         .ReturnsAsync(userDTO);
         
         // Act
-        var result = await _controller.ConfirmRegisterPatientAsync("token", dto);
+        var result = await _controller.ConfirmRegisterPatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<OkObjectResult>(result.Result);
+        var actionResult = Assert.IsType<OkObjectResult>(result);
     }
 
     [Fact]
@@ -86,10 +86,10 @@ public class UsersControllerUnitTests
                         .ThrowsAsync(new BusinessRuleValidationException("Invalid token"));
 
         // Act
-        var result = await _controller.ConfirmRegisterPatientAsync("token", dto);
+        var result = await _controller.ConfirmRegisterPatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+        var actionResult = Assert.IsType<BadRequestObjectResult>(result);
     }
 
 
@@ -142,20 +142,18 @@ public class UsersControllerUnitTests
         _controller = new UsersController(_mockUserService.Object);
 
         var dto = new ConfirmationEditPatientDto("token", "john.doe@example.com", "john.doing@example.com", "123456789");
-        var patientDto = new PatientDto(Guid.NewGuid(), "John Doe", "2024-10-10", "male", "john.doe@gmail.com", "+351 123456789", "202410000001",
-            new AddressDto("Main Street", "1234-567", "Los Angeles", "USA"), 
-            new EmergencyContactDto("Jane Doe", "jane.doe@gmail.com", "+351 987654321"), null);
+        var userDTO = new UserDTO(Guid.NewGuid(), "patient", "email", "password");
 
         _mockUserService.Setup(service => service.ConfirmEditPatientAsync(It.IsAny<ConfirmationEditPatientDto>()))
-                        .ReturnsAsync(patientDto);
+                        .ReturnsAsync(userDTO);
         
         // Act
-        var result = await _controller.ConfirmEditPatientAsync("token", dto);
+        var result = await _controller.ConfirmEditPatientAsync(dto);
 
         // Assert
         var actionResult = Assert.IsType<OkObjectResult>(result.Result);
-        var returnValue = Assert.IsType<PatientDto>(actionResult.Value);
-        Assert.Equal(patientDto, returnValue);
+        var returnValue = Assert.IsType<UserDTO>(actionResult.Value);
+        Assert.Equal(userDTO, returnValue);
     }
 
     [Fact]
@@ -170,7 +168,7 @@ public class UsersControllerUnitTests
                         .ThrowsAsync(new BusinessRuleValidationException("Invalid token"));
 
         // Act
-        var result = await _controller.ConfirmEditPatientAsync("token", dto);
+        var result = await _controller.ConfirmEditPatientAsync(dto);
 
         // Assert
         var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
@@ -184,14 +182,14 @@ public class UsersControllerUnitTests
         _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
 
-        var dto = new DeletingPatientDto { Email = "john.doe@example.com"};
+        string email = "john.doe@example.com";
         var confirmationDto = new ConfirmationPatientDto("token", "john.doe@example.com");
 
-        _mockUserService.Setup(service => service.DeletePatientAsync(It.IsAny<DeletingPatientDto>()))
+        _mockUserService.Setup(service => service.DeletePatientAsync(It.IsAny<string>()))
                         .ReturnsAsync(confirmationDto);
         
         // Act
-        var result = await _controller.DeletePatientAsync(dto);
+        var result = await _controller.DeletePatientAsync(email);
 
         // Assert
         var actionResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -203,13 +201,13 @@ public class UsersControllerUnitTests
        _mockUserService = new Mock<IUserService>();
         _controller = new UsersController(_mockUserService.Object);
         // Arrange
-        var dto = new DeletingPatientDto { Email = "john.doe@example.com"};
+        var email = "john.doe@example.com";
         
-        _mockUserService.Setup(service => service.DeletePatientAsync(It.IsAny<DeletingPatientDto>()))
+        _mockUserService.Setup(service => service.DeletePatientAsync(It.IsAny<string>()))
                         .ThrowsAsync(new Exception("Invalid data"));
 
         // Act
-        var result = await _controller.DeletePatientAsync(dto);
+        var result = await _controller.DeletePatientAsync(email);
 
         // Assert
         var actionResult = Assert.IsType<BadRequestObjectResult>(result.Result);
@@ -228,7 +226,7 @@ public class UsersControllerUnitTests
         _mockUserService.Setup(service => service.ConfirmDeletePatientAsync(It.IsAny<ConfirmationPatientDto>()));
 
         // Act
-        var result = await _controller.ConfirmDeletePatientAsync("token", dto);
+        var result = await _controller.ConfirmDeletePatientAsync(dto);
 
         // Assert
         var actionResult = Assert.IsType<NoContentResult>(result);
@@ -247,7 +245,7 @@ public class UsersControllerUnitTests
                         .ThrowsAsync(new BusinessRuleValidationException("Invalid token"));
         
         // Act
-        var result = await _controller.ConfirmDeletePatientAsync("token", dto);
+        var result = await _controller.ConfirmDeletePatientAsync(dto);
 
         // Assert
         var actionResult = Assert.IsType<BadRequestObjectResult>(result);

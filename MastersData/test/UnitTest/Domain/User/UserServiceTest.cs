@@ -387,12 +387,12 @@ namespace MastersData.test.UnitTest.Domain.User
             _userRepoMock = new Mock<IUserRepository>();
             _userService = new UserService(null, _userRepoMock.Object, null, null, null, null);
 
-            var dto = new DeletingPatientDto { Email = "john.doe@example.com" };
+            var email = "john.doe@example.com";
 
-            _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(DDDSample1.Domain.User.User));
+            _userRepoMock.Setup(repo => repo.GetByEmailAsync(email)).ReturnsAsync(default(DDDSample1.Domain.User.User));
 
             // Act & Assert
-            await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.DeletePatientAsync(dto));
+            await Assert.ThrowsAsync<BusinessRuleValidationException>(() => _userService.DeletePatientAsync(email));
         }
 
         [Fact]

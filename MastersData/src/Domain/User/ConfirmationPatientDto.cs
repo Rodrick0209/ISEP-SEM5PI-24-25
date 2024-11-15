@@ -5,6 +5,7 @@ namespace DDDSample1.Domain.User
         public string Token { get; set; }
         public string Email { get; set; }
 
+        public ConfirmationPatientDto() { }
         public ConfirmationPatientDto(string token, string email)
         {
             this.Token = token;

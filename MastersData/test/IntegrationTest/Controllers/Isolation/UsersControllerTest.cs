@@ -74,10 +74,10 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(DDDSample1.Domain.User.User));
 
             // Act
-            var result = await _controller.ConfirmRegisterPatientAsync(dto.Token, dto);
+            var result = await _controller.ConfirmRegisterPatientAsync(dto);
 
             // Assert
-            Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.IsType<BadRequestObjectResult>(result);
         }
 
         [Fact]
@@ -98,10 +98,10 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(Patient));
 
             // Act
-            var result = await _controller.ConfirmRegisterPatientAsync(token, dto);
+            var result = await _controller.ConfirmRegisterPatientAsync(dto);
 
             // Assert
-            Assert.IsType<NotFoundResult>(result.Result);
+            Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]
@@ -222,7 +222,10 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(DDDSample1.Domain.User.User));
 
             // Act
-            var result = await _controller.ConfirmEditPatientAsync(dto.Token, dto);
+            var result = await _controller.ConfirmEditPatientAsync(dto);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
@@ -242,7 +245,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
 
             // Act
-            var result = await _controller.ConfirmEditPatientAsync(dto.Token, dto);
+            var result = await _controller.ConfirmEditPatientAsync(dto);
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
@@ -267,7 +270,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.EmailToEdit)).ReturnsAsync(default(Patient));
 
             // Act
-            var result = await _controller.ConfirmEditPatientAsync(dto.Token, dto);
+            var result = await _controller.ConfirmEditPatientAsync(dto);
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
@@ -281,12 +284,12 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _controller = new UsersController(_userService);
 
             // Arrange
-            var dto = new DeletingPatientDto { Email = "john.doe@example.com" };
+            string email = "john.doe@example.com";
 
-            _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(DDDSample1.Domain.User.User));
+            _userRepoMock.Setup(repo => repo.GetByEmailAsync(email)).ReturnsAsync(default(DDDSample1.Domain.User.User));
 
             // Act
-            var result = await _controller.DeletePatientAsync(dto);
+            var result = await _controller.DeletePatientAsync(email);
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
@@ -305,7 +308,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(DDDSample1.Domain.User.User));
 
             // Act
-            var result = await _controller.ConfirmDeletePatientAsync(dto.Token, dto);
+            var result = await _controller.ConfirmDeletePatientAsync(dto);
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);
@@ -326,7 +329,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _userRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(user);
 
             // Act
-            var result = await _controller.ConfirmDeletePatientAsync(dto.Token, dto);
+            var result = await _controller.ConfirmDeletePatientAsync(dto);
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);
@@ -349,7 +352,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _patientRepoMock.Setup(repo => repo.GetByEmailAsync(dto.Email)).ReturnsAsync(default(Patient));
 
             // Act
-            var result = await _controller.ConfirmDeletePatientAsync(dto.Token, dto);
+            var result = await _controller.ConfirmDeletePatientAsync(dto);
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);

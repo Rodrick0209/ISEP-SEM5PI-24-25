@@ -214,7 +214,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -233,7 +234,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"fullName\": \"John Doing\"\r\n}",
+					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"name\": \"John Doing\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -317,7 +318,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -336,7 +338,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"email\": \"1221083@isep.ipp.pt\"\r\n}",
+					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"email\": \"lafirmaptoficial@gmail.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1062,7 +1064,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"fullName\": \"John Doe\",\r\n    \"email\": \"rodrigopontescardoso@gmail.com\",\r\n    \"phoneNumber\": \"+351 123456789\",\r\n    \"street\": \"Main Street\",\r\n    \"postalCode\": \"1234-123\",\r\n    \"city\": \"Porto\",\r\n    \"country\": \"Portugal\",\r\n    \"medicalCondition\": \"Ashma\"\r\n}",
+					"raw": "{\r\n    \"medicalRecordNumber\": \"{{MedicalRecordNumber}}\",\r\n    \"name\": \"John Doe\",\r\n    \"email\": \"rodrigopontescardoso@gmail.com\",\r\n    \"phoneNumber\": \"+351 123456789\",\r\n    \"street\": \"Main Street\",\r\n    \"postalCode\": \"1234-123\",\r\n    \"city\": \"Porto\",\r\n    \"country\": \"Portugal\",\r\n    \"medicalCondition\": \"Ashma\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

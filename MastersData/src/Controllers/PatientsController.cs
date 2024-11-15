@@ -23,7 +23,7 @@ namespace DDDSample1.Controllers
         // POST: api/Patients
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<PatientDto>> Create(CreatingPatientProfileDto dto)
+        public async Task<ActionResult<PatientDto>> CreateAsync(CreatingPatientProfileDto dto)
         {
             try
             {
@@ -79,14 +79,8 @@ namespace DDDSample1.Controllers
         //GET: api/Patients/search
         [HttpGet("search")]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<IEnumerable<ViewPatientDto>>> SearchAsync([FromQuery] string medicalRecordNumber,[FromQuery] string name,[FromQuery] string email,[FromQuery] string dateOfBirth)
+        public async Task<ActionResult<IEnumerable<ViewPatientDto>>> SearchAsync([FromQuery] SearchFiltersDto dto)
         {
-            var dto = new SearchFiltersDto{
-                MedicalRecordNumber = medicalRecordNumber, 
-                Name = name, 
-                Email = email, 
-                DateOfBirth = dateOfBirth
-            };
             return await _service.SearchAsync(dto);
         }
 

@@ -233,7 +233,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"token\": \"{{ConfirmationToken}}\",\r\n  \"email\": \"{{ConfirmationEmail}}\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -241,7 +241,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/confirmation/{{ConfirmationToken}}",
+					"raw": "https://localhost:5001/api/Users/patients/confirm?token={{ConfirmationToken}}&email={{ConfirmationEmail}}",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -251,8 +251,17 @@
 						"api",
 						"Users",
 						"patients",
-						"confirmation",
-						"{{ConfirmationToken}}"
+						"confirm"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{ConfirmationToken}}"
+						},
+						{
+							"key": "email",
+							"value": "{{ConfirmationEmail}}"
+						}
 					]
 				}
 			},
@@ -470,9 +479,11 @@
 							"\r",
 							"var jsonData = pm.response.json();\r",
 							"pm.globals.set(\"ConfirmationToken\", jsonData.token);\r",
-							"pm.globals.set(\"EmailToEdit\", jsonData.emailToEdit);"
+							"pm.globals.set(\"EmailToEdit\", jsonData.emailToEdit);\r",
+							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -491,7 +502,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"{{Email}}\",\r\n    \"emailToEdit\": \"1221083@isep.ipp.pt\"\r\n}",
+					"raw": "{\r\n    \"email\": \"{{Email}}\",\r\n    \"emailToEdit\": \"lafirmaptoficial@gmail.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -532,7 +543,8 @@
 							"\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -551,7 +563,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"token\": \"{{ConfirmationToken}}\",\r\n    \"email\": \"{{Email}}\",\r\n    \"emailToEdit\": \"{{EmailToEdit}}\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -559,7 +571,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/edit/confirmation/{{ConfirmationToken}}",
+					"raw": "https://localhost:5001/api/Users/patients/edit/confirm?token={{ConfirmationToken}}&email={{Email}}&emailToEdit={{EmailToEdit}}",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -570,8 +582,21 @@
 						"Users",
 						"patients",
 						"edit",
-						"confirmation",
-						"{{ConfirmationToken}}"
+						"confirm"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{ConfirmationToken}}"
+						},
+						{
+							"key": "email",
+							"value": "{{Email}}"
+						},
+						{
+							"key": "emailToEdit",
+							"value": "{{EmailToEdit}}"
+						}
 					]
 				}
 			},
@@ -640,7 +665,8 @@
 							"pm.globals.set(\"ConfirmationToken\", jsonData.token);\r",
 							"pm.globals.set(\"PhoneNumberToEdit\", jsonData.phoneNumberToEdit);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -697,7 +723,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -716,7 +743,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"token\": \"{{ConfirmationToken}}\",\r\n    \"email\": \"{{Email}}\",\r\n    \"phoneNumberToEdit\": \"{{PhoneNumberToEdit}}\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -724,7 +751,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/edit/confirmation/{{ConfirmationToken}}",
+					"raw": "https://localhost:5001/api/Users/patients/edit/confirm?token={{ConfirmationToken}}&email={{Email}}&phoneNumberToEdit={{PhoneNumberToEdit}}",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -735,8 +762,21 @@
 						"Users",
 						"patients",
 						"edit",
-						"confirmation",
-						"{{ConfirmationToken}}"
+						"confirm"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{ConfirmationToken}}"
+						},
+						{
+							"key": "email",
+							"value": "{{Email}}"
+						},
+						{
+							"key": "phoneNumberToEdit",
+							"value": "{{PhoneNumberToEdit}}"
+						}
 					]
 				}
 			},
@@ -864,7 +904,8 @@
 							"console.log(jsonData);\r",
 							"pm.globals.set(\"Email\", jsonData.email);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -891,7 +932,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/edit/confirmation/{{ConfirmationToken}}",
+					"raw": "https://localhost:5001/api/Users/patients/edit/confirm?token={{ConfirmationToken}}&email={{Email}}&emailToEdit={{EmailToEdit}}&phoneNumberToEdit={{PhoneNumberToEdit}}",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -902,8 +943,25 @@
 						"Users",
 						"patients",
 						"edit",
-						"confirmation",
-						"{{ConfirmationToken}}"
+						"confirm"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{ConfirmationToken}}"
+						},
+						{
+							"key": "email",
+							"value": "{{Email}}"
+						},
+						{
+							"key": "emailToEdit",
+							"value": "{{EmailToEdit}}"
+						},
+						{
+							"key": "phoneNumberToEdit",
+							"value": "{{PhoneNumberToEdit}}"
+						}
 					]
 				}
 			},
@@ -991,7 +1049,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"{{Email}}\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -999,7 +1057,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/delete",
+					"raw": "https://localhost:5001/api/Users/patients/delete/{{Email}}",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -1009,7 +1067,8 @@
 						"api",
 						"Users",
 						"patients",
-						"delete"
+						"delete",
+						"{{Email}}"
 					]
 				}
 			},
@@ -1046,7 +1105,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"token\": \"{{ConfirmationToken}}\",\r\n    \"email\": \"{{Email}}\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1054,7 +1113,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/delete/confirmation/{{ConfirmationToken}}",
+					"raw": "https://localhost:5001/api/Users/patients/delete/confirm?token={{ConfirmationToken}}&email={{Email}}",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -1065,8 +1124,17 @@
 						"Users",
 						"patients",
 						"delete",
-						"confirmation",
-						"{{ConfirmationToken}}"
+						"confirm"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{ConfirmationToken}}"
+						},
+						{
+							"key": "email",
+							"value": "{{Email}}"
+						}
 					]
 				}
 			},

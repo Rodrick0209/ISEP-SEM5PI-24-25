@@ -133,42 +133,9 @@ namespace DDDSample1.Controllers
             }
         }
 
-        // POST: api/user/patients/confirmation/{token}
-        [HttpPost("patients/confirmation/{token}")]
-        public async Task<ActionResult<UserDTO>> ConfirmRegisterPatientAsync(string token, ConfirmationPatientDto dto)
+        [HttpPost("patients/confirm")]
+        public async Task<ActionResult> ConfirmRegisterPatientAsync([FromQuery] ConfirmationPatientDto dto)
         {
-
-            if (token != dto.Token)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                var userDto = await _service.ConfirmRegisterPatientAsync(dto);
-
-                return Ok(userDto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = ex.ToString() });
-            }
-        }
-
-        [HttpGet("patients/confirm")]
-        public async Task<ActionResult> ConfirmRegisterPatientAsync([FromQuery] string token, [FromQuery] string email)
-        {
-            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
-            {
-                return BadRequest(new { Message = "Invalid confirmation link." });
-            }
-
-            var dto = new ConfirmationPatientDto(token, email)
-            {
-                Token = token,
-                Email = email
-            };
-
             try
             {
                 var userDto = await _service.ConfirmRegisterPatientAsync(dto);
@@ -187,7 +154,6 @@ namespace DDDSample1.Controllers
         [Authorize(Roles = "patient")]
         public async Task<ActionResult<ConfirmationEditPatientDto>> EditPatientAsync(EditingPatientDto dto)
         {
-
             try
             {
                 var confirmationEditPatientDto = await _service.EditPatientAsync(dto);
@@ -200,17 +166,9 @@ namespace DDDSample1.Controllers
             }
         }
 
-        // PATCH : api/user/patients/edit/confirmation/{token}
-        [HttpPatch("patients/edit/confirmation/{token}")]
-        [Authorize(Roles = "patient")]
-        public async Task<ActionResult<PatientDto>> ConfirmEditPatientAsync(string token, ConfirmationEditPatientDto dto)
+        [HttpPatch("patients/edit/confirm")]
+        public async Task<ActionResult<PatientDto>> ConfirmEditPatientAsync([FromQuery] ConfirmationEditPatientDto dto)
         {
-
-            if (token != dto.Token)
-            {
-                return NotFound();
-            }
-
             try
             {
                 var patientDto = await _service.ConfirmEditPatientAsync(dto);
@@ -223,42 +181,14 @@ namespace DDDSample1.Controllers
             }
         }
 
-        [HttpGet("patients/edit/confirm")]
-        public async Task<ActionResult<PatientDto>> ConfirmEditPatientAsync([FromQuery] string token, [FromQuery] string email, [FromQuery] string? emailToEdit, [FromQuery] string? phoneNumberToEdit)
-        {
-            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
-            {
-                return BadRequest(new { Message = "Invalid confirmation link." });
-            }
-
-            var dto = new ConfirmationEditPatientDto(token, email, emailToEdit, phoneNumberToEdit)
-            {
-                Token = token,
-                Email = email,
-                EmailToEdit = emailToEdit,
-                PhoneNumberToEdit = phoneNumberToEdit
-            };
-
-            try
-            {
-                var patientDto = await _service.ConfirmEditPatientAsync(dto);
-
-                return Ok(patientDto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = ex.Message });
-            }
-        }
-
         // DELETE: api/user/patients/delete
-        [HttpDelete("patients/delete")]
+        [HttpDelete("patients/delete/{email}")]
         [Authorize(Roles = "patient")]
-        public async Task<ActionResult<DeletingPatientProfileConfirmationDto>> DeletePatientAsync(DeletingPatientDto dto)
+        public async Task<ActionResult<DeletingPatientProfileConfirmationDto>> DeletePatientAsync(string email)
         {
             try
             {
-                var confirmationDeletePatientDto = await _service.DeletePatientAsync(dto);
+                var confirmationDeletePatientDto = await _service.DeletePatientAsync(email);
 
                 return Ok(confirmationDeletePatientDto);
             }
@@ -269,16 +199,10 @@ namespace DDDSample1.Controllers
         }
 
         // DELETE: api/user/patients/delete/confirmation/{token}
-        [HttpDelete("patients/delete/confirmation/{token}")]
+        [HttpDelete("patients/delete/confirm")]
         [Authorize(Roles = "patient")]
-        public async Task<ActionResult> ConfirmDeletePatientAsync(string token, ConfirmationPatientDto dto)
+        public async Task<ActionResult> ConfirmDeletePatientAsync([FromQuery] ConfirmationPatientDto dto)
         {
-
-            if (token != dto.Token)
-            {
-                return NotFound();
-            }
-
             try
             {
                 await _service.ConfirmDeletePatientAsync(dto);

@@ -53,7 +53,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _unitOfWork.Setup(uow => uow.CommitAsync()).ReturnsAsync(1);
 
             // Act
-            var result = await _patientsController.Create(dto);
+            var result = await _patientsController.CreateAsync(dto);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<PatientDto>>(result);
@@ -93,7 +93,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _patientRepository.Setup(pr => pr.GetByEmailAsync(dto.Email)).Throws(new BusinessRuleValidationException("Email and/or Phone Number are not unique"));
 
             // Act
-            var result = await _patientsController.Create(dto);
+            var result = await _patientsController.CreateAsync(dto);
 
             // Assert
             Assert.NotNull(result);
@@ -233,7 +233,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _patientRepository.Setup(pr => pr.GetByFiltersAsync(dto.MedicalRecordNumber, dto.Name, dto.Email, dto.DateOfBirth)).ReturnsAsync(patients);
 
             // Act
-            var result = await _patientsController.SearchAsync(dto.MedicalRecordNumber, dto.Name, dto.Email, dto.DateOfBirth);
+            var result = await _patientsController.SearchAsync(dto);
 
             // Assert
             Assert.NotNull(result);
