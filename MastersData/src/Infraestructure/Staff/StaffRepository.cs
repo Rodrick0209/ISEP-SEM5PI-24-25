@@ -63,11 +63,15 @@ namespace DDDSample1.Infrastructure.StaffMembers
 
         public async Task<List<Staff>> GetByFiltersAsync(string name, string licenseNumber, string phoneNumber, string email, string specialization)
         {
-            // Obter os IDs das especializações correspondentes, aplicando o ToLower para garantir busca insensível a maiúsculas/minúsculas
-            var specializationIds = await this.context.Specializations
-                .Where(spec => spec.Name.ToLower().Contains(specialization.ToLower())) // Filtrar pela especialização fornecida, insensível a maiúsculas/minúsculas
-                .Select(spec => spec.Id.ToString()) // Selecionar o ID como string
-                .ToListAsync();
+
+            List<string> specializationIds = new List<string>();
+            if (!string.IsNullOrWhiteSpace(specialization)){
+                // Obter os IDs das especializações correspondentes, aplicando o ToLower para garantir busca insensível a maiúsculas/minúsculas
+                specializationIds = await this.context.Specializations
+                    .Where(spec => spec.Name.ToLower().Contains(specialization.ToLower())) // Filtrar pela especialização fornecida, insensível a maiúsculas/minúsculas
+                    .Select(spec => spec.Id.ToString()) // Selecionar o ID como string
+                    .ToListAsync();
+            }
 
             var query = this.context.StaffMembers.AsQueryable();
 
@@ -96,10 +100,10 @@ namespace DDDSample1.Infrastructure.StaffMembers
             }
 
             // Filtro por especialização, se fornecida
-            if (!string.IsNullOrWhiteSpace(specialization) && specializationIds.Any())
+            if (specializationIds.Any())
             {
                 // Verifica se o ID da especialização está na lista de IDs
-                query = query.Where(p => specializationIds.Contains(p.SpecializationId.ToString()));
+                query = query.Where(p => specializationIds.Contains(p.SpecializationId));
             }
 
             // Executa a consulta e retorna os resultados

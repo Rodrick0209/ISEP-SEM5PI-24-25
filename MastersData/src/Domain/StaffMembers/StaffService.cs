@@ -268,34 +268,44 @@ namespace DDDSample1.Domain.StaffMembers
 
         public async Task<List<ViewStaffDto>> SearchAsync(StaffFilterDto dto)
         {
-        
+
 
 
             var staff = new List<Staff>();
+
             if (string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.LicenseNumber) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.PhoneNumber) && string.IsNullOrWhiteSpace(dto.Specialization))
             {
                 staff = await _staffRepository.GetAllAsync();
             }
-            else
-            {
-                staff = await _staffRepository.GetByFiltersAsync(dto.Name, dto.LicenseNumber, dto.Email, dto.PhoneNumber, dto.Specialization);
-            }
 
-            
+
+            staff = await _staffRepository.GetByFiltersAsync(dto.Name, dto.LicenseNumber, dto.Email, dto.PhoneNumber, dto.Specialization);
+
 
             // Converter o staff para ViewStaffDto, substituindo o ID da especialização pelo nome
-            List<ViewStaffDto> listDto = staff.ConvertAll<ViewStaffDto>(sta => new ViewStaffDto
+            List<ViewStaffDto> listDto = new List<ViewStaffDto>();
+
+            foreach (var sta in staff)
             {
-                Name = sta.FullName.fullName,
-                LicenseNumber = sta.LicenseNumber.licenseNumber,
-                Email = sta.Email.email,
-                PhoneNumber = sta.PhoneNumber.phoneNumber,
-                Specialization = _specializationRepository.GetByIdAsync(new SpecializationId(sta.SpecializationId)).Result.Name
-            });
+                var specialization = await _specializationRepository.GetByIdAsync(new SpecializationId(sta.SpecializationId));
+
+                listDto.Add(new ViewStaffDto
+                {
+                    Id = sta.Id.Value,
+                    Name = sta.FullName.fullName,
+                    LicenseNumber = sta.LicenseNumber.licenseNumber,
+                    Email = sta.Email.email,
+                    PhoneNumber = sta.PhoneNumber.phoneNumber,
+                    Specialization = specialization.Name,
+                    Category = sta.Category.ToString(),
+                    Status = sta.status.ToString()
+                });
+            }
 
             return listDto;
-        }
 
+
+        }
 
     }
 }
