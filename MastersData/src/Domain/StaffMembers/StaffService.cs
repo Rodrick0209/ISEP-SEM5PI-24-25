@@ -9,6 +9,7 @@ using DDDSample1.Domain.StaffLoggers;
 using System;
 using DDDSample1.Domain.User;
 using Org.BouncyCastle.Asn1.Misc;
+using System.Linq;
 
 
 
@@ -165,7 +166,7 @@ namespace DDDSample1.Domain.StaffMembers
         public async Task<StaffDto> GetByIdAsync(StaffId id)
         {
 
-           var staff = await _staffRepository.GetByIdAsync(id);
+            var staff = await _staffRepository.GetByIdAsync(id);
 
             return staff == null ? null : StaffMapper.toDTO(staff);
 
@@ -183,6 +184,28 @@ namespace DDDSample1.Domain.StaffMembers
                 var id = new SpecializationId(specializationId);
                 Console.WriteLine("ID ->: " + id);
                 var spec = await this._specializationRepository.GetByIdAsync(id);
+
+                if (spec == null)
+                {
+                    throw new BusinessRuleValidationException("Specialization does not exist");
+                }
+
+                return spec;
+            }
+            catch (Exception e)
+            {
+                throw new BusinessRuleValidationException("Specialization does not exist");
+            }
+        }
+
+        public async Task<Specialization> checkOSpecializationByNameAsync(string specialization)
+        {
+
+            try
+            {
+                var name = new Specialization(specialization);
+                Console.WriteLine("ID ->: " + name);
+                var spec = await this._specializationRepository.GetByNameAsync(specialization);
 
                 if (spec == null)
                 {
@@ -245,27 +268,34 @@ namespace DDDSample1.Domain.StaffMembers
 
         public async Task<List<ViewStaffDto>> SearchAsync(StaffFilterDto dto)
         {
+        
+
+
             var staff = new List<Staff>();
-            if (string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.LicenseNumber) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.PhoneNumber))
+            if (string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.LicenseNumber) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.PhoneNumber) && string.IsNullOrWhiteSpace(dto.Specialization))
             {
                 staff = await _staffRepository.GetAllAsync();
             }
             else
             {
-                staff = await _staffRepository.GetByFiltersAsync(dto.Name, dto.LicenseNumber, dto.Email, dto.PhoneNumber);
+                staff = await _staffRepository.GetByFiltersAsync(dto.Name, dto.LicenseNumber, dto.Email, dto.PhoneNumber, dto.Specialization);
             }
 
+            
+
+            // Converter o staff para ViewStaffDto, substituindo o ID da especialização pelo nome
             List<ViewStaffDto> listDto = staff.ConvertAll<ViewStaffDto>(sta => new ViewStaffDto
             {
                 Name = sta.FullName.fullName,
                 LicenseNumber = sta.LicenseNumber.licenseNumber,
                 Email = sta.Email.email,
                 PhoneNumber = sta.PhoneNumber.phoneNumber,
-
+                Specialization = _specializationRepository.GetByIdAsync(new SpecializationId(sta.SpecializationId)).Result.Name
             });
 
             return listDto;
         }
+
 
     }
 }

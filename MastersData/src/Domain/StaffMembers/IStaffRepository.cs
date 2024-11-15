@@ -14,7 +14,7 @@ namespace DDDSample1.Domain.StaffMembers
         Task<Staff> GetByNameAsync(string name);
         Task<Staff> GetByIdsAsync(string id);
 
-        Task<List<Staff>> GetByFiltersAsync(string name, string licenseNumber, string phoneNumber, string email);
+        Task<List<Staff>> GetByFiltersAsync(string name, string licenseNumber, string phoneNumber, string email, string specialization);
 
     }
 }

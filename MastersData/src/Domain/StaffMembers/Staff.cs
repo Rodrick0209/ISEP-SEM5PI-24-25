@@ -18,7 +18,7 @@ namespace DDDSample1.Domain.StaffMembers
         public PhoneNumber PhoneNumber { get; private set; }
         public Category Category { get; private set; }
 
-        public bool status { get; private set; }
+        public StaffStatus status { get; private set; }
         public User.User? User { get; private set; }
 
         private Staff()
@@ -34,7 +34,7 @@ namespace DDDSample1.Domain.StaffMembers
             this.Email = new Email(email);
             this.PhoneNumber = new PhoneNumber(phoneNumber);
             this.Category = Enum.Parse<Category>(category);
-            this.status= bool.Parse(status);
+            this.status= Enum.Parse<StaffStatus>(status);
         }
 
         public void ChangeFullName(string fullName)
@@ -60,11 +60,11 @@ namespace DDDSample1.Domain.StaffMembers
 
         public void Deactivate()
         {
-            this.status = false;
+            this.status = StaffStatus.Inactive;
         }
         public void Activate()
         {
-            this.status = true;
+            this.status = StaffStatus.Active;
         }
     
     }

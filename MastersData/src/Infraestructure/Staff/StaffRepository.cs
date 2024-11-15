@@ -22,10 +22,10 @@ namespace DDDSample1.Infrastructure.StaffMembers
         public async Task<Staff> GetByEmailAsync(string email)
         {
             return await this.context.StaffMembers.FirstOrDefaultAsync(e => e.Email.email == email);
-            
+
         }
 
-          public async Task<Staff> GetByPhoneNumberAsync(string phoneNumber)
+        public async Task<Staff> GetByPhoneNumberAsync(string phoneNumber)
         {
             return await this.context.StaffMembers.FirstOrDefaultAsync(p => p.PhoneNumber.phoneNumber == phoneNumber);
         }
@@ -34,17 +34,17 @@ namespace DDDSample1.Infrastructure.StaffMembers
             var staff = await this.context.StaffMembers.FindAsync(id);
             if (staff != null)
             {
-            this.context.StaffMembers.Remove(staff);
-            await this.context.SaveChangesAsync();
+                this.context.StaffMembers.Remove(staff);
+                await this.context.SaveChangesAsync();
             }
         }
 
         public async Task<Staff> GetByLicenseNumberAsync(string licenseNumber)
         {
-           return await this.context.StaffMembers.FirstOrDefaultAsync(ln => ln.LicenseNumber.licenseNumber == licenseNumber);
+            return await this.context.StaffMembers.FirstOrDefaultAsync(ln => ln.LicenseNumber.licenseNumber == licenseNumber);
         }
-        
-         public async Task<Staff> GetByNameAsync(string name)
+
+        public async Task<Staff> GetByNameAsync(string name)
         {
             return await this.context.StaffMembers.FirstOrDefaultAsync(n => n.FullName.fullName == name);
         }
@@ -52,21 +52,60 @@ namespace DDDSample1.Infrastructure.StaffMembers
         public async Task<Staff> GetByIdsAsync(string id)
         {
             return await this.context.StaffMembers.FirstOrDefaultAsync(s => s.Id.AsString() == id);
-                
 
-;
+
+            ;
         }
 
 
-        public Task<List<Staff>> GetByFiltersAsync(string name, string licenseNumber, string phoneNumber, string email)
+
+
+
+        public async Task<List<Staff>> GetByFiltersAsync(string name, string licenseNumber, string phoneNumber, string email, string specialization)
         {
-            return this.context.StaffMembers
-                .Where(s => s.FullName.fullName.Contains(name)
-                            && s.LicenseNumber.licenseNumber.Contains(licenseNumber)
-                            && s.PhoneNumber.phoneNumber.Contains(phoneNumber) 
-                            && s.Email.email.Contains(email))
-                            .ToListAsync();
+            // Obter os IDs das especializações correspondentes, aplicando o ToLower para garantir busca insensível a maiúsculas/minúsculas
+            var specializationIds = await this.context.Specializations
+                .Where(spec => spec.Name.ToLower().Contains(specialization.ToLower())) // Filtrar pela especialização fornecida, insensível a maiúsculas/minúsculas
+                .Select(spec => spec.Id.ToString()) // Selecionar o ID como string
+                .ToListAsync();
+
+            var query = this.context.StaffMembers.AsQueryable();
+
+            // Filtro por nome, se fornecido
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(p => p.FullName.fullName.ToLower().Contains(name.ToLower()));
+            }
+
+            // Filtro por número de licença, se fornecido
+            if (!string.IsNullOrWhiteSpace(licenseNumber))
+            {
+                query = query.Where(p => p.LicenseNumber.licenseNumber.ToLower().Contains(licenseNumber.ToLower()));
+            }
+
+            // Filtro por número de telefone, se fornecido
+            if (!string.IsNullOrWhiteSpace(phoneNumber))
+            {
+                query = query.Where(p => p.PhoneNumber.phoneNumber.ToLower().Contains(phoneNumber.ToLower()));
+            }
+
+            // Filtro por e-mail, se fornecido
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                query = query.Where(p => p.Email.email.ToLower().Contains(email.ToLower()));
+            }
+
+            // Filtro por especialização, se fornecida
+            if (!string.IsNullOrWhiteSpace(specialization) && specializationIds.Any())
+            {
+                // Verifica se o ID da especialização está na lista de IDs
+                query = query.Where(p => specializationIds.Contains(p.SpecializationId.ToString()));
+            }
+
+            // Executa a consulta e retorna os resultados
+            return await query.ToListAsync();
         }
-        
+
+
     }
 }

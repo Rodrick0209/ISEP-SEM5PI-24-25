@@ -207,7 +207,7 @@ public static class DataSeeder
     SeedOperationRequest(context, operationRequest13);
 
 
-    Staff staff = new Staff(new StaffId("D202512345"), "staff", "12345", specialization1.Id.Value, "email@gmail.com", "+951999999999", "Doctor", "True");
+    Staff staff = new Staff(new StaffId("D202512345"), "staff", "12345", specialization1.Id.Value, "email@gmail.com", "+951999999999", "Doctor", "Active");
     SeedStaff(context, staff);
 
 
@@ -224,7 +224,7 @@ public static class DataSeeder
 
     SeedAvailabilitySlots(context, availableSlot2);
 
-    Staff staff2 = new Staff(new StaffId("D202512344"), "staffMario", "12346", specialization1.Id.Value,"emaill@gmail.com", "+951999999998", "Doctor", "True");
+    Staff staff2 = new Staff(new StaffId("D202512344"), "staffMario", "12346", specialization3.Id.Value,"emaill@gmail.com", "+951999999998", "Doctor", "Active");
     SeedStaff(context, staff2);
 
 
