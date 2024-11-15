@@ -2,43 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { Patient, PatientsView } from '../interfaces/patient';
 
-export interface Patient {
-  medicalRecordNumber: string;
-  name: string;
-  dateOfBirth: Date;
-  email: string;
-  phoneNumber: string;
-  gender: string;
-  address: Address;
-  emergencyContact: EmergencyContact;
-  medicalHistory: MedicalHistory;
-}
-
-export interface Address {
-  street: string;
-  postalCode: string;
-  city: string;
-  country: string;
-}
-
-export interface EmergencyContact {
-  name: string;
-  email: string;
-  phoneNumber: string
-}
-
-export interface MedicalHistory {
-  medicalConditions: string;
-  // appointments: Appointment[];
-}
-
-export interface PatientsView {
-  medicalRecordNumber: string;
-  name: string;
-  dateOfBirth: Date;
-  email: string
-}
 
 @Injectable({
   providedIn: 'root'

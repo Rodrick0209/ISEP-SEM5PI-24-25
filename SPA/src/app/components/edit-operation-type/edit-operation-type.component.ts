@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { OperationTypesService, OperationType } from '../services/operation-type.service';
+import { OperationTypesService, OperationType } from '../../services/operation-type.service';
 
 @Component({
   selector: 'app-edit-operation-type',

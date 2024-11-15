@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { PatientsView, PatientService } from '../../services/patient.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FilterPatientsComponent } from '../filter-patients/filter-patients.component';
 import { MessageService } from '../../services/message.service';
+import { PatientsView } from '../../interfaces/patient';
+import { PatientService } from '../../services/patient.service';
 
 @Component({
   selector: 'app-list-patients',

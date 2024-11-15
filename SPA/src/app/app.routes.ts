@@ -16,7 +16,7 @@ import { EditPatientComponent } from './components/edit-patient/edit-patient.com
 import { DeletePatientComponent } from './components/delete-patient/delete-patient.component';
 import { RegisterConfirmationComponent } from './components/register-confirmation/register-confirmation.component';
 import { PlanningComponent } from './components/planning/planning.component';
-import { EditOperationTypeComponent } from './edit-operation-type/edit-operation-type.component';
+import { EditOperationTypeComponent } from './components/edit-operation-type/edit-operation-type.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
