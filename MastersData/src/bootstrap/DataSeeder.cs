@@ -224,7 +224,7 @@ public static class DataSeeder
 
     SeedAvailabilitySlots(context, availableSlot2);
 
-    Staff staff2 = new Staff(new StaffId("D202512344"), "staffMario", "12346", specialization3.Id,"emaill@gmail.com", "+951999999998", "Doctor");
+    Staff staff2 = new Staff(new StaffId("D202512344"), "staffMario", "12346", specialization3.Id, "emaill@gmail.com", "+951999999998", "Doctor");
     SeedStaff(context, staff2);
 
 
@@ -235,7 +235,7 @@ public static class DataSeeder
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1200, 1300);
     SeedOperationRoom(context, operationRoom);
 
-    OperationRoom teste  = new OperationRoom("or8", "description8", "10");
+    OperationRoom teste = new OperationRoom("or8", "description8", "10");
 
     var rooms = new List<OperationRoom>
     {
@@ -255,9 +255,11 @@ public static class DataSeeder
 
     context.SaveChanges();
 
-    var currentHourInMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+    int currentHourInMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+    int startMinute = currentHourInMinutes + 1;
+    int endMinute = Math.Min(currentHourInMinutes + 100, 1440);
 
-    var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(2025, 11, 13), new TimeSlot(currentHourInMinutes+1, currentHourInMinutes+100));
+    var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(2025, 11, 13), new TimeSlot(startMinute, endMinute));
     var appointment = new Appointment(appointmentTimeSlot, operationRoom.Id.Value, operationRequest.Id.AsString());
     SeedAppointments(context, appointment);
     context.SaveChanges();
