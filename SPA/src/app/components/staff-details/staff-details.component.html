@@ -1,0 +1,19 @@
+<div class="staff-details" *ngIf="staff">
+    <div class="staff-header">
+      <h2>Staff Details</h2>
+    </div>
+  
+    <div class="staff-info">
+      <h3>Staff Information</h3>
+      <div class="staff-field"><strong>Staff ID:</strong> {{ staff.id }}</div>
+      <div class="staff-field"><strong>Name:</strong> {{ staff.name }}</div>
+      <div class="staff-field"><strong>Position:</strong> {{ staff.position }}</div>
+      <div class="staff-field"><strong>Email:</strong> {{ staff.email }}</div>
+      <div class="staff-field"><strong>Phone Number:</strong> {{ staff.phoneNumber }}</div>
+    </div>
+  
+    <div class="back-button">
+      <button onclick="history.back()">← Back</button>
+    </div>
+  </div>
+  

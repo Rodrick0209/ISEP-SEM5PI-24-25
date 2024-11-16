@@ -1,0 +1,178 @@
+/* Container styling */
+.edit-staff-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px 30px;
+    background-color: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    animation: fadeIn 0.4s ease;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  .error-message {
+    text-align: center;
+    color: #d9534f;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+  }
+  
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    outline: none;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+  }
+  
+  /* Button styles */
+  button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-submit {
+    background-color: #28a745;
+    color: #fff;
+    font-weight: 600;
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+  
+  .btn-submit:disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
+  }
+  
+  .btn-submit:hover:enabled {
+    background-color: #218838;
+  }
+  
+  .btn-cancel {
+    background-color: #dc3545;
+    color: #fff;
+    font-weight: 600;
+  }
+  
+  .btn-cancel:hover {
+    background-color: #c82333;
+  }
+  
+  /* Modal styling */
+  .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+  }
+  
+  .modal.fadeOut {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 320px;
+    text-align: center;
+    animation: slideIn 0.3s ease;
+  }
+  
+  .modal-content h3 {
+    margin: 0 0 15px;
+    font-weight: 700;
+  }
+  
+  .modal-content p {
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    color: #666;
+  }
+  
+  .btn-confirm,
+  .btn-cancel {
+    margin: 0 8px;
+    padding: 10px 15px;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  
+  .btn-confirm {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .btn-confirm:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  

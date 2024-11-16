@@ -107,7 +107,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
                 .ReturnsAsync(new Patient("Jane Doe", "1990-01-01", "female", "john.doe2@example.com", "+351 1232567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202410000001"));
 
             _staffRepository.Setup(repo => repo.GetByIdAsync(new StaffId(staffId)))
-                .ReturnsAsync(new Staff(new StaffId("D202512345"), "Miguel", "12345", specialization1.Id,  "mamarNoC@gmail.com", "+351123456789", "Doctor","True"));
+                .ReturnsAsync(new Staff(new StaffId("D202512345"), "Miguel", "12345", specialization1.Id,  "mamarNoC@gmail.com", "+351123456789", "Doctor"));
 
             _unitOfWork.Setup(uow => uow.CommitAsync()).ReturnsAsync(1);
 

@@ -81,16 +81,15 @@ public class StaffServiceTests
         var _staffIdGeneratorService = new StaffIdGeneratorService();
 
         // Arrange
-        var staffDto = new StaffDto(
-             new StaffId("D202412345"),
-             "John Doe",
-             "12345",
-             "11111111-1111-1111-1111-111111111113",
-             "john.doe@example.com",
-             "+351 1234567890",
-             "Doctor",
-             "true"
-            );
+        var staffDto = new CreatingStaffDto
+            {
+                FullName = "John Doe",
+                LicenseNumber = "12345",
+                SpecializationId = "11111111-1111-1111-1111-111111111113",
+                Email = "john.doe@example.com",
+                PhoneNumber = "+351 1234567890",
+                Category = "Doctor"
+            };
 
         _staffRepository.Setup(repo => repo.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync(new DDDSample1.Domain.StaffMembers.Staff(
             new StaffId("D202412345"),
@@ -99,8 +98,8 @@ public class StaffServiceTests
              new SpecializationId("11111111-1111-1111-1111-111111111113"),
              "john.doe@example.com",
              "+351 12345678998",
-             "Doctor",
-             "true"
+             "Doctor"
+             
 
         ));
 
@@ -168,8 +167,7 @@ public class StaffServiceTests
              new SpecializationId("11111111-1111-1111-1111-111111111113"),
              "john.doe@example.com",
              "+351 12345678998",
-             "Doctor",
-             "true"
+             "Doctor"
 
         );
 
@@ -207,8 +205,8 @@ public class StaffServiceTests
              new SpecializationId("11111111-1111-1111-1111-111111111113"),
              "john.doe@example.com",
              "+351 12345678998",
-             "Doctor",
-             "true"
+             "Doctor"
+             
 
         );
 
@@ -249,8 +247,7 @@ public class StaffServiceTests
              new SpecializationId("11111111-1111-1111-1111-111111111113"),
              "john.doe@example.com",
              "+351 12345678998",
-             "Doctor",
-             "true"
+             "Doctor"
 
         );
 
@@ -292,8 +289,7 @@ public class StaffServiceTests
             new SpecializationId("11111111-1111-1111-1111-111111111113"),
             "john.doe@example.com",
             "+351 1234567890",
-            "Doctor",
-            "true"
+            "Doctor"
         );
 
         _staffRepository.Setup(repo => repo.GetByIdAsync(It.IsAny<StaffId>())).ReturnsAsync(staff);
@@ -341,8 +337,7 @@ public class StaffServiceTests
                     new SpecializationId("11111111-1111-1111-1111-111111111113"),
                     "john.doe@example.com",
                     "+351 1234567890",
-                    "Doctor",
-                    "true"),
+                    "Doctor"),
 
 
                 new Staff(
@@ -352,8 +347,7 @@ public class StaffServiceTests
                     new SpecializationId("11111111-1111-1111-1111-111111111114"),
                     "john.doe@example.com",
                     "+351 1234567890",
-                    "Doctor",
-                    "true"),            };
+                    "Doctor"),            };
 
         _staffRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(staffs);
         _staffRepository.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
@@ -405,8 +399,7 @@ public class StaffServiceTests
                     new SpecializationId("11111111-1111-1111-1111-111111111113"),
                     "john.doe@example.com",
                     "+351 1234567890",
-                    "Doctor",
-                    "true"),
+                    "Doctor"),
 
 
                 new Staff(
@@ -416,8 +409,7 @@ public class StaffServiceTests
                     new SpecializationId("11111111-1111-1111-1111-111111111114"),
                     "johna.doe@example.com",
                     "+351 1234567898",
-                    "Doctor",
-                    "true"),
+                    "Doctor"),
 
                 new Staff(
                     new StaffId("D202412346"),
@@ -426,8 +418,7 @@ public class StaffServiceTests
                     new SpecializationId("11111111-1111-1111-1111-111111111114"),
                     "john.doe@example.com",
                     "+351 1234567898",
-                    "Doctor",
-                    "true"),                 };
+                    "Doctor"),                 };
 
         _staffRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(staffs);
         _staffRepository.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
@@ -483,8 +474,7 @@ public class StaffServiceTests
                     new SpecializationId("11111111-1111-1111-1111-111111111113"),
                     "john.doe@example.com",
                     "+351 1234567890",
-                    "Doctor",
-                    "true"),
+                    "Doctor"),
 
 
                 new Staff(
@@ -494,8 +484,7 @@ public class StaffServiceTests
                     new SpecializationId("11111111-1111-1111-1111-111111111114"),
                     "johna.doe@example.com",
                     "+351 1234567898",
-                    "Doctor",
-                    "true"),
+                    "Doctor"),
 
                 new Staff(
                     new StaffId("D202412346"),
@@ -504,8 +493,7 @@ public class StaffServiceTests
                     new SpecializationId("11111111-1111-1111-1111-111111111114"),
                     "john.doe@example.com",
                     "+351 1234567898",
-                    "Doctor",
-                    "true"),                 };
+                    "Doctor"),                 };
 
         _staffRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(staffs);
         _staffRepository.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
@@ -544,8 +532,7 @@ public class StaffServiceTests
                     new SpecializationId("11111111-1111-1111-1111-111111111113"),
                     "john.doe@example.com",
                     "+351 1234567890",
-                    "Doctor",
-                    "true"),
+                    "Doctor"),
             };
 
         _staffRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(staffs);

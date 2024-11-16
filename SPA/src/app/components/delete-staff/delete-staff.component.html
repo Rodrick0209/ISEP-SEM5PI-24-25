@@ -1,0 +1,24 @@
+<div class="delete-staff">
+    <h3>Are you sure you want to delete this staff profile?</h3>
+
+    <p>
+        Note: This staff profile will be permanently deleted, and some data may be retained for analysis purposes.
+    </p>
+
+    <app-mark-x
+        [markText]="'I confirm'" 
+        (markClicked)="onMarkClick()" 
+        [ngClass]="{'active': isConfirmed}">
+    </app-mark-x>
+
+    <button (click)="onDelete()" [disabled]="!isConfirmed" class="delete-button">
+        Delete
+    </button>
+    <button (click)="onCancel()" class="cancel-button">
+        Cancel
+    </button>
+
+    <div *ngIf="errorMessage" class="error-message">
+        <p>{{ errorMessage }}</p>
+    </div>
+</div>

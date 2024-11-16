@@ -25,7 +25,7 @@ namespace DDDSample1.Domain.StaffMembers
         {
         }
 
-        public Staff(StaffId staffId, string fullName, string licenseNumber, SpecializationId specializationId, string email, string phoneNumber, string category, string status)
+        public Staff(StaffId staffId, string fullName, string licenseNumber, SpecializationId specializationId, string email, string phoneNumber, string category)
         {
             this.Id = staffId;
             this.FullName = new FullName(fullName);
@@ -34,7 +34,7 @@ namespace DDDSample1.Domain.StaffMembers
             this.Email = new Email(email);
             this.PhoneNumber = new PhoneNumber(phoneNumber);
             this.Category = Enum.Parse<Category>(category);
-            this.status= Enum.Parse<StaffStatus>(status);
+            this.status = StaffStatus.Active; // Define "Active" como padrão
         }
 
         public void ChangeFullName(string fullName)

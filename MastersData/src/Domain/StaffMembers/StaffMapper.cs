@@ -28,8 +28,7 @@ namespace DDDSample1.Domain.StaffMembers
                 new SpecializationId(dto.SpecializationId),
                 dto.Email,
                 dto.PhoneNumber,
-                dto.Category,
-                dto.status  
+                dto.Category 
             );
         }
     }

@@ -43,7 +43,7 @@ namespace DDDSample1.Domain.StaffMembers
         }
 
 
-        public async Task<StaffDto> AddAsync(StaffDto staffdto)
+        public async Task<StaffDto> AddAsync(CreatingStaffDto staffdto)
         {
 
 
@@ -61,13 +61,43 @@ namespace DDDSample1.Domain.StaffMembers
             StaffIdGeneratorService staffIdGeneratorService = new StaffIdGeneratorService();
             Category category = Enum.Parse<Category>(staffdto.Category);
             StaffId staffId = staffIdGeneratorService.generateStaffId(category, recruitmentDate);
-            Staff staff = StaffMapper.toDomain(staffdto, staffId);
+
+            var staff = new Staff(staffId, staffdto.FullName, staffdto.LicenseNumber, new SpecializationId(staffdto.SpecializationId), staffdto.Email, staffdto.PhoneNumber, category.ToString());
 
             await _staffRepository.AddAsync(staff);
             await _unitOfWork.CommitAsync();
 
+
             return StaffMapper.toDTO(staff);
         }
+
+        // public async Task<StaffDto> AddAsyncUi(CreatingStaffDto staffdto)
+        // {
+        //     bool emailIsUnique = await validateEmailIsUnique(staffdto.Email);
+        //     bool phoneNumberIsUnique = await validatePhoneNumberIsUnique(staffdto.PhoneNumber);
+        //     if (!emailIsUnique || !phoneNumberIsUnique)
+        //     {
+        //         throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
+        //     }
+
+        //     await checkOSpecializationByNameAsync(staffdto.SpecializationId);
+
+        //     DateTime recruitmentDate = DateTime.Now;
+
+        //     StaffIdGeneratorService staffIdGeneratorService = new StaffIdGeneratorService();
+        //     Category category = Enum.Parse<Category>(staffdto.Category);
+        //     StaffId staffId = staffIdGeneratorService.generateStaffId(category, recruitmentDate);
+
+        //     var staff = new Staff(staffId, staffdto.FullName, staffdto.LicenseNumber, new SpecializationId(staffdto.SpecializationId), staffdto.Email, staffdto.PhoneNumber, category.ToString());
+
+        //     await _staffRepository.AddAsync(staff);
+        //     await _unitOfWork.CommitAsync();
+
+
+        //     return StaffMapper.toDTO(staff);
+
+
+        // }
 
         public async Task<StaffDto> UpdateAsync(EditingStaffProfileDto dto)
         {

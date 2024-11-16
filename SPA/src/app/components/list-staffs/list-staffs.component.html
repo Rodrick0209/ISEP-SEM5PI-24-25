@@ -1,0 +1,55 @@
+<div class="list-staffs-container">
+    <button class="create-staff-button" (click)="createStaff()">Create Staff Profile</button>
+
+    <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+    </div>
+
+    <app-filter-staffs (filterChanged)="onFilterChanged($event)"></app-filter-staffs>
+
+    <table *ngIf="paginatedStaffs.length > 0">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>License Number</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Specialization</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let staff of paginatedStaffs">
+                <td>{{ staff.name }}</td>
+                <td>{{ staff.licenseNumber }}</td>
+                <td>{{ staff.phoneNumber }}</td>
+                <td>{{ staff.email }}</td>
+                <td>{{ staff.specialization }}</td>
+                <td>
+                    <button (click)="seeDetails(staff)">Details</button>
+                </td>
+                <td>
+                    <button (click)="editPatient(staff)">Edit</button>
+                </td>
+                <td>
+                    <button (click)="deletePatient(staff)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="paginatedStaffs.length === 0" class="no-staffs-message">
+        <p>No staff members to show.</p>
+    </div>
+
+    <div class="pagination-controls" *ngIf="paginatedStaffs.length > 0">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+</div>

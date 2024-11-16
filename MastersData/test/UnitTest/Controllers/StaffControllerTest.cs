@@ -23,6 +23,17 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             var _staffIdGeneratorService = new StaffIdGeneratorService();
 
 
+            var dto = new CreatingStaffDto
+            {
+                FullName = "John Doe",
+                LicenseNumber = "12345",
+                SpecializationId = "11111111-1111-1111-1111-111111111113",
+                Email = "john.doe@example.com",
+                PhoneNumber = "+351 1234567890",
+                Category = "Doctor"
+            };
+
+
             var staffDto = new StaffDto
             (
                 _staffIdGeneratorService.generateStaffId(Category.Doctor, DateTime.Now),
@@ -34,10 +45,10 @@ namespace DDDSample1.Tests.UnitTests.Controllers
                 "Doctor",
                 "true"
             );
-            _mockService.Setup(service => service.AddAsync(staffDto)).ReturnsAsync(staffDto);
+            _mockService.Setup(service => service.AddAsync(dto)).ReturnsAsync(staffDto);
 
             // Act
-            var result = await _controller.Create(staffDto);
+            var result = await _controller.Create(dto);
 
             // Assert
             var actionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
@@ -53,17 +64,15 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             var _staffIdGeneratorService = new StaffIdGeneratorService();
 
             // Arrange
-            var dto = new StaffDto
-            (
-                _staffIdGeneratorService.generateStaffId(Category.Doctor, DateTime.Now),
-                "John Doe",
-                "12345",
-                "11111111-1111-1111-1111-111111111113",
-                "john.doe@example.com",
-                "+351 1234567890",
-                "Doctor",
-                "true"
-            );
+            var dto = new CreatingStaffDto
+            {
+                FullName = "John Doe",
+                LicenseNumber = "12345",
+                SpecializationId = "11111111-1111-1111-1111-111111111113",
+                Email = "john.doe@example.com",
+                PhoneNumber = "+351 1234567890",
+                Category = "Doctor"
+            };
             _mockService.Setup(service => service.AddAsync(dto)).ThrowsAsync(new Exception("Error"));
 
             // Act
