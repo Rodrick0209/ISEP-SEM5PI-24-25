@@ -481,11 +481,11 @@ namespace DDDSample1.Domain.User
             _patientLoggerRepository.AddAsync(patientLogger);
         }
 
-        public async Task<string> GenerateGoogleTokenFromJwt(string email)
+        public async Task<string> GenerateGoogleTokenFromJwt(string email, string role)
         {
 
             TokenProvider tokenProvider = new TokenProvider(_configuration);
-            string token = tokenProvider.CreateTokenForGoogle(email);
+            string token = tokenProvider.CreateTokenForGoogle(email, role);
 
             return token;
         }

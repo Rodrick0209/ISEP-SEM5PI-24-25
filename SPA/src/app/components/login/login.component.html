@@ -24,14 +24,16 @@
     </div>
     <div>
       <p>Don't have an account? <a routerLink="/register">Register here</a></p>
-      <p>Forgot your password? <a routerLink="/reset-password">Click here </a></p>
+      <p>
+        Forgot your password? <a routerLink="/reset-password">Click here </a>
+      </p>
     </div>
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
     <button type="submit">Login</button>
   </form>
   <div id="g_id_onload"
-       data-client_id="YOUR_GOOGLE_CLIENT_ID"
+       data-client_id="358025509836-ktmvargmgt5sjrji3jisv7fqvl7s2il0.apps.googleusercontent.com"
        data-callback="handleCredentialResponse">
   </div>
-  <div class="g_id_signin" data-type="standard"></div>
+  <div id="g_id_signin" data-type="standard"></div>
 </div>

@@ -6,6 +6,12 @@ interface LoginResponse {
   token: string;
 }
 
+interface GoogleResponse {
+  token: {
+    result: string
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,13 +19,23 @@ export class AuthService {
   private loginUrl = '/api/Login/login';
   private loggedIn = new BehaviorSubject<boolean>(this.isLoggedIn()); // Inicializa com o estado atual de login
   isLoggedIn$ = this.loggedIn.asObservable();
+  private googleVerifyUrl = '/api/Login/google-response'; // Add your backend endpoint here
+
+
+
 
   constructor(private http: HttpClient) {}
+
 
   login(email: string, password: string): Observable<LoginResponse> {
     const body = { email, password };
     return this.http.post<LoginResponse>(this.loginUrl, body);
   }
+
+    verifyGoogleToken(): Observable<GoogleResponse> {
+    return this.http.get<GoogleResponse>(this.googleVerifyUrl);
+  }
+
 
   saveToken(token: string): void {
     localStorage.setItem('token', token);

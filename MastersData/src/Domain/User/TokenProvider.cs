@@ -43,7 +43,7 @@ namespace DDDSample1.Infrastructure.Users
 
         }
 
-        public string CreateTokenForGoogle(string email)
+        public string CreateTokenForGoogle(string email, string role)
         {
             string secretKey = configuration["Jwt:SecretKey"];
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -56,8 +56,10 @@ namespace DDDSample1.Infrastructure.Users
             {
                 Subject = new ClaimsIdentity(
                 [
-                        new Claim(JwtRegisteredClaimNames.Sub, email),  // Opcionalmente use um UserId aqui
-                        new Claim(JwtRegisteredClaimNames.Email, email)                ]),
+                    new Claim(JwtRegisteredClaimNames.Sub, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, email),
+                    new Claim("role", role),
+                ]),
                 Expires = DateTime.UtcNow.AddMinutes(expirationTime),
                 SigningCredentials = credentials,
                 Issuer = configuration["Jwt:Issuer"],

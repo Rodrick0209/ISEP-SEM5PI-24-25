@@ -57,13 +57,14 @@ namespace DDDSample1.Controllers
                         });
                 */
 
+                
                 // Verifique se o email não é nulo
                 if (string.IsNullOrEmpty(email))
                 {
                     return BadRequest("Email not found in claims.");
                 }
 
-                var jwtToken = _userService.GenerateGoogleTokenFromJwt(email);
+                var jwtToken = _userService.GenerateGoogleTokenFromJwt(email,"admin");
 
                 return Ok(new { Token = jwtToken });
             }

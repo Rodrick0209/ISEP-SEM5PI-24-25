@@ -27,6 +27,7 @@ namespace DDDSample1.Controllers
 
         // POST: api/OperationType
         [HttpPost("Create")]
+        [Authorize (Roles = "admin")]
         public async Task<ActionResult<OperationTypeDto>> Create(OperationTypeDto dto)
         {
             if (dto == null)
@@ -46,6 +47,7 @@ namespace DDDSample1.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize (Roles = "admin")]
         public async Task<ActionResult<OperationTypeDto>> GetById(string id)
         {
             var op = await _service.GetByIdAsync(new OperationTypeId(id));
@@ -67,6 +69,7 @@ namespace DDDSample1.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize (Roles = "admin")]
         public async Task<ActionResult<OperationTypeDto>> Inactivate(string id)
         {
 
@@ -87,6 +90,7 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("GetAll")]
+        [Authorize (Roles = "admin")]
         
         public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetAll()
         {
@@ -107,6 +111,7 @@ namespace DDDSample1.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize (Roles = "admin")]
         public async Task<ActionResult<OperationTypeDto>> Update(Guid id, OperationTypeDto dto)
         {
             if (id != dto.Id)
@@ -135,6 +140,7 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("Filter")]
+        [Authorize (Roles = "admin")]
         public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetByFilters(string name, string status, string specialization)
         {
             var specializationstr="";
