@@ -96,7 +96,7 @@ public class StaffServiceTests
             new StaffId("D202412345"),
             "John Doe",
              "12345",
-             "11111111-1111-1111-1111-111111111113",
+             new SpecializationId("11111111-1111-1111-1111-111111111113"),
              "john.doe@example.com",
              "+351 12345678998",
              "Doctor",
@@ -145,7 +145,7 @@ public class StaffServiceTests
         Assert.Equal("John Doe Updated", result.FullName);
         _staffLoggerRepository.Verify(repo => repo.AddAsync(It.IsAny<StaffLogger>()), Times.Once);
         _unitOfWork.Verify(uow => uow.CommitAsync(), Times.Once);
-    }
+    } */
 
     [Fact]
     public async Task UpdateAsync_ShouldUpdateStaffEmail_WhenValidData()
@@ -165,7 +165,7 @@ public class StaffServiceTests
             new StaffId("D202412345"),
             "John Doe",
              "12345",
-             "11111111-1111-1111-1111-111111111113",
+             new SpecializationId("11111111-1111-1111-1111-111111111113"),
              "john.doe@example.com",
              "+351 12345678998",
              "Doctor",
@@ -204,7 +204,7 @@ public class StaffServiceTests
             new StaffId("D202412345"),
             "John Doe",
              "12345",
-             "11111111-1111-1111-1111-111111111113",
+             new SpecializationId("11111111-1111-1111-1111-111111111113"),
              "john.doe@example.com",
              "+351 12345678998",
              "Doctor",
@@ -246,7 +246,7 @@ public class StaffServiceTests
             new StaffId("D202412345"),
             "John Doe",
              "12345",
-             "11111111-1111-1111-1111-111111111113",
+             new SpecializationId("11111111-1111-1111-1111-111111111113"),
              "john.doe@example.com",
              "+351 12345678998",
              "Doctor",
@@ -269,7 +269,7 @@ public class StaffServiceTests
         _staffLoggerRepository.Verify(repo => repo.AddAsync(It.IsAny<StaffLogger>()), Times.Once);
         _unitOfWork.Verify(uow => uow.CommitAsync(), Times.Once);
         _emailSender.Verify(sender => sender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-    }*/
+    }
 
     [Fact]
     public async Task DeleteAsync_ShouldDeactivateStaff_WhenExists()
@@ -289,7 +289,7 @@ public class StaffServiceTests
             new StaffId("D202412345"),
             "John Doe",
             "12345",
-            "11111111-1111-1111-1111-111111111113",
+            new SpecializationId("11111111-1111-1111-1111-111111111113"),
             "john.doe@example.com",
             "+351 1234567890",
             "Doctor",
@@ -338,7 +338,7 @@ public class StaffServiceTests
                     new StaffId("D202412345"),
                     "John Doe",
                     "12345",
-                    "11111111-1111-1111-1111-111111111113",
+                    new SpecializationId("11111111-1111-1111-1111-111111111113"),
                     "john.doe@example.com",
                     "+351 1234567890",
                     "Doctor",
@@ -349,7 +349,7 @@ public class StaffServiceTests
                     new StaffId("D202412346"),
                     "Jane Doe",
                     "12346",
-                    "11111111-1111-1111-1111-111111111114",
+                    new SpecializationId("11111111-1111-1111-1111-111111111114"),
                     "john.doe@example.com",
                     "+351 1234567890",
                     "Doctor",
@@ -402,7 +402,7 @@ public class StaffServiceTests
                     new StaffId("D202412345"),
                     "John Doe",
                     "12345",
-                    "11111111-1111-1111-1111-111111111113",
+                    new SpecializationId("11111111-1111-1111-1111-111111111113"),
                     "john.doe@example.com",
                     "+351 1234567890",
                     "Doctor",
@@ -413,7 +413,7 @@ public class StaffServiceTests
                     new StaffId("D202412346"),
                     "John Doe",
                     "12346",
-                    "11111111-1111-1111-1111-111111111114",
+                    new SpecializationId("11111111-1111-1111-1111-111111111114"),
                     "johna.doe@example.com",
                     "+351 1234567898",
                     "Doctor",
@@ -423,7 +423,7 @@ public class StaffServiceTests
                     new StaffId("D202412346"),
                     "Jane Done",
                     "12346",
-                    "11111111-1111-1111-1111-111111111114",
+                    new SpecializationId("11111111-1111-1111-1111-111111111114"),
                     "john.doe@example.com",
                     "+351 1234567898",
                     "Doctor",
@@ -480,7 +480,7 @@ public class StaffServiceTests
                     new StaffId("D202412345"),
                     "John Doe",
                     "12345",
-                    "11111111-1111-1111-1111-111111111113",
+                    new SpecializationId("11111111-1111-1111-1111-111111111113"),
                     "john.doe@example.com",
                     "+351 1234567890",
                     "Doctor",
@@ -491,7 +491,7 @@ public class StaffServiceTests
                     new StaffId("D202412346"),
                     "John Doe",
                     "12346",
-                    "11111111-1111-1111-1111-111111111114",
+                    new SpecializationId("11111111-1111-1111-1111-111111111114"),
                     "johna.doe@example.com",
                     "+351 1234567898",
                     "Doctor",
@@ -501,7 +501,7 @@ public class StaffServiceTests
                     new StaffId("D202412346"),
                     "Jane Done",
                     "12346",
-                    "11111111-1111-1111-1111-111111111114",
+                    new SpecializationId("11111111-1111-1111-1111-111111111114"),
                     "john.doe@example.com",
                     "+351 1234567898",
                     "Doctor",
@@ -541,7 +541,7 @@ public class StaffServiceTests
                 new StaffId("D202412345"),
                     "John Doe",
                     "12345",
-                    "11111111-1111-1111-1111-111111111113",
+                    new SpecializationId("11111111-1111-1111-1111-111111111113"),
                     "john.doe@example.com",
                     "+351 1234567890",
                     "Doctor",
