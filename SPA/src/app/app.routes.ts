@@ -26,6 +26,8 @@ import { DeleteOperationRequestsComponent } from './components/delete-operation-
 import { EditOperationRequestsComponent } from './components/edit-operation-requests/edit-operation-requests.component';
 import { CreateOperationRequestsComponent } from './components/create-operation-requests/create-operation-requests.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
+import { ThreeViewComponent } from './components/three-view/three-view.component';
 
 
 
@@ -129,5 +131,9 @@ export const routes: Routes = [
         component: EditUserComponent,
         canActivate: [AuthGuard],
         data: { role: 'patient' }
-    }
+    },
+    {
+        path: 'view',
+        component: ThreeViewComponent
+    },
 ];
