@@ -44,13 +44,12 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
              "John Doe",
              "12345",
              "11111111-1111-1111-1111-111111111113",
-             "11111111-1111-1111-1111-111111111114",
              "john.doe@example.com",
              "+351 1234567890",
              "Doctor",
              "true"
             );
-            _staffRepository.Setup(pr => pr.AddAsync(It.IsAny<Staff>())).ReturnsAsync(new Staff(dto.Id, "John Doe", "12345", "11111111-1111-1111-1111-111111111113", "11111111-1111-1111-1111-111111111114", "john.doe@example.com", "+351 1234567890", "Doctor", "true"));
+            _staffRepository.Setup(pr => pr.AddAsync(It.IsAny<Staff>())).ReturnsAsync(new Staff(dto.Id, "John Doe", "12345", "11111111-1111-1111-1111-111111111113","john.doe@example.com", "+351 1234567890", "Doctor", "true"));
             _unitOfWork.Setup(uow => uow.CommitAsync()).ReturnsAsync(1);
 
             // Act
@@ -85,13 +84,12 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
              "John Doe",
              "12345",
              "11111111-1111-1111-1111-111111111113",
-             "11111111-1111-1111-1111-111111111114",
              "john.doe@example.com",
              "+351 1234567890",
              "Doctor",
              "true"
             );
-            _staffRepository.Setup(pr => pr.AddAsync(It.IsAny<Staff>())).ReturnsAsync(new Staff(_staffIdGeneratorService.generateStaffId(Category.Doctor, DateTime.Now), "John Doe", "12345", "11111111-1111-1111-1111-111111111113", "11111111-1111-1111-1111-111111111114", "john.doe@example.com", "+351 1234567890", "Doctor", "true"));
+            _staffRepository.Setup(pr => pr.AddAsync(It.IsAny<Staff>())).ReturnsAsync(new Staff(_staffIdGeneratorService.generateStaffId(Category.Doctor, DateTime.Now), "John Doe", "12345", "11111111-1111-1111-1111-111111111113", "john.doe@example.com", "+351 1234567890", "Doctor", "true"));
             _unitOfWork.Setup(uow => uow.CommitAsync()).ReturnsAsync(1);
 
             _staffRepository.Setup(pr => pr.GetByEmailAsync(dto.Email)).Throws(new BusinessRuleValidationException("Email and/or Phone Number are not unique"));

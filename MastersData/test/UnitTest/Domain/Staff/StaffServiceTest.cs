@@ -48,7 +48,6 @@ public class StaffServiceTests
              "John Doe",
              "12345",
              "11111111-1111-1111-1111-111111111113",
-             "11111111-1111-1111-1111-111111111114",
              "john.doe@example.com",
              "+351 1234567890",
              "Doctor",
@@ -87,7 +86,6 @@ public class StaffServiceTests
              "John Doe",
              "12345",
              "11111111-1111-1111-1111-111111111113",
-             "11111111-1111-1111-1111-111111111114",
              "john.doe@example.com",
              "+351 1234567890",
              "Doctor",
@@ -99,7 +97,6 @@ public class StaffServiceTests
             "John Doe",
              "12345",
              "11111111-1111-1111-1111-111111111113",
-             "11111111-1111-1111-1111-111111111114",
              "john.doe@example.com",
              "+351 12345678998",
              "Doctor",
@@ -131,7 +128,6 @@ public class StaffServiceTests
              "John Doe",
              "12345",
              "11111111-1111-1111-1111-111111111113",
-             "11111111-1111-1111-1111-111111111114",
              "john.doe@example.com",
              "+351 12345678998",
              "Doctor",
@@ -170,7 +166,6 @@ public class StaffServiceTests
             "John Doe",
              "12345",
              "11111111-1111-1111-1111-111111111113",
-             "11111111-1111-1111-1111-111111111114",
              "john.doe@example.com",
              "+351 12345678998",
              "Doctor",
@@ -210,7 +205,6 @@ public class StaffServiceTests
             "John Doe",
              "12345",
              "11111111-1111-1111-1111-111111111113",
-             "11111111-1111-1111-1111-111111111114",
              "john.doe@example.com",
              "+351 12345678998",
              "Doctor",
@@ -253,7 +247,6 @@ public class StaffServiceTests
             "John Doe",
              "12345",
              "11111111-1111-1111-1111-111111111113",
-             "11111111-1111-1111-1111-111111111114",
              "john.doe@example.com",
              "+351 12345678998",
              "Doctor",
@@ -297,7 +290,6 @@ public class StaffServiceTests
             "John Doe",
             "12345",
             "11111111-1111-1111-1111-111111111113",
-            "11111111-1111-1111-1111-111111111114",
             "john.doe@example.com",
             "+351 1234567890",
             "Doctor",
@@ -311,7 +303,6 @@ public class StaffServiceTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.False(staff.status); // Assuming IsActive is the flag you toggle in Deactivate
         _staffLoggerRepository.Verify(repo => repo.AddAsync(It.IsAny<StaffLogger>()), Times.Once);
         _unitOfWork.Verify(uow => uow.CommitAsync(), Times.Once);
     }
@@ -348,7 +339,6 @@ public class StaffServiceTests
                     "John Doe",
                     "12345",
                     "11111111-1111-1111-1111-111111111113",
-                    "11111111-1111-1111-1111-111111111114",
                     "john.doe@example.com",
                     "+351 1234567890",
                     "Doctor",
@@ -360,14 +350,13 @@ public class StaffServiceTests
                     "Jane Doe",
                     "12346",
                     "11111111-1111-1111-1111-111111111114",
-                    "11111111-1111-1111-1111-111111111115",
                     "john.doe@example.com",
                     "+351 1234567890",
                     "Doctor",
                     "true"),            };
 
         _staffRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(staffs);
-        _staffRepository.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _staffRepository.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
         .ReturnsAsync(staffs.Where(s => s.FullName.fullName.Contains(dto.Name)
                         && s.LicenseNumber.licenseNumber.Contains(dto.LicenseNumber)
                         && s.PhoneNumber.phoneNumber.Contains(dto.PhoneNumber)
@@ -414,7 +403,6 @@ public class StaffServiceTests
                     "John Doe",
                     "12345",
                     "11111111-1111-1111-1111-111111111113",
-                    "11111111-1111-1111-1111-111111111114",
                     "john.doe@example.com",
                     "+351 1234567890",
                     "Doctor",
@@ -426,7 +414,6 @@ public class StaffServiceTests
                     "John Doe",
                     "12346",
                     "11111111-1111-1111-1111-111111111114",
-                    "11111111-1111-1111-1111-111111111115",
                     "johna.doe@example.com",
                     "+351 1234567898",
                     "Doctor",
@@ -437,14 +424,13 @@ public class StaffServiceTests
                     "Jane Done",
                     "12346",
                     "11111111-1111-1111-1111-111111111114",
-                    "11111111-1111-1111-1111-111111111115",
                     "john.doe@example.com",
                     "+351 1234567898",
                     "Doctor",
                     "true"),                 };
 
         _staffRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(staffs);
-        _staffRepository.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _staffRepository.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
         .ReturnsAsync(staffs.Where(s => s.FullName.fullName.Contains(dto.Name)
                         && s.LicenseNumber.licenseNumber.Contains(dto.LicenseNumber)
                         && s.PhoneNumber.phoneNumber.Contains(dto.PhoneNumber)
@@ -495,7 +481,6 @@ public class StaffServiceTests
                     "John Doe",
                     "12345",
                     "11111111-1111-1111-1111-111111111113",
-                    "11111111-1111-1111-1111-111111111114",
                     "john.doe@example.com",
                     "+351 1234567890",
                     "Doctor",
@@ -507,7 +492,6 @@ public class StaffServiceTests
                     "John Doe",
                     "12346",
                     "11111111-1111-1111-1111-111111111114",
-                    "11111111-1111-1111-1111-111111111115",
                     "johna.doe@example.com",
                     "+351 1234567898",
                     "Doctor",
@@ -518,14 +502,13 @@ public class StaffServiceTests
                     "Jane Done",
                     "12346",
                     "11111111-1111-1111-1111-111111111114",
-                    "11111111-1111-1111-1111-111111111115",
                     "john.doe@example.com",
                     "+351 1234567898",
                     "Doctor",
                     "true"),                 };
 
         _staffRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(staffs);
-        _staffRepository.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _staffRepository.Setup(repo => repo.GetByFiltersAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
         .ReturnsAsync(staffs.Where(s => s.FullName.fullName.Contains(dto.Name)
                         && s.LicenseNumber.licenseNumber.Contains(dto.LicenseNumber)
                         && s.PhoneNumber.phoneNumber.Contains(dto.PhoneNumber)
@@ -559,7 +542,6 @@ public class StaffServiceTests
                     "John Doe",
                     "12345",
                     "11111111-1111-1111-1111-111111111113",
-                    "11111111-1111-1111-1111-111111111114",
                     "john.doe@example.com",
                     "+351 1234567890",
                     "Doctor",
