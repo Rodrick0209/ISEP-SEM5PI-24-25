@@ -287,7 +287,6 @@
 							"    pm.expect(jsonData).to.have.property('fullName');\r",
 							"    pm.expect(jsonData).to.have.property('licenseNumber');\r",
 							"    pm.expect(jsonData).to.have.property('specializationId');\r",
-							"    pm.expect(jsonData).to.have.property('availabilitySlotsId');\r",
 							"    pm.expect(jsonData).to.have.property('email');\r",
 							"    pm.expect(jsonData).to.have.property('phoneNumber');\r",
 							"    pm.expect(jsonData).to.have.property('category');\r",
@@ -311,9 +310,6 @@
 							"    pm.expect(jsonData.specializationId).to.be.a('string');\r",
 							"});\r",
 							"\r",
-							"pm.test(\"availabilitySlotsId should be a string\", function () {\r",
-							"    pm.expect(jsonData.availabilitySlotsId).to.be.a('string');\r",
-							"});\r",
 							"\r",
 							"pm.test(\"email should be a string\", function () {\r",
 							"    pm.expect(jsonData.email).to.be.a('string');\r",
@@ -354,7 +350,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": {},\r\n  \"fullName\": \"Mariotesting\",\r\n  \"licenseNumber\": \"14539\",\r\n  \"specializationId\": \"{{specializationId}}\",\r\n  \"availabilitySlotsId\": \"{{availabilitySlotsId}}\",\r\n  \"email\": \"rodrigopontescard@gmail.com\",\r\n  \"phoneNumber\": \"+351 123456767\",\r\n  \"category\": \"Doctor\",\r\n  \"status\": \"True\"\r\n}",
+					"raw": "{\r\n  \"id\": {},\r\n  \"fullName\": \"Mariotesting\",\r\n  \"licenseNumber\": \"14539\",\r\n  \"specializationId\": \"{{specializationId}}\",\r\n  \"email\": \"rodrigopontescard@gmail.com\",\r\n  \"phoneNumber\": \"+351 123456767\",\r\n  \"category\": \"Doctor\",\r\n  \"status\": \"True\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

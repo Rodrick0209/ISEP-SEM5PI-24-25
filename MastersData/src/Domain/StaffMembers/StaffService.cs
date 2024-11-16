@@ -258,7 +258,7 @@ namespace DDDSample1.Domain.StaffMembers
             return new StaffLogger(
                      staff.Id.AsString(),
                      staff.FullName.fullName,
-                     staff.SpecializationId,
+                     staff.SpecializationId.Value,
                      staff.Email.email,
                      staff.PhoneNumber.phoneNumber,
                      staff.Category.ToString(),
@@ -282,30 +282,24 @@ namespace DDDSample1.Domain.StaffMembers
             staff = await _staffRepository.GetByFiltersAsync(dto.Name, dto.LicenseNumber, dto.Email, dto.PhoneNumber, dto.Specialization);
 
 
-            // Converter o staff para ViewStaffDto, substituindo o ID da especialização pelo nome
-            List<ViewStaffDto> listDto = new List<ViewStaffDto>();
 
-            foreach (var sta in staff)
+            List<ViewStaffDto> listDto = staff.ConvertAll<ViewStaffDto>(sta => new ViewStaffDto
             {
-                var specialization = await _specializationRepository.GetByIdAsync(new SpecializationId(sta.SpecializationId));
+                Id = sta.Id.Value,
+                Name = sta.FullName.fullName,
+                LicenseNumber = sta.LicenseNumber.licenseNumber,
+                Email = sta.Email.email,
+                PhoneNumber = sta.PhoneNumber.phoneNumber,
+                Specialization = sta.SpecializationId.Value,
+                Category = sta.Category.ToString(),
+                Status = sta.status.ToString()
+            });
 
-                listDto.Add(new ViewStaffDto
-                {
-                    Id = sta.Id.Value,
-                    Name = sta.FullName.fullName,
-                    LicenseNumber = sta.LicenseNumber.licenseNumber,
-                    Email = sta.Email.email,
-                    PhoneNumber = sta.PhoneNumber.phoneNumber,
-                    Specialization = specialization.Name,
-                    Category = sta.Category.ToString(),
-                    Status = sta.status.ToString()
-                });
-            }
 
             return listDto;
-
-
         }
 
+
     }
+
 }

@@ -13,7 +13,7 @@ namespace DDDSample1.Domain.StaffMembers
     {
         public FullName FullName { get; private set; }
         public LicenseNumber LicenseNumber { get; private set; }
-        public String SpecializationId { get; private set; }
+        public SpecializationId SpecializationId { get; private set; }
         public Email Email { get; private set; }
         public PhoneNumber PhoneNumber { get; private set; }
         public Category Category { get; private set; }
@@ -25,7 +25,7 @@ namespace DDDSample1.Domain.StaffMembers
         {
         }
 
-        public Staff(StaffId staffId, string fullName, string licenseNumber, String specializationId, string email, string phoneNumber, string category, string status)
+        public Staff(StaffId staffId, string fullName, string licenseNumber, SpecializationId specializationId, string email, string phoneNumber, string category, string status)
         {
             this.Id = staffId;
             this.FullName = new FullName(fullName);

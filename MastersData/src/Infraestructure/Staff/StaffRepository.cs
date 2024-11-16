@@ -64,14 +64,7 @@ namespace DDDSample1.Infrastructure.StaffMembers
         public async Task<List<Staff>> GetByFiltersAsync(string name, string licenseNumber, string phoneNumber, string email, string specialization)
         {
 
-            List<string> specializationIds = new List<string>();
-            if (!string.IsNullOrWhiteSpace(specialization)){
-                // Obter os IDs das especializações correspondentes, aplicando o ToLower para garantir busca insensível a maiúsculas/minúsculas
-                specializationIds = await this.context.Specializations
-                    .Where(spec => spec.Name.ToLower().Contains(specialization.ToLower())) // Filtrar pela especialização fornecida, insensível a maiúsculas/minúsculas
-                    .Select(spec => spec.Id.ToString()) // Selecionar o ID como string
-                    .ToListAsync();
-            }
+            
 
             var query = this.context.StaffMembers.AsQueryable();
 
@@ -99,12 +92,11 @@ namespace DDDSample1.Infrastructure.StaffMembers
                 query = query.Where(p => p.Email.email.ToLower().Contains(email.ToLower()));
             }
 
-            // Filtro por especialização, se fornecida
-            if (specializationIds.Any())
+            if (!string.IsNullOrEmpty(specialization))
             {
-                // Verifica se o ID da especialização está na lista de IDs
-                query = query.Where(p => specializationIds.Contains(p.SpecializationId));
+                query = query.Where(p => p.SpecializationId.Value.ToLower().Contains(specialization.ToLower()));
             }
+
 
             // Executa a consulta e retorna os resultados
             return await query.ToListAsync();

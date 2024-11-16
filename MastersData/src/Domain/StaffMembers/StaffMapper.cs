@@ -1,4 +1,5 @@
 using System;
+using DDDSample1.Domain.Specializations;
 
 namespace DDDSample1.Domain.StaffMembers
 {
@@ -10,7 +11,7 @@ namespace DDDSample1.Domain.StaffMembers
                 obj.Id,
                 obj.FullName.fullName,
                 obj.LicenseNumber.licenseNumber,
-                obj.SpecializationId,
+                obj.SpecializationId.Value,
                 obj.Email.email,
                 obj.PhoneNumber.phoneNumber,
                 obj.Category.ToString(),
@@ -24,7 +25,7 @@ namespace DDDSample1.Domain.StaffMembers
                 staffId,
                 dto.FullName,
                 dto.LicenseNumber,
-                dto.SpecializationId,
+                new SpecializationId(dto.SpecializationId),
                 dto.Email,
                 dto.PhoneNumber,
                 dto.Category,
