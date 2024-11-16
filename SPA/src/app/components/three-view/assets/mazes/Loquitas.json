@@ -1,0 +1,297 @@
+{
+    "groundTextureUrl": "./assets/textures/ground.jpg",
+    "wallTextureUrl": "./assets/textures/wall.jpg",
+    "size": { "width": 14, "height": 14 },
+    "map": [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 1, 0],
+        [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0],
+        [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0],
+        [0, 3, 0, 2, 2, 0, 2, 2, 0, 2, 2, 0, 2, 1, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 3, 2, 2, 3, 2, 2, 1, 0, 0, 3, 2, 2, 1, 0],
+        [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0],
+        [0, 3, 0, 2, 2, 0, 2, 0, 0, 0, 3, 2, 2, 1, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0],
+        [0, 3, 0, 2, 3, 0, 2, 1, 0, 0, 0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0],
+        [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    "initialPosition": [7, 6],
+    "initialDirection": 0.0,
+    "exitLocation": [-0.5, 6],
+    "roomPositionTest": [5, 3], 
+    "bedPosition": [5, 4],
+
+    "rooms" : [
+        {
+            "name": "or1",
+            "xStartCell": 1,  
+            "yStartCell": 1,
+            "xEndCell": 4,
+            "yEndCell": 4,
+            "doors": 
+                {
+                   "position" : [3.5, 2.5],
+                   "doorDirection" : "east"
+                },
+            "beds" :
+                {
+                    "position" : [1, 2.2],
+                    "direction" : "west"
+                },
+            "doctors" : [
+                {
+                    "position" : [3.5, 2.2],
+                    "direction" : "west"
+                }
+            ],
+            "isOccupied" : false ,
+            "tableSurgery": 
+                    {
+                        "position" : [1.2, 3],
+                        "direction" : "south"
+                    } 
+        },
+        {
+            "name": "or2",
+            "xStartCell": 4,
+            "yStartCell": 1,
+            "xEndCell": 7,
+            "yEndCell": 4,
+            "doors": 
+                {
+                   "position" : [3.5, 5.5],
+                   "doorDirection" : "west"
+                },
+            "beds" :
+                {
+                    "position" : [1, 5.2],
+                    "direction" : "west"
+                },
+            "doctors" : [
+                
+            ],
+            "isOccupied" : false ,  
+            "tableSurgery": 
+                    {
+                        "position" : [1.2, 6],
+                        "direction" : "south"
+                    } 
+            
+        },
+        {
+            "name": "or3",
+            "xStartCell": 7,
+            "yStartCell": 1,
+            "xEndCell": 10,
+            "yEndCell": 4,
+            "doors": 
+                {
+                   "position" : [3.5, 8.5],
+                   "doorDirection" : "west"
+                },
+            "beds" :
+                {
+                    "position" : [1, 8.2],
+                    "direction" : "west"
+                },
+            "doctors" : [
+                
+            ],
+            "isOccupied" : false ,  
+            "tableSurgery": 
+                    {
+                        "position" : [1.2, 9],
+                        "direction" : "south"
+                    } 
+            
+        },
+        {
+            "name": "or4",
+            "xStartCell": 10,
+            "yStartCell": 1,
+            "xEndCell": 13,
+            "yEndCell": 4,
+            "doors": 
+                {
+                   "position" : [3.5, 11.5],
+                   "doorDirection" : "west"
+                },
+            "beds" :
+                {
+                    "position" : [1, 11.2],
+                    "direction" : "west"
+                },
+            "doctors" : [
+                
+            ],
+            "isOccupied" : false ,  
+            "tableSurgery": 
+                    {
+                        "position" : [1.2, 12],
+                        "direction" : "south"
+                    } 
+            
+        },
+        {
+            "name": "or5",
+            "xStartCell": 1,  
+            "yStartCell": 7,
+            "xEndCell": 4,
+            "yEndCell": 10,
+            "doors": 
+                {
+                   "position" : [9.5, 2.5],
+                   "doorDirection" : "west"
+                },
+            "beds" :
+                {
+                    "position" : [7.2, 2],
+                    "direction" : "west"
+                },
+            "doctors" : [
+                
+            ],
+            "isOccupied" : false ,  
+            "tableSurgery": 
+                {
+                    "position" : [7.2, 3],
+                    "direction" : "south"
+                } 
+        },
+        {
+            "name": "or6",
+            "xStartCell": 4,  
+            "yStartCell": 7,
+            "xEndCell": 7,
+            "yEndCell": 10,
+            "doors": 
+                {
+                   "position" : [9.5, 5.5],
+                   "doorDirection" : "west"
+                },
+            "beds" :
+                {
+                    "position" : [7.2, 5],
+                    "direction" : "west"
+                },
+            "doctors" : [
+                
+            ],
+            "isOccupied" : false ,  
+            "tableSurgery": 
+                {
+                    "position" : [7.2, 6],
+                    "direction" : "south"
+                } 
+        },
+        {
+            "name": "or7",
+            "xStartCell": 4,  
+            "yStartCell": 13,
+            "xEndCell": 7,
+            "yEndCell": 14,
+            "doors": 
+                {
+                   "position" : [11.5, 5.5],
+                   "doorDirection" : "west"
+                },
+            "beds" :
+                {
+                    "position" : [12.5, 5.5],
+                    "direction" : "east"
+                },
+            "doctors" : [
+                
+            ],
+            "isOccupied" : false ,  
+            "tableSurgery": 
+                {
+                    "position" : [13, 6],
+                    "direction" : "south"
+                } 
+        },
+        {
+            "name": "or8",
+            "xStartCell": 1,  
+            "yStartCell": 13,
+            "xEndCell": 4,
+            "yEndCell": 14,
+            "doors": 
+                {
+                   "position" : [11.5, 2.5],
+                   "doorDirection" : "west"
+                },
+            "beds" :
+                {
+                    "position" : [12.5, 2.5],
+                    "direction" : "east"
+                },
+            "doctors" : [
+                
+            ],
+            "isOccupied" : false ,  
+            "tableSurgery": 
+                {
+                    "position" : [13, 3],
+                    "direction" : "south"
+                } 
+        },
+        {
+            "name": "or9",
+            "xStartCell": 10,  
+            "yStartCell": 7,
+            "xEndCell": 13,
+            "yEndCell": 10,
+            "doors": 
+                {
+                   "position" : [12, 10],
+                   "doorDirection" : "north"
+                },
+            "beds" :
+                {
+                    "position" : [11.5, 12.2],
+                    "direction" : "north"
+                },
+            "doctors" : [
+                
+            ],
+            "isOccupied" : false ,  
+            "tableSurgery": 
+                {
+                    "position" : [11.2, 12.3],
+                    "direction" : "east"
+                } 
+        },
+        {
+            "name": "or10",
+            "xStartCell": 10,  
+            "yStartCell": 7,
+            "xEndCell": 13,
+            "yEndCell": 10,
+            "doors": 
+                {
+                   "position" : [8, 10],
+                   "doorDirection" : "north"
+                },
+            "beds" :
+                {
+                    "position" : [7.8, 12.2],
+                    "direction" : "north"
+                },
+            "doctors" : [
+                
+            ],
+            "isOccupied" : false ,
+            "tableSurgery": 
+                {
+                    "position" : [7.5, 12.3],
+                    "direction" : "east"
+                } 
+        }
+    ]
+}

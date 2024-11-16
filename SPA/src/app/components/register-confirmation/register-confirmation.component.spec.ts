@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterConfirmationComponent } from './register-confirmation.component';
 
+
 describe('ConfirmationComponent', () => {
   let component: RegisterConfirmationComponent;
   let fixture: ComponentFixture<RegisterConfirmationComponent>;
@@ -20,4 +21,5 @@ describe('ConfirmationComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });
