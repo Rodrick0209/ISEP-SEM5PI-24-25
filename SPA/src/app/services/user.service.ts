@@ -36,7 +36,7 @@ export class UserService {
   confirmRegistration(token: string, email: string): Observable<any> {
     const url = `${this.urlConfirm}?token=${token}&email=${email}`;
 
-    return this.http.get(url);
+    return this.http.post(url, {});
   };
 
   edit(email: string, name: string, newEmail: string, phone: string): Observable<any> {
@@ -52,7 +52,7 @@ export class UserService {
   confirmEdit(token: string, email: string, newEmail: string, phone: string): Observable<any> {
     const url = `${this.editUrlConfirm}?token=${token}&email=${email}&emailToEdit=${newEmail}&phoneNumberToEdit=${phone}`;
 
-    return this.http.get(url);
+    return this.http.patch(url, {});
   }
 
 
