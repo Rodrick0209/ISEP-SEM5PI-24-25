@@ -80,7 +80,7 @@ namespace DDDSample1.Domain.StaffMembers
                 throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
             }
 
-            await checkOSpecializationByNameAsync(staffDto.SpecializationId, staffDto);
+            var specialization = await checkOSpecializationByNameAsync(staffDto.SpecializationId, staffDto);
 
             DateTime recruitmentDate = DateTime.Now;
 
@@ -88,7 +88,7 @@ namespace DDDSample1.Domain.StaffMembers
             Category category = Enum.Parse<Category>(staffDto.Category);
             StaffId staffId = staffIdGeneratorService.generateStaffId(category, recruitmentDate);
 
-            var staff = new Staff(staffId, staffDto.FullName, staffDto.LicenseNumber, new SpecializationId(staffDto.SpecializationId), staffDto.Email, staffDto.PhoneNumber, category.ToString());
+            var staff = new Staff(staffId, staffDto.FullName, staffDto.LicenseNumber, specialization.Id, staffDto.Email, staffDto.PhoneNumber, category.ToString());
 
             await _staffRepository.AddAsync(staff);
             await _unitOfWork.CommitAsync();
