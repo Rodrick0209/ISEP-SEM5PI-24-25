@@ -92,7 +92,7 @@ describe('ListStaffsComponent', () => {
   });
 
   it('should navigate to details page', () => {
-    const staff = { id: 'D202512344', name: 'staffMario', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia' };
+    const staff = { id: 'D202512344', name: 'staffMario', licenseNumber: '12346', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia' };
     router.navigate.and.returnValue(Promise.resolve(true));
     component.seeDetails(staff);
 
@@ -100,7 +100,7 @@ describe('ListStaffsComponent', () => {
   });
 
   it('should delete staff', () => {
-    const staff = { id: 'D202512344', name: 'staffMario', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia' };
+    const staff = { id: 'D202512344', name: 'staffMario', licenseNumber: '12346', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia' };
     spyOn(window, 'confirm').and.returnValue(true);
     staffService.deleteStaff.and.returnValue(of('Staff deleted successfully'));
 
@@ -110,7 +110,7 @@ describe('ListStaffsComponent', () => {
   });
 
   it('should handle error on delete staff', () => {
-    const staff = { id: 'D202512344', name: 'staffMario', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia' };
+    const staff = { id: 'D202512344', name: 'staffMario', licenseNumber: '12346',phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia' };
     spyOn(window, 'confirm').and.returnValue(true);
     staffService.deleteStaff.and.returnValue(throwError('Error deleting staff'));
 
