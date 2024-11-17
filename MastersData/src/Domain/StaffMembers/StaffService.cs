@@ -71,33 +71,34 @@ namespace DDDSample1.Domain.StaffMembers
             return StaffMapper.toDTO(staff);
         }
 
-        // public async Task<StaffDto> AddAsyncUi(CreatingStaffDto staffdto)
-        // {
-        //     bool emailIsUnique = await validateEmailIsUnique(staffdto.Email);
-        //     bool phoneNumberIsUnique = await validatePhoneNumberIsUnique(staffdto.PhoneNumber);
-        //     if (!emailIsUnique || !phoneNumberIsUnique)
-        //     {
-        //         throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
-        //     }
+        public async Task<StaffDto> AddAsyncUi(CreatingStaffDto staffDto)
+        {
+            bool emailIsUnique = await validateEmailIsUnique(staffDto.Email);
+            bool phoneNumberIsUnique = await validatePhoneNumberIsUnique(staffDto.PhoneNumber);
+            if (!emailIsUnique || !phoneNumberIsUnique)
+            {
+                throw new BusinessRuleValidationException("Email and/or Phone Number are not unique");
+            }
 
-        //     await checkOSpecializationByNameAsync(staffdto.SpecializationId);
+            await checkOSpecializationByNameAsync(staffDto.SpecializationId, staffDto);
 
-        //     DateTime recruitmentDate = DateTime.Now;
+            DateTime recruitmentDate = DateTime.Now;
 
-        //     StaffIdGeneratorService staffIdGeneratorService = new StaffIdGeneratorService();
-        //     Category category = Enum.Parse<Category>(staffdto.Category);
-        //     StaffId staffId = staffIdGeneratorService.generateStaffId(category, recruitmentDate);
+            StaffIdGeneratorService staffIdGeneratorService = new StaffIdGeneratorService();
+            Category category = Enum.Parse<Category>(staffDto.Category);
+            StaffId staffId = staffIdGeneratorService.generateStaffId(category, recruitmentDate);
 
-        //     var staff = new Staff(staffId, staffdto.FullName, staffdto.LicenseNumber, new SpecializationId(staffdto.SpecializationId), staffdto.Email, staffdto.PhoneNumber, category.ToString());
+            var staff = new Staff(staffId, staffDto.FullName, staffDto.LicenseNumber, new SpecializationId(staffDto.SpecializationId), staffDto.Email, staffDto.PhoneNumber, category.ToString());
 
-        //     await _staffRepository.AddAsync(staff);
-        //     await _unitOfWork.CommitAsync();
-
-
-        //     return StaffMapper.toDTO(staff);
+            await _staffRepository.AddAsync(staff);
+            await _unitOfWork.CommitAsync();
 
 
-        // }
+            return StaffMapper.toDTO(staff);
+
+
+        }
+
 
         public async Task<StaffDto> UpdateAsync(EditingStaffProfileDto dto)
         {
@@ -228,25 +229,23 @@ namespace DDDSample1.Domain.StaffMembers
             }
         }
 
-        public async Task<Specialization> checkOSpecializationByNameAsync(string specialization)
+        public async Task<Specialization> checkOSpecializationByNameAsync(string specialization, CreatingStaffDto staff)
         {
 
             try
             {
-                var name = new Specialization(specialization);
-                Console.WriteLine("ID ->: " + name);
                 var spec = await this._specializationRepository.GetByNameAsync(specialization);
 
                 if (spec == null)
                 {
-                    throw new BusinessRuleValidationException("Specialization does not exist");
+                    throw new BusinessRuleValidationException("Specialization not found");
                 }
-
+                staff.SpecializationId = spec.Id.AsString();
                 return spec;
             }
             catch (Exception e)
             {
-                throw new BusinessRuleValidationException("Specialization does not exist");
+                throw new BusinessRuleValidationException("Specialization not Found");
             }
         }
 
@@ -325,9 +324,60 @@ namespace DDDSample1.Domain.StaffMembers
                 Status = sta.status.ToString()
             });
 
+            List<ViewStaffDto> result = new List<ViewStaffDto>();
+            if (listDto != null)
+            {
 
-            return listDto;
+                result = TransformOperationRequestsForUi(listDto);
+
+            }
+
+
+            return result;
+
         }
+
+
+        public async Task<List<StaffDto>> GetAllForUiAsync()
+        {
+            List<Staff> staff = await this._staffRepository.GetAllAsync();
+            List<StaffDto> staffDtos = new List<StaffDto>();
+            foreach (Staff sta in staff)
+            {
+                var specializationName = _specializationRepository.GetByIdAsync(sta.SpecializationId).Result.Name;
+                staffDtos.Add(StaffMapper.toDtoForUI(sta, specializationName));
+            }
+            return staffDtos;
+        }
+
+
+        public List<ViewStaffDto> TransformOperationRequestsForUi(List<ViewStaffDto> staffs)
+        {
+            List<ViewStaffDto> staffDtos = new List<ViewStaffDto>();
+
+            foreach (ViewStaffDto staff in staffs)
+            {
+                var specializationName = _specializationRepository.GetByIdAsync(new SpecializationId(staff.Specialization)).Result.Name;
+                staffDtos.Add(new ViewStaffDto
+                {
+                    Id = staff.Id,
+                    Name = staff.Name,
+                    LicenseNumber = staff.LicenseNumber,
+                    Specialization = specializationName,
+                    Email = staff.Email,
+                    PhoneNumber = staff.PhoneNumber,
+                    Category = staff.Category,
+                    Status = staff.Status
+                });
+            }
+
+            return staffDtos;
+
+
+        }
+
+
+
 
 
     }

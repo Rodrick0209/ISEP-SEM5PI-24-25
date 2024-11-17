@@ -19,6 +19,22 @@ namespace DDDSample1.Domain.StaffMembers
             );
         }
 
+        public static StaffDto toDtoForUI(Staff obj, string specializatioName)
+        {
+            return new StaffDto(
+                obj.Id,
+                obj.FullName.fullName,
+                obj.LicenseNumber.licenseNumber,
+                specializatioName,
+                obj.Email.email,
+                obj.PhoneNumber.phoneNumber,
+                obj.Category.ToString(),
+                obj.status.ToString()
+            );
+        }
+
+
+
         public static Staff toDomain(StaffDto dto, StaffId staffId)
         {
             return new Staff(
@@ -28,7 +44,7 @@ namespace DDDSample1.Domain.StaffMembers
                 new SpecializationId(dto.SpecializationId),
                 dto.Email,
                 dto.PhoneNumber,
-                dto.Category 
+                dto.Category
             );
         }
     }

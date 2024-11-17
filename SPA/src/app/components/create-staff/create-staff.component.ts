@@ -4,6 +4,7 @@ import { StaffService } from '../../services/staff.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MessageService } from '../../services/message.service';
+import { Category, StaffStatus } from '../../models/staff';
 
 @Component({
   selector: 'app-create-staff',
@@ -13,6 +14,10 @@ import { MessageService } from '../../services/message.service';
   styleUrls: ['./create-staff.component.css'] // Ensure this is plural
 })
 export class CreateStaffComponent {
+
+  Category = Category;
+  categories: string[] = Object.values(Category); 
+
   
   
   submitForm = {

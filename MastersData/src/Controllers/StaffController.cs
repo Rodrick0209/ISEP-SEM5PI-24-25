@@ -43,6 +43,25 @@ namespace DDDSample1.Controllers
 
         }
 
+        
+        [HttpPost("CreateUi")]
+        [Authorize (Roles = "admin")]
+
+        public async Task<ActionResult<StaffDto>> CreateUi(CreatingStaffDto dto)
+        {
+             try
+            {
+                var op = await _service.AddAsyncUi(dto);
+
+                return CreatedAtAction(nameof(GetGetById), new { id = op.Id }, op);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+
+        }
+
 
         [HttpGet("{id}")]
         [Authorize(Roles = "admin")]
@@ -115,6 +134,16 @@ namespace DDDSample1.Controllers
         public async Task<ActionResult<IEnumerable<StaffDto>>> GetAll()
         {
             return await _service.GetAllAsync();
+        }
+
+
+        [HttpGet("GetAllForUi")]
+        [Authorize(Roles = "admin")]
+
+        public async Task<ActionResult<IEnumerable<StaffDto>>> GetAllForUi()
+        {
+        
+            return await _service.GetAllForUiAsync();
         }
     }
 }
