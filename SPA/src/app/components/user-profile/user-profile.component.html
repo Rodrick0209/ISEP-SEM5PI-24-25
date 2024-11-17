@@ -3,11 +3,21 @@
         <h2>User Profile</h2>
     </div>
 
+    <div class="user-info" *ngIf="user">
+        <h3>User Information</h3>
+        <div class="user-field"><strong>Email:</strong> {{ user.email }}</div>
+        <div class="user-field"><strong>Password:</strong>*******</div>
+    </div>
+
     <div class="success-message" *ngIf="successMessage">
         <p>{{ successMessage }}</p>
     </div>
 
-    <div class="user-settings">
+    <div class="error-message" *ngIf="errorMessage">
+        <p>{{ errorMessage }}</p>
+    </div>
+
+    <div class="user-settings" *ngIf="user">
         <button (click)="userSettings()">Settings</button>
     </div>
 </div>

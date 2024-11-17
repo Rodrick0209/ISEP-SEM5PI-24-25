@@ -12,15 +12,16 @@ export interface User {
 })
 
 export class UserService {
+  private urlEmail = '/api/users/email';
   private url = '/api/users/patients';
   private urlConfirm = '/api/users/patients/confirm'
   private editUrl = '/api/users/patients/edit'
   private editUrlConfirm = '/api/users/patients/edit/confirm'
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient) { }
 
   getUserByEmail(email: string): Observable<User> {
-    return this.http.get<User>(`${this.url}?email=${email}`);
+    return this.http.get<User>(`${this.urlEmail}/{email}`);
   }
 
   register(name: string, email: string, phone: string, password: string) : Observable<any> {

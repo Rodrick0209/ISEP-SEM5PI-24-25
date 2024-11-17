@@ -8,6 +8,7 @@ using DDDSample1.Domain.User;
 using Microsoft.AspNetCore.Authorization;
 using DDDSample1.Domain.Patients;
 using System.Web;
+using DDDSample1.Domain.Utils;
 
 
 namespace DDDSample1.Controllers
@@ -220,6 +221,21 @@ namespace DDDSample1.Controllers
         public async Task<ActionResult<UserDTO>> GetByIdAsync(Guid id)
         {
             var user = await _service.GetByIdAsync(new UserId(id));
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
+        // GET: api/users/{email}
+        [HttpGet("email/{email}")]
+        [Authorize(Roles = "patient")]
+        public async Task<ActionResult<UserDTO>> GetByEmailAsync(string email)
+        {
+            var user = await _service.GetByEmailSearchAsync(email);
 
             if (user == null)
             {

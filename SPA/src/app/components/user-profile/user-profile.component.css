@@ -1,116 +1,71 @@
 .user-profile {
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 25px;
-    border-radius: 12px;
-    background-color: #ffffff;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-    font-family: 'Roboto', sans-serif;
-    color: #222;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
 }
 
 .user-header h2 {
-    text-align: center;
-    font-size: 2rem;
-    color: #1a73e8;
-    margin-bottom: 20px;
-    font-weight: bold;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+    color: #333;
+}
+
+.user-info {
+    margin-top: 20px;
 }
 
 .user-info h3 {
-    font-size: 1.6rem;
-    color: #333;
-    margin: 25px 0 15px;
-    padding-bottom: 5px;
-    border-bottom: 2px solid #1a73e8;
-}
-
-.user-field {
-    font-size: 1.1rem;
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.user-field strong {
-    font-weight: 500;
+    margin-bottom: 10px;
     color: #555;
 }
 
-.reset-password {
-    text-align: center;
-    margin-top: 30px;
+.user-field {
+    margin-bottom: 10px;
+    color: #666;
 }
 
-.reset-password button {
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    background-color: #1a73e8;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s;
-    box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
-}
-
-.reset-password button:hover {
-    background-color: #155bb5;
-    transform: translateY(-2px);
-}
-
-.user-info .user-field {
-    padding-bottom: 12px;
-}
-
-.user-info .user-field:last-child {
-    border-bottom: none;
-}
-
-.user-settings {
-    text-align: center;
-    margin-top: 30px;
-}
-
-.user-settings button {
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    background-color: #4caf50;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s;
-    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
-}
-
-.user-settings button:hover {
-    background-color: #388e3c;
-    transform: translateY(-2px);
-}
-.error-message {
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 15px;
-    border-radius: 8px;
-    background-color: #ffdddd;
-    color: #d8000c;
-    border: 1px solid #d8000c;
-    font-family: 'Roboto', sans-serif;
-    box-shadow: 0 4px 10px rgba(216, 0, 12, 0.1);
-    text-align: center;
-}
-
-.error-message p {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 500;
+.user-field strong {
+    color: #333;
 }
 
 .success-message {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e0ffe0;
+    border: 1px solid #b2ffb2;
+    border-radius: 5px;
+    color: #2d7a2d;
+}
+
+.user-settings {
+    margin-top: 20px;
     text-align: center;
-    color: #28a745;
-    font-weight: bold;
-    margin-bottom: 20px;
+}
+
+.user-settings button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-settings button:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #ffe0e0;
+    border: 1px solid #ffb2b2;
+    border-radius: 5px;
+    color: #7a2d2d;
 }
