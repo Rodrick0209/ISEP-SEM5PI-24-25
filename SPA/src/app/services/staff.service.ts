@@ -23,11 +23,11 @@ export class StaffService {
   }
 
 
-  createStaff(fullName : string, licenseNumber : string, specializationId : string, email : string, phoneNumber : string, category : string): Observable<any> {
+  createStaff(fullName : string, licenseNumber : string, specialization : string, email : string, phoneNumber : string, category : string): Observable<any> {
     const body = {
         fullName: fullName,
         licenseNumber: licenseNumber,
-        specializationId: specializationId,
+        specialization: specialization,
         email: email,
         phoneNumber: phoneNumber,
         category: category

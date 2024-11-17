@@ -18,7 +18,7 @@ export class FilterStaffsComponent {
     specialization: ''
   };
 
-  @Output() filterChanged = new EventEmitter<{ name: string, licenseNumber: string, email: string, specialization: string }>();
+  @Output() filterChanged = new EventEmitter<{ name: string, licenseNumber: string, phoneNumber : string, email: string, specialization: string }>();
 
   applyFilter(): void {
     this.filterChanged.emit({

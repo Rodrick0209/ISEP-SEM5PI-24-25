@@ -14,6 +14,11 @@ import { PatientDetailsComponent } from './components/patient-details/patient-de
 import { CreatePatientComponent } from './components/create-patient/create-patient.component';
 import { EditPatientComponent } from './components/edit-patient/edit-patient.component';
 import { DeletePatientComponent } from './components/delete-patient/delete-patient.component';
+import { StaffsComponent } from './components/staffs/staffs.component';
+import { StaffDetailsComponent } from './components/staff-details/staff-details.component';
+import { CreateStaffComponent } from './components/create-staff/create-staff.component';
+import { EditStaffComponent } from './components/edit-staff/edit-staff.component';
+import { DeleteStaffComponent } from './components/delete-staff/delete-staff.component';
 import { RegisterConfirmationComponent } from './components/register-confirmation/register-confirmation.component';
 import { PlanningComponent } from './components/planning/planning.component';
 import { EditOperationTypeComponent } from './components/edit-operation-type/edit-operation-type.component';
@@ -43,6 +48,36 @@ export const routes: Routes = [
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
     { path: 'reset-password', component: ResetPasswordComponent},
+    {
+        path: 'staffs',
+        component: StaffsComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    {
+        path: 'staff/details/:id',
+        component: StaffDetailsComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    {
+        path: 'staff/create',
+        component: CreateStaffComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    {
+        path: 'staff/edit/:id',
+        component: EditStaffComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    {
+        path: 'staff/delete/:id',
+        component: DeleteStaffComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
     { path: 'operationRequests', 
         component: OperationRequestsComponent, 
         canActivate: [AuthGuard],

@@ -6,10 +6,13 @@
     <div class="staff-info">
       <h3>Staff Information</h3>
       <div class="staff-field"><strong>Staff ID:</strong> {{ staff.id }}</div>
-      <div class="staff-field"><strong>Name:</strong> {{ staff.name }}</div>
-      <div class="staff-field"><strong>Position:</strong> {{ staff.position }}</div>
+      <div class="staff-field"><strong>Name:</strong> {{ staff.fullName }}</div>
+      <div class="staff-field"><strong>License Number:</strong> {{ staff.licenseNumber }}</div>
+      <div class="staff-field"><strong>Specialization:</strong> {{ staff.specialization }}</div>
       <div class="staff-field"><strong>Email:</strong> {{ staff.email }}</div>
       <div class="staff-field"><strong>Phone Number:</strong> {{ staff.phoneNumber }}</div>
+      <div class="staff-field"><strong>Category:</strong> {{ staff.category }}</div>
+      <div class="staff-field"><strong>Status:</strong> {{ staff.status }}</div>
     </div>
   
     <div class="back-button">

@@ -17,6 +17,7 @@ export class ListStaffsComponent implements OnInit {
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
+  
   staffs: StaffsView[] = [];
   filteredStaffs: StaffsView[] = [];
   paginatedStaffs: StaffsView[] = [];

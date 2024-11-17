@@ -38,7 +38,7 @@ describe('StaffDetailsComponent', () => {
       id: 'D202512344',
       fullName: 'staffMario',
       licenseNumber: '12345',
-      specializationId: 'Obstetricia',
+      specialization: 'Obstetricia',
       email: 'emaill@gmail.com',
       phoneNumber: '+951999999998',
       category : Category.Doctor,
@@ -53,7 +53,7 @@ describe('StaffDetailsComponent', () => {
     expect(component.staff?.id).toBe('D202512344');
     expect(component.staff?.fullName).toBe('staffMario');
     expect(component.staff?.licenseNumber).toBe('12346');
-    expect(component.staff?.specializationId).toBe('Obstetricia');
+    expect(component.staff?.specialization).toBe('Obstetricia');
     expect(component.staff?.email).toBe('emaill@gmail.com');
     expect(component.staff?.phoneNumber).toBe('+951999999998');
     expect(component.staff?.category).toBe(Category.Doctor);
