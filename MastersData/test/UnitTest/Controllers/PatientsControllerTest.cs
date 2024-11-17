@@ -266,7 +266,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<ViewPatientDto>>>(result);
-            Assert.Null(actionResult.Value);
+            Assert.Empty(actionResult.Value);
         }
     }
 }
