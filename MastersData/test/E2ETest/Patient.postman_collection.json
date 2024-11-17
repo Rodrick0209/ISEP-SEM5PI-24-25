@@ -20,7 +20,8 @@
 							"var jsonData = pm.response.json();\r",
 							"pm.globals.set(\"Token\", jsonData.token);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -37,12 +38,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Login/login",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Login/login",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Login",
@@ -63,7 +67,8 @@
 							"    pm.response.to.have.status(404);\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -81,12 +86,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -112,7 +120,8 @@
 							"pm.globals.set(\"id\", jsonData.id);\r",
 							"pm.globals.set(\"MedicalRecordNumber\", jsonData.medicalRecordNumber);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -139,12 +148,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients"
@@ -167,7 +179,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -185,12 +198,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -242,12 +258,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -271,7 +290,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -289,12 +309,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -346,12 +369,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -375,7 +401,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -393,12 +420,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -422,7 +452,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -449,12 +480,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -478,7 +512,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -496,12 +531,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -553,12 +591,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -582,7 +623,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -600,12 +642,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -657,12 +702,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -686,7 +734,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -704,12 +753,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -761,12 +813,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -790,7 +845,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -808,12 +864,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -865,12 +924,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -894,7 +956,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -912,12 +975,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -941,7 +1007,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -968,12 +1035,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -997,7 +1067,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -1015,12 +1086,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -1072,12 +1146,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -1101,7 +1178,8 @@
 							"var jsonData = pm.response.json();\r",
 							"console.log(jsonData);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -1119,12 +1197,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -1145,7 +1226,8 @@
 							"    pm.response.to.have.status(204);\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -1163,12 +1245,15 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{MedicalRecordNumber}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{MedicalRecordNumber}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
@@ -1189,7 +1274,8 @@
 							"    pm.response.to.have.status(404);\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -1207,12 +1293,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Patients/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients",
