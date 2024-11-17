@@ -33,9 +33,8 @@ export class AuthService {
   }
 
     verifyGoogleToken(): Observable<GoogleResponse> {
-    return this.http.get<GoogleResponse>(this.googleVerifyUrl);
+    return this.http.get<GoogleResponse>('http://10.9.10.55:5000/api/Login/google-response');
   }
-
 
   saveToken(token: string): void {
     localStorage.setItem('token', token);

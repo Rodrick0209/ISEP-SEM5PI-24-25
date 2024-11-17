@@ -166,7 +166,7 @@ namespace DDDSample1.Startup
                 {
                     options.AddPolicy("AllowAngularApp", builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200", "http://127.0.0.1:5501") // Angular's URL
+                        builder.WithOrigins("http://localhost:4200") // Angular's URL
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });
@@ -197,6 +197,8 @@ namespace DDDSample1.Startup
 
 
             app.UseMiddleware<CustomExceptionMiddleware>();
+            
+            app.UseCors("AllowAngularApp");
 
             app.UseAuthentication();
 
@@ -205,7 +207,7 @@ namespace DDDSample1.Startup
 
             app.MapControllers();
 
-            app.UseCors("AllowAngularApp");
+
 
             app.Run();
         }
