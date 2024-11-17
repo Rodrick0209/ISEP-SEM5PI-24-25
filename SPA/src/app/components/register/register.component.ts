@@ -1,12 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { UserService } from '../../services/user.service';
 
 @Component({
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule], // Add HttpClientModule to imports
+  imports: [FormsModule, CommonModule], // Add HttpClientModule to imports
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
