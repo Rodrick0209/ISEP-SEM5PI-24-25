@@ -303,8 +303,6 @@ namespace DDDSample1.Domain.StaffMembers
         public async Task<List<ViewStaffDto>> SearchAsync(StaffFilterDto dto)
         {
 
-
-
             var staff = new List<Staff>();
 
             if (string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.LicenseNumber) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.PhoneNumber) && string.IsNullOrWhiteSpace(dto.Specialization))
@@ -312,9 +310,14 @@ namespace DDDSample1.Domain.StaffMembers
                 staff = await _staffRepository.GetAllAsync();
             }
 
+            var specializationId="";
+            if (!string.IsNullOrEmpty(dto.Specialization))
+            {
+                var specialization= await _specializationRepository.GetByNameAsync(dto.Specialization);
+                specializationId=specialization.Id.Value;
+            }
 
-            staff = await _staffRepository.GetByFiltersAsync(dto.Name, dto.LicenseNumber, dto.Email, dto.PhoneNumber, dto.Specialization);
-
+            staff = await _staffRepository.GetByFiltersAsync(dto.Name, dto.LicenseNumber, dto.Email, dto.PhoneNumber, specializationId);
 
 
             List<ViewStaffDto> listDto = staff.ConvertAll<ViewStaffDto>(sta => new ViewStaffDto
