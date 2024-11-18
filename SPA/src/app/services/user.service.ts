@@ -18,7 +18,7 @@ export class UserService {
   private editUrl = '/api/users/patients/edit'
   private editUrlConfirm = '/api/users/patients/edit/confirm'
   private deleteUrl = '/api/users/patients/delete'
-  private deleteUrlConfirm =  '/api/users/patients/delete/co'
+  private deleteUrlConfirm =  '/api/users/patients/delete/confirm'
 
   constructor(private http: HttpClient) { }
 

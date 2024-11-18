@@ -43,14 +43,18 @@ N/A
 
 ## 4. Design - Process View
 
- #### Level 1
- ![Process View - Level 1](L1/Process_View.svg)
+#### Level 1
 
- #### Level 2
- ![Process View - Level 2](L2/Process_View.svg)
+![Process View - Level 1](L1/Process_View.svg)
 
- #### Level 3 - Prior Confirmation
+#### Level 2
+
+![Process View - Level 2](L2/Process_View.svg)
+
+#### Level 3 - Prior Confirmation
+
  ![Process View - Level 3](L3/Process_View_Prior_Confirmation.svg)
 
- #### Level 3 - Posterior Confirmation
+#### Level 3 - Posterior Confirmation
+
  ![Process View - Level 3](L3/Process_View_Posterior_Confirmation.svg)

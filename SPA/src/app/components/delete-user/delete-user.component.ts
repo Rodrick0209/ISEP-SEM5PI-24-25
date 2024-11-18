@@ -36,11 +36,11 @@ export class DeleteUserComponent implements OnInit {
         this.userService.delete(this.email).subscribe({
           next: (response: any) => {
             console.log('Sucessfull sent an email confirmation', response);
-            this.successMessage = "An email confirmation was sent to your inbox. Please confirm the deletion of your account and profile by clicking in the link."
+            this.successMessage = "An email confirmation was sent to your inbox. Please confirm the deletion of your account and profile by clicking in the link.";
           },
           error: (err: any) => {
             console.error('Failed to delete patient', err);
-            this.errorMessage = 'Failed to delete patient';
+            this.errorMessage = 'Failed to delete your account.';
           }
         });
       }
