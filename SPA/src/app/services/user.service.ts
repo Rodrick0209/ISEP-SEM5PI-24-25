@@ -17,11 +17,13 @@ export class UserService {
   private urlConfirm = '/api/users/patients/confirm'
   private editUrl = '/api/users/patients/edit'
   private editUrlConfirm = '/api/users/patients/edit/confirm'
+  private deleteUrl = '/api/users/patients/delete'
+  private deleteUrlConfirm =  '/api/users/patients/delete/co'
 
   constructor(private http: HttpClient) { }
 
   getUserByEmail(email: string): Observable<User> {
-    return this.http.get<User>(`${this.urlEmail}/{email}`);
+    return this.http.get<User>(`${this.urlEmail}/${email}`);
   }
 
   register(name: string, email: string, phone: string, password: string) : Observable<any> {
@@ -63,6 +65,18 @@ export class UserService {
 
   resetPassword(token: string, newPassword: string, email: string): Observable<any> {
     return this.http.post('/api/Users/Reset-Password', { token, newPassword, email });
+  }
+
+  delete(email: string): Observable<any> {
+    const url = `${this.deleteUrl}/${email}`;
+
+    return this.http.delete(url);
+  }
+
+  confirmDelete(token: string, email: string): Observable<any>{
+    const url = `${this.deleteUrlConfirm}?token=${token}&email=${email}`;
+
+    return this.http.delete(url);
   }
 
 

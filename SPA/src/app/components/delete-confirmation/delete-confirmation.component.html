@@ -1,0 +1,5 @@
+<div class="confirmation-container">
+    <h2>Confirming Your Edition</h2>
+    <p *ngIf="!token || !email">Please wait while we confirm your deletion...</p>
+    <p *ngIf="token && email">Validating your information...</p>
+</div>

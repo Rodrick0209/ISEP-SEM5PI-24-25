@@ -24,4 +24,9 @@ export class UserSettingsComponent implements OnInit {
     console.log('Edit user clicked: ' + this.email);
     this.router.navigate(['/edit', this.email]);
   }
+
+  deleteUser(): void {
+    console.log('Delete user clicked: ' + this.email);
+    this.router.navigate(['/delete', this.email]);
+  }
 }
