@@ -1,3 +1,4 @@
+
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_parameters)).
@@ -42,26 +43,50 @@ next_surgery_id(SurgeryId) :-
     NewN is N + 1,                              % Increment the counter
     assertz(surgery_counter(NewN)).             % Update the counter
 
-% Salva os doutores
-saveSurgeries(Data) :-
-    % Percorre a lista de dados e adiciona como factos à base de dados Prolog
-    forall(member(Surgery, Data),
-        (
-            forall(member(Surgery, Data),
-                (
-                    next_surgery_id(SurgeryId),
-                    Surgery = _{fullName: SurgeryName, preparationPhase: PreparationPhase, surgeryPhase: SurgeryPhase, cleaningPhase: CleaningPhase},
-                    PreparationPhase = _{duration: PreparationDuration},
-                    SurgeryPhase = _{duration: SurgeryDuration},
-                    CleaningPhase = _{duration: CleaningDuration},
-                    atom_string(SurgeryName, SurgeryNameStr),  % Converte SurgeryName de string para átomo
-                    atom_string(SurgeryId, SurgeryIdStr),  % Converte SurgeryId de string para átomo
-                    assertz(surgery(SurgeryNameStr, PreparationDuration, SurgeryDuration, CleaningDuration)),
-                    assertz(surgery_id(SurgeryIdStr, SurgeryName))
-                )
-            )
-        )
-    ).
+
+saveSurgeries([]).  % Base case: nothing to process when the list is empty.
+
+saveSurgeries([Surgery | Rest]) :-
+    % Extract the fields from the Surgery dictionary
+    Surgery = _{
+        id: SurgeryId,
+        name: SurgeryName,
+        status: _,
+        preparationPhase: PreparationPhase,
+        surgeryPhase: SurgeryPhase,
+        cleaningPhase: CleaningPhase,
+        specialization: _
+    },
+    
+    % Extract fields from each phase
+    PreparationPhase = _{
+        id: _,
+        duration: PreparationDuration,
+        requiredStaff: _
+    },
+    SurgeryPhase = _{
+        id: _,
+        duration: SurgeryDuration,
+        requiredStaff: _
+    },
+    CleaningPhase = _{
+        id: _,
+        duration: CleaningDuration,
+        requiredStaff: _
+    },
+
+    % Convert `SurgeryId` and `SurgeryName` to atoms for storage
+    atom_string(SurgeryId, SurgeryIdStr),
+    atom_string(SurgeryName, SurgeryNameStr),
+
+    % Assert the surgery fact with the durations
+    assertz(surgery(SurgeryNameStr, PreparationDuration, SurgeryDuration, CleaningDuration)),
+
+    % Assert the surgery_id fact linking SurgeryId with SurgeryName
+    assertz(surgery_id(SurgeryIdStr, SurgeryNameStr)),
+
+    % Recurse for the remaining surgeries
+    saveSurgeries(Rest).
 
 % Converte os slots de tempo para o formato desejado
 convert_time_slots(TimeSlots, TimeSlotsFormatted) :-
