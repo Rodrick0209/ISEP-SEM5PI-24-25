@@ -7,49 +7,38 @@
 :-dynamic better_sol/5.
 
 
-agenda_staff(d001,20241028,[(720,790,m01),(1300,1480,c01)]).
-agenda_staff(d002,20241028,[(850,900,m02),(901,960,m02),(1380,1440,c02)]).
-agenda_staff(d003,20241028,[(720,790,m01),(910,980,m02)]).
+agenda_staff(d001,20241028,[]).
+agenda_staff(d002,20241028,[]).
+agenda_staff(d003,20241028,[]).
 agenda_staff(d004,20241028,[]).
 agenda_staff(d005,20241028,[]).
+agenda_staff(e001,20241028,[]).
+agenda_staff(e002,20241028,[]).
+agenda_staff(e003,20241028,[]).
 
 
-
-timetable(d001,20241028,(750,1200)).
+timetable(d001,20241028,(350,1200)).
 timetable(d002,20241028,(500,1440)).
-timetable(d003,20241028,(520,1320)).
-timetable(d004,20241028,(540,1440)).
+timetable(d003,20241028,(0,800)).
+timetable(d004,20241028,(440,1440)).
 timetable(d005,20241028,(370,1440)).
+timetable(e001,20241028,(450,1200)).
+timetable(e002,20241028,(500,1440)).
+timetable(e003,20241028,(520,1420)).
 
-% first example
-%agenda_staff(d001,20241028,[(720,840,m01),(1080,1200,c01)]).
-%agenda_staff(d002,20241028,[(780,900,m02),(901,960,m02),(1080,1440,c02)]).
-%agenda_staff(d003,20241028,[(720,840,m01),(900,960,m02)]).
-
-%timetable(d001,20241028,(480,1200)).
-%timetable(d002,20241028,(720,1440)).
-%timetable(d003,20241028,(600,1320)).
-
-
-staff(d001,doctor,orthopaedist,[so2,so3,so4]).
-staff(d002,doctor,orthopaedist,[so2,so3,so4]).
-staff(d003,doctor,orthopaedist,[so2,so3,so4]).
-staff(d004,doctor,anesthesist,[so2,so3,so4]).
-staff(d005,doctor,anesthesist,[so2,so3,so4]).
 
 
     
 %surgery(SurgeryType,TAnesthesia,TSurgery,TCleaning).
 
-surgery(so2,45,60,45).
+surgery(so2,5,15,10).
 surgery(so3,45,90,45).
 surgery(so4,45,75,45).
 
 surgery_id(so100001,so2).
 surgery_id(so100002,so3).
 surgery_id(so100003,so4).
-%surgery_id(so100004,so2).
-%surgery_id(so100005,so4).
+surgery_id(so100004,so2).
 
 
 assignment_surgery(so100001,d001,surgeryPhase).
@@ -57,19 +46,21 @@ assignment_surgery(so100001,d004,anesthesyPhase).
 assignment_surgery(so100001,d005,anesthesyPhase).
 
 
-assignment_surgery(so100002,d002,surgeryPhase).
+assignment_surgery(so100002,d001,surgeryPhase).
+assignment_surgery(so100002,e002,anesthesyPhase).
+assignment_surgery(so100002,e001,anesthesyPhase).
+
+
 assignment_surgery(so100003,d003,surgeryPhase).
+assignment_surgery(so100003,d002,anesthesyPhase).
 
-%assignment_surgery(so100004,d001).
-%assignment_surgery(so100004,d002).
-%assignment_surgery(so100005,d002).
-%assignment_surgery(so100005,d003).
-
+assignment_surgery(so100004,d001,surgeryPhase).
+assignment_surgery(so100004,d004,anesthesyPhase).
 
 
 
 
-agenda_operation_room(or1,20241028,[(520,579,so100000), (950,1000,so100000)]).
+agenda_operation_room(or1,20241028,[]).
 
 
 free_agenda0([],[(0,1440)]).
@@ -149,39 +140,42 @@ schedule_all_surgeries(Room,Day):-
 
 availability_all_surgeries([],_,_).
 availability_all_surgeries([OpCode|LOpCode],Room,Day):-
-    surgery_id(OpCode,OpType),surgery(OpType,_,TSurgery,_),
-    availability_operation(OpCode,Room,Day,LPossibilities,LDoctors),
-    write('PAROU AQUI 1: '), nl,
-    schedule_first_interval(TSurgery,LPossibilities,(TinS,TfinS)),
-    write('PAROU AQUI 2: '), nl,
+    surgery_id(OpCode,OpType),surgery(OpType,TAnesthesy,TSurgery,TCleaning),
+    availability_operation(OpCode,Room,Day,Interval,LDoctorsSurgery,LStaffAnesthesy),
+    calculate_intervals(Interval,TAnesthesy,TSurgery,TCleaning,MinuteStartAnesthesia,MinuteStartSurgery,MinuteStartCleaning,MinuteEndProcess),
+    %write('Início da Anestesia: '), write(MinuteStartAnesthesia), nl,
+    %write('Início da Cirurgia: '), write(MinuteStartSurgery), nl,
+    %write('Início da Limpeza: '), write(MinuteStartCleaning), nl,
+    %write('Fim do Processo: '), write(MinuteEndProcess), nl,
     retract(agenda_operation_room1(Room,Day,Agenda)),
-    insert_agenda((TinS,TfinS,OpCode),Agenda,Agenda1),
+    insert_agenda((MinuteStartAnesthesia,MinuteEndProcess,OpCode),Agenda,Agenda1),
     assertz(agenda_operation_room1(Room,Day,Agenda1)),
-    insert_agenda_doctors((TinS,TfinS,OpCode),Day,LDoctors),
+    insert_agenda_doctors((MinuteStartSurgery,MinuteStartCleaning,OpCode),Day,LDoctorsSurgery),
+    insert_agenda_doctors((MinuteStartAnesthesia,MinuteStartCleaning,OpCode),Day,LStaffAnesthesy),
     availability_all_surgeries(LOpCode,Room,Day).
 
         
 
-availability_operation(OpCode, Room, Day, LPossibilities, LStaffSurgeryPhase) :-
+availability_operation(OpCode, Room, Day, Interval, LStaffSurgeryPhase,LStaffAnesthesyPhase) :-
     surgery_id(OpCode, OpType),
     surgery(OpType, TAnesthesia, TSurgery, TCleaning),
     findall(Staff, assignment_surgery(OpCode, Staff, surgeryPhase), LStaffSurgeryPhase),
     findall(Staff, assignment_surgery(OpCode, Staff, anesthesyPhase), LStaffAnesthesyPhase),
-    write('Cirurgia '), write(OpType), write(' --> '), write(LStaffAnesthesyPhase), nl,
-    
-    % Interseção das agendas do staff de cirurgia
+    %write('A processar a cirurgia ---> '), write(OpCode), nl,
+
+    % Interseção das agendas Do staff de cirurgia
     intersect_all_agendas(LStaffSurgeryPhase, Day, LASurgery),
-    write('Agenda livre médicos atribuídos à cirurgia='), write(LASurgery), nl,
+    %write('Agenda livre médicos atribuídos à cirurgia='), write(LASurgery), nl,
     
-    % Interseção das agendas do staff de anestesia
+    % Interseção das agendas Do staff de anestesia
     intersect_all_agendas(LStaffAnesthesyPhase, Day, LAAnesthesy),
-    write('Agenda livre médicos atribuídos à anestesia='), write(LAAnesthesy), nl,
+    %write('Agenda livre médicos atribuídos à anestesia='), write(LAAnesthesy), nl,
     
     agenda_operation_room1(Room,Day,LAgenda),
     free_agenda0(LAgenda,LFAgRoom),
-    write('Agenda da sala de operações='), write(LFAgRoom), nl,
-    find_first_interval(LAAnesthesy, LASurgery, LFAgRoom, TAnesthesia, TSurgery, TCleaning, LPossibilities),
-    write('Possibilidades: '), write(LPossibilities), nl.
+    %write('Agenda da sala de operações='), write(LFAgRoom), nl,
+    find_first_interval(LAAnesthesy, LASurgery, LFAgRoom, TAnesthesia, TSurgery, TCleaning, Interval).
+    %write('Possibilidades: '), write(Interval), nl.
 
 
 
@@ -205,8 +199,6 @@ find_valid_interval(StaffAnesthesiaAvailable, StaffSurgeryAvailable, RoomAvailab
     
     TotalTime is TAnesthesia+TSurgery+TCleaning,  % Soma do tempo de anestesia, cirurgia e limpeza
     MaxStart is RoomEnd - TotalTime,  % Calcula o último minuto em que o processo pode começar
-    write('MaxStart: '), write(MaxStart), nl,
-    write('RoomStart: '), write(RoomStart), nl,
     between(RoomStart, MaxStart, StartAnesthesia),
     % Assegurar que o intervalo total (anestesia + cirurgia + limpeza) caiba dentro do dia
     StartAnesthesia + TAnesthesia + TSurgery =< 1440,
@@ -230,8 +222,7 @@ find_valid_interval(StaffAnesthesiaAvailable, StaffSurgeryAvailable, RoomAvailab
     EndProcess is StartAnesthesia + TAnesthesia + TSurgery + TCleaning,
     
     % Imprimir o intervalo encontrado
-    write('Intervalo encontrado: '), write((StartAnesthesia, EndProcess)), nl,
-    
+
     % Retornar o intervalo
     Interval = (StartAnesthesia, EndProcess).
 
@@ -273,7 +264,7 @@ obtain_better_sol(Room,Day,AgOpRoomBetter,LAgDoctorsBetter,TFinOp):-
 		retract(better_sol(Day,Room,AgOpRoomBetter,LAgDoctorsBetter,TFinOp)),
             write('Final Result: AgOpRoomBetter='),write(AgOpRoomBetter),nl,
             write('LAgDoctorsBetter='),write(LAgDoctorsBetter),nl,
-            write('TFinOp='),write(TFinOp),nl,
+            write('Best TimeFinOp='),write(TFinOp),nl,
 		get_time(Tf),
 		T is Tf-Ti,
 		write('Tempo de geracao da solucao:'),write(T),nl.
@@ -318,6 +309,24 @@ list_doctors_agenda(Day,[D|LD],[(D,AgD)|LAgD]):-agenda_staff1(D,Day,AgD),list_do
 remove_equals([],[]).
 remove_equals([X|L],L1):-member(X,L),!,remove_equals(L,L1).
 remove_equals([X|L],[X|L1]):-remove_equals(L,L1).
+
+
+% O predicado calcula os intervalos de tempo para anestesia, cirurgia e limpeza
+calculate_intervals((Start, End), TAnesthesia, TSurgery, TCleaning, MinuteStartAnesthesia, MinuteStartSurgery, MinuteStartCleaning, MinuteEndProcess) :-
+    % O início da anestesia é o início do intervalo (Start)
+    MinuteStartAnesthesia = Start,
+    
+    % O início da cirurgia é o final da anestesia, ou seja, após a duração de anestesia
+    MinuteStartSurgery is MinuteStartAnesthesia + TAnesthesia,
+    
+    % O início da limpeza é o final da cirurgia, ou seja, após a duração da cirurgia
+    MinuteStartCleaning is MinuteStartSurgery + TSurgery,
+    
+    % O fim do processo é o final da limpeza, ou seja, após a duração da limpeza
+    MinuteEndProcess is MinuteStartCleaning + TCleaning,
+
+    % Verificar se o tempo final (MinuteEndProcess) não ultrapassa o final do intervalo (End)
+    MinuteEndProcess =< End.
 
 
 
