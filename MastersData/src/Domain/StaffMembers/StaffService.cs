@@ -328,7 +328,7 @@ namespace DDDSample1.Domain.StaffMembers
             if (listDto != null)
             {
 
-                result = TransformOperationRequestsForUi(listDto);
+                result = TransformStaffsForUi(listDto);
 
             }
 
@@ -351,7 +351,7 @@ namespace DDDSample1.Domain.StaffMembers
         }
 
 
-        public List<ViewStaffDto> TransformOperationRequestsForUi(List<ViewStaffDto> staffs)
+        public List<ViewStaffDto> TransformStaffsForUi(List<ViewStaffDto> staffs)
         {
             List<ViewStaffDto> staffDtos = new List<ViewStaffDto>();
 
