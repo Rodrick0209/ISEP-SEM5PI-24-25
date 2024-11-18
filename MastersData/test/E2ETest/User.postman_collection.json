@@ -20,7 +20,8 @@
 							"var jsonData = pm.response.json();\r",
 							"pm.globals.set(\"Token\", jsonData.token);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -37,12 +38,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Login/login",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Login/login",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Login",
@@ -67,7 +71,8 @@
 							"pm.globals.set(\"id\", jsonData.id);\r",
 							"pm.globals.set(\"MedicalRecordNumber\", jsonData.medicalRecordNumber);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -94,12 +99,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Patients",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Patients",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Patients"
@@ -138,12 +146,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Users/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -189,12 +200,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/patients",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -241,12 +255,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/confirm?token={{ConfirmationToken}}&email={{ConfirmationEmail}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/patients/confirm?token={{ConfirmationToken}}&email={{ConfirmationEmail}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -300,12 +317,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Users/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -329,7 +349,8 @@
 							"var jsonData = pm.response.json();\r",
 							"pm.globals.set(\"Token\", jsonData.token);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -349,12 +370,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Login/login",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Login/login",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Login",
@@ -375,7 +399,8 @@
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -402,12 +427,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/edit",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/patients/edit",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -451,12 +479,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Users/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -510,12 +541,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/edit",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/patients/edit",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -571,12 +605,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/edit/confirm?token={{ConfirmationToken}}&email={{Email}}&emailToEdit={{EmailToEdit}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/patients/edit/confirm?token={{ConfirmationToken}}&email={{Email}}&emailToEdit={{EmailToEdit}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -635,12 +672,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Users/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -693,12 +733,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/edit",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/patients/edit",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -751,12 +794,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/edit/confirm?token={{ConfirmationToken}}&email={{Email}}&phoneNumberToEdit={{PhoneNumberToEdit}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/patients/edit/confirm?token={{ConfirmationToken}}&email={{Email}}&phoneNumberToEdit={{PhoneNumberToEdit}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -815,12 +861,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Users/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -846,7 +895,8 @@
 							"pm.globals.set(\"EmailToEdit\", jsonData.emailToEdit);\r",
 							"pm.globals.set(\"PhoneNumberToEdit\", jsonData.phoneNumberToEdit);"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -873,12 +923,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/edit",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/patients/edit",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -932,12 +985,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/edit/confirm?token={{ConfirmationToken}}&email={{Email}}&emailToEdit={{EmailToEdit}}&phoneNumberToEdit={{PhoneNumberToEdit}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/patients/edit/confirm?token={{ConfirmationToken}}&email={{Email}}&emailToEdit={{EmailToEdit}}&phoneNumberToEdit={{PhoneNumberToEdit}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -1000,12 +1056,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Users/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -1057,12 +1116,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/delete/{{Email}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/patients/delete/{{Email}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -1113,12 +1175,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Users/patients/delete/confirm?token={{ConfirmationToken}}&email={{Email}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/patients/delete/confirm?token={{ConfirmationToken}}&email={{Email}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",
@@ -1170,12 +1235,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Users/{{id}}",
-					"protocol": "https",
+					"raw": "http://10.9.10.55:5000/api/Users/{{id}}",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"10",
+						"9",
+						"10",
+						"55"
 					],
-					"port": "5001",
+					"port": "5000",
 					"path": [
 						"api",
 						"Users",

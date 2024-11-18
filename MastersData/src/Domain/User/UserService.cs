@@ -496,5 +496,12 @@ namespace DDDSample1.Domain.User
 
             return user == null ? null : UserMapper.ToDto(user);
         }
+
+        public async Task<UserDTO> GetByEmailSearchAsync(string email)
+        {
+            var user = await _repo.GetByEmailAsync(email);
+
+            return user == null ? null : UserMapper.ToDto(user);
+        }
     }
 }

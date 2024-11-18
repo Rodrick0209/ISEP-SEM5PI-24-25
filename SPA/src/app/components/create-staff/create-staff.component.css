@@ -9,22 +9,24 @@
     animation: fadeIn 0.4s ease;
 }
 
-h2 {
+h2, h3 {
     text-align: center;
-    color: #007bff;
     margin-bottom: 20px;
     font-weight: 700;
 }
 
+h2 {
+    color: #007bff;
+}
+
 h3 {
-   text-align: center;
-   color: #333;
-   margin-bottom: 20px;
-   font-weight: 700;
+    color: #333;
 }
 
 .form-group {
     margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 label {
@@ -36,7 +38,8 @@ label {
 
 input[type="text"],
 input[type="email"],
-input[type="tel"] {
+input[type="tel"],
+select {
     width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
@@ -49,7 +52,8 @@ input[type="tel"] {
 
 input[type="text"]:focus,
 input[type="email"]:focus,
-input[type="tel"]:focus {
+input[type="tel"]:focus,
+select:focus {
     border-color: #007bff;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
     outline: none;

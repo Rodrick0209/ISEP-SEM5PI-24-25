@@ -14,18 +14,35 @@ import { CommonModule } from '@angular/common';
 })
 export class UserProfileComponent implements OnInit {
   user: User | undefined;
+  
   email: string | null = null;
   successMessage: string | null = null;
+  errorMessage: string | null = null; 
 
   constructor(private userService: UserService, private route: ActivatedRoute, private messageService : MessageService, private router: Router) { }
   
   ngOnInit(): void {
     this.successMessage = this.messageService.getMessage();
     this.email = this.route.snapshot.paramMap.get('email');
+    if (this.email) {
+      this.getUserByEmail(this.email);
+    } else {
+      this.errorMessage = 'Invalid user';
+    }
   }
 
   userSettings(): void {
     console.log('User settings clicked: ' + this.email);
     this.router.navigate(['/settings', this.email]);
   }
+
+  getUserByEmail(email: string): void {
+    this.userService.getUserByEmail(email).subscribe({
+      next: (data: User) => this.user = data,
+      error: (err: any) => {
+        console.log('Failed to fetch user details', err);
+        this.errorMessage = 'Failed to fetch user details';
+      }
+    });
+  };
 }

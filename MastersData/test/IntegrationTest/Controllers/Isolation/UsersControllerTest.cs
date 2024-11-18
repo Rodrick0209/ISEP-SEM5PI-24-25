@@ -101,7 +101,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             var result = await _controller.ConfirmRegisterPatientAsync(dto);
 
             // Assert
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<BadRequestObjectResult>(result);
         }
 
         [Fact]

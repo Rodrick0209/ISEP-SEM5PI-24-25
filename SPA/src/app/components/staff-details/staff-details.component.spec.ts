@@ -5,7 +5,6 @@ import { StaffDetailsComponent } from './staff-details.component';
 import { StaffService } from '../../services/staff.service';
 import { CommonModule } from '@angular/common';
 import { Category, StaffStatus } from '../../models/staff';
-import { stat } from 'fs';
 
 describe('StaffDetailsComponent', () => {
   let component: StaffDetailsComponent;

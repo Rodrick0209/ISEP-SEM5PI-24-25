@@ -12,10 +12,11 @@ namespace DDDSample1.Domain.StaffMembers
     public interface IStaffService
     {
         Task<StaffDto> AddAsync(CreatingStaffDto staffDto);
-        //Task<StaffDto> AddAsync(CreatingStaffDto staffDto);
+        Task<StaffDto> AddAsyncUi(CreatingStaffDto staffDto);
         Task<StaffDto> UpdateAsync(EditingStaffProfileDto dto);
         Task<StaffDto> DeleteAsync(StaffId id);
         Task<List<StaffDto>> GetAllAsync();
+        Task<List<StaffDto>> GetAllForUiAsync();
         Task<StaffDto> GetByIdAsync(StaffId id);
         Task<List<ViewStaffDto>> SearchAsync(StaffFilterDto staffFilterDto);
 

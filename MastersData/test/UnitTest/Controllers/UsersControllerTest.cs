@@ -31,8 +31,9 @@ public class UsersControllerUnitTests
         var result = await _controller.RegisterPatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<OkObjectResult>(result);
-        var returnValue = Assert.IsType<ConfirmationPatientDto>(actionResult.Value);
+        var actionResult = Assert.IsType<ActionResult<ConfirmationPatientDto>>(result);
+        var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+        var returnValue = Assert.IsType<ConfirmationPatientDto>(okResult.Value);
         Assert.Equal(confirmationDto, returnValue);
     }
 
@@ -51,7 +52,8 @@ public class UsersControllerUnitTests
         var result = await _controller.RegisterPatientAsync(dto);
 
         // Assert
-        var actionResult = Assert.IsType<BadRequestObjectResult>(result);
+        var actionResult = Assert.IsType<ActionResult<ConfirmationPatientDto>>(result);
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(actionResult.Result);
     }
 
     [Fact]
