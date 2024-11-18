@@ -1,6 +1,8 @@
 <div class="list-staffs-container">
+    <!-- Botão para criar um novo perfil -->
     <button class="create-staff-button" (click)="createStaff()">Create Staff Profile</button>
 
+    <!-- Mensagens de sucesso e erro -->
     <div *ngIf="successMessage" class="success-message">
         {{ successMessage }}
     </div>
@@ -8,16 +10,18 @@
         {{ errorMessage }}
     </div>
 
+    <!-- Componente de filtro -->
     <app-filter-staffs (filterChanged)="onFilterChanged($event)"></app-filter-staffs>
 
+    <!-- Tabela de funcionários -->
     <table *ngIf="paginatedStaffs.length > 0">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Name</th>
-                <th>License Number</th>
-                <th>Phone Number</th>
                 <th>Email</th>
                 <th>Specialization</th>
+                <th>Status</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -25,28 +29,35 @@
         </thead>
         <tbody>
             <tr *ngFor="let staff of paginatedStaffs">
+                <td>{{ staff.id}}</td>
                 <td>{{ staff.name }}</td>
-                <td>{{ staff.licenseNumber }}</td>
-                <td>{{ staff.phoneNumber }}</td>
                 <td>{{ staff.email }}</td>
                 <td>{{ staff.specialization }}</td>
+                <td>
+                    <span class="staff-status" [ngClass]="{'active': staff.status === 'Active', 'inactive': staff.status === 'Inactive'}">
+                        {{ staff.status }}
+                    </span>
+                </td>
                 <td>
                     <button (click)="seeDetails(staff)">Details</button>
                 </td>
                 <td>
-                    <button (click)="editPatient(staff)">Edit</button>
+                    <button (click)="editStaff(staff)">Edit</button>
                 </td>
-                <td>
-                    <button (click)="deletePatient(staff)">Delete</button>
+                <td *ngIf="staff.status !== 'Inactive'">
+                    <button (click)="deleteStaff(staff)">Deactivate</button>
                 </td>
+                
             </tr>
         </tbody>
     </table>
 
+    <!-- Mensagem caso não haja funcionários -->
     <div *ngIf="paginatedStaffs.length === 0" class="no-staffs-message">
         <p>No staff members to show.</p>
     </div>
 
+    <!-- Controle de paginação -->
     <div class="pagination-controls" *ngIf="paginatedStaffs.length > 0">
         <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
         <span>Page {{ currentPage }} of {{ totalPages }}</span>

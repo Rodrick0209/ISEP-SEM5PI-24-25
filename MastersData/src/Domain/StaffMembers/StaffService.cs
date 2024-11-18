@@ -182,6 +182,11 @@ namespace DDDSample1.Domain.StaffMembers
                 throw new BusinessRuleValidationException("Staff member not found");
             }
 
+            if (staff.status == StaffStatus.Inactive)
+            {
+                throw new BusinessRuleValidationException("Staff member is already inactive");
+            }
+
             var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Delete);
             await _staffLoggerRepository.AddAsync(objetoLogger);
 

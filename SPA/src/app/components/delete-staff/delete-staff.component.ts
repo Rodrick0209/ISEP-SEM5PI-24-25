@@ -35,17 +35,17 @@ export class DeleteStaffComponent implements OnInit {
       if (this.id) {
         this.staffService.deleteStaff(this.id).subscribe({
           next: () => {
-            this.messageService.setMessage(`Staff  ${this.id} successfully deleted!`); // Set the success message
+            this.messageService.setMessage(`Staff  ${this.id} successfully deactivated!`); // Set the success message
             this.router.navigate(['/staffs']); // Redirect to the patients list
           },
           error: (err: any) => {
-            console.error('Failed to delete staff', err);
-            this.errorMessage = 'Failed to delete staff';
+            console.error('Failed to deactivate staff', err);
+            this.errorMessage = 'Failed to deactivate staff';
           }
         });
       }
     } else {
-      this.errorMessage = 'Please confirm the deletion';
+      this.errorMessage = 'Please confirm the deactivation';
     }
   }
 

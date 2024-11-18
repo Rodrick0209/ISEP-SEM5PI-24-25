@@ -9,13 +9,14 @@ import { Staff, StaffsView } from '../models/staff';
   providedIn: 'root'
 })
 export class StaffService {
-    private getAll = '/api/Staff/GetAll'; // Update with your API URL
+    private getAll = '/api/Staff/GetAllForUi'; // Update with your API URL
     private filterApiUrl = '/api/Staff/search'; // Update with your filter API URL
     private url = '/api/Staff'
+    private createUrl = '/api/Staff/CreateUi'
   constructor(private http: HttpClient) { }
 
   getStaffs(): Observable<StaffsView[]> {
-    return this.http.get<StaffsView[]>(this.url);
+    return this.http.get<StaffsView[]>(this.getAll);
   }
 
   getStaffById(id: string): Observable<Staff> {
@@ -33,7 +34,7 @@ export class StaffService {
         category: category
     }
 
-    return this.http.post(this.url, body);
+    return this.http.post(this.createUrl, body);
   }
 
   editStaff(id: string, fullName: string, licenseNumber : string, phoneNumber : string, email: string) : Observable<any> {
