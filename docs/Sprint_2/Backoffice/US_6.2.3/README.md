@@ -20,3 +20,15 @@ This US creates the functionality to patients update their profile
 
 **US 6.2.1** - The patient must be registered on the system.
 **US 6.2.5** - The patient must be logged on the system.
+
+## 3. Analysis
+
+In profile settings, the patient can request to delete their account.
+
+Before the deletion, the system should send a confirmation email to the patient.
+
+When the patient clicks in confirmation, in 30 days all patient data must be deleted from the system.
+
+Patient are notified by email when the deletion is complete.
+
+The system logs the action of deletion.
