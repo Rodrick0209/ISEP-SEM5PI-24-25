@@ -445,7 +445,7 @@ namespace DDDSample1.Domain.User
 
         private void SendEmailWithUrlConfirmationDeletePatient(string email, string token)
         {
-            string callbackUrl = $"http://localhost:5000/api/users/patients/delete/confirmation/{token}";
+            string callbackUrl = $"http://localhost:4200/delete/confirm?token={token}&email={email}";
             _emailSender.SendEmailAsync($"Please confirm your deletion here: <a href='{callbackUrl}'>link</a>", email, "Confirm the deletion of your account");
         }
 

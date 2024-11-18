@@ -33,4 +33,5 @@ export interface Staff {
     phoneNumber: string;
     email: string;
     specialization: string
+    status: string;
   }

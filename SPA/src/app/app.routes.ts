@@ -33,6 +33,8 @@ import { CreateOperationRequestsComponent } from './components/create-operation-
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
 import { ThreeViewComponent } from './components/three-view/three-view.component';
+import { DeleteUserComponent } from './components/delete-user/delete-user.component';
+import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
 
 
 
@@ -171,4 +173,16 @@ export const routes: Routes = [
         path: 'view',
         component: ThreeViewComponent
     },
+    {
+        path: 'delete/confirm',
+        component: DeleteConfirmationComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'patient'}
+    },
+    {
+        path: 'delete/:email',
+        component: DeleteUserComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'patient'}
+    }
 ];

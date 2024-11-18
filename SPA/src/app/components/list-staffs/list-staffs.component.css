@@ -113,3 +113,24 @@ button:disabled {
     margin-top: 20px;
     font-style: italic;
 }
+
+/* Estilo para o status do staff */
+.staff-status {
+    font-weight: bold;
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Status ativo */
+.staff-status.active {
+    color: #ffffff;
+    background-color: #28a745; /* Verde */
+}
+
+/* Status inativo */
+.staff-status.inactive {
+    color: #ffffff;
+    background-color: #d9534f; /* Vermelho */
+}

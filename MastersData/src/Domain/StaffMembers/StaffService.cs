@@ -182,6 +182,11 @@ namespace DDDSample1.Domain.StaffMembers
                 throw new BusinessRuleValidationException("Staff member not found");
             }
 
+            if (staff.status == StaffStatus.Inactive)
+            {
+                throw new BusinessRuleValidationException("Staff member is already inactive");
+            }
+
             var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Delete);
             await _staffLoggerRepository.AddAsync(objetoLogger);
 
@@ -328,7 +333,7 @@ namespace DDDSample1.Domain.StaffMembers
             if (listDto != null)
             {
 
-                result = TransformOperationRequestsForUi(listDto);
+                result = TransformStaffsForUi(listDto);
 
             }
 
@@ -351,7 +356,7 @@ namespace DDDSample1.Domain.StaffMembers
         }
 
 
-        public List<ViewStaffDto> TransformOperationRequestsForUi(List<ViewStaffDto> staffs)
+        public List<ViewStaffDto> TransformStaffsForUi(List<ViewStaffDto> staffs)
         {
             List<ViewStaffDto> staffDtos = new List<ViewStaffDto>();
 

@@ -3,6 +3,8 @@
 :- use_module(library(http/http_json)).
 :- use_module(library(http/http_parameters)).  % Necessário para manipular parâmetros da solicitação
 
+:- consult('getInfoFromBd').
+
 :- http_handler('/greet', greet_handler, []).
 
 greet_handler(Request) :-

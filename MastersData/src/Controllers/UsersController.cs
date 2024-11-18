@@ -199,9 +199,8 @@ namespace DDDSample1.Controllers
             }
         }
 
-        // DELETE: api/user/patients/delete/confirmation/{token}
+        // DELETE: api/user/patients/delete/confirm
         [HttpDelete("patients/delete/confirm")]
-        [Authorize(Roles = "patient")]
         public async Task<ActionResult> ConfirmDeletePatientAsync([FromQuery] ConfirmationPatientDto dto)
         {
             try

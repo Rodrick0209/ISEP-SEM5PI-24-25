@@ -31,7 +31,7 @@ describe('UserService', () => {
       expect(user).toEqual(dummyUser);
     });
 
-    const req = httpMock.expectOne('/api/users/patients?email=test@example.com');
+    const req = httpMock.expectOne('/api/users/email/test@example.com');
     expect(req.request.method).toBe('GET');
     req.flush(dummyUser);
   });
@@ -123,6 +123,32 @@ describe('UserService', () => {
       newPassword: 'newPassword123',
       email: 'john@example.com'
     });
+    req.flush(dummyResponse);
+  });
+
+  it('should delete user', () => {
+    const dummyResponse = { success: true };
+
+    service.delete('test@example.com').subscribe(response => {
+      expect(response).toEqual(dummyResponse);
+    });
+
+    const req = httpMock.expectOne('/api/users/patients/delete/test@example.com');
+    expect(req.request.method).toBe('DELETE');
+
+    req.flush(dummyResponse);
+  });
+
+  it('should confirm user deletion', () => {
+    const dummyResponse = { success: true };
+
+    service.confirmDelete('token123', 'test@example.com').subscribe(response => {
+      expect(response).toEqual(dummyResponse);
+    });
+
+    const req = httpMock.expectOne('/api/users/patients/delete/confirm?token=token123&email=test@example.com');
+    expect(req.request.method).toBe('DELETE');
+
     req.flush(dummyResponse);
   });
 });
