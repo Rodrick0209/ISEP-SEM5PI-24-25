@@ -19,10 +19,10 @@ namespace DDDSample1.Domain.StaffMembers
             );
         }
 
-        public static StaffDto toDtoForUI(Staff obj, string specializatioName)
+        public static StaffDtoUI toDtoForUI(Staff obj, string Id, string specializatioName)
         {
-            return new StaffDto(
-                obj.Id,
+            return new StaffDtoUI(
+                Id,
                 obj.FullName.fullName,
                 obj.LicenseNumber.licenseNumber,
                 specializatioName,
