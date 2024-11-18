@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://10.9.10.55:5000",
+    "target": "https://10.9.10.55:5001",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"

@@ -32,10 +32,10 @@ export class AuthService {
     return this.http.post<LoginResponse>(this.loginUrl, body);
   }
 
-    verifyGoogleToken(): Observable<GoogleResponse> {
-    return this.http.get<GoogleResponse>('http://10.9.10.55:5000/api/Login/google-response');
+  verifyGoogleToken(): Observable<GoogleResponse> {
+    return this.http.get<GoogleResponse>(this.googleVerifyUrl);
   }
-
+  
   saveToken(token: string): void {
     localStorage.setItem('token', token);
     this.loggedIn.next(true); // Atualiza o estado para "logado"
@@ -44,7 +44,7 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('token');
   }
-
+  
   isLoggedIn(): boolean {
     return this.getToken() !== null;
   }
