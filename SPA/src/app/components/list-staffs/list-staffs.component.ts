@@ -33,6 +33,7 @@ export class ListStaffsComponent implements OnInit {
       next: (data: StaffsView[]) => {
         console.log('Dados recebidos no componente:', data)
         this.staffs = data;
+        console.log('Staff view esta assim',this.staffs)
         this.filteredStaffs = data;
         this.totalPages = Math.ceil(this.filteredStaffs.length / this.itemsPerPage);
         this.updatePagination();

@@ -2,7 +2,7 @@ export interface Staff {
     id: string; // StaffId
     fullName: string; // FullName
     licenseNumber: string; // LicenseNumber
-    specialization: string; // SpecializationId
+    specializationId: string; // SpecializationId
     email: string; // Email
     phoneNumber: string; // PhoneNumber
     category: Category; // Enum correspondente
@@ -28,10 +28,10 @@ export interface Staff {
   
   export interface StaffsView {
     id: string;
-    name: string;
+    fullName: string;
     licenseNumber: string;
     phoneNumber: string;
     email: string;
-    specialization: string
+    specializationId: string
     status: string;
   }

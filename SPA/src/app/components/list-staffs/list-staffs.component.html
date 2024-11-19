@@ -30,9 +30,9 @@
         <tbody>
             <tr *ngFor="let staff of paginatedStaffs">
                 <td>{{ staff.id}}</td>
-                <td>{{ staff.name }}</td>
+                <td>{{ staff.fullName }}</td>
                 <td>{{ staff.email }}</td>
-                <td>{{ staff.specialization }}</td>
+                <td>{{ staff.specializationId }}</td>
                 <td>
                     <span class="staff-status" [ngClass]="{'active': staff.status === 'Active', 'inactive': staff.status === 'Inactive'}">
                         {{ staff.status }}
