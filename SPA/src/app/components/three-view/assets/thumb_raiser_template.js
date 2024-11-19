@@ -776,22 +776,6 @@ export default class ThumbRaiser {
       // Select the camera whose view is being pointed
       const cameraView = this.getPointedViewport(this.mousePosition);
       if (cameraView != "none") {
-        // One of the remaining cameras selected
-        const cameraIndex = [
-          "fixed",
-          "first-person",
-          "third-person",
-          "top",
-        ].indexOf(cameraView);
-        this.view.options.selectedIndex = cameraIndex;
-        this.setActiveViewCamera(
-          [
-            this.fixedViewCamera,
-            this.firstPersonViewCamera,
-            this.thirdPersonViewCamera,
-            this.topViewCamera,
-          ][cameraIndex]
-        );
         if (event.buttons == 1) {
           // Primary button down
           this.changeCameraDistance = true;
