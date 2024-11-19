@@ -31,6 +31,7 @@ export class ListStaffsComponent implements OnInit {
   ngOnInit(): void {
     this.staffService.getStaffs().subscribe({
       next: (data: StaffsView[]) => {
+        console.log('Dados recebidos no componente:', data)
         this.staffs = data;
         this.filteredStaffs = data;
         this.totalPages = Math.ceil(this.filteredStaffs.length / this.itemsPerPage);

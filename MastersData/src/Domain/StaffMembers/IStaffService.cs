@@ -16,8 +16,9 @@ namespace DDDSample1.Domain.StaffMembers
         Task<StaffDto> UpdateAsync(EditingStaffProfileDto dto);
         Task<StaffDto> DeleteAsync(StaffId id);
         Task<List<StaffDto>> GetAllAsync();
-        Task<List<StaffDto>> GetAllForUiAsync();
+        Task<List<StaffDtoUI>> GetAllForUiAsync();
         Task<StaffDto> GetByIdAsync(StaffId id);
+        Task<StaffDtoUI> GetByIdForUIAsync(StaffId id);
         Task<List<ViewStaffDto>> SearchAsync(StaffFilterDto staffFilterDto);
 
 

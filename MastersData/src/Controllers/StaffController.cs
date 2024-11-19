@@ -140,10 +140,26 @@ namespace DDDSample1.Controllers
         [HttpGet("GetAllForUi")]
         [Authorize(Roles = "admin")]
 
-        public async Task<ActionResult<IEnumerable<StaffDto>>> GetAllForUi()
+        public async Task<ActionResult<IEnumerable<StaffDtoUI>>> GetAllForUi()
         {
         
             return await _service.GetAllForUiAsync();
+        }
+
+
+        [HttpGet("GetByIdForUI/{id}")]
+        [Authorize(Roles = "admin")]
+
+        public async Task<ActionResult<StaffDtoUI>> GetByIdForUI(string id)
+        {
+            var staff = await _service.GetByIdForUIAsync(new StaffId(id));
+
+            if (staff == null)
+            {
+                return NotFound();
+            }
+
+            return staff;
         }
     }
 }

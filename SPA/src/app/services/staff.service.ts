@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Staff, StaffsView } from '../models/staff';
 
@@ -12,23 +12,28 @@ export class StaffService {
     private getAll = '/api/Staff/GetAllForUi'; // Update with your API URL
     private filterApiUrl = '/api/Staff/search'; // Update with your filter API URL
     private url = '/api/Staff'
-    private createUrl = '/api/Staff/CreateUi'
+    private createUrl = '/api/Staff/CreateUi'; // Update with your create API URL
+    private getStaffByIdUrl = 'api/Staff/GetByIdForUI'; // Update with your get by ID API URL
   constructor(private http: HttpClient) { }
 
+  
+
   getStaffs(): Observable<StaffsView[]> {
-    return this.http.get<StaffsView[]>(this.getAll);
+    return this.http.get<StaffsView[]>(this.getAll).pipe(
+      tap(data => console.log('Dados brutos recebidos da API:', data))
+    );
   }
 
   getStaffById(id: string): Observable<Staff> {
-    return this.http.get<Staff>(`${this.url}/${id}`);
+    return this.http.get<Staff>(`${this.getStaffByIdUrl}/${id}`);
   }
 
 
-  createStaff(fullName : string, licenseNumber : string, specialization : string, email : string, phoneNumber : string, category : string): Observable<any> {
+  createStaff(fullName : string, licenseNumber : string, specializationId : string, email : string, phoneNumber : string, category : string): Observable<any> {
     const body = {
         fullName: fullName,
         licenseNumber: licenseNumber,
-        specialization: specialization,
+        specializationId: specializationId,
         email: email,
         phoneNumber: phoneNumber,
         category: category
