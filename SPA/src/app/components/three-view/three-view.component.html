@@ -1,4 +1,5 @@
 <div id="parent">
+    
     <div id="views-panel">
         <table class="views">
             <tr>
@@ -45,6 +46,7 @@
             </tr>
         </table>
     </div>
+
     <div id="help-panel">
         <table class="help" id="help-table">
             <tr>
@@ -84,10 +86,6 @@
             <tr>
                 <td></td>
                 <td>User interface</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Mini-map</td>
             </tr>
             <tr>
                 <td></td>
@@ -152,6 +150,10 @@
             </tr>
         </table>
     </div>
+    <div id="main-view">
+        <canvas id="three-canvas"></canvas>
+        <div id="loading-message">Loading...</div>
+      </div>
     <div id="subwindows-panel">
         <table class="subwindows">
             <tr>
@@ -164,12 +166,6 @@
                 <td>
                     <label>User interface:</label>
                     <input type="checkbox" id="user-interface">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>Mini-map:</label>
-                    <input type="checkbox" id="mini-map">
                 </td>
             </tr>
             <tr>
