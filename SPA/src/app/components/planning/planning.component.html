@@ -1,6 +1,35 @@
 <div class="planning-container">
-    <h1>Greeting Component</h1>
-    <input [(ngModel)]="name" placeholder="Enter your name" />
-    <button (click)="greet()">Get Greeting</button>
-    <p *ngIf="greetingMessage">Message: {{ greetingMessage }}</p>
-</div>
+    <h1>Surgery Planning</h1>
+    
+    <!-- Caixa de entrada para a data da cirurgia -->
+    <div class="input-box">
+      <label for="date">Surgery Date</label>
+      <input 
+        type="date" 
+        id="date" 
+        [(ngModel)]="date" 
+        class="input-field"
+        [min]="today" 
+      />
+    </div>
+    
+    <!-- Caixa de seleção para a sala de cirurgia -->
+    <div class="input-box">
+      <label for="room">Surgery Room</label>
+      <select id="room" [(ngModel)]="selectedSala" class="input-field">
+        <option value="" disabled>Select the room</option>
+        <option *ngFor="let sala of salasDeCirurgia" [value]="sala.id">{{ sala.nome }}</option>
+      </select>
+    </div>
+    
+    <!-- Botão de agendamento -->
+    <div class="input-box">
+      <button (click)="agendarCirurgia()" class="btn-submit">Agendar Cirurgia</button>
+    </div>
+    
+    <!-- Mensagem de sucesso ou erro -->
+    <div *ngIf="greetingMessage" class="message-box">
+      <p class="greeting-message">{{ greetingMessage }}</p>
+    </div>
+  </div>
+  

@@ -1,29 +1,39 @@
-import { Component } from '@angular/core';
-import { PlanningService } from '../../services/planning.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-planning',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './planning.component.html',
-  styleUrl: './planning.component.css'
+  styleUrls: ['./planning.component.css']
 })
-export class PlanningComponent {
+export class PlanningComponent implements OnInit {
+  date: string = '';
+  selectedSala: string = '';
   greetingMessage: string = '';
-  name: string = '';
+  salasDeCirurgia = [
+    { id: 1, nome: 'Room 1' },
+    { id: 2, nome: 'Room 2' },
+  ];
 
-  constructor(private planningService: PlanningService) { }
+  // Variável para a data mínima (hoje)
+  today: string = '';
 
-  greet() {
-    this.planningService.greet(this.name).subscribe(
-      (response: any) => {
-        this.greetingMessage = response.message; // Extract the message from the response
-      },
-      error => {
-        this.greetingMessage = 'An error occurred while greeting the user: ' + error.message;
-      }
-    );
+  ngOnInit() {
+    // Obtém a data atual no formato YYYY-MM-DD
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = currentDate.getDate().toString().padStart(2, '0');
+    this.today = `${year}-${month}-${day}`;
+  }
+
+  agendarCirurgia() {
+    if (this.date && this.selectedSala) {
+      this.greetingMessage = `Surgery scheduled for ${this.date} in room ${this.selectedSala}`;
+    } else {
+      this.greetingMessage = 'Please fill in all fields before scheduling.';
+    }
   }
 }

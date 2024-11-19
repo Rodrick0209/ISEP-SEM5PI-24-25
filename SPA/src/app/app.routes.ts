@@ -37,7 +37,6 @@ import { DeleteUserComponent } from './components/delete-user/delete-user.compon
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
 
 
-
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
@@ -50,6 +49,7 @@ export const routes: Routes = [
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
     { path: 'reset-password', component: ResetPasswordComponent},
+    { path: 'planning', component: PlanningComponent },
     {
         path: 'staffs',
         component: StaffsComponent,

@@ -18,4 +18,13 @@ export class PlanningService {
 
     return this.http.get(`${this.greetUrl}`, { params });
   }
+
+
+  getSurgeryRooms(){
+    return this.http.get('/api/OperationRoom/GetAll')
+  }
+
+
+
+
 }

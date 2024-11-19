@@ -1,59 +1,110 @@
-/* Container styles for the planning section */
 .planning-container {
-    max-width: 400px;            /* Maximum width for the container */
-    margin: 50px auto;          /* Center the container with top margin */
-    padding: 20px;              /* Padding inside the container */
-    background-color: #ffffff;  /* White background color */
-    border-radius: 10px;        /* Rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    text-align: center;          /* Center align text */
-    transition: transform 0.2s; /* Smooth transition for hover effect */
-}
-
-/* Styles for the heading */
-.planning-container h1 {
-    font-size: 26px;            /* Font size for the heading */
-    color: #333;                /* Dark gray color */
-    margin-bottom: 20px;        /* Space below the heading */
-}
-
-/* Styles for the input field */
-.planning-container input {
-    width: 100%;                /* Full width input field */
-    padding: 12px;             /* Padding inside the input */
-    border: 1px solid #ccc;     /* Light gray border */
-    border-radius: 5px;         /* Rounded corners */
-    font-size: 16px;            /* Font size for input text */
-    transition: border-color 0.3s; /* Smooth transition for border change */
-}
-
-/* Input focus effect */
-.planning-container input:focus {
-    border-color: #007bff;      /* Change border color on focus */
-    outline: none;              /* Remove default outline */
-}
-
-/* Styles for the button */
-.planning-container button {
-    background-color: #007bff;  /* Blue background color */
-    color: white;               /* White text color */
-    border: none;               /* Remove border */
-    border-radius: 5px;        /* Rounded corners */
-    padding: 12px 20px;        /* Padding inside the button */
-    font-size: 16px;            /* Font size for button text */
-    cursor: pointer;            /* Pointer cursor on hover */
-    transition: background-color 0.3s, transform 0.2s; /* Transition for hover effect */
-}
-
-/* Button hover effect */
-.planning-container button:hover {
-    background-color: #0056b3;  /* Darker blue on hover */
-    transform: scale(1.05);      /* Slightly enlarge the button */
-}
-
-/* Styles for the greeting message paragraph */
-.planning-container p {
-    margin-top: 20px;           /* Space above the message */
-    font-size: 18px;            /* Font size for the message */
-    color: #555;                /* Medium gray color for text */
-}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f9f9f9;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  .input-box {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+  
+  .input-field:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  select.input-field {
+    height: 45px;
+  }
+  
+  .btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .btn-submit:hover {
+    background-color: #45a049;
+  }
+  
+  .message-box {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .greeting-message {
+    font-size: 18px;
+    font-weight: 500;
+    color: #4CAF50;
+    margin-top: 10px;
+  }
+  
+  input[type="date"], select {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  @media (max-width: 600px) {
+    .planning-container {
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 24px;
+    }
+    
+    .input-box {
+      margin-bottom: 15px;
+    }
+    
+    .input-field {
+      padding: 10px;
+      font-size: 14px;
+    }
+  
+    .btn-submit {
+      padding: 10px 15px;
+      font-size: 14px;
+    }
+  }
+  
