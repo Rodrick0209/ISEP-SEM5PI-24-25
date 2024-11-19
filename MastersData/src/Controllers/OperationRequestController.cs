@@ -90,6 +90,32 @@ namespace DDDSample1.Controllers
             }
         
 
+        [HttpGet("GetStaffAssignedSurgeryById/{id}")]
+
+        public async Task<ActionResult<StaffAssignedSurgeryDto>> GetStaffAssignedSurgeryById(String id)
+        {
+            
+            try{
+            var op = await _service.GetStaffAssignedSurgeryByIdAsync(new OperationRequestId(id));
+            if (op == null)
+            {
+                return NotFound();
+            }    
+
+            return Ok(op);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+
+            
+        }
+
+
+
+
+
 
 
         [HttpGet("{id}")]

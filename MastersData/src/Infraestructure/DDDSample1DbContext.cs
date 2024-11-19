@@ -35,6 +35,9 @@ namespace DDDSample1.Infrastructure
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<StaffAssignedSurgery> StaffAssignedSurgeries { get; set; }
+
+
         public DbSet<OperationRequest> OperationRequests { get; set; }
         public DbSet<Staff> StaffMembers { get; set; }
         public DbSet<AvailabilitySlot> AvailabilitySlots { get; set; }
@@ -79,6 +82,7 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new StaffLoggerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AvailabilitySlotEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PhaseEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new StaffAssignedSurgeryEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRoomEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRoomEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AppointmentEntityTypeConfiguration());
@@ -92,6 +96,7 @@ namespace DDDSample1.Infrastructure
                 });
             });
 
+        
             modelBuilder.ApplyConfiguration(new DailyAvailabilityEntityTypeConfiguration());
 
             modelBuilder.Entity<DailyAvailability>(entity =>
