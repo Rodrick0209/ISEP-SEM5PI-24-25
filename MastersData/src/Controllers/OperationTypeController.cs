@@ -90,8 +90,6 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("GetAll")]
-        [Authorize (Roles = "admin")]
-        
         public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetAll()
         {
             var list = await _service.GetAllAsync();

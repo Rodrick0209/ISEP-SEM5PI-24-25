@@ -40,7 +40,7 @@ describe('ListStaffsComponent', () => {
   });
 
   it('should fetch staff on init', () => {
-    const staff = [{ id: 'D202512344', name: 'staffMario', licenseNumber: '12346', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia'}];
+    const staff = [{ id: 'D202512344', name: 'staffMario', licenseNumber: '12346', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia', status: 'Active' }];
     staffService.getStaffs.and.returnValue(of(staff));
     messageService.getMessage.and.returnValue('Success message');
 
@@ -65,7 +65,7 @@ describe('ListStaffsComponent', () => {
 
   it('should filter staff', () => {
     const filter = { name: 'staffMario', licenseNumber: '12346', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia' };
-    const filteredStaff = [{ id: 'D202512344', name: 'staffMario', licenseNumber: '12346', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia' }];
+    const filteredStaff = [{ id: 'D202512344', name: 'staffMario', licenseNumber: '12346', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia', status: 'Active' }];
     staffService.filterStaffs.and.returnValue(of(filteredStaff));
 
     component.onFilterChanged(filter);
@@ -92,7 +92,7 @@ describe('ListStaffsComponent', () => {
   });
 
   it('should navigate to details page', () => {
-    const staff = { id: 'D202512344', name: 'staffMario', licenseNumber: '12346', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia' };
+    const staff = { id: 'D202512344', name: 'staffMario', licenseNumber: '12346', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia', status: 'Active' };
     router.navigate.and.returnValue(Promise.resolve(true));
     component.seeDetails(staff);
 
@@ -100,21 +100,21 @@ describe('ListStaffsComponent', () => {
   });
 
   it('should delete staff', () => {
-    const staff = { id: 'D202512344', name: 'staffMario', licenseNumber: '12346', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia' };
+    const staff = { id: 'D202512344', name: 'staffMario', licenseNumber: '12346', phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia', status: 'Active' };
     spyOn(window, 'confirm').and.returnValue(true);
     staffService.deleteStaff.and.returnValue(of('Staff deleted successfully'));
 
-    component.deletePatient(staff);
+    component.deleteStaff(staff);
 
     expect(staffService.deleteStaff).toHaveBeenCalledWith(staff.id);
   });
 
   it('should handle error on delete staff', () => {
-    const staff = { id: 'D202512344', name: 'staffMario', licenseNumber: '12346',phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia' };
+    const staff = { id: 'D202512344', name: 'staffMario', licenseNumber: '12346',phoneNumber: '+951999999998', email: 'emaill@gmail.com', specialization: 'Obstetricia', status: 'Active' };
     spyOn(window, 'confirm').and.returnValue(true);
     staffService.deleteStaff.and.returnValue(throwError('Error deleting staff'));
 
-    component.deletePatient(staff);
+    component.deleteStaff(staff);
 
     expect(component.errorMessage).toBe('An error occurred while deleting staff: Error deleting staff');
   });

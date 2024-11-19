@@ -162,28 +162,22 @@ export default class Camera {
         let y;
         let width = this.viewport.width;
         let height = this.viewport.height;
-        if (this.view != "mini-map") {
-            x = this.viewport.x * (1.0 - this.viewport.width);
-            y = this.viewport.y * (1.0 - this.viewport.height);
-            if (this.windowWidth < this.windowHeight) {
-                x *= windowMinSize;
-                y *= this.windowHeight;
-                width *= windowMinSize;
-                height *= this.windowHeight;
-            }
-            else {
-                x *= this.windowWidth;
-                y *= windowMinSize;
-                width *= this.windowWidth;
-                height *= windowMinSize;
-            }
+        
+        x = this.viewport.x * (1.0 - this.viewport.width);
+        y = this.viewport.y * (1.0 - this.viewport.height);
+        if (this.windowWidth < this.windowHeight) {
+            x *= windowMinSize;
+            y *= this.windowHeight;
+            width *= windowMinSize;
+            height *= this.windowHeight;
         }
         else {
-            width *= windowMinSize;
+            x *= this.windowWidth;
+            y *= windowMinSize;
+            width *= this.windowWidth;
             height *= windowMinSize;
-            x = this.viewport.x * (this.windowWidth - width);
-            y = this.viewport.y * (this.windowHeight - height);
         }
+        
         return new THREE.Vector4(x, y, width, height);
     }
 

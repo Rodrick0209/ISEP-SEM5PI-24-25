@@ -31,10 +31,14 @@ export class ListStaffsComponent implements OnInit {
   ngOnInit(): void {
     this.staffService.getStaffs().subscribe({
       next: (data: StaffsView[]) => {
+        console.log('Dados recebidos no componente:', data)
         this.staffs = data;
         this.filteredStaffs = data;
         this.totalPages = Math.ceil(this.filteredStaffs.length / this.itemsPerPage);
         this.updatePagination();
+
+        // Log os dados para depuração
+      console.log('Dados paginados:', this.paginatedStaffs);
       },
       error: (err: any) => {
         console.error('Failed to fetch staff members', err);
@@ -58,7 +62,7 @@ export class ListStaffsComponent implements OnInit {
         this.updatePagination();
       },
       error: (err: any) => {
-        console.error('Failed to filter patients', err);
+        console.error('Failed to filter staffs', err);
         this.filteredStaffs = [];
       }
     });
@@ -67,6 +71,7 @@ export class ListStaffsComponent implements OnInit {
   updatePagination() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     this.paginatedStaffs = this.filteredStaffs.slice(startIndex, startIndex + this.itemsPerPage);
+    console.log('Paginated staffs on page', this.currentPage, ':', this.paginatedStaffs);
   }
 
   nextPage() {
@@ -89,13 +94,13 @@ export class ListStaffsComponent implements OnInit {
     console.log('Details of staff:', staff);
   }
 
-  editPatient(staff: StaffsView): void {
+  editStaff(staff: StaffsView): void {
     // Navigate to the edit patient page
     this.router.navigate(['/staff/edit', staff.id]);
     console.log('Editing staff:', staff);
   }
 
-  deletePatient(staff: StaffsView): void {
+  deleteStaff(staff: StaffsView): void {
     // Implement the delete patient functionality
     this.router.navigate(['/staff/delete', staff.id]);
     console.log('Deleting staff:', staff);

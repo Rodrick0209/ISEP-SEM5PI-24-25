@@ -182,6 +182,11 @@ namespace DDDSample1.Domain.StaffMembers
                 throw new BusinessRuleValidationException("Staff member not found");
             }
 
+            if (staff.status == StaffStatus.Inactive)
+            {
+                throw new BusinessRuleValidationException("Staff member is already inactive");
+            }
+
             var objetoLogger = LogObjectCreate(staff, LoggerTypeOfChange.Delete);
             await _staffLoggerRepository.AddAsync(objetoLogger);
 
@@ -200,6 +205,18 @@ namespace DDDSample1.Domain.StaffMembers
             var staff = await _staffRepository.GetByIdAsync(id);
 
             return staff == null ? null : StaffMapper.toDTO(staff);
+
+        }
+
+        public async Task<StaffDtoUI> GetByIdForUIAsync(StaffId id)
+        {
+
+            var staff = await _staffRepository.GetByIdAsync(id);
+            var specializationName = _specializationRepository.GetByIdAsync(staff.SpecializationId).Result.Name;
+            var idValue = id.AsString();
+
+
+            return staff == null ? null : StaffMapper.toDtoForUI(staff, idValue, specializationName);
 
         }
 
@@ -298,8 +315,6 @@ namespace DDDSample1.Domain.StaffMembers
         public async Task<List<ViewStaffDto>> SearchAsync(StaffFilterDto dto)
         {
 
-
-
             var staff = new List<Staff>();
 
             if (string.IsNullOrWhiteSpace(dto.Name) && string.IsNullOrWhiteSpace(dto.LicenseNumber) && string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.PhoneNumber) && string.IsNullOrWhiteSpace(dto.Specialization))
@@ -307,9 +322,14 @@ namespace DDDSample1.Domain.StaffMembers
                 staff = await _staffRepository.GetAllAsync();
             }
 
+            var specializationId = "";
+            if (!string.IsNullOrEmpty(dto.Specialization))
+            {
+                var specialization = await _specializationRepository.GetByNameAsync(dto.Specialization);
+                specializationId = specialization.Id.Value;
+            }
 
-            staff = await _staffRepository.GetByFiltersAsync(dto.Name, dto.LicenseNumber, dto.Email, dto.PhoneNumber, dto.Specialization);
-
+            staff = await _staffRepository.GetByFiltersAsync(dto.Name, dto.LicenseNumber, dto.Email, dto.PhoneNumber, specializationId);
 
 
             List<ViewStaffDto> listDto = staff.ConvertAll<ViewStaffDto>(sta => new ViewStaffDto
@@ -338,14 +358,15 @@ namespace DDDSample1.Domain.StaffMembers
         }
 
 
-        public async Task<List<StaffDto>> GetAllForUiAsync()
+        public async Task<List<StaffDtoUI>> GetAllForUiAsync()
         {
             List<Staff> staff = await this._staffRepository.GetAllAsync();
-            List<StaffDto> staffDtos = new List<StaffDto>();
+            List<StaffDtoUI> staffDtos = new List<StaffDtoUI>();
             foreach (Staff sta in staff)
             {
                 var specializationName = _specializationRepository.GetByIdAsync(sta.SpecializationId).Result.Name;
-                staffDtos.Add(StaffMapper.toDtoForUI(sta, specializationName));
+                var idValue = _staffRepository.GetByIdAsync(sta.Id).Result.Id.AsString();
+                staffDtos.Add(StaffMapper.toDtoForUI(sta, idValue, specializationName));
             }
             return staffDtos;
         }
@@ -357,6 +378,7 @@ namespace DDDSample1.Domain.StaffMembers
 
             foreach (ViewStaffDto staff in staffs)
             {
+
                 var specializationName = _specializationRepository.GetByIdAsync(new SpecializationId(staff.Specialization)).Result.Name;
                 staffDtos.Add(new ViewStaffDto
                 {

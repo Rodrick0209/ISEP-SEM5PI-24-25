@@ -58,7 +58,6 @@ async function updateRoomOccupancy(apiUrl, rooms) {
   }
 }
 
-
 export default class ThumbRaiser {
   constructor(
     parameters,
@@ -79,10 +78,9 @@ export default class ThumbRaiser {
     tablesSurgeryDataParameters
   ) {
     this.onLoad = async function (description) {
-      const apiUrl = "https://localhost:5001/api/Appointment/GetHappening";
+      const apiUrl = "https://10.9.10.55:5001/api/Appointment/GetHappening";
       await updateRoomOccupancy(apiUrl, description.rooms);
 
-      
       for (const room of description.rooms) {
         console.log("Description: " + room.name + " " + room.isOccupied);
       }
@@ -319,6 +317,8 @@ export default class ThumbRaiser {
         }
       }
 
+      const canvas = document.getElementById("three-canvas");
+
       // Create the player
       this.player = new Player(this.playerParameters);
 
@@ -331,30 +331,23 @@ export default class ThumbRaiser {
       // Create the cameras corresponding to the four different views: fixed view, first-person view, third-person view and top view
       this.fixedViewCamera = new Camera(
         this.fixedViewCameraParameters,
-        window.innerWidth,
-        window.innerHeight
+        canvas.clientWidth,
+        canvas.clientHeight
       );
       this.firstPersonViewCamera = new Camera(
         this.firstPersonViewCameraParameters,
-        window.innerWidth,
-        window.innerHeight
+        canvas.clientWidth,
+        canvas.clientHeight
       );
       this.thirdPersonViewCamera = new Camera(
         this.thirdPersonViewCameraParameters,
-        window.innerWidth,
-        window.innerHeight
+        canvas.clientWidth,
+        canvas.clientHeight
       );
       this.topViewCamera = new Camera(
         this.topViewCameraParameters,
-        window.innerWidth,
-        window.innerHeight
-      );
-
-      // Create the mini-map camera
-      this.miniMapCamera = new Camera(
-        this.miniMapCameraParameters,
-        window.innerWidth,
-        window.innerHeight
+        canvas.clientWidth,
+        canvas.clientHeight
       );
 
       // Create the statistics and make its node invisible
@@ -362,17 +355,28 @@ export default class ThumbRaiser {
       this.statistics.dom.style.visibility = "hidden";
       document.body.appendChild(this.statistics.dom);
 
-      // Create a renderer and turn on shadows in the renderer
-      this.renderer = new THREE.WebGLRenderer({ antialias: true });
+      
+
+      // Create a renderer and attach it to the canvas element
+      this.renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        canvas: canvas,
+      });
       if (this.generalParameters.setDevicePixelRatio) {
         this.renderer.setPixelRatio(window.devicePixelRatio);
       }
       this.renderer.autoClear = false;
-      /* To-do #30 - Turn on shadows in the renderer and filter shadow maps using the Percentage-Closer Filtering (PCF) algorithm
-        this.renderer.shadowMap.enabled = ...;
-        this.renderer.shadowMap.type = ...; */
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(this.renderer.domElement);
+      this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+      // Show the loading message
+      const loadingMessage = document.getElementById("loading-message");
+      loadingMessage.style.display = "block";
+
+      // Simulate loading process (replace with actual loading logic)
+      setTimeout(() => {
+
+        loadingMessage.style.display = "none";
+      }, 5000); // Simulate a 3-second loading time
 
       // Set the mouse move action (none)
       this.dragMiniMap = false;
@@ -403,8 +407,6 @@ export default class ThumbRaiser {
       this.multipleViewsCheckBox.checked = false;
       this.userInterfaceCheckBox = document.getElementById("user-interface");
       this.userInterfaceCheckBox.checked = true;
-      this.miniMapCheckBox = document.getElementById("mini-map");
-      this.miniMapCheckBox.checked = true;
       this.helpCheckBox = document.getElementById("help");
       this.helpCheckBox.checked = false;
       this.statisticsCheckBox = document.getElementById("statistics");
@@ -605,13 +607,6 @@ export default class ThumbRaiser {
 
   getPointedViewport(pointer) {
     let viewport;
-    // Check if the pointer is over the mini-map camera viewport
-    if (this.miniMapCheckBox.checked) {
-      viewport = this.miniMapCamera.getViewport();
-      if (this.pointerIsOverViewport(pointer, viewport)) {
-        return this.miniMapCamera.view;
-      }
-    }
     // Check if the pointer is over the remaining camera viewports
     let cameras;
     if (this.multipleViewsCheckBox.checked) {
@@ -732,10 +727,7 @@ export default class ThumbRaiser {
             if (... && ...) { // Display / hide user interface
                 this.setUserInterfaceVisibility(!this.userInterfaceCheckBox.checked);
             } */
-      if (event.code == this.player.keyCodes.miniMap && state) {
-        // Display / hide mini-map
-        this.setMiniMapVisibility(!this.miniMapCheckBox.checked);
-      }
+
       if (event.code == this.player.keyCodes.help && state) {
         // Display / hide help
         this.setHelpVisibility(!this.helpCheckBox.checked);
@@ -784,36 +776,12 @@ export default class ThumbRaiser {
       // Select the camera whose view is being pointed
       const cameraView = this.getPointedViewport(this.mousePosition);
       if (cameraView != "none") {
-        if (cameraView == "mini-map") {
-          // Mini-map camera selected
-          if (event.buttons == 1) {
-            // Primary button down
-            this.dragMiniMap = true;
-          }
+        if (event.buttons == 1) {
+          // Primary button down
+          this.changeCameraDistance = true;
         } else {
-          // One of the remaining cameras selected
-          const cameraIndex = [
-            "fixed",
-            "first-person",
-            "third-person",
-            "top",
-          ].indexOf(cameraView);
-          this.view.options.selectedIndex = cameraIndex;
-          this.setActiveViewCamera(
-            [
-              this.fixedViewCamera,
-              this.firstPersonViewCamera,
-              this.thirdPersonViewCamera,
-              this.topViewCamera,
-            ][cameraIndex]
-          );
-          if (event.buttons == 1) {
-            // Primary button down
-            this.changeCameraDistance = true;
-          } else {
-            // Secondary button down
-            this.changeCameraOrientation = true;
-          }
+          // Secondary button down
+          this.changeCameraOrientation = true;
         }
       }
     }
@@ -884,7 +852,7 @@ export default class ThumbRaiser {
     );
     // Select the camera whose view is being pointed
     const cameraView = this.getPointedViewport(this.mousePosition);
-    if (cameraView != "none" && cameraView != "mini-map") {
+    if (cameraView != "none") {
       // One of the remaining cameras selected
       const cameraIndex = [
         "fixed",
@@ -1021,8 +989,7 @@ export default class ThumbRaiser {
   update() {
     if (!this.gameRunning) {
       const allDoorsLoaded =
-        this.doors &&
-        this.doors.every((door) => door && door.loaded);
+        this.doors && this.doors.every((door) => door && door.loaded);
       const allBedsLoaded =
         this.beds &&
         this.beds.length > 0 &&
@@ -1300,21 +1267,6 @@ export default class ThumbRaiser {
         this.renderer.render(this.scene3D, camera.object);
         this.renderer.render(this.scene2D, this.camera2D);
         this.renderer.clearDepth();
-      }
-
-      // Render secondary viewport (mini-map)
-      if (this.miniMapCheckBox.checked) {
-        this.scene3D.fog = null;
-        this.player.object.visible = true;
-        const viewport = this.miniMapCamera.getViewport();
-        this.renderer.setViewport(
-          viewport.x,
-          viewport.y,
-          viewport.width,
-          viewport.height
-        );
-        this.renderer.render(this.scene3D, this.miniMapCamera.object);
-        this.renderer.render(this.scene2D, this.camera2D);
       }
     }
   }
