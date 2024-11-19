@@ -12,10 +12,6 @@ namespace DDDSample1.Infrastructure.OperationRequests
 
         public void Configure(EntityTypeBuilder<StaffAssignedSurgery> builder)
         {
-            builder.HasKey(b => b.Id);
-            
         }
-
     }
-
 }

@@ -12,9 +12,10 @@ namespace DDDSample1.Domain.OperationRequest
     {
         public static StaffAssignedSurgeryDto toDTO(StaffAssignedSurgery staffAssignedSurgery)
         {
+            var staffAnesthesyPhase = staffAssignedSurgery.staffAnesthesyPhase.ConvertAll(staffId => staffId.AsString().ToString());
+            var staffSurgeryPhase = staffAssignedSurgery.staffSurgeryPhase.ConvertAll(staffId => staffId.AsString().ToString());   
             
-
-            return new StaffAssignedSurgeryDto(staffAssignedSurgery.staffAnesthesyPhase, staffAssignedSurgery.staffSurgeryPhase);
+            return new StaffAssignedSurgeryDto(staffAnesthesyPhase, staffSurgeryPhase);
         }
 
     }

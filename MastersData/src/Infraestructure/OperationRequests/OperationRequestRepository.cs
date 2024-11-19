@@ -36,6 +36,12 @@ namespace DDDSample1.Infrastructure.OperationRequests
                 .ToListAsync();
         }
     
+        public async Task<OperationRequest> GetByIdAsync(OperationRequestId id)
+        {
+            return await this.context.OperationRequests
+                .Include(o => o.staffAssignedSurgery)
+                .FirstOrDefaultAsync(or => or.Id == id);
+        }
 
         public async Task<List<OperationRequest>> GetOperationRequestsByDoctorIdRequested(string doctorId)
         {

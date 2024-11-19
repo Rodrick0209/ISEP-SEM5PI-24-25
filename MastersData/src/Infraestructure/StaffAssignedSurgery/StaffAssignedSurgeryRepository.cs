@@ -21,6 +21,12 @@ namespace DDDSample1.Infrastructure.OperationRequests
 
 
 
+        public async Task<StaffAssignedSurgery> GetByIdAsync(StaffAssignedSurgeryId id)
+        {
+            return await this.context.StaffAssignedSurgeries.FirstOrDefaultAsync(u => u.Id.Value == id.Value);
+
+        }
+
 
 
 

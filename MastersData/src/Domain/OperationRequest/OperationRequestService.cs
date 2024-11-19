@@ -82,6 +82,10 @@ namespace DDDSample1.Domain.OperationRequest
             {
                 throw new BusinessRuleValidationException("Operation Request not found");
             }
+
+            Console.WriteLine(operationRequest.staffAssignedSurgery.staffAnesthesyPhase.Count);
+            Console.WriteLine(operationRequest.staffAssignedSurgery.staffSurgeryPhase.Count);
+
             if (operationRequest.staffAssignedSurgery == null)
             {
                 throw new BusinessRuleValidationException("Hasn´t been Assigned Staff to the Surgery");
