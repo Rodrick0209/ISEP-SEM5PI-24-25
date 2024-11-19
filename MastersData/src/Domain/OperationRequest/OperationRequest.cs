@@ -38,15 +38,15 @@ namespace DDDSample1.Domain.OperationRequest
             this.doctorThatRequestedId = doctorThatRequestedId;
             this.doctorThatWillPerformId = doctorThatWillPerformId;
             this.status = OperationRequestStatus.Waiting;
-            this.staffAssignedSurgery = new StaffAssignedSurgery(new List<String>(), new List<String>());
+            this.staffAssignedSurgery = new StaffAssignedSurgery(new List<StaffId>(), new List<StaffId>());
         }
 
-        public List<String> getStaffAnesthesyPhase()
+        public List<StaffId> getStaffAnesthesyPhase()
         {
             return this.staffAssignedSurgery.staffAnesthesyPhase;
         }   
 
-        public List<String> getStaffSurgeryPhase()
+        public List<StaffId> getStaffSurgeryPhase()
         {
             return this.staffAssignedSurgery.staffSurgeryPhase;
         }

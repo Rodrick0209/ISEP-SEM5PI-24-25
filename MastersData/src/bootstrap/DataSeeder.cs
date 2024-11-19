@@ -169,10 +169,20 @@ public static class DataSeeder
     context.OperationTypes.AddRange(operationTypes);
 
     var operationRequest = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512344").AsString());
-    operationRequest.staffAssignedSurgery.addStaffSurgeryPhase("D202512345");
-    operationRequest.staffAssignedSurgery.addStaffAnesthesyPhase("D202512344");
+    operationRequest.staffAssignedSurgery.addStaffSurgeryPhase(new StaffId("D202512345"));
+    operationRequest.staffAssignedSurgery.addStaffSurgeryPhase(new StaffId("D202512346"));
+    operationRequest.staffAssignedSurgery.addStaffAnesthesyPhase(new StaffId("D202512344"));
     SeedOperationRequest(context, operationRequest);
-    
+    var staffAssignedSurgery = operationRequest.staffAssignedSurgery;
+    SeedStaffAssignedSurgery(context, staffAssignedSurgery);
+
+
+    Console.WriteLine(operationRequest.staffAssignedSurgery.staffAnesthesyPhase.Count());
+    Console.WriteLine(operationRequest.staffAssignedSurgery.staffSurgeryPhase.Count());    
+
+
+
+
     
 
 
@@ -319,6 +329,14 @@ public static class DataSeeder
     }
   }
 
+  private static void SeedStaffAssignedSurgery(DDDSample1DbContext context, StaffAssignedSurgery staffAssignedSurgery)
+  {
+    if (!context.StaffAssignedSurgeries.Any())
+    {
+      context.StaffAssignedSurgeries.Add(staffAssignedSurgery);
+    }
+  }
+  
   private static void SeedSpecializations(DDDSample1DbContext context, Specialization specialization)
   {
     if (!context.Specializations.Any())

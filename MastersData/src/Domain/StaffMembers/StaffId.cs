@@ -6,6 +6,9 @@ namespace DDDSample1.Domain.StaffMembers
 {
     public class StaffId : EntityId
     {
+        
+        
+
         [JsonConstructor]
         public StaffId(Guid value) : base(value) { }
 
