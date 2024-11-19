@@ -35,6 +35,9 @@ namespace DDDSample1.Infrastructure
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<StaffAssignedSurgery> StaffAssignedSurgeries { get; set; }
+
+
         public DbSet<OperationRequest> OperationRequests { get; set; }
         public DbSet<Staff> StaffMembers { get; set; }
         public DbSet<AvailabilitySlot> AvailabilitySlots { get; set; }
@@ -82,15 +85,45 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new OperationRoomEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRoomEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AppointmentEntityTypeConfiguration());
-            modelBuilder.Entity<Phase>(entity =>
+
+
+            modelBuilder.ApplyConfiguration(new StaffAssignedSurgeryEntityTypeConfiguration());
+            modelBuilder.Entity<StaffAssignedSurgery>(entity =>
             {
+                // Configuração de staffAnesthesyPhase
+                entity.OwnsMany(p => p.staffAnesthesyPhase, rs =>
+                {
+                    rs.WithOwner().HasForeignKey("StaffAssignedSurgeryId");
+
+                    // Mapeia o valor interno de StaffId (Guid)
+                    rs.Property(x => x.Value)
+                    .HasColumnName("StaffId"); // Nome da coluna no banco de dados
+                    rs.HasKey(x => x.Value);    // Define o valor como chave
+                });
+
+                // Configuração de staffSurgeryPhase
+                entity.OwnsMany(p => p.staffSurgeryPhase, rs =>
+                {
+                    rs.WithOwner().HasForeignKey("StaffAssignedSurgeryId");
+
+                    // Mapeia o valor interno de StaffId (Guid)
+                    rs.Property(x => x.Value)
+                    .HasColumnName("StaffId");
+                    rs.HasKey(x => x.Value);
+                });
+            });
+
+
+
+            modelBuilder.Entity<Phase>(entity =>
                 entity.OwnsMany(p => p.requiredStaff, rs =>
                 {
                     rs.WithOwner().HasForeignKey("PhaseId");
                     rs.Property<int>("Id");
                     rs.HasKey("Id");
-                });
-            });
+                })
+                );
+
 
             modelBuilder.ApplyConfiguration(new DailyAvailabilityEntityTypeConfiguration());
 

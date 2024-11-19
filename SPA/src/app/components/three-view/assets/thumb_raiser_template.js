@@ -67,8 +67,8 @@ export default class ThumbRaiser {
     lightsParameters,
     fogParameters,
     fixedViewCameraParameters,
-    firstPersonViewCameraParameters,
-    thirdPersonViewCameraParameters,
+    //firstPersonViewCameraParameters,
+    //thirdPersonViewCameraParameters,
     topViewCameraParameters,
     miniMapCameraParameters,
     doorParameters,
@@ -106,6 +106,7 @@ export default class ThumbRaiser {
         cameraData,
         fixedViewCameraParameters
       );
+      /*
       this.firstPersonViewCameraParameters = merge(
         {},
         cameraData,
@@ -116,6 +117,7 @@ export default class ThumbRaiser {
         cameraData,
         thirdPersonViewCameraParameters
       );
+      */
       this.topViewCameraParameters = merge(
         {},
         cameraData,
@@ -334,6 +336,7 @@ export default class ThumbRaiser {
         canvas.clientWidth,
         canvas.clientHeight
       );
+      /*
       this.firstPersonViewCamera = new Camera(
         this.firstPersonViewCameraParameters,
         canvas.clientWidth,
@@ -344,6 +347,7 @@ export default class ThumbRaiser {
         canvas.clientWidth,
         canvas.clientHeight
       );
+      */
       this.topViewCamera = new Camera(
         this.topViewCameraParameters,
         canvas.clientWidth,
@@ -561,8 +565,8 @@ export default class ThumbRaiser {
   displayPanel() {
     this.view.options.selectedIndex = [
       "fixed",
-      "first-person",
-      "third-person",
+      //"first-person",
+      //"third-person",
       "top",
     ].indexOf(this.activeViewCamera.view);
     this.projection.options.selectedIndex = [
@@ -591,8 +595,8 @@ export default class ThumbRaiser {
 
   arrangeViewports(multipleViews) {
     this.fixedViewCamera.setViewport(multipleViews);
-    this.firstPersonViewCamera.setViewport(multipleViews);
-    this.thirdPersonViewCamera.setViewport(multipleViews);
+    //this.firstPersonViewCamera.setViewport(multipleViews);
+    //this.thirdPersonViewCamera.setViewport(multipleViews);
     this.topViewCamera.setViewport(multipleViews);
   }
 
@@ -612,8 +616,8 @@ export default class ThumbRaiser {
     if (this.multipleViewsCheckBox.checked) {
       cameras = [
         this.fixedViewCamera,
-        this.firstPersonViewCamera,
-        this.thirdPersonViewCamera,
+        //this.firstPersonViewCamera,
+        //this.thirdPersonViewCamera,
         this.topViewCamera,
       ];
     } else {
@@ -672,14 +676,14 @@ export default class ThumbRaiser {
       window.innerWidth,
       window.innerHeight
     );
-    this.firstPersonViewCamera.updateWindowSize(
+    /*this.firstPersonViewCamera.updateWindowSize(
       window.innerWidth,
       window.innerHeight
     );
     this.thirdPersonViewCamera.updateWindowSize(
       window.innerWidth,
       window.innerHeight
-    );
+    );*/
     this.topViewCamera.updateWindowSize(window.innerWidth, window.innerHeight);
     this.miniMapCamera.updateWindowSize(window.innerWidth, window.innerHeight);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -707,12 +711,13 @@ export default class ThumbRaiser {
       if (event.code == this.player.keyCodes.fixedView && state) {
         // Select fixed view
         this.setActiveViewCamera(this.fixedViewCamera);
-      } else if (event.code == this.player.keyCodes.firstPersonView && state) {
+      /*} else if (event.code == this.player.keyCodes.firstPersonView && state) {
         // Select first-person view
         this.setActiveViewCamera(this.firstPersonViewCamera);
       } else if (event.code == this.player.keyCodes.thirdPersonView && state) {
         // Select third-person view
         this.setActiveViewCamera(this.thirdPersonViewCamera);
+        */
       } else if (event.code == this.player.keyCodes.topView && state) {
         // Select top view
         this.setActiveViewCamera(this.topViewCamera);
@@ -776,22 +781,6 @@ export default class ThumbRaiser {
       // Select the camera whose view is being pointed
       const cameraView = this.getPointedViewport(this.mousePosition);
       if (cameraView != "none") {
-        // One of the remaining cameras selected
-        const cameraIndex = [
-          "fixed",
-          "first-person",
-          "third-person",
-          "top",
-        ].indexOf(cameraView);
-        this.view.options.selectedIndex = cameraIndex;
-        this.setActiveViewCamera(
-          [
-            this.fixedViewCamera,
-            this.firstPersonViewCamera,
-            this.thirdPersonViewCamera,
-            this.topViewCamera,
-          ][cameraIndex]
-        );
         if (event.buttons == 1) {
           // Primary button down
           this.changeCameraDistance = true;
@@ -872,15 +861,15 @@ export default class ThumbRaiser {
       // One of the remaining cameras selected
       const cameraIndex = [
         "fixed",
-        "first-person",
-        "third-person",
+        //"first-person",
+        //"third-person",
         "top",
       ].indexOf(cameraView);
       this.view.options.selectedIndex = cameraIndex;
       const activeViewCamera = [
         this.fixedViewCamera,
-        this.firstPersonViewCamera,
-        this.thirdPersonViewCamera,
+        //this.firstPersonViewCamera,
+        //this.thirdPersonViewCamera,
         this.topViewCamera,
       ][cameraIndex];
       activeViewCamera.updateZoom(-0.001 * event.deltaY);
@@ -899,8 +888,8 @@ export default class ThumbRaiser {
         this.setActiveViewCamera(
           [
             this.fixedViewCamera,
-            this.firstPersonViewCamera,
-            this.thirdPersonViewCamera,
+            //this.firstPersonViewCamera,
+            //this.thirdPersonViewCamera,
             this.topViewCamera,
           ][this.view.options.selectedIndex]
         );
@@ -954,8 +943,8 @@ export default class ThumbRaiser {
         break;
       case "reset-all":
         this.fixedViewCamera.initialize();
-        this.firstPersonViewCamera.initialize();
-        this.thirdPersonViewCamera.initialize();
+        //this.firstPersonViewCamera.initialize();
+        //this.thirdPersonViewCamera.initialize();
         this.topViewCamera.initialize();
         break;
     }
@@ -1040,7 +1029,7 @@ export default class ThumbRaiser {
         // If all resources have been loaded
         // Add the maze, the player and the lights to the scene
         this.scene3D.add(this.maze.object);
-        this.scene3D.add(this.player.object);
+        //this.scene3D.add(this.player.object);
         this.scene3D.add(this.lights.object);
 
         // Create the clock
@@ -1233,16 +1222,16 @@ export default class ThumbRaiser {
       }
 
       // Update first-person, third-person and top view cameras parameters (player direction and target)
-      this.firstPersonViewCamera.playerDirection = this.player.direction;
-      this.thirdPersonViewCamera.playerDirection = this.player.direction;
+      //this.firstPersonViewCamera.playerDirection = this.player.direction;
+      //this.thirdPersonViewCamera.playerDirection = this.player.direction;
       this.topViewCamera.playerDirection = this.player.direction;
       const target = new THREE.Vector3(
         this.player.position.x,
         this.player.position.y + this.player.eyeHeight,
         this.player.position.z
       );
-      this.firstPersonViewCamera.setTarget(target);
-      this.thirdPersonViewCamera.setTarget(target);
+      //this.firstPersonViewCamera.setTarget(target);
+      //this.thirdPersonViewCamera.setTarget(target);
       this.topViewCamera.setTarget(target);
 
       // Update statistics
@@ -1264,15 +1253,15 @@ export default class ThumbRaiser {
       if (this.multipleViewsCheckBox.checked) {
         cameras = [
           this.fixedViewCamera,
-          this.firstPersonViewCamera,
-          this.thirdPersonViewCamera,
+          //this.firstPersonViewCamera,
+          //this.thirdPersonViewCamera,
           this.topViewCamera,
         ];
       } else {
         cameras = [this.activeViewCamera];
       }
       for (const camera of cameras) {
-        this.player.object.visible = camera != this.firstPersonViewCamera;
+        //this.player.object.visible = camera != this.firstPersonViewCamera;
         const viewport = camera.getViewport();
         this.renderer.setViewport(
           viewport.x,

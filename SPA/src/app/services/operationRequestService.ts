@@ -34,7 +34,8 @@ export class OperationRequestService {
     getOperationRequests(): Observable<OperationRequest[]> {
         return this.http.get<OperationRequest[]>(this.url);
     }
-
+    
+    
     deleteOperationRequest(id: string): Observable<any> {
         return this.http.delete(`/api/OperationRequest/${id}`);
     }

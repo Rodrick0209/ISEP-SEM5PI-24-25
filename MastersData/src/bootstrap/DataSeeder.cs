@@ -169,15 +169,28 @@ public static class DataSeeder
     context.OperationTypes.AddRange(operationTypes);
 
     var operationRequest = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512344").AsString());
+    operationRequest.staffAssignedSurgery.addStaffSurgeryPhase(new StaffId("D202512345"));
+    operationRequest.staffAssignedSurgery.addStaffSurgeryPhase(new StaffId("D202512346"));
+    operationRequest.staffAssignedSurgery.addStaffAnesthesyPhase(new StaffId("D202512344"));
     SeedOperationRequest(context, operationRequest);
-    Console.WriteLine("test1");
+    var staffAssignedSurgery = operationRequest.staffAssignedSurgery;
+    SeedStaffAssignedSurgery(context, staffAssignedSurgery);
+
+
+    Console.WriteLine(operationRequest.staffAssignedSurgery.staffAnesthesyPhase.Count());
+    Console.WriteLine(operationRequest.staffAssignedSurgery.staffSurgeryPhase.Count());    
+
+
+
+
+    
+
+
     var operationRequest2 = new OperationRequest("2025-02-19", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
     SeedOperationRequest(context, operationRequest2);
-    Console.WriteLine("test2");
 
     var operationRequest3 = new OperationRequest("2025-02-20", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
     SeedOperationRequest(context, operationRequest3);
-    Console.WriteLine("test3");
 
     var operationRequest4 = new OperationRequest("2025-02-23", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
     SeedOperationRequest(context, operationRequest4);
@@ -257,9 +270,8 @@ public static class DataSeeder
 
     int currentHourInMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
     int startMinute = currentHourInMinutes + 1;
-    int endMinute = Math.Min(currentHourInMinutes + 100, 1440);
-
-    var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(2025, 11, 13), new TimeSlot(startMinute, endMinute));
+    int endMinute = Math.Min(currentHourInMinutes + 120, 1440);
+    var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day), new TimeSlot(startMinute, endMinute));
     var appointment = new Appointment(appointmentTimeSlot, operationRoom.Id.Value, operationRequest.Id.AsString());
     SeedAppointments(context, appointment);
     context.SaveChanges();
@@ -317,6 +329,14 @@ public static class DataSeeder
     }
   }
 
+  private static void SeedStaffAssignedSurgery(DDDSample1DbContext context, StaffAssignedSurgery staffAssignedSurgery)
+  {
+    if (!context.StaffAssignedSurgeries.Any())
+    {
+      context.StaffAssignedSurgeries.Add(staffAssignedSurgery);
+    }
+  }
+  
   private static void SeedSpecializations(DDDSample1DbContext context, Specialization specialization)
   {
     if (!context.Specializations.Any())
