@@ -43,7 +43,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 declare namespace Cypress {
-    interface Chainable<Subject = any> {
+    interface Chainable {
         loginAsAdmin(): Chainable<void>;
         loginAsDoctor(): Chainable<void>;
         loginAsPatient(): Chainable<void>;
@@ -67,12 +67,13 @@ Cypress.Commands.add('loginAsAdmin', () => {
     .as('login')
         .get('input#email').type('admin@teste.com')
         .get('input#password').type('password')
-        .get('button[type="submit"]').click()
+        .get('button[type="submit"]').click();
+    
+    cy.wait('@login');
     })
 
 Cypress.Commands.add('loginAsDoctor', () => {
-    cy.visit('/login')
-      .intercept(
+    cy.intercept(
         {
             method: 'POST',
             url: '/api/login/login'
@@ -81,15 +82,16 @@ Cypress.Commands.add('loginAsDoctor', () => {
             statusCode: 200,
             fixture: 'login-doctor.json'
         }
-    ).as('login')
+    ).as('login');
+
+    cy.visit('/login')
         .get('input#email').type('D202512344@gmail.com')
-        .get('input#email').type('password')
-        .get('button[type="submit"]').click()
-    })
+        .get('input#password').type('password')
+        .get('button[type="submit"]').click();
+});
 
 Cypress.Commands.add('loginAsPatient', () => {
-    cy.visit('/login')
-      .intercept(
+    cy.intercept(
         {
             method: 'POST',
             url: '/api/login/login'
@@ -98,8 +100,10 @@ Cypress.Commands.add('loginAsPatient', () => {
             statusCode: 200,
             fixture: 'login-patient.json'
         }
-    ).as('login')
+    ).as('login');
+
+    cy.visit('/login')
         .get('input#email').type('john.cena@gmail.com')
-        .get('input#email').type('password')
-        .get('button[type="submit"]').click()
-    });
+        .get('input#password').type('password')
+        .get('button[type="submit"]').click();
+})
