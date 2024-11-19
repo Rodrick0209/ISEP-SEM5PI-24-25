@@ -75,6 +75,26 @@ namespace DDDSample1.Domain.OperationRequest
 
         }
 
+        public async Task<StaffAssignedSurgeryDto> GetStaffAssignedSurgeryByIdAsync(OperationRequestId id)
+        {
+            var operationRequest = await this._repo.GetByIdAsync(id);
+            if (operationRequest == null)
+            {
+                throw new BusinessRuleValidationException("Operation Request not found");
+            }
+            if (operationRequest.staffAssignedSurgery == null)
+            {
+                throw new BusinessRuleValidationException("Hasn´t been Assigned Staff to the Surgery");
+            }
+
+            return StaffAssignedSurgeryMapper.toDTO(operationRequest.staffAssignedSurgery);
+
+
+
+        }
+
+
+
 
         
 

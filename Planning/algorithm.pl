@@ -31,6 +31,8 @@ timetable(e003,20241028,(520,1420)).
     
 %surgery(SurgeryType,TAnesthesia,TSurgery,TCleaning).
 
+
+
 surgery(so2,5,15,10).
 surgery(so3,45,90,45).
 surgery(so4,45,75,45).

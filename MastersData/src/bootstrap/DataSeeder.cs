@@ -169,15 +169,18 @@ public static class DataSeeder
     context.OperationTypes.AddRange(operationTypes);
 
     var operationRequest = new OperationRequest("2025-02-18", "emergency", johnCena.Id.AsString(), operationType.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512344").AsString());
+    operationRequest.staffAssignedSurgery.addStaffSurgeryPhase("D202512345");
+    operationRequest.staffAssignedSurgery.addStaffAnesthesyPhase("D202512344");
     SeedOperationRequest(context, operationRequest);
-    Console.WriteLine("test1");
+    
+    
+
+
     var operationRequest2 = new OperationRequest("2025-02-19", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
     SeedOperationRequest(context, operationRequest2);
-    Console.WriteLine("test2");
 
     var operationRequest3 = new OperationRequest("2025-02-20", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
     SeedOperationRequest(context, operationRequest3);
-    Console.WriteLine("test3");
 
     var operationRequest4 = new OperationRequest("2025-02-23", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
     SeedOperationRequest(context, operationRequest4);
