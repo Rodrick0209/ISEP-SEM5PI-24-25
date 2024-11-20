@@ -68,8 +68,6 @@ Cypress.Commands.add('loginAsAdmin', () => {
         .get('input#email').type('admin@teste.com')
         .get('input#password').type('password')
         .get('button[type="submit"]').click();
-    
-    cy.wait('@login');
     })
 
 Cypress.Commands.add('loginAsDoctor', () => {

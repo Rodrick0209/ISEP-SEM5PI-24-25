@@ -19,7 +19,7 @@ h3 {
 p {
     margin-bottom: 24px; /* Space below the paragraph */
     font-size: 16px; /* Slightly larger font size for readability */
-    color: #555; /* Medium gray for text */
+    color: #7c7979; /* Medium gray for text */
 }
 
 .delete-button,
@@ -87,3 +87,11 @@ p {
 .square.active .mark-x {
     transform: scale(1.2); /* Slightly larger when active */
 }
+
+.error-message {
+    text-align: center;
+    color: #d9534f;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+

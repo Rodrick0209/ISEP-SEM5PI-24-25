@@ -10,9 +10,13 @@ describe('Edit patient', () => {
     });
 
     it('should fill out and submit the form', () => {
+        cy.intercept('PATCH', '/api/patients/202410000001', {
+            statusCode: 200,
+        });
+
         cy.get('#name').clear().type('John Doe');
-        cy.get('#email').clear().type('john.doe@example.com');
-        cy.get('#phoneNumber').clear().type('1234567890');
+        cy.get('#email').clear().type('johnny.doe@example.com');
+        cy.get('#phoneNumber').clear().type('12345678943');
         cy.get('#street').clear().type('123 Main St');
         cy.get('#postalCode').clear().type('12345');
         cy.get('#city').clear().type('Anytown');
@@ -23,11 +27,12 @@ describe('Edit patient', () => {
         cy.get('.modal').should('be.visible');
         cy.get('.btn-confirm').click();
 
-        cy.get('.error-message').should('not.exist');
+        cy.url().should('include', '/patients');
+        cy.get('.success-message').should('contain', 'Patient nº 202410000001 successfully edited!');
     });
 
     it('should display an error message if form submission fails', () => {
-        cy.intercept('POST', '/api/patients/edit', {
+        cy.intercept('PATCH', '/api/patients/202410000001', {
             statusCode: 500,
             body: { message: 'Failed to save changes' }
         });
@@ -45,7 +50,7 @@ describe('Edit patient', () => {
         cy.get('.modal').should('be.visible');
         cy.get('.btn-confirm').click();
 
-        cy.get('.error-message').should('contain', 'Failed to edit patient');
+        cy.get('.error-message').should('contain', 'Failed to save changes');
     });
 
     it('should cancel the form submission', () => {
