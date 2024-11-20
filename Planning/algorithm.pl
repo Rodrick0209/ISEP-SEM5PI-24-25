@@ -45,7 +45,7 @@ surgery_id(so100004,so2).
 
 
 assignment_surgery(so100002,d001,surgeryPhase).
-%assignment_surgery(so100001,d005,surgeryPhase).
+assignment_surgery(so100001,d005,surgeryPhase).
 assignment_surgery(so100002,e002,anesthesyPhase).
 
 
@@ -57,6 +57,7 @@ assignment_surgery(so100003,d001,surgeryPhase).
 assignment_surgery(so100003,d002,anesthesyPhase).
 
 assignment_surgery(so100004,d002,surgeryPhase).
+assignment_surgery(so100004,d005,surgeryPhase).
 assignment_surgery(so100004,d004,anesthesyPhase).
 
 assignment_surgery(so100005,d002,surgeryPhase).
@@ -381,7 +382,7 @@ availability_all_surgeries2([], _, _, MaxEndTime) :-
 % Caso recursivo: Selecionar e agendar cirurgias
 availability_all_surgeries2(LOpCode, Room, Day, CurrentMaxEndTime) :-
     % Selecionar a próxima cirurgia com base no critério
-    (   select_next_surgeryCriteria1(LOpCode, OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy)
+    (   select_next_surgeryCriteria2(LOpCode, OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy)
     ->  % Se uma cirurgia for encontrada, continuar o agendamento
         surgery_id(OpCode, OpType),
         surgery(OpType, TAnesthesy, TSurgery, TCleaning),
@@ -428,8 +429,30 @@ select_next_surgeryCriteria1(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LSt
     write('BestOpCode='), write(BestOpCode), nl.
 
 
+% Predicado que escolhe a próxima cirurgia com base no menor número de staff envolvido
+select_next_surgeryCriteria2(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy) :-
+    write('Lista de operações a ser analisada: '), write(LOpCode), nl,
+    
+    findall(
+        (OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy),
+        (   
+            member(OpCode, LOpCode),
+            surgery_id(OpCode, OpType),
+            surgery(OpType, _, _, _),
+            availability_operation(OpCode, _, _, Interval, LDoctorsSurgery, LStaffAnesthesy)
+        ),
+        Candidates
+    ),
 
+    write('Doctor: '), write(LDoctorsSurgery), nl,
+    
+    
 
+    % Ordenar pela menor quantidade de staff (índice 5)
+    sort(2, @=<, Candidates, SortedCandidates),
+    write('Candidatos ordenados pelo número de staff: '), write(SortedCandidates), nl,
+    SortedCandidates = [(BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, _) | _],
+    write('BestOpCode='), write(BestOpCode), nl.
 
 %AgOpRoomBetter = [(355, 535, so100002), (555, 735, so100001), (736, 901, so100003), (902, 932, so100004)],
 

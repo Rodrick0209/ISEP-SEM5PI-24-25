@@ -78,7 +78,7 @@ export default class ThumbRaiser {
     tablesSurgeryDataParameters
   ) {
     this.onLoad = async function (description) {
-      const apiUrl = "https://10.9.10.55:5001/api/Appointment/GetHappening";
+      const apiUrl = "https://localhost:5001/api/Appointment/GetHappening";
       await updateRoomOccupancy(apiUrl, description.rooms);
 
       for (const room of description.rooms) {
