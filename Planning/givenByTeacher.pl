@@ -43,10 +43,12 @@ surgery_id(so100005,so4).
 
 
 assignment_surgery(so100001,d001).
-assignment_surgery(so100002,d001).
-assignment_surgery(so100003,d001).
+assignment_surgery(so100002,d002).
+assignment_surgery(so100003,d003).
+assignment_surgery(so100004,d001).
 assignment_surgery(so100004,d002).
 assignment_surgery(so100005,d002).
+assignment_surgery(so100005,d003).
 
 
 
@@ -139,18 +141,13 @@ availability_all_surgeries([OpCode|LOpCode],Room,Day):-
     insert_agenda((TinS,TfinS,OpCode),Agenda,Agenda1),
     assertz(agenda_operation_room1(Room,Day,Agenda1)),
     insert_agenda_doctors((TinS,TfinS,OpCode),Day,LDoctors),
-    retractall(availability(_,_,_)),
-    findall(_,(agenda_staff1(D,Day,L),free_agenda0(L,LFA),adapt_timetable(D,Day,LFA,LFA2),assertz(availability(D,Day,LFA2))),_),
     availability_all_surgeries(LOpCode,Room,Day).
 
 
 
 availability_operation(OpCode,Room,Day,LPossibilities,LDoctors):-surgery_id(OpCode,OpType),surgery(OpType,_,TSurgery,_),
     findall(Doctor,assignment_surgery(OpCode,Doctor),LDoctors),
-    write('A ver a cirurgia ->'),write(OpCode),nl,
-    write('Doctors assigned to surgery='),write(LDoctors),nl,
     intersect_all_agendas(LDoctors,Day,LA),
-    write('Agenda livre do medico atribuido ='),write(LA),nl,
     agenda_operation_room1(Room,Day,LAgenda),
     free_agenda0(LAgenda,LFAgRoom),
     intersect_2_agendas(LA,LFAgRoom,LIntAgDoctorsRoom),
