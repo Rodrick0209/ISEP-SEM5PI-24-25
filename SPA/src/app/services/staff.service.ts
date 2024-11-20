@@ -50,17 +50,17 @@ export class StaffService {
     if (phoneNumber) body.phoneNumber = phoneNumber;
     if (email) body.email = email;
     
-    return this.http.patch(`${this.url}/${id}`, body);
+    return this.http.put(`${this.url}/${id}`, body);
   }
 
   deleteStaff(id: string) : Observable<any> {
     return this.http.delete(`${this.url}/${id}`);
   }
 
-  filterStaffs(name: string, licenseNumber: string, phoneNumber: string, email: string, specialization : string): Observable<StaffsView[]> {
+  filterStaffs(fullName: string, licenseNumber: string, phoneNumber: string, email: string, specializationId : string): Observable<StaffsView[]> {
     let params = new HttpParams();
-    if (name) {
-      params = params.set('name', name);
+    if (fullName) {
+      params = params.set('name', fullName);
     }
     if (licenseNumber) {
       params = params.set('licenseNumber', licenseNumber);
@@ -71,8 +71,8 @@ export class StaffService {
     if (email) {
       params = params.set('email', email);
     }
-    if (specialization) {
-        params = params.set('specialization', specialization);
+    if (specializationId) {
+        params = params.set('specialization', specializationId);
       }
 
     return this.http.get<StaffsView[]>(this.filterApiUrl, { params });

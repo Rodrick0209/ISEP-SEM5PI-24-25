@@ -335,11 +335,11 @@ namespace DDDSample1.Domain.StaffMembers
             List<ViewStaffDto> listDto = staff.ConvertAll<ViewStaffDto>(sta => new ViewStaffDto
             {
                 Id = sta.Id.Value,
-                Name = sta.FullName.fullName,
+                FullName = sta.FullName.fullName,
                 LicenseNumber = sta.LicenseNumber.licenseNumber,
                 Email = sta.Email.email,
                 PhoneNumber = sta.PhoneNumber.phoneNumber,
-                Specialization = sta.SpecializationId.Value,
+                SpecializationId = sta.SpecializationId.Value,
                 Category = sta.Category.ToString(),
                 Status = sta.status.ToString()
             });
@@ -379,13 +379,13 @@ namespace DDDSample1.Domain.StaffMembers
             foreach (ViewStaffDto staff in staffs)
             {
 
-                var specializationName = _specializationRepository.GetByIdAsync(new SpecializationId(staff.Specialization)).Result.Name;
+                var specializationName = _specializationRepository.GetByIdAsync(new SpecializationId(staff.SpecializationId)).Result.Name;
                 staffDtos.Add(new ViewStaffDto
                 {
                     Id = staff.Id,
-                    Name = staff.Name,
+                    FullName = staff.FullName,
                     LicenseNumber = staff.LicenseNumber,
-                    Specialization = specializationName,
+                    SpecializationId = specializationName,
                     Email = staff.Email,
                     PhoneNumber = staff.PhoneNumber,
                     Category = staff.Category,

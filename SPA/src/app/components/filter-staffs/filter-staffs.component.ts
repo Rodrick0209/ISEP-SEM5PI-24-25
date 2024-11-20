@@ -11,14 +11,14 @@ import { FormsModule } from '@angular/forms';
 })
 export class FilterStaffsComponent {
   filter = {
-    name: '',
+    fullName: '',
     licenseNumber: '',
     phoneNumber: '',
     email: '',
-    specialization: ''
+    specializationId: ''
   };
 
-  @Output() filterChanged = new EventEmitter<{ name: string, licenseNumber: string, phoneNumber : string, email: string, specialization: string }>();
+  @Output() filterChanged = new EventEmitter<{ fullName: string, licenseNumber: string, phoneNumber : string, email: string, specializationId: string }>();
 
   applyFilter(): void {
     this.filterChanged.emit({

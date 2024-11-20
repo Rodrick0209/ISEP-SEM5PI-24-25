@@ -54,9 +54,10 @@ export class ListStaffsComponent implements OnInit {
     this.router.navigate(['/staff/create']); // Adjust this route as needed
   }
 
-  onFilterChanged(filter: { name: string, licenseNumber: string, phoneNumber : string, email: string, specialization: string }): void {
-    this.staffService.filterStaffs(filter.name, filter.licenseNumber, filter.phoneNumber, filter.email, filter.specialization).subscribe({
+  onFilterChanged(filter: { fullName: string, licenseNumber: string, phoneNumber : string, email: string, specializationId: string }): void {
+    this.staffService.filterStaffs(filter.fullName, filter.licenseNumber, filter.phoneNumber, filter.email, filter.specializationId).subscribe({
       next: (data: StaffsView[]) => {
+        console.log('Dados filtrados:', data); // Verifique o formato
         this.filteredStaffs = data,
           this.totalPages = Math.ceil(this.filteredStaffs.length / this.itemsPerPage);
         this.currentPage = 1;

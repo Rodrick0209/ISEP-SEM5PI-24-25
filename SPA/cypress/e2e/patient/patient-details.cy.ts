@@ -1,4 +1,5 @@
 describe('Patient Details', () => {
+
     beforeEach(() => {
         cy.loginAsAdmin();
         cy.visit('/patient-details');
