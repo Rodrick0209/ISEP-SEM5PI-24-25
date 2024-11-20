@@ -360,7 +360,7 @@ availability_all_surgeries2([], _, _, MaxEndTime) :-
 % Caso recursivo: Selecionar e agendar cirurgias
 availability_all_surgeries2(LOpCode, Room, Day, CurrentMaxEndTime) :-
     % Selecionar a próxima cirurgia com base no critério
-    (   select_next_surgeryCriteria1(LOpCode, OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy)
+    (   select_next_surgeryCriteria2(LOpCode, OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy)
     ->  % Se uma cirurgia for encontrada, continuar o agendamento
         surgery_id(OpCode, OpType),
         surgery(OpType, TAnesthesy, TSurgery, TCleaning),
