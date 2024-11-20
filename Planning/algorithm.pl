@@ -36,9 +36,9 @@ surgery(so3,45,90,45).  % Longa
 surgery(so4,30,50,20).  % Média
 surgery(so5,20,60,30).  % Nova cirurgia com requisitos apertados
 
-surgery_id(so100001,so3).
+surgery_id(so100001,so2).
 surgery_id(so100002,so4).
-surgery_id(so100003,so5).
+surgery_id(so100003,so3).
 surgery_id(so100004,so2).
 
 assignment_surgery(so100001,d002,surgeryPhase).
@@ -160,22 +160,21 @@ availability_operation(OpCode, Room, Day, Interval, LStaffSurgeryPhase,LStaffAne
     surgery(OpType, TAnesthesia, TSurgery, TCleaning),
     findall(Staff, assignment_surgery(OpCode, Staff, surgeryPhase), LStaffSurgeryPhase),
     findall(Staff, assignment_surgery(OpCode, Staff, anesthesyPhase), LStaffAnesthesyPhase),
-   % write('A processar a cirurgia ---> '), write(OpCode), nl,
+    % write('A processar a cirurgia ---> '), write(OpCode), nl,
     %write('Agendas todos medicos fase cirurgia->'),write(LStaffSurgeryPhase),nl,
     % Interseção das agendas Do staff de cirurgia
     intersect_all_agendas(LStaffSurgeryPhase, Day, LASurgery),
-    write('Agenda livre médicos atribuídos à cirurgia='), write(LASurgery), nl,
+    %write('Agenda livre médicos atribuídos à cirurgia='), write(LASurgery), nl,
     
     % Interseção das agendas Do staff de anestesia
     intersect_all_agendas(LStaffAnesthesyPhase, Day, LAAnesthesy),
-    write('Intersecao Agenda livre médicos atribuídos à anestesia='), write(LAAnesthesy), nl,
+    %write('Intersecao Agenda livre médicos atribuídos à anestesia='), write(LAAnesthesy), nl,
     
     agenda_operation_room1(Room,Day,LAgenda),
     free_agenda0(LAgenda,LFAgRoom),
-    write('Agenda livre da sala de operações='), write(LFAgRoom), nl,
+    %write('Agenda livre da sala de operações='), write(LFAgRoom), nl,
     find_first_interval(LAAnesthesy, LASurgery, LFAgRoom, TAnesthesia, TSurgery, TCleaning, Interval),
     write('Possibilidades: '), write(Interval), nl.
-
 
 
 
@@ -424,27 +423,35 @@ select_next_surgeryCriteria1(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LSt
 % Predicado que escolhe a próxima cirurgia com base no menor número de staff envolvido
 select_next_surgeryCriteria2(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy) :-
     write('Lista de operações a ser analisada: '), write(LOpCode), nl,
-    
     findall(
-        (OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy),
+        (OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, StaffCount),
         (   
             member(OpCode, LOpCode),
             surgery_id(OpCode, OpType),
             surgery(OpType, _, _, _),
-            availability_operation(OpCode, _, _, Interval, LDoctorsSurgery, LStaffAnesthesy)
+            availability_operation(OpCode, _, _, Interval, LDoctorsSurgery, LStaffAnesthesy),
+            length(LDoctorsSurgery, NumDoctors),
+            length(LStaffAnesthesy, NumAnesthesy),
+            StaffCount is NumDoctors + NumAnesthesy
         ),
         Candidates
     ),
+    maplist(
+        % Extract the 5th element for sorting
+        [(_, _, _, _, StaffCount), StaffCount]>>true,
+        Candidates, StaffCounts
+    ),
+    % Pair candidates with their StaffCounts for sorting
+    pairs_keys_values(Pairs, StaffCounts, Candidates),
+    keysort(Pairs, SortedPairs),
+    pairs_values(SortedPairs, SortedCandidates),
 
-    write('Doctor: '), write(LDoctorsSurgery), nl,
-    
-    
+    write('Candidatos ordenados: '), write(SortedCandidates), nl,
 
-    % Ordenar pela menor quantidade de staff (índice 5)
-    sort(2, @=<, Candidates, SortedCandidates),
-    write('Candidatos ordenados pelo número de staff: '), write(SortedCandidates), nl,
+    % Extract the best candidate
     SortedCandidates = [(BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, _) | _],
-    write('BestOpCode='), write(BestOpCode), nl.
+    write('Melhor OpCode: '), write(BestOpCode), nl.
+
 
 %AgOpRoomBetter = [(355, 535, so100002), (555, 735, so100001), (736, 901, so100003), (902, 932, so100004)],
 
