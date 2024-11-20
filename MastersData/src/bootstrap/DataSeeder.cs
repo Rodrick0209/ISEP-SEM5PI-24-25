@@ -176,16 +176,6 @@ public static class DataSeeder
     var staffAssignedSurgery = operationRequest.staffAssignedSurgery;
     SeedStaffAssignedSurgery(context, staffAssignedSurgery);
 
-
-    Console.WriteLine(operationRequest.staffAssignedSurgery.staffAnesthesyPhase.Count());
-    Console.WriteLine(operationRequest.staffAssignedSurgery.staffSurgeryPhase.Count());    
-
-
-
-
-    
-
-
     var operationRequest2 = new OperationRequest("2025-02-19", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
     SeedOperationRequest(context, operationRequest2);
 
