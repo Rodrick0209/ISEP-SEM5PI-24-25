@@ -35,7 +35,7 @@ export class DeletePatientComponent implements OnInit {
           },
           error: (err: any) => {
             console.error('Failed to delete patient', err);
-            this.errorMessage = 'Failed to delete patient: ' + err.error.message;
+            this.errorMessage = 'Failed to delete patient'; // Set the error message
           }
         });
       }

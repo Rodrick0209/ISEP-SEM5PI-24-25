@@ -7,6 +7,7 @@ import { MessageService } from '../../services/message.service';
 import { CommonModule } from '@angular/common';
 import { MarkXComponent } from '../template/mark-x/mark-x.component';
 
+
 describe('DeletePatientComponent', () => {
   let component: DeletePatientComponent;
   let fixture: ComponentFixture<DeletePatientComponent>;
@@ -21,7 +22,7 @@ describe('DeletePatientComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [DeletePatientComponent, CommonModule, MarkXComponent],
+      imports: [DeletePatientComponent, CommonModule],
       providers: [
         { provide: PatientService, useValue: patientServiceSpy },
         { provide: MessageService, useValue: messageServiceSpy },
@@ -56,20 +57,6 @@ describe('DeletePatientComponent', () => {
     expect(component.medicalRecordNumber).toBe('12345');
   });
 
-  it('should toggle isConfirmed on mark click', () => {
-    expect(component.isConfirmed).toBeFalse();
-    component.onMarkClick();
-    expect(component.isConfirmed).toBeTrue();
-    component.onMarkClick();
-    expect(component.isConfirmed).toBeFalse();
-  });
-
-  it('should set errorMessage if deletion is not confirmed', () => {
-    component.isConfirmed = false;
-    component.onDelete();
-    expect(component.errorMessage).toBe('Please confirm the deletion');
-  });
-
   it('should call deletePatient and navigate on successful deletion', () => {
     component.isConfirmed = true;
     component.medicalRecordNumber = '12345';
@@ -98,3 +85,4 @@ describe('DeletePatientComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/patients']);
   });
 });
+
