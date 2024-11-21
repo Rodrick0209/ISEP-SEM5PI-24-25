@@ -35,9 +35,9 @@ surgery(so3,45,90,45).  % Longa
 surgery(so4,30,50,20).  % Média
 surgery(so5,20,60,30).  % Nova cirurgia com requisitos apertados
 
-surgery_id(so100001,so3).
+surgery_id(so100001,so2).
 surgery_id(so100002,so4).
-%surgery_id(so100003,so5).
+%surgery_id(so100003,so3).
 %surgery_id(so100004,so2).
 
 %assignment_surgery(OpCode,Staff,Phase).
@@ -400,25 +400,33 @@ select_next_surgeryCriteria1(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LSt
 % Predicado que escolhe a próxima cirurgia com base no menor número de staff envolvido
 select_next_surgeryCriteria2(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning) :-
     write('Lista de operações a ser analisada: '), write(LOpCode), nl,
-    
     findall(
-        (OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning),
+        (OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, StaffCount),
         (   
             member(OpCode, LOpCode),
             surgery_id(OpCode, OpType),
             surgery(OpType, _, _, _),
-            availability_operation(OpCode, _, _, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning)
+            availability_operation(OpCode, _, _, Interval, LDoctorsSurgery, LStaffAnesthesy),
+            length(LDoctorsSurgery, NumDoctors),
+            length(LStaffAnesthesy, NumAnesthesy),
+            StaffCount is NumDoctors + NumAnesthesy
         ),
         Candidates
     ),
+    maplist(
+        % Extract the 5th element for sorting
+        [(_, _, _, _, StaffCount), StaffCount]>>true,
+        Candidates, StaffCounts
+    ),
+    % Pair candidates with their StaffCounts for sorting
+    pairs_keys_values(Pairs, StaffCounts, Candidates),
+    keysort(Pairs, SortedPairs),
+    pairs_values(SortedPairs, SortedCandidates),
 
-    write('Doctor: '), write(LDoctorsSurgery), nl,
-    
-    
+    write('Candidatos ordenados: '), write(SortedCandidates), nl,
 
-    % Ordenar pela menor quantidade de staff (índice 5)
-    sort(2, @=<, Candidates, SortedCandidates),
-    write('Candidatos ordenados pelo número de staff: '), write(SortedCandidates), nl,
-    SortedCandidates = [(BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, LStaffCleaning) | _],
-    write('BestOpCode='), write(BestOpCode), nl.
+    % Extract the best candidate
+    SortedCandidates = [(BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, _) | _],
+    write('Melhor OpCode: '), write(BestOpCode), nl.
+
 

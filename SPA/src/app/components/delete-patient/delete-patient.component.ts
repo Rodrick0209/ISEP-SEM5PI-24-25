@@ -24,14 +24,9 @@ export class DeletePatientComponent implements OnInit {
 
   isConfirmed = false; // Track if the "X" mark has been clicked
 
-  // Toggle the confirmation mark state
-  onMarkClick(): void {
-    this.isConfirmed = !this.isConfirmed;
-  }
 
   // Method triggered on delete confirmation
   onDelete(): void {
-    if (this.isConfirmed) {
       if (this.medicalRecordNumber) {
         this.patientService.deletePatient(this.medicalRecordNumber).subscribe({
           next: () => {
@@ -40,13 +35,10 @@ export class DeletePatientComponent implements OnInit {
           },
           error: (err: any) => {
             console.error('Failed to delete patient', err);
-            this.errorMessage = 'Failed to delete patient';
+            this.errorMessage = 'Failed to delete patient'; // Set the error message
           }
         });
       }
-    } else {
-      this.errorMessage = 'Please confirm the deletion';
-    }
   }
 
   onCancel(): void {

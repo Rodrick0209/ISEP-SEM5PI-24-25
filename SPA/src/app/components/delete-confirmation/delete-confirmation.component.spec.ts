@@ -52,9 +52,11 @@ describe('DeleteConfirmationComponent', () => {
     expect(component.confirmDelete).toHaveBeenCalled();
   });
 
+  
   it('should navigate to confirmation-success on successful delete', () => {
     userService.confirmDelete.and.returnValue(of({ success: true }));
 
+    component.ngOnInit();
     component.confirmDelete();
 
     expect(userService.confirmDelete).toHaveBeenCalledWith('test-token', 'test@example.com');
@@ -66,6 +68,7 @@ describe('DeleteConfirmationComponent', () => {
   it('should navigate to confirmation-error on delete error', () => {
     userService.confirmDelete.and.returnValue(throwError({ error: { message: 'Delete failed' } }));
 
+    component.ngOnInit();
     component.confirmDelete();
 
     expect(userService.confirmDelete).toHaveBeenCalledWith('test-token', 'test@example.com');
