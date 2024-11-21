@@ -18,12 +18,12 @@ agenda_staff(e003,20241028,[]).
 
 timetable(d001,20241028,(400,1400)).   % Menor
 timetable(d002,20241028,(400,1200)).  % Moderada
-timetable(d003,20241028,(900,1440)).  % Disponível tarde
-timetable(d004,20241028,(440,1440)).  % Longa
+timetable(d003,20241028,(300,500)).  % Disponível tarde
+timetable(d004,20241028,(300,540)).  % Longa
 timetable(d005,20241028,(500,1000)).  % Tarde
-timetable(e001,20241028,(450,1000)).  % Ajustada
-timetable(e002,20241028,(300,800)).   % Curta
-timetable(e003,20241028,(990,1220)).
+timetable(e001,20241028,(450,500)).  % Ajustada
+timetable(e002,20241028,(450,500)).   % Curta
+timetable(e003,20241028,(460,1220)).
 
     
 %surgery(SurgeryType,TAnesthesia,TSurgery,TCleaning).
@@ -40,12 +40,15 @@ surgery_id(so100002,so4).
 %surgery_id(so100003,so5).
 %surgery_id(so100004,so2).
 
+%assignment_surgery(OpCode,Staff,Phase).
+%Exemplos->
 assignment_surgery(so100001,d002,surgeryPhase).
 assignment_surgery(so100001,d001,anesthesyPhase).
 assignment_surgery(so100001,e003,cleaningPhase).
 
 assignment_surgery(so100002,d003,surgeryPhase).
 assignment_surgery(so100002,d004,anesthesyPhase).
+assignment_surgery(so100002,e001,cleaningPhase).
 assignment_surgery(so100002,e002,cleaningPhase).
 
 assignment_surgery(so100003,d001,surgeryPhase).
@@ -142,9 +145,9 @@ availability_all_surgeries([OpCode|LOpCode],Room,Day):-
     retract(agenda_operation_room1(Room,Day,Agenda)),
     insert_agenda((MinuteStartAnesthesia,MinuteEndProcess,OpCode),Agenda,Agenda1),
     assertz(agenda_operation_room1(Room,Day,Agenda1)),
-    insert_agenda_doctors((MinuteStartSurgery,MinuteStartCleaning,OpCode),Day,LDoctorsSurgery),
-    insert_agenda_doctors((MinuteStartAnesthesia,MinuteStartCleaning,OpCode),Day,LStaffAnesthesy),
-    insert_agenda_doctors((MinuteStartCleaning,MinuteEndProcess,OpCode),Day,LStaffCleaning),
+    insert_agenda_staff((MinuteStartSurgery,MinuteStartCleaning,OpCode),Day,LDoctorsSurgery),
+    insert_agenda_staff((MinuteStartAnesthesia,MinuteStartCleaning,OpCode),Day,LStaffAnesthesy),
+    insert_agenda_staff((MinuteStartCleaning,MinuteEndProcess,OpCode),Day,LStaffCleaning),
     retractall(availability(_,_,_)),
     findall(_,(agenda_staff1(D,Day,L),free_agenda0(L,LFA),adapt_timetable(D,Day,LFA,LFA2),assertz(availability(D,Day,LFA2))),_),
     availability_all_surgeries(LOpCode,Room,Day).
@@ -172,47 +175,39 @@ availability_operation(OpCode, Room, Day, Interval, LStaffSurgeryPhase,LStaffAne
 
 find_valid_interval(StaffAnesthesiaAvailable, StaffSurgeryAvailable, StaffCleaningAvailable,RoomAvailable, TAnesthesia, TSurgery, TCleaning, Interval) :-
     % Para cada intervalo de disponibilidade da sala
-    member((RoomStart, RoomEnd), RoomAvailable),
-    
+    member((RoomStart, RoomEnd), RoomAvailable),  
     TotalTime is TAnesthesia+TSurgery+TCleaning,  % Soma do tempo de anestesia, cirurgia e limpeza
     MaxStart is RoomEnd - TotalTime,  % Calcula o último minuto em que o processo pode começar
-    between(RoomStart, MaxStart, StartAnesthesia),
+    between(RoomStart, MaxStart, StartAnesthesia), % Para cada minuto entre o início e o último minuto de cada bloco de tempo disponível da sala
     % Assegurar que o intervalo total (anestesia + cirurgia + limpeza) caiba dentro do dia
     StartAnesthesia + TAnesthesia + TSurgery =< 1440,
     StartSurgery is StartAnesthesia + TAnesthesia,
     StartCleaning is StartSurgery + TSurgery,
-
+    % Verific a disponibilidade da sala de operação
+    RoomStart =< StartAnesthesia,
+    RoomEnd >= (StartAnesthesia + TAnesthesia + TSurgery + TCleaning),
     % Verifica a disponibilidade do staff de anestesia
     member((AnesthesiaStart, AnesthesiaEnd), StaffAnesthesiaAvailable),
     AnesthesiaStart =< StartAnesthesia,  
-    AnesthesiaEnd >= (StartAnesthesia + TAnesthesia + TSurgery),
-    
+    AnesthesiaEnd >= (StartAnesthesia + TAnesthesia + TSurgery), 
     % Verifica a disponibilidade do staff de cirurgia
     member((SurgeryStart, SurgeryEnd), StaffSurgeryAvailable),
     SurgeryStart =< StartSurgery,
     SurgeryEnd >= (StartSurgery + TSurgery),
-
     % Verifica a disponibilidade do staff de limpeza
     member((CleaningStart, CleaningEnd), StaffCleaningAvailable),
     CleaningStart =< StartCleaning,
     CleaningEnd >= (StartSurgery + TSurgery + TCleaning),
 
-    
-    % Verific a disponibilidade da sala de operação
-    RoomStart =< StartAnesthesia,
-    RoomEnd >= (StartAnesthesia + TAnesthesia + TSurgery + TCleaning),
-
     % Calcular o fim do processo
     EndProcess is StartAnesthesia + TAnesthesia + TSurgery + TCleaning,
-    
     % Retornar o intervalo
     Interval = (StartAnesthesia, EndProcess),!.
-
-
 % Caso não encontre nenhum intervalo válido, retorna false
 find_valid_interval(_, _, _, _, _, _, false) :-
-    % Imprimir a mensagem de erro quando não encontrar intervalo
     write('Nenhum intervalo disponível!'), nl.
+
+
 
 
 
@@ -231,12 +226,12 @@ insert_agenda((TinS,TfinS,OpCode),[],[(TinS,TfinS,OpCode)]).
 insert_agenda((TinS,TfinS,OpCode),[(Tin,Tfin,OpCode1)|LA],[(TinS,TfinS,OpCode),(Tin,Tfin,OpCode1)|LA]):-TfinS<Tin,!.
 insert_agenda((TinS,TfinS,OpCode),[(Tin,Tfin,OpCode1)|LA],[(Tin,Tfin,OpCode1)|LA1]):-insert_agenda((TinS,TfinS,OpCode),LA,LA1).
 
-insert_agenda_doctors(_,_,[]).
-insert_agenda_doctors((TinS,TfinS,OpCode),Day,[Doctor|LDoctors]):-
+insert_agenda_staff(_,_,[]).
+insert_agenda_staff((TinS,TfinS,OpCode),Day,[Doctor|LDoctors]):-
     retract(agenda_staff1(Doctor,Day,Agenda)),
     insert_agenda((TinS,TfinS,OpCode),Agenda,Agenda1),
     assert(agenda_staff1(Doctor,Day,Agenda1)),
-    insert_agenda_doctors((TinS,TfinS,OpCode),Day,LDoctors).
+    insert_agenda_staff((TinS,TfinS,OpCode),Day,LDoctors).
 
 
 
@@ -299,21 +294,14 @@ remove_equals([X|L],[X|L1]):-remove_equals(L,L1).
 
 % O predicado calcula os intervalos de tempo para anestesia, cirurgia e limpeza
 calculate_intervals((Start, End), TAnesthesia, TSurgery, TCleaning, MinuteStartAnesthesia, MinuteStartSurgery, MinuteStartCleaning, MinuteEndProcess) :-
-
     % O início da anestesia é o início do intervalo (Start)
     MinuteStartAnesthesia = Start,
-    
     % O início da cirurgia é o final da anestesia, ou seja, após a duração de anestesia
     MinuteStartSurgery is MinuteStartAnesthesia + TAnesthesia,
-    
     % O início da limpeza é o final da cirurgia, ou seja, após a duração da cirurgia
     MinuteStartCleaning is MinuteStartSurgery + TSurgery,
-    
     % O fim do processo é o final da limpeza, ou seja, após a duração da limpeza
-    MinuteEndProcess is MinuteStartCleaning + TCleaning,
-
-    % Verificar se o tempo final (MinuteEndProcess) não ultrapassa o final do intervalo (End)
-    MinuteEndProcess =< End.
+    MinuteEndProcess is MinuteStartCleaning + TCleaning.
 
 
 
@@ -360,7 +348,7 @@ availability_all_surgeries2([], _, _, MaxEndTime) :-
 % Caso recursivo: Selecionar e agendar cirurgias
 availability_all_surgeries2(LOpCode, Room, Day, CurrentMaxEndTime) :-
     % Selecionar a próxima cirurgia com base no critério
-    (   select_next_surgeryCriteria2(LOpCode, OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy)
+    (   select_next_surgeryCriteria2(LOpCode, OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning)
     ->  % Se uma cirurgia for encontrada, continuar o agendamento
         surgery_id(OpCode, OpType),
         surgery(OpType, TAnesthesy, TSurgery, TCleaning),
@@ -370,8 +358,9 @@ availability_all_surgeries2(LOpCode, Room, Day, CurrentMaxEndTime) :-
         retract(agenda_operation_room1(Room, Day, Agenda)),
         insert_agenda((MinuteStartAnesthesia, MinuteEndProcess, OpCode), Agenda, Agenda1),
         assertz(agenda_operation_room1(Room, Day, Agenda1)),
-        insert_agenda_doctors((MinuteStartSurgery, MinuteStartCleaning, OpCode), Day, LDoctorsSurgery),
-        insert_agenda_doctors((MinuteStartAnesthesia, MinuteStartCleaning, OpCode), Day, LStaffAnesthesy),
+        insert_agenda_staff((MinuteStartSurgery, MinuteStartCleaning, OpCode), Day, LDoctorsSurgery),
+        insert_agenda_staff((MinuteStartAnesthesia, MinuteStartCleaning, OpCode), Day, LStaffAnesthesy),
+        insert_agenda_staff((MinuteStartCleaning, MinuteEndProcess, OpCode), Day, LStaffCleaning),
         retractall(availability(_, _, _)),
         findall(_, 
             (
@@ -389,36 +378,36 @@ availability_all_surgeries2(LOpCode, Room, Day, CurrentMaxEndTime) :-
     ).
     
 % Predicado que escolhe a próxima cirurgia com base no primeiro tempo disponível
-select_next_surgeryCriteria1(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy) :-
+select_next_surgeryCriteria1(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning) :-
     write('Lista de operações a ser analisada: '), write(LOpCode), nl,
     findall(
-        (OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy),
+        (OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning),
         (   
             member(OpCode, LOpCode),
             surgery_id(OpCode, OpType),
             %write('A analisar a cirurgia: '), write(OpCode), nl,
             surgery(OpType, _, _, _),
-            availability_operation(OpCode, _, _, Interval, LDoctorsSurgery, LStaffAnesthesy)
+            availability_operation(OpCode, _, _, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning)
         ),
         Candidates
     ),
     % Selecionar a cirurgia com o menor intervalo de início
     sort(2, @=<, Candidates, SortedCandidates),
-    SortedCandidates = [(BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy) | _],
+    SortedCandidates = [(BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning) | _],
     write('BestOpCode='), write(BestOpCode), nl.
 
 
 % Predicado que escolhe a próxima cirurgia com base no menor número de staff envolvido
-select_next_surgeryCriteria2(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy) :-
+select_next_surgeryCriteria2(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning) :-
     write('Lista de operações a ser analisada: '), write(LOpCode), nl,
     
     findall(
-        (OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy),
+        (OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning),
         (   
             member(OpCode, LOpCode),
             surgery_id(OpCode, OpType),
             surgery(OpType, _, _, _),
-            availability_operation(OpCode, _, _, Interval, LDoctorsSurgery, LStaffAnesthesy)
+            availability_operation(OpCode, _, _, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning)
         ),
         Candidates
     ),
@@ -430,6 +419,6 @@ select_next_surgeryCriteria2(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LSt
     % Ordenar pela menor quantidade de staff (índice 5)
     sort(2, @=<, Candidates, SortedCandidates),
     write('Candidatos ordenados pelo número de staff: '), write(SortedCandidates), nl,
-    SortedCandidates = [(BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, _) | _],
+    SortedCandidates = [(BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, LStaffCleaning) | _],
     write('BestOpCode='), write(BestOpCode), nl.
 
