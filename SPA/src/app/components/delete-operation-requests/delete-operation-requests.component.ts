@@ -3,19 +3,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OperationRequestService } from '../../services/operationRequestService';
 import { MessageService } from '../../services/message.service';
 import { CommonModule } from '@angular/common';
-import { MarkXComponent } from '../template/mark-x/mark-x.component';
 
 @Component({
-  selector: 'app-delete-operation-requests',
-  standalone: true,
-  imports: [CommonModule, MarkXComponent],
-  templateUrl: './delete-operation-requests.component.html',
-  styleUrl: './delete-operation-requests.component.css'
+    selector: 'app-delete-operation-requests',
+    standalone: true,
+    imports: [CommonModule],
+    templateUrl: './delete-operation-requests.component.html',
+    styleUrl: './delete-operation-requests.component.css'
 })
 export class DeleteOperationRequestsComponent {
 
     operationRequestId: string | null = null;
-    errorMessage: string = ''; 
+    errorMessage: string = '';
 
     constructor(private route: ActivatedRoute, private operationRequestService: OperationRequestService, private messageService: MessageService, private router: Router) { }
 
@@ -34,8 +33,7 @@ export class DeleteOperationRequestsComponent {
     }
 
     onDelete(): void {
-        if (this.isConfirmed) {
-          if(this.operationRequestId){
+        if (this.operationRequestId) {
             this.operationRequestService.deleteOperationRequest(this.operationRequestId).subscribe({
                 next: () => {
                     this.messageService.setMessage(`Operation request successfully deleted!`); // Set the success message
@@ -46,9 +44,6 @@ export class DeleteOperationRequestsComponent {
                     this.messageService.setMessage('Failed to delete operation request');
                 }
             });
-          }
-        } else {
-            this.messageService.setMessage('Please confirm the deletion');
         }
     }
 

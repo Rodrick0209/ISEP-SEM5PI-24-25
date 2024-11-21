@@ -14,7 +14,7 @@ describe('StaffDetailsComponent', () => {
 
   beforeEach(() => {
     const staffServiceSpy = jasmine.createSpyObj('StaffService', ['getStaffById']);
-    route = { snapshot: { paramMap: { get: () => '1' } } } as any;
+    route = { snapshot: { paramMap: { get: () => 'D202512344' } } } as any;
 
     TestBed.configureTestingModule({
       imports: [CommonModule, StaffDetailsComponent],
@@ -51,7 +51,7 @@ describe('StaffDetailsComponent', () => {
     expect(component.staff).toEqual(staffData);
     expect(component.staff?.id).toBe('D202512344');
     expect(component.staff?.fullName).toBe('staffMario');
-    expect(component.staff?.licenseNumber).toBe('12346');
+    expect(component.staff?.licenseNumber).toBe('12345');
     expect(component.staff?.specializationId).toBe('Obstetricia');
     expect(component.staff?.email).toBe('emaill@gmail.com');
     expect(component.staff?.phoneNumber).toBe('+951999999998');
@@ -65,7 +65,7 @@ describe('StaffDetailsComponent', () => {
 
     component.ngOnInit();
 
-    expect(staffService.getStaffById).toHaveBeenCalledWith('1');
+    expect(staffService.getStaffById).toHaveBeenCalledWith('D202512344');
     expect(component.staff).toBeUndefined();
     expect(component.errorMessage).toBe('Failed to fetch staff details');
   });
