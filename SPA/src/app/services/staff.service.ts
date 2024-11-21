@@ -42,13 +42,14 @@ export class StaffService {
     return this.http.post(this.createUrl, body);
   }
 
-  editStaff(id: string, fullName: string, licenseNumber : string, phoneNumber : string, email: string) : Observable<any> {
+  editStaff(id: string, fullName: string, licenseNumber : string, phoneNumber : string, email: string, specializationId : string) : Observable<any> {
     const body: any = {};
     body.id = id;
     if (fullName) body.fullName = fullName;
     if (licenseNumber) body.licenseNumber = licenseNumber;
     if (phoneNumber) body.phoneNumber = phoneNumber;
     if (email) body.email = email;
+    if (specializationId) body.specializationId = specializationId;
     
     return this.http.put(`${this.url}/${id}`, body);
   }

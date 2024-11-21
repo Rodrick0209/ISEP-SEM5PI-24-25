@@ -57,6 +57,10 @@ namespace DDDSample1.Domain.StaffMembers
         {
             this.PhoneNumber = new PhoneNumber(phoneNumber);
         }
+        public void ChangeSpecializationId(string specializationId)
+        {
+            this.SpecializationId = new SpecializationId(specializationId);
+        }
 
         public void Deactivate()
         {
