@@ -160,7 +160,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             var _staffIdGeneratorService = new StaffIdGeneratorService();
 
 
-            var dto = new EditingStaffProfileDto("D202412345", "Jane Smith", "12345", "john.doe@example.com", "+351 1234567890");
+            var dto = new EditingStaffProfileDto("D202412345", "Jane Smith", "12345", "11111111-1111-1111-1111-111111111113", "john.doe@example.com", "+351 1234567890");
 
 
             _staffRepository.Setup(pr => pr.GetByIdAsync(new StaffId(dto.Id))).Throws(new BusinessRuleValidationException("Staff member not found"));
