@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PlanningService, SurgeryRoom } from '../../services/planning.service';
+import { PlanningService, Schedule, SurgeryRoom } from '../../services/planning.service';
 import { Router } from '@angular/router';
 import { MessageService } from '../../services/message.service';
 
@@ -19,6 +19,8 @@ export class PlanningComponent implements OnInit {
 
   // Variável para a data mínima (hoje)
   today: string = '';
+  scheduledData: Schedule | null = null; // Ajustado para um array de Schedule
+  isLoading: boolean = false; // Controlar a animação de carregamento
 
   constructor(
     private planningService: PlanningService,
@@ -38,9 +40,37 @@ export class PlanningComponent implements OnInit {
     this.getSurgeryRooms();
   }
 
+  
   agendarCirurgia() {
     if (this.date && this.selectedSala) {
-      this.greetingMessage = `Surgery scheduled for ${this.date} in room ${this.selectedSala}`;
+      this.isLoading = true; // Ativar o carregamento
+      const formattedDate = this.date.replace(/-/g, ''); // Remove os hífens da data
+
+      // Limpa os dados anteriores antes de tentar um novo agendamento
+      this.scheduledData = null; 
+      this.greetingMessage = 'Fetching schedule...'; 
+
+      // Simulando o atraso na resposta da API com um setTimeout
+      setTimeout(() => {
+        this.planningService.getScheduleFromPlanning(formattedDate, this.selectedSala).subscribe({
+          next: (data) => {
+            console.log('Schedule received from the Planning:', data);
+            this.scheduledData = data;
+
+            // Mensagem de sucesso
+            this.messageService.setMessage('Schedule successfully received and updated!');
+            this.router.navigate(['/planningResults'], { state: { schedule: data } });
+            this.isLoading = false; // Desativar o carregamento
+
+          },
+          error: (err) => {
+            console.error('Failed to fetch schedule', err);
+            this.greetingMessage = 'Failed to fetch schedule.';
+            this.isLoading = false; // Desativar o carregamento
+          }
+        });
+      }, 10000); // Atraso de 2 segundos para simular a espera pela API
+
     } else {
       this.greetingMessage = 'Please fill in all fields before scheduling.';
     }
@@ -56,5 +86,9 @@ export class PlanningComponent implements OnInit {
         console.error('Failed to fetch surgery rooms', err);
       }
     });
+  }
+
+  closeScheduleBox() {
+    this.scheduledData = null; // Fecha a div de detalhes do agendamento
   }
 }

@@ -1,0 +1,36 @@
+<div class="schedule-container">
+    <h1>Schedule Results</h1>
+  
+    <div *ngIf="schedule; else noData">
+      <div class="schedule-details">
+        <h2>Scheduled Surgery for: {{ schedule.day }} in Room: {{ schedule.room }}</h2>
+  
+        <div class="operation-segments">
+          <table>
+            <thead>
+              <tr>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Operation ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let segment of schedule.agOpRoomBetter">
+                <td>{{ formatTime(segment.start) }}</td>
+                <td>{{ formatTime(segment.end) }}</td>
+                <td>{{ segment.operationId }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <button (click)="goBack()">Go Back</button>
+      </div>
+    </div>
+  
+    <ng-template #noData>
+      <p>No schedule data found. Please try again later.</p>
+      <button (click)="goBack()">Go Back</button>
+    </ng-template>
+  </div>
+  

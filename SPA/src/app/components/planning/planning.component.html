@@ -1,41 +1,58 @@
 <div class="planning-container">
-    <h1>Surgery Planning</h1>
-  
-    <!-- Caixa de entrada para a data da cirurgia -->
-    <div class="input-box">
-      <label for="date">Surgery Date</label>
-      <input 
-        type="date" 
-        id="date" 
-        [(ngModel)]="date" 
-        class="input-field" 
-        [min]="today" 
+  <h1>Surgery Planning</h1>
+
+  <!-- Exibição de mensagem de saudação -->
+  <div *ngIf="greetingMessage" class="greeting-message">
+    <p>{{ greetingMessage }}</p>
+  </div>
+
+  <!-- Formulário de agendamento -->
+  <form (ngSubmit)="agendarCirurgia()">
+    <div class="form-group">
+      <label for="date">Date:</label>
+      <input
+        type="date"
+        id="date"
+        [(ngModel)]="date"
+        name="date"
+        [min]="today"
+        required
       />
     </div>
-  
-    <!-- Caixa de seleção para a sala de cirurgia -->
-    <div class="input-box">
-      <label for="room">Surgery Room</label>
-      <select 
-        id="room" 
-        [(ngModel)]="selectedSala" 
-        class="input-field"
+
+    <div class="form-group">
+      <label for="selectedSala">Surgery Room:</label>
+      <select
+        id="selectedSala"
+        [(ngModel)]="selectedSala"
+        name="selectedSala"
+        required
       >
-        <option value="" disabled>Select the room</option>
+        <option value="">Selecione uma sala</option>
         <option *ngFor="let sala of salasDeCirurgia" [value]="sala.roomNumber">
           {{ sala.roomNumber }}
         </option>
       </select>
     </div>
-  
-    <!-- Botão de agendamento -->
-    <div class="input-box">
-      <button (click)="agendarCirurgia()" class="btn-submit">Agendar Cirurgia</button>
+
+    <div class="form-group">
+      <button type="submit" [disabled]="isLoading">Agendar Cirurgia</button>
     </div>
-  
-    <!-- Mensagem de sucesso ou erro -->
-    <div *ngIf="greetingMessage" class="message-box">
-      <p class="greeting-message">{{ greetingMessage }}</p>
-    </div>
+  </form>
+
+  <!-- Exibição de animação de carregamento -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <p>Carregando...</p>
+    <!-- Aqui pode ser inserido um spinner visual se preferir -->
+    <div class="spinner"></div> <!-- Exemplo de spinner -->
   </div>
-  
+
+  <!-- Exibição de resultados do agendamento -->
+  <div *ngIf="scheduledData" class="scheduled-data">
+    <h3>Agenda para a Data Selecionada:</h3>
+    <div>
+      <pre>{{ scheduledData | json }}</pre> <!-- Exibe os dados de agendamento -->
+    </div>
+    <button (click)="closeScheduleBox()">Fechar Detalhes</button>
+  </div>
+</div>

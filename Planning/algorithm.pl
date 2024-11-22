@@ -301,7 +301,7 @@ calculate_intervals((Start, End), TAnesthesia, TSurgery, TCleaning, MinuteStartA
     % O início da limpeza é o final da cirurgia, ou seja, após a duração da cirurgia
     MinuteStartCleaning is MinuteStartSurgery + TSurgery,
     % O fim do processo é o final da limpeza, ou seja, após a duração da limpeza
-    MinuteEndProcess is MinuteStartCleaning + TCleaning.
+    MinuteEndProcess is End.
 
 
 

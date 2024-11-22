@@ -35,6 +35,7 @@ import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
 import { ThreeViewComponent } from './components/three-view/three-view.component';
 import { DeleteUserComponent } from './components/delete-user/delete-user.component';
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
+import { ScheduleResultsComponent } from './components/schedule-results/schedule-results.component';
 
 
 export const routes: Routes = [
@@ -50,6 +51,7 @@ export const routes: Routes = [
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
     { path: 'reset-password', component: ResetPasswordComponent},
     { path: 'planning', component: PlanningComponent },
+    { path: 'planningResults', component: ScheduleResultsComponent },
     {
         path: 'staffs',
         component: StaffsComponent,
