@@ -1,41 +1,30 @@
 ```plantuml
 @startuml Process_View_Posterior_Confirmation
-participant SPA as SPA <<Container (C4)>>
-participant Route as Route <<Route>>
-participant Controller as Controller <<Controller>>
-participant ConfirmationDTO as ConfirmationDTO <<DTO>>
-participant Service as Service <<Service>>
-participant Repository as Repository <<Repository>>
-participant Repository as PatientRepository <<Repository>>
-participant Mapper as Mapper <<Domain Service>> 
-participant Domain as Domain <<Domain>>
-participant Patient as Patient <<Domain>>
-activate SPA
-SPA -> Route : PATCH (/api/user/patients/edit/confirmation/{token})
-activate Route
-Route -> Controller : PATCH
-activate Controller
-Controller -> ConfirmationDTO** : recieves request body info
-Controller -> Service : confirms the edition of the patients profile
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+participant Service as Service <<Component>>
+participant HTTPDriver as HTTPDriver <<Component>>
+participant MastersData as BE <<Container (C4)>>
+
+activate View
+View -> Component: redirect the confirmation page
+activate Component
+Component -> Model**: get the email, token and info to edit in route
+Component -> Service: confirm the edit of the patient user
 activate Service
-Service -> Repository : finds user by email
-activate Repository
+Service -> HTTPDriver: PATCH
+activate HTTPDriver
+HTTPDriver -> BE: PATCH (/api/users/patients/edit/confirm)
+activate BE
+BE -> BE: validates all information\nand confirms the edition\nof patient user
+return response
+return response
+Service -> Model: transforms response data
+activate Model
 return user
-Service -> Service : validates the confirmation token
-activate Service
-return flag
-Service -> PatientRepository : finds patient by email
-activate PatientRepository
-return patient
-Service -> Domain : changes email if not empty
-Service -> Patient : changes email if not empty
-Service -> Patient : changes phone number if not empty
-Service -> PatientRepository : saves patient in DB
-Service -> Service : logs changes in DB
-activate Service
-deactivate Service
-return response
-return response
-return response
+return user
+return success/fail message
+
 @enduml
 ```

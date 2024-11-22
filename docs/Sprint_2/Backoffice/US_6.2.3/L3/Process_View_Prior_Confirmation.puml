@@ -1,32 +1,26 @@
 ```plantuml
 @startuml Process_View_Prior_Confirmation
-participant SPA as FE <<Container (C4)>>
-participant Route as Route <<Route>>
-participant Controller as Controller <<Controller>>
-participant DTO as DTO <<DTO>>
-participant ConfirmationDTO as ConfirmationDTO <<DTO>>
-participant Service as Service <<Service>>
-participant EmailService as EmailService <<Service>>
-participant Repository as Repository <<Repository>>
-participant PatientRepository as PatientRepository <<Repository>>
-activate FE
-FE-> Route: DELETE (/api/users/patients/delete)
-activate Route
-Route -> Controller : DELETE
-activate Controller
-Controller -> DTO** : recieves request body info
-Controller -> Service : deletes the user and associated patient data
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+participant Service as Service <<Component>>
+participant HTTPDriver as HTTPDriver <<Component>>
+participant MastersData as BE <<Container (C4)>>
+
+activate View
+View -> Component: click in button to delete patient user
+activate Component
+Component -> Model**: get the email in route
+Component -> Service: edit the patient user information
 activate Service
-Service -> Repository : find user by email
-activate Repository
-return user
-Service -> PatientRepository : find patient by email
-activate PatientRepository
-return patient
-Service -> EmailService : sends email with the confirmation token
-Service -> ConfirmationDTO** : creates the DTO with confirmation token and email
-return DTO
+Service -> HTTPDriver: DELETE
+activate HTTPDriver
+HTTPDriver -> BE: DELETE (/api/users/patients/delete/confirm)
+activate BE
+BE -> BE: validates all information,\nand sends an confirmation email\nof deletion to the patient user
 return response
 return response
+return response
+return success/fail message
 @enduml
 ```
