@@ -51,7 +51,6 @@ export class PlanningComponent implements OnInit {
       this.greetingMessage = 'Fetching schedule...'; 
 
       // Simulando o atraso na resposta da API com um setTimeout
-      setTimeout(() => {
         this.planningService.getScheduleFromPlanning(formattedDate, this.selectedSala).subscribe({
           next: (data) => {
             console.log('Schedule received from the Planning:', data);
@@ -69,7 +68,6 @@ export class PlanningComponent implements OnInit {
             this.isLoading = false; // Desativar o carregamento
           }
         });
-      }, 10000); // Atraso de 2 segundos para simular a espera pela API
 
     } else {
       this.greetingMessage = 'Please fill in all fields before scheduling.';
