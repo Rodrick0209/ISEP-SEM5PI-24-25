@@ -23,6 +23,12 @@ namespace DDDSample1.Domain.Specializations
       Name = name;
     }
 
+    public Specialization(SpecializationId id, string name)
+    {
+      this.Id = id;
+      Name = name;
+    }
+
     
  
   }

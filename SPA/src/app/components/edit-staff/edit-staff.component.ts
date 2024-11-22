@@ -17,7 +17,8 @@ export class EditStaffComponent implements OnInit {
     fullName: '',
     licenseNumber: '',
     phoneNumber: '',
-    email: ''
+    email: '',
+    specializationId: ''
   }
 
   id: string | null = null;
@@ -51,7 +52,8 @@ export class EditStaffComponent implements OnInit {
           staffData.fullName,
           staffData.licenseNumber,
           staffData.phoneNumber,
-          staffData.email
+          staffData.email,
+          staffData.specializationId
         ).subscribe(
           (response) => {
             console.log("Staff edited successfully", response);

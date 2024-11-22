@@ -116,6 +116,7 @@ namespace DDDSample1.Domain.StaffMembers
             bool hasChanges = false;
 
             string email = staff.Email.email;
+            await checkOSpecializationByNameForEditingAsync(dto.SpecializationId, dto);
 
             if (!string.IsNullOrWhiteSpace(dto.FullName) && !staff.FullName.fullName.Equals(dto.FullName))
             {
@@ -149,6 +150,12 @@ namespace DDDSample1.Domain.StaffMembers
             if (!string.IsNullOrWhiteSpace(dto.LicenseNumber) && !staff.LicenseNumber.licenseNumber.Equals(dto.LicenseNumber))
             {
                 staff.ChangeLicenseNumber(dto.LicenseNumber);
+                hasChanges = true;
+            }
+
+            if(!string.IsNullOrWhiteSpace(dto.SpecializationId) && !staff.SpecializationId.Value.Equals(dto.SpecializationId))
+            {
+                staff.ChangeSpecializationId(dto.SpecializationId);
                 hasChanges = true;
             }
 
@@ -247,6 +254,26 @@ namespace DDDSample1.Domain.StaffMembers
         }
 
         public async Task<Specialization> checkOSpecializationByNameAsync(string specialization, CreatingStaffDto staff)
+        {
+
+            try
+            {
+                var spec = await this._specializationRepository.GetByNameAsync(specialization);
+
+                if (spec == null)
+                {
+                    throw new BusinessRuleValidationException("Specialization not found");
+                }
+                staff.SpecializationId = spec.Id.AsString();
+                return spec;
+            }
+            catch (Exception e)
+            {
+                throw new BusinessRuleValidationException("Specialization not Found");
+            }
+        }
+
+        public async Task<Specialization> checkOSpecializationByNameForEditingAsync(string specialization, EditingStaffProfileDto staff)
         {
 
             try

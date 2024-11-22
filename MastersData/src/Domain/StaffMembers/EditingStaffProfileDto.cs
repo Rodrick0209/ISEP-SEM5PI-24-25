@@ -15,17 +15,19 @@ namespace DDDSample1.Domain.StaffMembers
         public string? LicenseNumber { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
+        public string?  SpecializationId { get; set; }
 
 
 
 
-        public EditingStaffProfileDto(string id, string fullname, string licenseNumber, string phoneNumber, string email)
+        public EditingStaffProfileDto(string id, string fullname, string licenseNumber, string phoneNumber, string email, string specializationId)
         {
             this.Id = id;
             this.FullName = fullname;
             this.LicenseNumber = licenseNumber;
             this.PhoneNumber = phoneNumber;
             this.Email = email;
+            this.SpecializationId = specializationId;
         }
 
 

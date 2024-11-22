@@ -83,7 +83,7 @@ namespace DDDSample1.Infrastructure.StaffMembers
             // Filtro por número de telefone, se fornecido
             if (!string.IsNullOrWhiteSpace(phoneNumber))
             {
-                query = query.Where(p => p.PhoneNumber.phoneNumber.ToLower().Contains(phoneNumber.ToLower()));
+                query = query.Where(p => p.PhoneNumber.phoneNumber.Contains(phoneNumber.ToLower()));
             }
 
             // Filtro por e-mail, se fornecido

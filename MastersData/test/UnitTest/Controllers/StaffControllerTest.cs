@@ -90,7 +90,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             _controller = new StaffController(_mockService.Object);
 
             // Arrange
-            var dto = new EditingStaffProfileDto("D202412345", "John Doe", "12345", "john.doe@example.com", "+351 1234567890");
+            var dto = new EditingStaffProfileDto("D202412345", "John Doe", "12345", "john.doe@example.com", "+351 1234567890", "11111111-1111-1111-1111-111111111113");
             var staffDto = new StaffDto
             (
                 new StaffId("D202412345"),
@@ -120,7 +120,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
 
 
             // Arrange
-            var dto = new EditingStaffProfileDto("D202412345", "John Doe", "12345", "john.doe@example.com", "+351 1234567890");
+            var dto = new EditingStaffProfileDto("D202412345", "John Doe", "12345", "john.doe@example.com", "+351 1234567890", "11111111-1111-1111-1111-111111111113");
 
             // Act
             var result = await _controller.Update(dto, "456");
