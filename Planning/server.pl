@@ -42,8 +42,6 @@ set_cors_headers :-
     format('Access-Control-Allow-Headers: Content-Type~n'),
     format('Access-Control-Allow-Credentials: true~n').
 
-
-
 % Converte lista de tuplas (Start, End, OperationId) para JSON
 convert_tuples_to_json([], []).
 convert_tuples_to_json([(Start, End, OperationId) | Tail], [json{start: Start, end: End, operationId: OperationIdStr} | JsonTail]) :-
@@ -65,14 +63,15 @@ getSchedule(Request) :-
     ;   
         % Processa requisições normais
         http_parameters(Request, [
-            room(Room, [atom]),
-            day(Day, [atom])
+            room(Room, [atom_string]),
+            day(Day, [atom_string])
         ]),
 
-        (   better_sol(20241028, Room, X, _, Z) ->
+        %%Se o better sol eu meter os parametros manuais Do genero better_sol(20241130, or1, X, _, Z). funciona mas Do frontEnd nao 
+
+        (   better_sol(room, Room, X, _, Z) ->
             % Converte X e Y para JSON
             convert_tuples_to_json(X, XJson),
-            convert_assignments_to_json(Y, YJson),
             reply_json(json([
                 room=Room,
                 day=Day,
@@ -87,9 +86,10 @@ getSchedule(Request) :-
         )
     ).
 
+
 % Predicado de teste para depuração
 testPredicate :-
-    better_sol(20241028, or1, X, Y, Z),
+    better_sol(20241130, or1, X, _, Z),
     convert_tuples_to_json(X, XJson),
     convert_assignments_to_json(Y, YJson),
     write(XJson), nl,

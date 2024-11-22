@@ -7,23 +7,24 @@
 :-dynamic better_sol/5.
 
 
-agenda_staff(d001,20241028,[]).
-agenda_staff(d002,20241028,[]).
-agenda_staff(d003,20241028,[]).
-agenda_staff(d004,20241028,[]).
-agenda_staff(d005,20241028,[]).
-agenda_staff(e001,20241028,[]).
-agenda_staff(e002,20241028,[]).
-agenda_staff(e003,20241028,[]).
+agenda_staff(d001,20241130,[]).
+agenda_staff(d002,20241130,[]).
+agenda_staff(d003,20241130,[]).
+agenda_staff(d004,20241130,[]).
+agenda_staff(d005,20241130,[]).
+agenda_staff(e001,20241130,[]).
+agenda_staff(e002,20241130,[]).
+agenda_staff(e003,20241130,[]).
 
-timetable(d001,20241028,(400,1400)).   % Menor
-timetable(d002,20241028,(400,1200)).  % Moderada
-timetable(d003,20241028,(300,500)).  % Disponível tarde
-timetable(d004,20241028,(300,540)).  % Longa
-timetable(d005,20241028,(500,1000)).  % Tarde
-timetable(e001,20241028,(450,500)).  % Ajustada
-timetable(e002,20241028,(450,500)).   % Curta
-timetable(e003,20241028,(460,1220)).
+
+timetable(d001,20241130,(400,1400)).   % Menor
+timetable(d002,20241130,(400,1200)).  % Moderada
+timetable(d003,20241130,(300,500)).  % Disponível tarde
+timetable(d004,20241130,(300,540)).  % Longa
+timetable(d005,20241130,(500,1000)).  % Tarde
+timetable(e001,20241130,(450,500)).  % Ajustada
+timetable(e002,20241130,(450,500)).   % Curta
+timetable(e003,20241130,(460,1220)).
 
     
 %surgery(SurgeryType,TAnesthesia,TSurgery,TCleaning).
@@ -58,7 +59,7 @@ assignment_surgery(so100004,d004,surgeryPhase).
 assignment_surgery(so100004,e003,anesthesyPhase).
 
 
-agenda_operation_room(or1,20241028,[]).
+agenda_operation_room(or1,20241130,[]).
 
 
 free_agenda0([],[(0,1440)]).
