@@ -1,35 +1,30 @@
 ```plantuml
 @startuml Process_View
-participant SPA as SPA <<Container (C4)>>
-participant Route as Route <<Route>>
-participant Controller as Controller <<Controller>>
-participant DTO as DTO <<DTO>>
-participant Service as Service <<Service>>
-participant Repository as Repository <<Repository>>
-participant ViewDTO as ViewDTO <<DTO>>
-activate SPA
-SPA -> Route: GET (/api/patients/search)
-activate Route
-Route -> Controller : GET
-activate Controller
-Controller -> DTO** : recieves request body info
-Controller -> Service : search the patients by filters
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+participant Service as Service <<Component>>
+participant HTTPDriver as HTTPDriver <<Component>>
+participant MastersData as BE <<Container (C4)>>
+
+activate View
+View -> Component: submit the filter form
+activate Component
+Component -> Model**: get the data in filter form
+Component -> Service: search for patients
 activate Service
-alt multiple filters are provided
-Service -> Repository : get the patients by the filters
-activate Repository
-else no filters provided
-Service -> Repository : get all patients
-end alt
-return patients
-loop for each patient found
-Service -> ViewDTO** : create the DTO with patient's\nmedical record number, name,\nemail and date of birth
-end loop
-Service --> Controller : DTO
-deactivate Service
-Controller --> Route : response
-deactivate Controller
+Service -> HTTPDriver: GET
+activate HTTPDriver
+HTTPDriver -> BE: GET (/api/patients/search)
+activate BE
+BE -> BE: search for patients\naccording to the filter
 return response
+return response
+Service -> Model: transforms response data
+activate Model
+return patients
+return patients
+return patients/fail message
 
 @enduml
 ```

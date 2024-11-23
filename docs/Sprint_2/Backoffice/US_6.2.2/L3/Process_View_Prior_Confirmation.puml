@@ -1,51 +1,29 @@
 ```plantuml
 @startuml Process_View_Prior_Confirmation
-participant SPA as SPA <<Container (C4)>>
-participant Route as Route <<Route>>
-participant Controller as Controller <<Controller>>
-participant DTO as DTO <<DTO>>
-participant ConfirmationDTO as ConfirmationDTO <<DTO>>
-participant Service as Service <<Service>>
-participant EmailService as EmailService <<Service>>
-participant Repository as Repository <<Repository>>
-participant PatientRepository as PatientRepository <<Repository>>
-participant Domain as Domain <<Domain>>
-participant Patient as Patient <<Domain>>
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+participant Service as Service <<Component>>
+participant HTTPDriver as HTTPDriver <<Component>>
+participant MastersData as BE <<Container (C4)>>
 
-activate SPA
-SPA -> Route: PATCH (/api/users/patients/edit)
-activate Route
-Route -> Controller : PATCH 
-activate Controller
-Controller -> DTO** : recieves request body info
-Controller -> Service : edits the patient profile
+activate View
+View -> Component: submit the form
+activate Component
+Component -> Model**: get the email in route and data in form
+Component -> Service: edit the patient user information
 activate Service
-Service -> Repository : finds user by email
-activate Repository
-return user
-Service -> Service : validate if the new email is unique if not empty
-activate Service
-return flag
-Service -> Service : validate if the new email is unique if not empty
-activate Service
-return flag
-Service -> PatientRepository : find patient by email
-activate PatientRepository
-return patient
-alt full name to edit is not null or empty
-Service -> Patient : change the full name
-Service -> PatientRepository : saves in DB
-Service -> Service : logs changes
-activate Service
-deactivate Service
-end
-alt information contains sensitive data
-Service -> Domain : sets confirmation token
-Service -> EmailService : sends email with the confirmation token
-end
-Service -> ConfirmationDTO** : creates DTO with confirmation token and email
-return DTO
+Service -> HTTPDriver: PATCH
+activate HTTPDriver
+HTTPDriver -> BE: PATCH (/api/users/patients/edit)
+activate BE
+BE -> BE: validates all information\nand edits new patient user,\nsending an confirmation email\nin case of editing sensitive data
 return response
 return response
+return response
+alt edits sensitive data
+Component --> View : message to confirm the\nedition/fail message
+end
+return success/fail message
 @enduml
 ```

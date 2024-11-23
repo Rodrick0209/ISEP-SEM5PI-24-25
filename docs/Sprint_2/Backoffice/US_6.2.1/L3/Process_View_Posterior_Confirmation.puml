@@ -1,41 +1,30 @@
 ```plantuml
 @startuml Process_View_Posterior_Confirmation
-participant SPA as FE <<Container (C4)>>
-participant Route as Route <<Route>>
-participant Controller as Controller <<Controller>>
-participant ConfirmationDTO as ConfirmationDTO <<DTO>>
-participant Service as Service <<Service>>
-participant Repository as Repository <<Repository>>
-participant PatientRepository as PatientRepository <<Repository>>
-participant Mapper as Mapper <<Domain Service>>
-participant Domain as Domain <<Domain>>
-participant Patient as Patient <<Domain>>
-activate FE
-FE -> Route : POST(/api/users/patients/confirmation/{token})
-activate Route
-Route -> Controller : POST
-activate Controller
-Controller -> ConfirmationDTO** : recieves request body info
-Controller -> Service : confirms the patient user profile registration
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+participant Service as Service <<Component>>
+participant HTTPDriver as HTTPDriver <<Component>>
+participant MastersData as BE <<Container (C4)>>
+
+activate View
+View -> Component: redirect the confirmation page
+activate Component
+Component -> Model**: get the email and token in route
+Component -> Service: confirm the registration of the new patient user
 activate Service
-Service -> Repository : finds user by email
-activate Repository
+Service -> HTTPDriver: POST
+activate HTTPDriver
+HTTPDriver -> BE: POST (/api/users/patients/confirm)
+activate BE
+BE -> BE: validates all information\nand confirms the registration\nof the new patient user
+return response
+return response
+Service -> Model: transforms response data
+activate Model
 return user
-Service -> Service : validates confirmation token
-activate Service
-return flag
-Service -> PatientRepository : finds patient profile by email
-activate PatientRepository
-return patient
-Service -> Domain : confirm the account
-Service -> Patient : associates the user
-Service -> Repository : saves in DB
-Service -> PatientRepository : saves in DB
-Service -> Mapper : entity to DTO
-activate Mapper
-return DTO
-return DTO
-return response
-return response
+return user
+return success/fail message
+
 @enduml
 ```
