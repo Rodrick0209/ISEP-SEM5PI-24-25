@@ -11,7 +11,7 @@ activate View
 View -> Component: click in button to delete patient user
 activate Component
 Component -> Model**: get the email in route
-Component -> Service: edit the patient user information
+Component -> Service: delete the patient user
 activate Service
 Service -> HTTPDriver: DELETE
 activate HTTPDriver
