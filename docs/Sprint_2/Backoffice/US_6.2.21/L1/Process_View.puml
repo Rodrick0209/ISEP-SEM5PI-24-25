@@ -1,0 +1,16 @@
+```plantuml
+@startuml Process_View
+actor Admin 
+participant System <<System (C4)>>
+
+activate Admin
+
+Admin -> System: Make a request to search for OperationType(s)
+activate System
+System --> Admin : Asks for the OperationType information to search
+Admin -> System: Provides the OperationType information to search\n(Name and/or Specialization and/or status)
+System --> Admin : Returns the list of OperationType 
+deactivate Admin
+
+@enduml
+```

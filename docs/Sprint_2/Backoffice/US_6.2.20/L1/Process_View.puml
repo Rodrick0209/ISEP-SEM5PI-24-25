@@ -1,0 +1,20 @@
+@startuml Process_View
+actor Admin 
+participant System <<System>>
+
+activate Admin
+
+Admin -> System: Request to list all Operation Types
+activate System
+System --> Admin : Display list of Operation Types
+deactivate System
+
+Admin -> System: Select an Operation Type to disable
+activate System
+System --> Admin : Show confirmation prompt
+Admin -> System: Confirm disable operation type
+System --> Admin : Success/Error message
+deactivate System
+deactivate Admin
+
+@enduml

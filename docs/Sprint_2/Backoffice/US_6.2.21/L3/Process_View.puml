@@ -1,0 +1,30 @@
+```plantuml
+@startuml Process_View
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+participant Service as Service <<Component>>
+participant HTTPDriver as HTTPDriver <<Component>>
+participant MastersData as BE <<Container (C4)>>
+
+activate View
+View -> Component: submit the filter form
+activate Component
+Component -> Model**: get the data in filter form
+Component -> Service: search for operationType
+activate Service
+Service -> HTTPDriver: GET
+activate HTTPDriver
+HTTPDriver -> BE: GET (/api/operationType/Filter)
+activate BE
+BE -> BE: search for operationType\naccording to the filter
+return response
+return response
+Service -> Model: transforms response data
+activate Model
+return operationType
+return operationType
+return operationType/fail message
+
+@enduml
+```

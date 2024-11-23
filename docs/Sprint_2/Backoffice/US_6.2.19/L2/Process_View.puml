@@ -1,0 +1,25 @@
+@startuml Process_View
+actor Admin 
+participant UI  as UI
+participant Backend as backend
+
+activate Admin
+
+Admin -> UI: Request to list Operation Types
+activate UI
+note over UI, backend : US 5.1.23
+UI --> Admin: Display list of Operation Types
+
+Admin -> UI: Select an Operation Type to edit
+UI -> Admin: Show the OperationType
+Admin -> UI: Edit OperationType
+UI -> backend: HTTP POST request to update operation type
+activate backend
+backend -> backend: Update operation type in DB
+backend --> UI: Return success/error message
+deactivate backend
+UI --> Admin: Display success/error message
+deactivate UI
+deactivate Admin
+
+@enduml

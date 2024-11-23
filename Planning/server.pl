@@ -45,6 +45,7 @@ set_cors_headers :-
     format('Access-Control-Allow-Credentials: true~n').
 
 
+
 % Converte lista de tuplas (Start, End, OperationId) para JSON
 convert_tuples_to_json([], []).
 convert_tuples_to_json([(Start, End, OperationId) | Tail], [json{start: Start, end: End, operationId: OperationIdStr} | JsonTail]) :-
