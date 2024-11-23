@@ -1,0 +1,30 @@
+```plantuml
+@startuml Process_View
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+participant Service as Service <<Component>>
+participant HTTPDriver as HTTPDriver <<Component>>
+participant MastersData as BE <<Container (C4)>>
+
+activate View
+View -> Component: submit the form
+activate Component
+Component -> Model**: get the data in form
+Component -> Service: edit the  OperationType
+activate Service
+Service -> HTTPDriver: POST
+activate HTTPDriver
+HTTPDriver -> BE: PUT (/api/OperationType/OperationTypeId)
+activate BE
+BE -> BE: validates all information\nand edits OperationType
+return response
+return response
+Service -> Model: transforms response data
+activate Model
+return OperationType
+return OperationType
+return success/fail message
+
+@enduml
+```

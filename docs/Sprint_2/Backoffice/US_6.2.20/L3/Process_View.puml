@@ -1,0 +1,27 @@
+```plantuml
+@startuml Process_View
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+participant Service as Service <<Component>>
+participant HTTPDriver as HTTPDriver <<Component>>
+participant MastersData as BE <<Container (C4)>>
+
+activate View
+View -> Component: click in button to delete OperationType
+activate Component
+Component -> Model**: get the id of the operation type
+Component -> Service: delete the OperationType
+activate Service
+Service -> HTTPDriver: DELETE
+activate HTTPDriver
+HTTPDriver -> BE: DELETE (/api/OperationType/:id)
+activate BE
+BE -> BE: validates all information\nand changes OperationType status
+return response
+return response
+return response
+return success/fail message
+
+@enduml
+```
