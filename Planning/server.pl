@@ -63,13 +63,13 @@ getSchedule(Request) :-
     ;   
         % Processa requisições normais
         http_parameters(Request, [
-            room(Room, [atom_string]),
-            day(Day, [atom_string])
+            room(Room, []),
+            day(Day, [])
         ]),
 
         %%Se o better sol eu meter os parametros manuais Do genero better_sol(20241130, or1, X, _, Z). funciona mas Do frontEnd nao 
 
-        (   better_sol(room, Room, X, _, Z) ->
+        (   better_sol(20241130, or1, X, _, Z) ->
             % Converte X e Y para JSON
             convert_tuples_to_json(X, XJson),
             reply_json(json([
