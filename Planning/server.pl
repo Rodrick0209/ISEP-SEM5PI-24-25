@@ -39,8 +39,9 @@ greet_handler(Request) :-
 set_cors_headers :-
     format('Access-Control-Allow-Origin: *~n'),
     format('Access-Control-Allow-Methods: GET, POST, OPTIONS~n'),
-    format('Access-Control-Allow-Headers: Content-Type~n'),
+    format('Access-Control-Allow-Headers: Content-Type, Authorization~n'),  % Allow Authorization header
     format('Access-Control-Allow-Credentials: true~n').
+
 
 % Converte lista de tuplas (Start, End, OperationId) para JSON
 convert_tuples_to_json([], []).
