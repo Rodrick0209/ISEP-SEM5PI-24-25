@@ -18,7 +18,6 @@ export interface Schedule {
   day: string;
   room: string;
   agOpRoomBetter: OperationSegment[]; // Lista de intervalos de operação
-  tFinOp: number; // Tempo final
 }
 
 
@@ -48,8 +47,16 @@ export class PlanningService {
     let params = new HttpParams();
     params = params.append('day', date);
     params = params.append('room', roomNumber);
-
     return this.http.get<Schedule>(`${this.planningUrl}/getSchedule`, { params });
-}
+  }
+ 
+
+
+getHeuristicScheduleFromPlanning(date: string, roomNumber: string): Observable<Schedule> {
+      let params = new HttpParams();
+      params = params.append('day', date);
+      params = params.append('room', roomNumber);
+      return this.http.get<Schedule>(`${this.planningUrl}/getHeuristicSchedule`, { params });
+  }
 
 }

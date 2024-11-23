@@ -6,7 +6,6 @@
 :- use_module(library(http/http_cors)).
 :- use_module(library(date)).
 :- use_module(library(random)).
-:- consult('algorithm').
 
 % Bibliotecas JSON
 :- use_module(library(http/json_convert)).
@@ -17,10 +16,13 @@
 :- set_setting(http:cors, [*]).
 
 :- consult('getInfoFromBd').
+:- consult('algorithm').
 
 % Definição dos handlers
 :- http_handler('/greet', greet_handler, []).
 :- http_handler('/planning/getSchedule', getSchedule, []).
+:- http_handler('/planning/getHeuristicSchedule', getHeuristicSchedule, []).
+
 
 % Tratamento para a rota /greet
 greet_handler(Request) :-
@@ -39,8 +41,9 @@ greet_handler(Request) :-
 set_cors_headers :-
     format('Access-Control-Allow-Origin: *~n'),
     format('Access-Control-Allow-Methods: GET, POST, OPTIONS~n'),
-    format('Access-Control-Allow-Headers: Content-Type~n'),
+    format('Access-Control-Allow-Headers: Content-Type, Authorization~n'),
     format('Access-Control-Allow-Credentials: true~n').
+
 
 % Converte lista de tuplas (Start, End, OperationId) para JSON
 convert_tuples_to_json([], []).
@@ -62,22 +65,30 @@ getSchedule(Request) :-
         format('~n')  % Responde OPTIONS com cabeçalhos CORS
     ;   
         % Processa requisições normais
-        http_parameters(Request, [
-            room(Room, []),
-            day(Day, [])
-        ]),
-
-        %%Se o better sol eu meter os parametros manuais Do genero better_sol(20241130, or1, X, _, Z). funciona mas Do frontEnd nao 
-
-        (   better_sol(20241130, or1, X, _, Z) ->
-            % Converte X e Y para JSON
-            convert_tuples_to_json(X, XJson),
-            reply_json(json([
-                room=Room,
-                day=Day,
-                agOpRoomBetter=XJson,
-                tFinOp=Z
-            ]))
+        http_parameters(Request, 
+            [ 
+                day(Day, [number]),
+                room(Room, [atom])
+            ]
+        ),
+    
+        (   obtain_better_sol(Room, Day, X, _, Z) ->
+            % Verifica se o valor de Z é 1441
+            (   Z = 1441 ->
+                reply_json(json([
+                    error="Invalid scheduling value (Z = 1441)",
+                    day=Day,
+                    room=Room
+                ]), [status(400)])
+            ;   % Caso o valor de Z não seja 1441, retorna a resposta normal
+                convert_tuples_to_json(X, XJson),
+                reply_json(json([
+                    room=Room,
+                    day=Day,
+                    agOpRoomBetter=XJson,
+                    tFinOp=Z
+                ]))
+            )
         ;   reply_json(json([
                 error="No better solution found",
                 day=Day,
@@ -86,14 +97,54 @@ getSchedule(Request) :-
         )
     ).
 
+getHeuristicSchedule(Request) :-
+    set_cors_headers,
+    (   member(method(options), Request) ->
+        format('~n')  % Responde OPTIONS com cabeçalhos CORS
+    ;   
+        % Processa requisições normais
+        http_parameters(Request, 
+            [ 
+                day(Day, [number]),
+                room(Room, [atom])
+            ]
+        ),
+        % Chama a heurística para agendar as cirurgias
+        (   schedule_all_surgeriesHeuristic(Room, Day) ->
+            % Caso o agendamento seja bem-sucedido, tenta agendar a operação
+            (   agenda_operation_room1(Room, Day, X) ->
+                % Converte X para JSON e responde com o agendamento
+                convert_tuples_to_json(X, XJson),
+                reply_json(json([
+                    room=Room,
+                    day=Day,
+                    agOpRoomBetter=XJson
+                ]))
+            ;   reply_json(json([
+                    error="Solution not found, try scheduling to another day",
+                    day=Day,
+                    room=Room
+                ]), [status(404)])
+            )
+        ;   % Caso o schedule_all_surgeriesHeuristic falhe
+            reply_json(json([
+                error="Heuristic scheduling failed, try another room or day",
+                day=Day,
+                room=Room
+            ]), [status(404)])
+        )
+    ).
+
+
+
+
 
 % Predicado de teste para depuração
 testPredicate :-
-    better_sol(20241130, or1, X, _, Z),
-    convert_tuples_to_json(X, XJson),
-    convert_assignments_to_json(Y, YJson),
-    write(XJson), nl,
-    write(YJson), nl.
+    obtain_better_sol(or1, 20241130, X, _, Z),
+    convert_tuples_to_json(X, XJson), 
+    write(XJson), nl.
+
 
 % Servidor HTTP
 server(Port) :-						

@@ -14,7 +14,7 @@ import { MessageService } from '../../services/message.service';
 export class PlanningComponent implements OnInit {
   date: string = '';
   selectedSala: string = '';
-  greetingMessage: string = '';
+  greetingMessage: string | null = null;
   salasDeCirurgia: any[] = []; // Atualizado para receber dados da API
 
   // Variável para a data mínima (hoje)
@@ -63,7 +63,7 @@ export class PlanningComponent implements OnInit {
 
           },
           error: (err) => {
-            console.error('Failed to fetch schedule', err);
+            console.error('Schedule not found, try other date or room', err);
             this.greetingMessage = 'Failed to fetch schedule.';
             this.isLoading = false; // Desativar o carregamento
           }
@@ -89,4 +89,38 @@ export class PlanningComponent implements OnInit {
   closeScheduleBox() {
     this.scheduledData = null; // Fecha a div de detalhes do agendamento
   }
+
+  fasterSolution() {
+    this.greetingMessage = null;
+    if (this.date && this.selectedSala) {
+      this.isLoading = true; // Ativar o carregamento
+      const formattedDate = this.date.replace(/-/g, ''); // Remove os hífens da data
+
+      // Limpa os dados anteriores antes de tentar um novo agendamento
+      this.scheduledData = null; 
+      this.greetingMessage = 'Fetching schedule...'; 
+
+      // Simulando o atraso na resposta da API com um setTimeout
+        this.planningService.getHeuristicScheduleFromPlanning(formattedDate, this.selectedSala).subscribe({
+          next: (data) => {
+            console.log('Schedule received from the Planning:', data);
+            this.scheduledData = data;
+
+            // Mensagem de sucesso
+            this.messageService.setMessage('Schedule successfully received and updated!');
+            this.router.navigate(['/planningResults'], { state: { schedule: data } });
+            this.isLoading = false; // Desativar o carregamento
+          },
+          error: (err) => {
+            this.greetingMessage = 'Schedule not found, try other date or room';
+            this.isLoading = false; // Desativar o carregamento
+          } 
+        });
+
+    } else {
+      this.greetingMessage = 'Please fill in all fields before scheduling.';
+    }
+  }
+
+
 }

@@ -242,7 +242,6 @@ public static class DataSeeder
 
     var rooms = new List<OperationRoom>
     {
-      new OperationRoom("or1", "description1", "10"),
       new OperationRoom("or2", "description2", "10"),
       new OperationRoom("or3", "description3", "10"),
       new OperationRoom("or4", "description4", "10"),

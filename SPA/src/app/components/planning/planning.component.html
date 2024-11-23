@@ -35,8 +35,10 @@
       </select>
     </div>
 
-    <div class="form-group">
-      <button type="submit" [disabled]="isLoading">Agendar Cirurgia</button>
+    <!-- Botões para soluções -->
+    <div class="button-container">
+      <button type="submit" [disabled]="isLoading">Better solution</button>
+      <button type="button" (click)="fasterSolution()" [disabled]="isLoading">Faster solution</button>
     </div>
   </form>
 
@@ -49,7 +51,7 @@
 
   <!-- Exibição de resultados do agendamento -->
   <div *ngIf="scheduledData" class="scheduled-data">
-    <h3>Agenda para a Data Selecionada:</h3>
+    <h3>Schedule for selected Date and Room:</h3>
     <div>
       <pre>{{ scheduledData | json }}</pre> <!-- Exibe os dados de agendamento -->
     </div>

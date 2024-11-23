@@ -7,7 +7,7 @@
   <a href="about">About</a>
   <a href="contact">Contact</a>
   <a href="view">3D Module</a>
-  <a href="planning">Planning</a>
+  <a href="planning"*ngIf="isAdmin()">Planning</a>
   <a href="operationRequests" *ngIf="isDoctorUser()">Operation Requests</a>
   <a href="patients" *ngIf="isAdmin()">Patients</a>
   <a href="operationType" *ngIf="isAdmin()">Operation Types</a>
