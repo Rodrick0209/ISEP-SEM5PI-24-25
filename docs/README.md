@@ -35,32 +35,52 @@ For more details, refer to the [Glossary](glossary.md).
 
 ## 3. Views of the application
 
-### 3.1. General Logical View
-
-![Logical_View](General_Logical_View/Sprint_1.svg)
-
 ### 3.2. Level 1
 
 #### Logical View
 
-![Logical_View_Level_1](L1/Logical_View.png)
+![Logical_View_Level_1](L1/Logical_View.svg)
 
 ### 3.3. Level 2
 
 #### Logical View
 
-![Logical_View_Level_2](L2/Logical_View.png)
+![Logical_View_Level_2](L2/Logical_View.svg)
+
+#### Physical View
+
+![Physical_View](L2/Physical_View.svg)
 
 #### Implementation View
 
 ![Implementation_View_Level_2](L2/Implementation_View.svg)
 
+#### Mapping betweem Logical and Implmentation Views
+
+![Mapping_LI](L2/Mapping_Logical_Implementation_Views.svg)
+
+#### Mapping between Implementation and Physical Views
+
+![Mapping_IP](L2/Mapping_Implementation_Physical_Views.svg)
+
 ### 3.4. Level 3
 
-#### Logical View
+#### Masters Data
 
-![Logical_View_Level_3](L3/Logical_View.png)
+##### Logical View
 
-#### Implementation View
+![MD_LV](L3/MastersData/Logical_View.png)
 
-![Implementation_View_Level_3](L3/Implementation_View.svg)
+##### Implementation View
+
+![MD_IV](L3/MastersData/Implementation_View.svg)
+
+#### SPA
+
+##### Logical View
+
+![SPA_LV](L3/SPA/Logical_View.svg)
+
+##### Implmentation View
+
+![SPA_IV](L3/SPA/Implementation_View.svg)
