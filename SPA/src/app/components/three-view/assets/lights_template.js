@@ -60,6 +60,32 @@ export default class Lights {
         this.object.pointLight2...; */
         this.object.pointLight2 = new THREE.PointLight(this.pointLight2.color, this.pointLight2.intensity, this.pointLight2.distance);
         this.object.pointLight2.position.set(this.pointLight2.position.x, this.pointLight2.position.y, this.pointLight2.position.z);
+
+        // Create the spot light and set its position and direction in the scene
+        this.object.spotLight = new THREE.SpotLight(this.spotLight.color, this.spotLight.intensity, this.spotLight.distance, this.spotLight.angle, this.spotLight.penumbra);
+        this.object.spotLight.position.set(this.spotLight.position.x, this.spotLight.position.y, this.spotLight.position.z);
+        this.object.spotLight.target.position.set(this.spotLight.direction.x, this.spotLight.direction.y, this.spotLight.direction.z);
+        this.object.add(this.object.spotLight.target);
+
+        /* To-do #33 - Turn on shadows for this light and set its properties:
+            - shadow map width: 512
+            - shadow map height: 512
+            - shadow camera near plane: 5.0
+            - shadow camera far plane: 15.0
+
+        this.object.spotLight.castShadow = ...; */
+        this.object.spotLight.castShadow = true;
+
+        // Set up shadow properties for this light */
+        this.object.spotLight.shadow.mapSize.width = 512;
+        this.object.spotLight.shadow.mapSize.height = 512;
+        this.object.spotLight.shadow.camera.near = 5.0;
+        this.object.spotLight.shadow.camera.far = 15.0;
+
+        /* To-do #30 - Add this light to the scene
+        this.object.add(...); */
+        this.object.add(this.object.spotLight);
+
         
         /* To-do #32 - Turn on shadows for this light and set its properties:
             - shadow map width: 512

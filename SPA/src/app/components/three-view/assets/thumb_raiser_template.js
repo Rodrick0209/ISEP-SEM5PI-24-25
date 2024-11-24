@@ -161,7 +161,7 @@ export default class ThumbRaiser {
 
       // Create a 3D scene (the game itself)
       this.scene3D = new THREE.Scene();
-      this.scene3D.background = new THREE.Color(0x87CEEB); // Set the background color to sky blue
+      this.scene3D.background = new THREE.Color(0xC8C8C8); // Set the background color to sky blue
 
 
       this.doors = [];
