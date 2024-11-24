@@ -402,21 +402,22 @@ select_next_surgeryCriteria1(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LSt
 select_next_surgeryCriteria2(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy,LStaffCleaning) :-
     write('Lista de operações a ser analisada: '), write(LOpCode), nl,
     findall(
-        (OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, StaffCount),
+        (OpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, LStaffCleaning, StaffCount),
         (   
             member(OpCode, LOpCode),
             surgery_id(OpCode, OpType),
             surgery(OpType, _, _, _),
-            availability_operation(OpCode, _, _, Interval, LDoctorsSurgery, LStaffAnesthesy),
+            availability_operation(OpCode, _, _, Interval, LDoctorsSurgery, LStaffAnesthesy, LStaffCleaning),
             length(LDoctorsSurgery, NumDoctors),
             length(LStaffAnesthesy, NumAnesthesy),
-            StaffCount is NumDoctors + NumAnesthesy
+            length(LStaffCleaning, NumCleaning),
+            StaffCount is NumDoctors + NumAnesthesy + NumCleaning
         ),
         Candidates
     ),
     maplist(
         % Extract the 5th element for sorting
-        [(_, _, _, _, StaffCount), StaffCount]>>true,
+        [(_, _, _, _,_, StaffCount), StaffCount]>>true,
         Candidates, StaffCounts
     ),
     % Pair candidates with their StaffCounts for sorting
@@ -427,7 +428,7 @@ select_next_surgeryCriteria2(LOpCode, BestOpCode, Interval, LDoctorsSurgery, LSt
     write('Candidatos ordenados: '), write(SortedCandidates), nl,
 
     % Extract the best candidate
-    SortedCandidates = [(BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, _) | _],
+    SortedCandidates = [(BestOpCode, Interval, LDoctorsSurgery, LStaffAnesthesy, LStaffCleaning,_) | _],
     write('Melhor OpCode: '), write(BestOpCode), nl.
 
 
