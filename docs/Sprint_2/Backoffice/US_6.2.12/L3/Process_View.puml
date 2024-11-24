@@ -1,0 +1,27 @@
+```plantuml
+@startuml Process_View
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+participant Service as Service <<Component>>
+participant HTTPDriver as HTTPDriver <<Component>>
+participant MastersData as BE <<Container (C4)>>
+
+activate View
+View -> Component: click to delete a staff
+activate Component
+Component -> Model**: get the id in route
+Component -> Service: delete the staff
+activate Service
+Service -> HTTPDriver: DELETE
+activate HTTPDriver
+HTTPDriver -> BE: DELETE (/api/staffs/:id)
+activate BE
+BE -> BE: validates all information\nand deletes the staff
+return response
+return response
+return response
+return success/fail message
+
+@enduml
+```

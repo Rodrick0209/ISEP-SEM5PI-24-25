@@ -50,8 +50,16 @@ export const routes: Routes = [
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
     { path: 'reset-password', component: ResetPasswordComponent},
-    { path: 'planning', component: PlanningComponent },
-    { path: 'planningResults', component: ScheduleResultsComponent },
+    { path: 'planning', 
+        component:PlanningComponent, 
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
+    { path: 'planningResults',
+        component: ScheduleResultsComponent ,
+        canActivate : [AuthGuard],
+        data: { role: 'admin' }
+    },
     {
         path: 'staffs',
         component: StaffsComponent,
