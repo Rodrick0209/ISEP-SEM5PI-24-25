@@ -44,6 +44,7 @@
 
 declare namespace Cypress {
     interface Chainable {
+        intercept(arg0: string, arg1: string, arg2: { statusCode: number; }): unknown;
         loginAsAdmin(): Chainable<void>;
         loginAsDoctor(): Chainable<void>;
         loginAsPatient(): Chainable<void>;
