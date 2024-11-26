@@ -31,7 +31,7 @@
 ![Domain Model](Domain_Model/DomainModel.svg)
 
 ### 2.1. Glossary
-For more details, refer to the [Glossary](glossary.md).
+For more details, refer to the [Glossary](Glossary/Glossary.md).
 
 ## 3. Views of the application
 
