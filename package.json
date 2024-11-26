@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "@types/cypress": "^0.1.6"
+  },
+  "dependencies": {
+    "celebrate": "^15.0.3"
   }
 }
