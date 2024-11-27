@@ -22,6 +22,12 @@ namespace DDDSample1.Infrastructure.OperationRooms
                 .ToListAsync(); // Retorna uma lista
         }
 
-        
+        public async Task<OperationRoom> GetByNameAsync(string name)
+        {
+            return await this.context.OperationRooms.FirstOrDefaultAsync(p => p.RoomNumber.roomNumber == name);
+        }
+
+
+
     }
 }

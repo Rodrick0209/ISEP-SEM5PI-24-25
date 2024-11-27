@@ -7,7 +7,8 @@ namespace DDDSample1.Domain.OperationRooms
 {
     public interface IOperationRoomRepository : IRepository<OperationRoom, OperationRoomId>
     {
-
+        Task<List<OperationRoom>> GetAllAsync();
+        Task<OperationRoom> GetByNameAsync(string name);
         
         
     }

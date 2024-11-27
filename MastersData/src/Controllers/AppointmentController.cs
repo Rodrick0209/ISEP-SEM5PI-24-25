@@ -3,6 +3,8 @@ using DDDSample1.Domain.Appointments;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using DDDSample1.Domain.OperationRooms;
+using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace DDDSample1.Controllers
 {
@@ -17,7 +19,7 @@ namespace DDDSample1.Controllers
         public AppointmentController(AppointmentService service, OperationRoomService op_Service)
         {
             _service = service;
-            _op_service=op_Service;
+            _op_service = op_Service;
         }
 
         // GET: api/OperationRoom/GetAll
@@ -29,16 +31,16 @@ namespace DDDSample1.Controllers
 
             var rooms = await _op_service.GetAllAsync();
 
-            var roomMap = new Dictionary<string, RoomNumber>();
+            var roomMap = new Dictionary<OperationRoomId, RoomNumber>();
             foreach (var room in rooms)
             {
-                roomMap[room.Id.Value] = room.RoomNumber;
+                roomMap[room.Id] = room.RoomNumber;
             }
 
 
             foreach (var app in list)
             {
-                listDto.Add(AppointmentMapper.ToDTO(app,roomMap));
+                listDto.Add(AppointmentMapper.ToDTO(app, roomMap));
             }
 
             return Ok(listDto);
@@ -51,10 +53,10 @@ namespace DDDSample1.Controllers
 
             var rooms = await _op_service.GetAllAsync();
 
-            var roomMap = new Dictionary<string, RoomNumber>();
+            var roomMap = new Dictionary<OperationRoomId, RoomNumber>();
             foreach (var room in rooms)
             {
-                roomMap[room.Id.Value] = room.RoomNumber;
+                roomMap[room.Id] = room.RoomNumber;
             }
 
             var listDto = new List<AppointmentDto>();
@@ -70,6 +72,41 @@ namespace DDDSample1.Controllers
 
             return Ok(listDto);
         }
+    
+
+
+        [HttpPost]
+        [Authorize(Roles = "doctor")]
+        public async Task<ActionResult<AppointmentDto>> Create(AppointmentDto dto)
+        {
+
+            try
+            {
+                var app = await _service.AddAsync(dto);
+
+                return CreatedAtAction(nameof(GetGetById), new { id = app.AppointmentId }, app);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AppointmentDto>> GetGetById(String id)
+        {
+            var op = await _service.GetByIdAsync(new AppointmentId(id));
+            if (op == null)
+            {
+                return NotFound();
+            }
+            return op;
+        }
+
+
+
+
     }
 }
 

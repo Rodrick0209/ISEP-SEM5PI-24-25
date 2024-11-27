@@ -22,6 +22,7 @@ namespace DDDSample1.Infrastructure.Appointments
             return await this.context.Appointments
                 .ToListAsync(); // Retorna uma lista
         }
+    
 
         
     }
