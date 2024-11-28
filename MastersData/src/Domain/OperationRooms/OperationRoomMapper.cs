@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DDDSample1.Domain.Appointments;
 using DDDSample1.Domain.OperationRooms;
 using DDDSample1.Domain.Shared;
 
@@ -11,6 +12,7 @@ namespace DDDSample1.Domain.OperationRooms
         {
             // Mapeando os slots de manutenção para DTOs
             List<MaintenanceSlotsDto> maintenanceSlots = operationRoom.MaintenanceSlots.ConvertAll(MaintenanceSlotMapper.ToDto);
+            List<AppointmentDto> appointments = operationRoom.Appointments.ConvertAll(AppointmentMapper.ToDto);
 
 
             return new OperationRoomDto(
@@ -19,7 +21,8 @@ namespace DDDSample1.Domain.OperationRooms
                 operationRoom.RoomType.roomType,
                 operationRoom.RoomCapacity.roomCapacity,
                 operationRoom.RoomStatus.ToString(),
-                maintenanceSlots
+                maintenanceSlots,
+                appointments
             );
         }
 

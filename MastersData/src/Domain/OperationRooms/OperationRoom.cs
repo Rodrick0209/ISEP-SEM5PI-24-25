@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.OperationRooms;
 using DDDSample1.Domain.Utils; // Esta linha deve estar presente
-using System.Linq; // Ajuste conforme necessário para o namespace correto
+using System.Linq;
+using DDDSample1.Domain.Appointments; // Ajuste conforme necessário para o namespace correto
 
 namespace DDDSample1.Domain.OperationRooms
 {
@@ -15,8 +16,10 @@ namespace DDDSample1.Domain.OperationRooms
         public RoomStatus RoomStatus { get; private set; } // Status atual da sala
         public List<MaintenanceSlots> MaintenanceSlots { get; private set; } // Agendas de manutenção
 
+        public List<Appointment> Appointments { get; private set; } // Agendamentos
+
         private OperationRoom() { }
-        public OperationRoom(string roomNumber, string roomType, string roomCapacity, List<MaintenanceSlots> maintenanceSlots)
+        public OperationRoom(string roomNumber, string roomType, string roomCapacity, List<MaintenanceSlots> maintenanceSlots, List<Appointment> appointments)
         {
             this.Id = new OperationRoomId(Guid.NewGuid());
             this.RoomNumber = new RoomNumber(roomNumber);
@@ -24,6 +27,7 @@ namespace DDDSample1.Domain.OperationRooms
             this.RoomCapacity = new RoomCapacity(roomCapacity);
             this.RoomStatus = RoomStatus.Available; // Status padrão
             this.MaintenanceSlots = maintenanceSlots;
+            this.Appointments = appointments;
         }
 
         public OperationRoom(string roomNumber, string roomType, string roomCapacity)
@@ -34,6 +38,7 @@ namespace DDDSample1.Domain.OperationRooms
             this.RoomCapacity = new RoomCapacity(roomCapacity);
             this.RoomStatus = RoomStatus.Available; // Status padrão
             this.MaintenanceSlots = new List<MaintenanceSlots>();
+            this.Appointments = new List<Appointment>();
         }
 
         public void ChangeStatus(RoomStatus newStatus)

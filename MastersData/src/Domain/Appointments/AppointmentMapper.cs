@@ -6,7 +6,7 @@ namespace DDDSample1.Domain.Appointments
 {
     public class AppointmentMapper
     {
-        public static AppointmentDto ToDTO(Appointment appointment,  Dictionary<string, RoomNumber> roomMap)
+        public static AppointmentDto ToDTO(Appointment appointment,  Dictionary<OperationRoomId, RoomNumber> roomMap)
         {
 
             AppointmentTimeSlotDto appointmentTimeSlot = AppointmentTimeSlotMapper.ToDto(appointment.AppointmentTimeSlot);
@@ -17,7 +17,22 @@ namespace DDDSample1.Domain.Appointments
                 appointmentTimeSlot,
                 appointment.AppointmentStatus.ToString(), 
                 roomMap[appointment.OperationRoomId].roomNumber, 
-                appointment.OperationRequestId
+                appointment.OperationRequestId.Value
+            );
+        }
+        
+        public static AppointmentDto ToDto(Appointment appointment)
+        {
+
+            AppointmentTimeSlotDto appointmentTimeSlot = AppointmentTimeSlotMapper.ToDto(appointment.AppointmentTimeSlot);
+            // Mapear as propriedades de Appointment para AppointmentDto
+
+            return new AppointmentDto(
+                appointment.Id.AsGuid(), 
+                appointmentTimeSlot,
+                appointment.AppointmentStatus.ToString(), 
+                appointment.OperationRoomId.Value,
+                appointment.OperationRequestId.Value
             );
         }
     }

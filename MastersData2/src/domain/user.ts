@@ -7,7 +7,7 @@ import { Role } from "../domain/role";
 import { UserPassword } from "./userPassword";
 import { Guard } from "../core/logic/Guard";
 
-
+ 
 interface UserProps {
   firstName: string;
   lastName: string;

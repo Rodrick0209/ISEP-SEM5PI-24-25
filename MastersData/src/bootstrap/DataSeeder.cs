@@ -261,7 +261,7 @@ public static class DataSeeder
     int startMinute = currentHourInMinutes + 1;
     int endMinute = Math.Min(currentHourInMinutes + 120, 1440);
     var appointmentTimeSlot = new AppointmentTimeSlot(new DateOnly(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day), new TimeSlot(startMinute, endMinute));
-    var appointment = new Appointment(appointmentTimeSlot, operationRoom.Id.Value, operationRequest.Id.AsString());
+    var appointment = new Appointment(appointmentTimeSlot, operationRoom.Id, operationRequest.Id);
     SeedAppointments(context, appointment);
     context.SaveChanges();
   }

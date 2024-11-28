@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DDDSample1.Domain.Appointments;
 using DDDSample1.Domain.OperationRooms;
 using DDDSample1.Domain.Shared;
 
@@ -16,8 +17,9 @@ namespace DDDSample1.Domain.OperationRooms
         public string RoomCapacity { get; set; }
         public string RoomStatus { get; set; }
         public List<MaintenanceSlotsDto> MaintenanceSlots { get; set; }
+        public List<AppointmentDto> Appointments { get; set; }
 
-        public OperationRoomDto(Guid id, string roomNumber, string roomType, string roomCapacity, string roomStatus, List<MaintenanceSlotsDto> maintenanceSlots)
+        public OperationRoomDto(Guid id, string roomNumber, string roomType, string roomCapacity, string roomStatus, List<MaintenanceSlotsDto> maintenanceSlots, List<AppointmentDto> appointments)
         {
             Id = id;
             RoomNumber = roomNumber;
@@ -25,6 +27,7 @@ namespace DDDSample1.Domain.OperationRooms
             RoomCapacity = roomCapacity;
             RoomStatus = roomStatus;
             MaintenanceSlots = maintenanceSlots;
+            Appointments = appointments;
         }
 
         public OperationRoomDto()

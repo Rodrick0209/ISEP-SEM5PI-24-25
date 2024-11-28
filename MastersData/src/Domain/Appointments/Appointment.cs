@@ -12,14 +12,14 @@ namespace DDDSample1.Domain.Appointments
     {
         public AppointmentTimeSlot AppointmentTimeSlot { get; private set; } // Hora do agendamento
         public AppointmentStatus AppointmentStatus { get; private set; }
-        public String OperationRoomId { get; private set; } // Sala de operação associada ao agendamento
-        public String OperationRequestId { get; private set; } // Pedido de operação associado ao agendamento
+        public OperationRoomId OperationRoomId { get; private set; } // Sala de operação associada ao agendamento
+        public OperationRequestId OperationRequestId { get; private set; } // Pedido de operação associado ao agendamento
 
         public Appointment()
         {
         }
 
-        public Appointment(AppointmentTimeSlot appointmentTimeSlot, String operationRoomId, String operationRequestId)
+        public Appointment(AppointmentTimeSlot appointmentTimeSlot, OperationRoomId operationRoomId, OperationRequestId operationRequestId)
         {
             this.Id = new AppointmentId(Guid.NewGuid());
             this.AppointmentTimeSlot = appointmentTimeSlot;

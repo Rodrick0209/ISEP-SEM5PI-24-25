@@ -10,7 +10,7 @@ namespace DDDSample1.Domain.Appointments
         public Guid AppointmentId { get; set; }
         public AppointmentTimeSlotDto AppointmentTimeSlotDto { get; set; }
         public string AppointmentStatus { get; set; }
-        public string OperationRoom { get; set; }
+        public string OperationRoomId { get; set; }
         public string OperationRequestId { get; set; }
 
         public AppointmentDto(Guid appointmentId, AppointmentTimeSlotDto appointmentTimeSlot, string appointmentStatus, string operationRoomId, string operationRequestId)
@@ -18,7 +18,7 @@ namespace DDDSample1.Domain.Appointments
             AppointmentId = appointmentId;
             AppointmentTimeSlotDto = appointmentTimeSlot;
             AppointmentStatus = appointmentStatus;
-            OperationRoom = operationRoomId;
+            OperationRoomId = operationRoomId;
             OperationRequestId = operationRequestId;
         }
 

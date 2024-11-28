@@ -8,6 +8,7 @@ import IRoleService from "../src/services/IServices/IRoleService";
 import RoleController from "../src/controllers/roleController";
 import IRoleDTO from '../src/dto/IRoleDTO';
 import { Role } from '../src/domain/role';
+import { describe, it } from 'node:test';
 
 describe('role controller', function () {
 	const sandbox = sinon.createSandbox();
@@ -148,4 +149,12 @@ describe('role controller', function () {
 	});
 });
 
+
+function beforeEach(arg0: () => void) {
+	throw new Error('Function not implemented.');
+}
+
+function afterEach(arg0: () => void) {
+	throw new Error('Function not implemented.');
+}
 
