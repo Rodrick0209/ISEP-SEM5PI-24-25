@@ -3,20 +3,20 @@
   <h1>Surgical Appointment & Resource Management</h1>
 </header>
 <nav>
-  <a href="home">Home</a>
-  <a href="about">About</a>
-  <a href="contact">Contact</a>
-  <a href="view">3D Module</a>
-  <a href="planning"*ngIf="isAdmin()">Planning</a>
-  <a href="operationRequests" *ngIf="isDoctorUser()">Operation Requests</a>
-  <a href="patients" *ngIf="isAdmin()">Patients</a>
-  <a href="operationType" *ngIf="isAdmin()">Operation Types</a>
-  <a href="staffs" *ngIf="isAdmin()">Staff Members</a>
+  <a [routerLink]="['/home']">Home</a>
+  <a [routerLink]="['/about']">About</a>
+  <a [routerLink]="['/contact']">Contact</a>
+  <a [routerLink]="['/view']">3D Module</a>
+  <a [routerLink]="['/planning']" *ngIf="isAdmin()">Planning</a>
+  <a [routerLink]="['/operationRequests']" *ngIf="isDoctorUser()">Operation Requests</a>
+  <a [routerLink]="['/patients']" *ngIf="isAdmin()">Patients</a>
+  <a [routerLink]="['/operationType']" *ngIf="isAdmin()">Operation Types</a>
+  <a [routerLink]="['/staffs']" *ngIf="isAdmin()">Staff Members</a>
   <a [routerLink]="['/profile', getUserEmail()]" *ngIf="isPatientUser()">Profile</a>
   <!-- New container for user information -->
   <div class="user-info">
-    <a *ngIf="!isLoggedIn" href="login">Login</a>
-    <span class="welcome"  *ngIf="isLoggedIn">Welcome, {{ getUserEmail() }}</span>
-    <a class="logout"  *ngIf="isLoggedIn" (click)="logout()">Logout</a>
+    <a *ngIf="!isLoggedIn" [routerLink]="['/login']">Login</a>
+    <span class="welcome" *ngIf="isLoggedIn">Welcome, {{ getUserEmail() }}</span>
+    <a class="logout" *ngIf="isLoggedIn" (click)="logout()">Logout</a>
   </div>
 </nav>
