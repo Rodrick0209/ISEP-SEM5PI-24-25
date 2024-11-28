@@ -13,7 +13,7 @@ namespace DDDSample1.Domain.Appointments
     {
 
         Task<List<Appointment>> GetAllAsync();
-        Task<AppointmentDto> AddAsync(AppointmentDto appointmentDto);
+        Task<AppointmentDto> AddAsync(CreatingAppointmentDto appointmentDto);
         Task<AppointmentDto> GetByIdAsync(AppointmentId id);
        
         

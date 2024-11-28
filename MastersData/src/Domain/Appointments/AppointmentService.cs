@@ -26,24 +26,51 @@ namespace DDDSample1.Domain.Appointments
         }
 
 
-        public async Task<AppointmentDto> AddAsync(AppointmentDto appointmentDto)
+       public async Task<AppointmentDto> AddAsync(CreatingAppointmentDto appointmentDto)
         {
 
 
-            await checkOperationRoomByNameAsync(appointmentDto.OperationRoomId, appointmentDto);
+            var opRoom = await checkOperationRoomByNameAsync(appointmentDto.OperationRoomId, appointmentDto);
             await CheckOperationRequestAsync(new OperationRequestId(appointmentDto.OperationRequestId));
 
 
-            var appointment = new Appointment(new AppointmentTimeSlot(appointmentDto.AppointmentTimeSlotDto.Date, new TimeSlot(appointmentDto.AppointmentTimeSlotDto.TimeSlot.StartTime, appointmentDto.AppointmentTimeSlotDto.TimeSlot.EndTime)), new OperationRoomId(appointmentDto.OperationRoomId), new OperationRequestId(appointmentDto.OperationRequestId));
 
+            // Verifica se o horário está disponível
+            var requestedDate = appointmentDto.AppointmentTimeSlotDto.Date;
+            var requestedStart = appointmentDto.AppointmentTimeSlotDto.TimeSlot.StartTime;
+            var requestedEnd = appointmentDto.AppointmentTimeSlotDto.TimeSlot.EndTime;
+
+            // Verifica se a sala está disponível usando o método do domínio
+            if (!opRoom.IsAvailable(
+                requestedDate,
+                requestedStart,
+                requestedEnd))
+            {
+                throw new Exception("The operation room is occupied during the requested time.");
+            }
+
+
+            // Cria o agendamento
+            var appointment = new Appointment(
+                new AppointmentTimeSlot(
+                    requestedDate,
+                    new TimeSlot(requestedStart, requestedEnd)),
+                new OperationRoomId(appointmentDto.OperationRoomId),
+                new OperationRequestId(appointmentDto.OperationRequestId)
+            );
+
+
+            opRoom.Appointments.Add(appointment);
+          
+          
+            // Salva o agendamento no repositório
             await _appointmentRepository.AddAsync(appointment);
             await _unitOfWork.CommitAsync();
 
-
             return AppointmentMapper.ToDto(appointment);
-
-
         }
+
+
 
         public async Task<List<Appointment>> GetAllAsync()
         {
@@ -51,7 +78,7 @@ namespace DDDSample1.Domain.Appointments
         }
 
 
-        public async Task<OperationRoom> checkOperationRoomByNameAsync(string operationRoom, AppointmentDto appointment)
+        public async Task<OperationRoom> checkOperationRoomByNameAsync(string operationRoom, CreatingAppointmentDto appointment)
         {
 
             try
