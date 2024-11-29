@@ -1,49 +1,49 @@
 import { Service, Inject } from 'typedi';
 import config from "../../config";
-import IAllergyDTO from '../dto/IAllergyDTO';
-import { Allergy } from "../domain/allergy";
+import IAllergyCathalogItemDTO from '../dto/IAllergyCatalogItemDTO';
+import { AllergyCathalogItem } from "../domain/allergyCathalogItem";
 import { Result } from "../core/logic/Result";
 import { AllergyMap } from '../mappers/AllergyMap';
 import IAllergyService from './IServices/IAllergyService';
-import IAllergyRepo from './IRepos/IAllergyRepo';
+import IAllergyCatalogRepo from './IRepos/IAllergyCatalogRepo';
 
 @Service()
 export default class AllergyService implements IAllergyService {
     constructor(
-        @Inject(config.repos.allergy.name) private allergyRepo : IAllergyRepo
+        @Inject(config.repos.allergy.name) private allergyRepo : IAllergyCatalogRepo
     ) {}
 
-    public async createAllergy(allergyDTO: IAllergyDTO): Promise<Result<IAllergyDTO>> {
+    public async createAllergy(allergyDTO: IAllergyCathalogItemDTO): Promise<Result<IAllergyCathalogItemDTO>> {
         try {
-            const allergyOrError = await Allergy.create(allergyDTO);
+            const allergyOrError = await AllergyCathalogItem.create(allergyDTO);
 
             if (allergyOrError.isFailure) {
-                return Result.fail<IAllergyDTO>(allergyOrError.errorValue());
+                return Result.fail<IAllergyCathalogItemDTO>(allergyOrError.errorValue());
             }
 
             const allergyResult = allergyOrError.getValue();
 
             await this.allergyRepo.save(allergyResult);
 
-            const allergyDTOResult = AllergyMap.toDTO(allergyResult) as IAllergyDTO;
-            return Result.ok<IAllergyDTO>(allergyDTOResult);
+            const allergyDTOResult = AllergyMap.toDTO(allergyResult) as IAllergyCathalogItemDTO;
+            return Result.ok<IAllergyCathalogItemDTO>(allergyDTOResult);
         } catch (e) {
             throw e;
         }
     }
 
 
-    public async listAllergies(): Promise<Result<IAllergyDTO[]>> {
+    public async listAllergies(): Promise<Result<IAllergyCathalogItemDTO[]>> {
         try {
             const allAllergies = await this.allergyRepo.findAll();
 
             if (allAllergies === null || allAllergies.length === 0) {
-                return Result.fail<IAllergyDTO[]>("No allergies found");
+                return Result.fail<IAllergyCathalogItemDTO[]>("No allergies found");
             }
 
-            const allergiesDTO =  allAllergies.map(allergy => AllergyMap.toDTO(allergy) as IAllergyDTO);
+            const allergiesDTO =  allAllergies.map(allergy => AllergyMap.toDTO(allergy) as IAllergyCathalogItemDTO);
             
-            return Result.ok<IAllergyDTO[]>(allergiesDTO);
+            return Result.ok<IAllergyCathalogItemDTO[]>(allergiesDTO);
         } catch (e) {
             throw e;
         }

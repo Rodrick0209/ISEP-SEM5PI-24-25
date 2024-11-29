@@ -1,10 +1,10 @@
 import { Result } from "../../core/logic/Result";
-import IAllergyDTO from "../../dto/IAllergyDTO";
+import IAllergyCathalogItemDTO from "../../dto/IAllergyCatalogItemDTO";
 
 
 export default interface IAllergyService {
-    createAllergy(allergyDTO: IAllergyDTO): Promise<Result<IAllergyDTO>>;
-    listAllergies(): Promise<Result<IAllergyDTO[]>>;
+    createAllergy(allergyDTO: IAllergyCathalogItemDTO): Promise<Result<IAllergyCathalogItemDTO>>;
+    listAllergies(): Promise<Result<IAllergyCathalogItemDTO[]>>;
     //updateAllergy(allergyDTO: IAllergyDTO): Promise<Result<IAllergyDTO>>;
     //deleteAllergy(allergyId: string): Promise<Result<void>>;
 

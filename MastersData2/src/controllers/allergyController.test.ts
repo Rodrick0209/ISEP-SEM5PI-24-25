@@ -10,7 +10,7 @@ import { Result } from '../core/logic/Result';
 
 import IAllergyService from "../services/IServices/IAllergyService";
 import AllergyController from "./allergyController";
-import IAllergyDTO from '../dto/IAllergyDTO';
+import IAllergyCathalogItemDTO from '../dto/IAllergyCatalogItemDTO';
 
 
 describe('allergy controller', function(){
@@ -34,7 +34,7 @@ describe('allergy controller', function(){
         Container.set(config.services.allergy.name, allergyServiceInstance);
         
         allergyServiceInstance = Container.get(config.services.allergy.name); 
-        sinon.stub(allergyServiceInstance, "createAllergy").returns( Result.ok<IAllergyDTO>( {"id":"123","name": req.body.name} ));
+        sinon.stub(allergyServiceInstance, "createAllergy").returns( Result.ok<IAllergyCathalogItemDTO>( {"id":"123","name": req.body.name} ));
 
         const ctrl = new AllergyController(allergyServiceInstance as IAllergyService);
 

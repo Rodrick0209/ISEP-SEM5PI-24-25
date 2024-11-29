@@ -4,13 +4,13 @@ import { Document, FilterQuery, Model } from 'mongoose';
 
 import { IAllergyPersistence } from '../dataschema/IAllergyPersistence';
 
-import IAllergyRepo from '../services/IRepos/IAllergyRepo';
-import { Allergy } from '../domain/allergy';
-import { AllergyId } from '../domain/allergyId';
+import IAllergyCatalogRepo from '../services/IRepos/IAllergyCatalogRepo';
+import { AllergyCathalogItem } from '../domain/allergyCathalogItem';
+import { AllergyCathalogItemId } from '../domain/allergyCathalogId';
 import { AllergyMap } from '../mappers/AllergyMap';
 
 @Service()
-export default class AllergyRepo implements IAllergyRepo {
+export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
     private models: any;
 
     constructor(
@@ -23,8 +23,8 @@ export default class AllergyRepo implements IAllergyRepo {
         };
     }
 
-    public async exists(allergy: Allergy): Promise<boolean> {
-        const idX = allergy.id instanceof AllergyId ? (<AllergyId>allergy.id).toValue() : allergy.id;
+    public async exists(allergy: AllergyCathalogItem): Promise<boolean> {
+        const idX = allergy.id instanceof AllergyCathalogItemId ? (<AllergyCathalogItemId>allergy.id).toValue() : allergy.id;
 
         const query = { domainId: idX };
 
@@ -33,7 +33,7 @@ export default class AllergyRepo implements IAllergyRepo {
         return !!allergyDocument === true;
     }
 
-    public async save (allergy: Allergy): Promise<Allergy> {
+    public async save (allergy: AllergyCathalogItem): Promise<AllergyCathalogItem> {
         const query = { domainId: allergy.id.toString()};
 
         const allergyDocument = await this.allergySchema.findOne( query );
@@ -55,7 +55,7 @@ export default class AllergyRepo implements IAllergyRepo {
     }
 
 
-    public async findByAllergyName(name: string): Promise<Allergy> {
+    public async findByAllergyName(name: string): Promise<AllergyCathalogItem> {
         const query = { name: name };
         const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyPersistence & Document>);
         if (allergyDocument != null) {
@@ -65,14 +65,14 @@ export default class AllergyRepo implements IAllergyRepo {
         }
     }
 
-    public async findAll(): Promise<Allergy[]> {
+    public async findAll(): Promise<AllergyCathalogItem[]> {
         const allergyDocuments = await this.allergySchema.find();
         return allergyDocuments.map(doc => AllergyMap.toDomain(doc));
     }
 
 
-    public async findById(allergyId: AllergyId | string): Promise<Allergy> {
-        const idX = allergyId instanceof AllergyId ? (<AllergyId>allergyId).toValue() : allergyId;
+    public async findById(allergyId: AllergyCathalogItemId | string): Promise<AllergyCathalogItem> {
+        const idX = allergyId instanceof AllergyCathalogItemId ? (<AllergyCathalogItemId>allergyId).toValue() : allergyId;
         const query = { domainId: idX };
         const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyPersistence & Document>);
         if (allergyDocument != null) {

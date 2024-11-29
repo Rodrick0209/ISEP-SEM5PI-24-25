@@ -1,7 +1,7 @@
 import { Entity } from "../core/domain/Entity";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { Result } from "../core/logic/Result";
-import IAllergyDTO from "../dto/IAllergyDTO";
+import IAllergyCathalogItemDTO from "../dto/IAllergyCatalogItemDTO";
 import { AggregateRoot } from "../core/domain/AggregateRoot";
 
 
@@ -11,7 +11,7 @@ interface AllergyProps {
 }
 
 
-export class Allergy extends AggregateRoot<AllergyProps> {
+export class AllergyCathalogItem extends AggregateRoot<AllergyProps> {
     get id() : UniqueEntityID {
         return this._id;
     }
@@ -29,14 +29,14 @@ export class Allergy extends AggregateRoot<AllergyProps> {
         super(props, id);
     }
 
-    public static create (allergyDTO: IAllergyDTO, id?: UniqueEntityID): Result<Allergy> {
+    public static create (allergyDTO: IAllergyCathalogItemDTO, id?: UniqueEntityID): Result<AllergyCathalogItem> {
         const name = allergyDTO.name;
 
         if (!!name === false || name.length === 0) {
-            return Result.fail<Allergy>('Must provide a name for the allergy')
+            return Result.fail<AllergyCathalogItem>('Must provide a name for the allergy')
         } else {
-            const allergy = new Allergy({ name: name }, id);
-            return Result.ok<Allergy>( allergy )
+            const allergy = new AllergyCathalogItem({ name: name }, id);
+            return Result.ok<AllergyCathalogItem>( allergy )
         }
     }
 

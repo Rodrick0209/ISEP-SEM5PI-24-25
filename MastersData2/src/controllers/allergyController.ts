@@ -4,10 +4,11 @@ import config from "../../config";
 
 import IAllergyController from './IControllers/IAllergyController';
 import IAllergyService from '../services/IServices/IAllergyService';
-import IAllergyDTO from '../dto/IAllergyDTO';
+import IAllergyCathalogItemDTO from '../dto/IAllergyCatalogItemDTO';
 
 import { Result } from "../core/logic/Result";
 import { BaseController } from '../core/infra/BaseController';
+import { MongoServerError } from 'mongodb';
 
 
 @Service()
@@ -20,10 +21,9 @@ export default class AllergyController extends BaseController implements IAllerg
 
     public async createAllergy(req: Request, res: Response, next: NextFunction) {
         try {
-            const allergyOrError = await this.allergyServiceInstance.createAllergy(req.body as IAllergyDTO) as Result<IAllergyDTO>;
+            const allergyOrError = await this.allergyServiceInstance.createAllergy(req.body as IAllergyCathalogItemDTO) as Result<IAllergyCathalogItemDTO>;
             
             if (allergyOrError.isFailure) {
-                console.log('Allergy creation failed'); // Log para verificar falha na criação
                 return res.status(402).send();
             }
 
@@ -31,15 +31,19 @@ export default class AllergyController extends BaseController implements IAllerg
             return res.json( allergyDTO ).status(201);
         }
         catch (e) {
-            console.log('Error in createAllergy:', e); // Log para verificar erros
-            return next(e);
+            if (e instanceof MongoServerError && e.code === 11000) {
+                console.log('Duplicate key error:', e); // Log para verificar erro de chave duplicada
+                return res.status(402).json({ message: 'Allergy already exists' });
+              }
+              console.log('Error in createAllergy:', e); // Log para verificar outros erros
+              return next(e);
         }
     };
 
 
     public async getAllAllergies(req: Request, res: Response, next: NextFunction) {
         try {
-            const allergiesOrError = await this.allergyServiceInstance.listAllergies() as Result<IAllergyDTO[]>;
+            const allergiesOrError = await this.allergyServiceInstance.listAllergies() as Result<IAllergyCathalogItemDTO[]>;
             
             if (allergiesOrError.isFailure) {
                 return res.status(404).send();

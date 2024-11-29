@@ -5,7 +5,7 @@ import Logger from './logger';
 
 import config from '../../config';
 import path from 'path';
-import allergySchema from '../persistence/schemas/allergySchema';
+import allergySchema from '../persistence/schemas/allergyCatalogSchema';
 
 export default async ({ expressApp }) => {
   const mongoConnection = await mongooseLoader();

@@ -16,6 +16,7 @@ namespace DDDSample1.Domain.OperationRooms
         public RoomStatus RoomStatus { get; private set; } // Status atual da sala
         public List<MaintenanceSlots> MaintenanceSlots { get; private set; } // Agendas de manutenção
 
+        //Devia ser appointMent id, assim provoca alto acoplamento
         public List<Appointment> Appointments { get; private set; } // Agendamentos
 
         private OperationRoom() { }
@@ -72,53 +73,63 @@ namespace DDDSample1.Domain.OperationRooms
 
 
         public bool IsAvailable(DateOnly date, int startMinute, int endMinute)
-{
-    // Inicializa as listas se forem nulas
-    if (Appointments == null)
-        Appointments = new List<Appointment>();
-
-    if (MaintenanceSlots == null)
-        MaintenanceSlots = new List<MaintenanceSlots>();
-
-    // Verifica conflitos com manutenção
-    var maintenanceToday = MaintenanceSlots.FirstOrDefault(slot => slot.Date == date);
-    if (maintenanceToday != null && maintenanceToday.TimeSlots.Any(ts =>
-        ts.StartMinute < endMinute && ts.EndMinute > startMinute))
-    {
-        return false; // Sala está em manutenção durante o período solicitado
-    }
-
-    // Verifica conflitos com agendamentos existentes
-    foreach (var app in Appointments)
-    {
-        var appDate = app.AppointmentTimeSlot.Date;
-        var appStart = app.AppointmentTimeSlot.TimeSlot.StartMinute;
-        var appEnd = app.AppointmentTimeSlot.TimeSlot.EndMinute;
-
-        // Só verifica se a data coincide
-        if (appDate == date)
         {
-            // Casos de sobreposição:
-            if (
-                (startMinute < appStart && endMinute > appEnd) || // Começa antes e termina depois
-                (startMinute < appStart && endMinute > appStart && endMinute <= appEnd) || // Começa antes e termina antes
-                (startMinute < appStart && endMinute == appEnd) || // Começa antes e termina ao mesmo tempo
-                (startMinute == appStart && endMinute > appEnd) || // Começa ao mesmo tempo e termina depois
-                (startMinute == appStart && endMinute < appEnd) || // Começa ao mesmo tempo e termina antes
-                (startMinute == appStart && endMinute == appEnd) || // Começa ao mesmo tempo e termina ao mesmo tempo
-                (startMinute == appEnd) || // Começa exatamente no fim do outro
-                (endMinute > appStart && startMinute < appStart) // Termina depois do início do outro
-            )
+            // Inicializa as listas se forem nulas
+            if (startMinute < 0 || endMinute > 1440)
             {
-                return false; // Sala está ocupada
+                return false;
             }
+
+
+
+            if (Appointments == null)
+            {
+                Appointments = new List<Appointment>();
+                if (startMinute >= 0 && endMinute <= 1440)
+                    return true;
+
+            }
+
+            List<Appointment> appointmentsToSearch = getAppointmentForDate(date);
+            Console.WriteLine("Appointments size to search: " + appointmentsToSearch.Count);
+
+            // Verifica conflitos com agendamentos existentes
+            foreach (var app in appointmentsToSearch)
+            {
+                var appStart = app.AppointmentTimeSlot.TimeSlot.StartMinute;
+                Console.WriteLine("appStart: " + appStart);
+                var appEnd = app.AppointmentTimeSlot.TimeSlot.EndMinute;
+                Console.WriteLine("appEnd: " + appEnd);
+
+                // Casos de sobreposição:
+                if ((startMinute >= appStart && startMinute < appEnd) ||
+                    (endMinute >= appStart && endMinute <= appEnd) ||
+                    (startMinute <= appStart && endMinute >= appEnd))
+                {
+                    return false;
+                }
+            
+            }
+
+
+            // Nenhum conflito encontrado
+            return true;
         }
-    }
 
-    // Nenhum conflito encontrado
-    return true;
-}
 
+        public List<Appointment> getAppointmentForDate(DateOnly date)
+        {
+            List<Appointment> result = new List<Appointment>();
+            foreach (var app in Appointments)
+            {
+                if (app.AppointmentTimeSlot.Date.Equals(date))
+                {
+                    result.Add(app);
+                }
+            }
+
+            return result;
+        }
 
     }
 }
