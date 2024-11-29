@@ -76,7 +76,6 @@ namespace DDDSample1.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "doctor")]
         public async Task<ActionResult<AppointmentDto>> Create(CreatingAppointmentDto dto)
         {
 

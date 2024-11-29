@@ -12,10 +12,8 @@
 :- dynamic agenda_staff/3.  % Define o predicado dinâmico
 :- dynamic surgery/4.        % Declare the surgery/4 predicate as dynamic
 :- dynamic surgery_id/2.     % Declare the surgery_id/2 predicate as dynamic
-:- dynamic surgery_counter/1.% Declare the global counter for surgery IDs
-
-% Initialize the counter if it doesn't exist
-:- (retract(surgery_counter(_)) -> true ; assertz(surgery_counter(1))).
+:- dynamic assignment_surgery/2.  % Declare the assignment_surgery/2 predicate as dynamic
+:- dynamic agenda_operation_room/3.  % Declare the agenda_operation_room/3 predicate as dynamic
 
 
 %% Função principal para salvar a agenda dos medicos num ficheiro
@@ -36,20 +34,10 @@ saveDoctorSchedules(Data) :-
         )
     ).
 
-% Generate the next surgery ID
-next_surgery_id(SurgeryId) :-
-    retract(surgery_counter(N)),                
-    format(atom(SurgeryId), 's10000~w', [N]),        
-    NewN is N + 1,                              % Increment the counter
-    assertz(surgery_counter(NewN)).             % Update the counter
-
-
-saveSurgeries([]).  % Base case: nothing to process when the list is empty.
-
-saveSurgeries([Surgery | Rest]) :-
-    % Extract the fields from the Surgery dictionary
+saveSurgeryTypes([]).
+saveSurgeryTypes([Surgery | Rest]) :-
     Surgery = _{
-        id: SurgeryId,
+        id: _,
         name: SurgeryName,
         status: _,
         preparationPhase: PreparationPhase,
@@ -58,7 +46,6 @@ saveSurgeries([Surgery | Rest]) :-
         specialization: _
     },
     
-    % Extract fields from each phase
     PreparationPhase = _{
         id: _,
         duration: PreparationDuration,
@@ -74,19 +61,64 @@ saveSurgeries([Surgery | Rest]) :-
         duration: CleaningDuration,
         requiredStaff: _
     },
-
-    % Convert `SurgeryId` and `SurgeryName` to atoms for storage
-    atom_string(SurgeryId, SurgeryIdStr),
     atom_string(SurgeryName, SurgeryNameStr),
-
-    % Assert the surgery fact with the durations
     assertz(surgery(SurgeryNameStr, PreparationDuration, SurgeryDuration, CleaningDuration)),
 
-    % Assert the surgery_id fact linking SurgeryId with SurgeryName
-    assertz(surgery_id(SurgeryIdStr, SurgeryNameStr)),
+    saveSurgeryTypes(Rest).
 
-    % Recurse for the remaining surgeries
+getSurgeryById(SurgeryId, SurgeryName) :-
+    format(atom(URL), 'https://10.9.10.55:5001/api/OperationType/~w', [SurgeryId]),
+    http_open(URL, Reply, [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(Reply, Surgery),
+    Surgery = _{
+        id: SurgeryId,
+        name: SurgeryName,
+        status: _,
+        preparationPhase: _,
+        surgeryPhase: _,
+        cleaningPhase: _,
+        specialization: _
+    }.
+
+
+saveSurgeries([]).
+saveSurgeries([Data | Rest]) :-
+
+    Data = _{
+        id: SurgeryId,
+        deadLineDate: _, 
+        priority: _, 
+        patientId: _, 
+        operationTypeId: Surgery, 
+        doctorThatWillPerformId: Doctor, 
+        doctorThatRequestedId: _
+    },
+
+    getSurgeryById(Surgery, SurgeryName),
+    atom_string(SurgeryIdAtom, SurgeryId),
+    atom_string(SurgeryNameAtom, SurgeryName),
+    atom_string(DoctorAtom, Doctor),
+
+    assertz(surgery_id(SurgeryIdAtom, SurgeryNameAtom)), 
+    assertz(assignment_surgery(SurgeryIdAtom, DoctorAtom)),  
+
     saveSurgeries(Rest).
+
+saveRooms([]).
+saveRooms([Data | Rest]) :-
+    Data = _{
+        id: RoomId,
+        roomNumber: _,
+        roomType: _,
+        roomStatus: _,
+        roomCapacity: _,
+        maintenanceSlots: _,
+        appointments: _
+    },
+    atom_string(RoomIdAtom, RoomId),
+    agenda_staff(_, Date, _),
+    assertz(agenda_operation_room(RoomIdAtom, Date, [])),
+    saveRooms(Rest).
 
 % Converte os slots de tempo para o formato desejado
 convert_time_slots(TimeSlots, TimeSlotsFormatted) :-
@@ -114,18 +146,36 @@ format_time_slots(Stream, [(Start, End) | Rest]) :-
     ).
 
 doctorSchedules() :-
+    clear_agenda_staff,
     http_open('https://10.9.10.55:5001/api/AvailabilitySlots/GetAll', Reply,
                [cert_verify_hook(cert_accept_any)]),
     json_read_dict(Reply, Data),
     writeln(Data),
     saveDoctorSchedules(Data).  % Salva os dados
 
-allSurgeries() :-
+surgeryTypes() :-
+    clear_surgery,
     http_open('https://10.9.10.55:5001/api/OperationType/GetAll', Reply,
                [cert_verify_hook(cert_accept_any)]),
     json_read_dict(Reply, Data),
     writeln(Data),
+    saveSurgeryTypes(Data).  % Salva os dados
+
+surgeries() :-
+    clear_surgery_id,
+    http_open('https://10.9.10.55:5001/api/OperationRequest/GetAll', Reply,
+               [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(Reply, Data),
+    writeln(Data),
     saveSurgeries(Data).  % Salva os dados
+
+operationRooms() :-
+    clear_agenda_operation_room,
+    http_open('https://10.9.10.55:5001/api/OperationRoom/GetAll', Reply,
+               [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(Reply, Data),
+    writeln(Data),
+    saveRooms(Data).  % Salva os dados
 
 % Remove todos os fatos de agenda_staff/3
 clear_agenda_staff :-
@@ -133,5 +183,10 @@ clear_agenda_staff :-
 
 % Remove todos os fatos de surgery/4
 clear_surgery :-
-    retractall(surgery(_, _, _, _)),
+    retractall(surgery(_, _, _, _)).
+
+clear_surgery_id :-
     retractall(surgery_id(_, _)).
+
+clear_agenda_operation_room :-
+    retractall(agenda_operation_room(_, _, _)).

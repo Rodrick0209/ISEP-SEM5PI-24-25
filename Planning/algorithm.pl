@@ -76,7 +76,7 @@ assignment_surgery(so100007,e003,cleaningPhase).
 
 
 % Agenda operation room
-agenda_operation_room(or1,20241130,[(520,579,so100000),(1000,1059,so099999)]).
+agenda_operation_room(or1,20241130,[]).
 free_agenda0([],[(0,1440)]).
 free_agenda0([(0,Tfin,_)|LT],LT1):-!,free_agenda1([(0,Tfin,_)|LT],LT1).
 free_agenda0([(Tin,Tfin,_)|LT],[(0,T1)|LT1]):- T1 is Tin-1,
