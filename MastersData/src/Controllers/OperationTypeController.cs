@@ -47,6 +47,7 @@ namespace DDDSample1.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize (Roles = "admin")]
         public async Task<ActionResult<OperationTypeDto>> GetById(string id)
         {
             var op = await _service.GetByIdAsync(new OperationTypeId(id));

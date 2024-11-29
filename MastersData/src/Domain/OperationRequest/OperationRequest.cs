@@ -64,6 +64,11 @@ namespace DDDSample1.Domain.OperationRequest
             this.priority = new Priority(priority);
         }
 
+        public void Accepted()
+        {
+            this.status = OperationRequestStatus.Accepted;
+        }
+
        
     }
 

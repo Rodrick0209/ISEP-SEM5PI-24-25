@@ -59,17 +59,24 @@ namespace DDDSample1.Domain.Appointments
             return Date == currentDate && TimeSlot.IsBetween(currentTime);
         }
     
-        public bool IsHappeningAt(DateOnly date, TimeOnly time)
+
+    public void ChangeDate(DateOnly date)
         {
-            return Date == date && TimeSlot.IsBetween(time);
+            this.Date = date;
         }
+
+        public void ChangeTimeSlot(int startTime, int endTime)
+        {
+            this.TimeSlot = new TimeSlot(startTime, endTime);
+        }
+
+        public override string ToString()
+        {
+            return $"Date: {Date}, TimeSlot: {TimeSlot}";
+        }
+
+
     }
-
-
-
-
-
-
-
 }
+
 

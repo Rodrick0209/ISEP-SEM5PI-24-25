@@ -1,79 +1,54 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import * as THREE from 'three';
 import { merge } from './assets/merge';
 import Orientation from './assets/orientation';
 import ThumbRaiser from './assets/thumb_raiser_template';
 import { mazeData } from './assets/default_data';
-import { HttpClient, HttpParams } from '@angular/common/http'; // Import HttpClient and HttpParams
-import { FormsModule } from '@angular/forms';
-import { update } from 'lodash';
+
 
 @Component({
   selector: 'app-three-view',
   standalone: true,
-  imports: [FormsModule],
+  imports: [],
   templateUrl: './three-view.component.html',
-  styleUrls: ['./three-view.component.css']
+  styleUrl: './three-view.component.css'
 })
-export class ThreeViewComponent implements AfterViewInit, OnInit {
+export class ThreeViewComponent implements AfterViewInit {
+
   thumbRaiser: any;
-  currentDate: string;
-  currentTime: string;
-
-  constructor(private http: HttpClient) {
-    const now = new Date();
-    this.currentDate = now.toISOString().split('T')[0];
-    this.currentTime = now.toTimeString().split(' ')[0].substring(0, 5);
-  }
-
-  ngOnInit(): void {
-    
-  }
 
   ngAfterViewInit(): void {
-    this.initializeGame(this.currentDate, this.currentTime);
+    this.initializeGame();
     this.animate();
   }
 
-  initializeGame(date:string,time:string): void {
+  initializeGame(): void {
     const parameters = merge({}, mazeData, { scale: new THREE.Vector3(1.0, 0.5, 1.0) });
+
     this.thumbRaiser = new ThumbRaiser(
       parameters, // Parameters
       {}, // General Parameters
       { scale: new THREE.Vector3(1.0, 0.5, 1.0) }, // Maze parameters
       {}, // Player parameters
       { ambientLight: { intensity: 0.5 }, 
-        pointLight1: { intensity: 70.0, distance: 20.0, position: new THREE.Vector3(-3.5, 10.0, 2.5) },
+        pointLight1: { intensity: 70.0, distance: 20.0, position: new THREE.Vector3(-3.5, 10.0, 2.5) }, 
         pointLight2: { intensity: 70.0, distance: 20.0, position: new THREE.Vector3(3.5, 10.0, -2.5) }
-      }, // Lights parameters
-      {}, // Fog parameters
-      {}, // Fixed view camera parameters
-      {}, // Top view camera parameters
-      {}, // Mini-map camera parameters
-      {}, // Door parameters
-      {}, // Bed parameters
-      {}, // Doctor parameters
-      {}, // Bed with patient parameters
-      {}, // Tables surgery data parameters
-      { date: date }, // Date
-      { time: time} // Time
+       }, // Lights parameters
+      {},
+      { view: 'fixed', multipleViewsViewport: new THREE.Vector4(0.0, 1.0, 1, 0.5) }, // Fixed view camera parameters
+      //{ view: 'first-person', multipleViewsViewport: new THREE.Vector4(1.0, 1.0, 0.55, 0.5), initialOrientation: new Orientation(0.0, -10.0), initialDistance: 2.0, distanceMin: 1.0, distanceMax: 4.0 }, // First-person view camera parameters
+      //{ view: 'third-person', multipleViewsViewport: new THREE.Vector4(0.0, 0.0, 0.55, 0.5), initialOrientation: new Orientation(0.0, -20.0), initialDistance: 2.0, distanceMin: 1.0, distanceMax: 4.0 }, // Third-person view camera parameters
+      { view: 'top', multipleViewsViewport: new THREE.Vector4(1.0, 0.0, 0.45, 0.5), initialOrientation: new Orientation(0.0, -90.0), initialDistance: 20.0, distanceMin: 1.0, distanceMax: 25.0, initialZoom:0.7 } // Top view camera parameters
     );
-    console.log(date);
-    console.log(time);
+    
   }
 
   animate(): void {
     const updateFrame = () => {
       requestAnimationFrame(updateFrame);
       this.thumbRaiser?.update();
-      
     };
-    updateFrame();
-    
-  }
 
-  search(): void {
-    this.initializeGame(this.currentDate, this.currentTime);
-    
+    updateFrame();
   }
 }
