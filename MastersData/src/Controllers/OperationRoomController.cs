@@ -39,6 +39,15 @@ namespace DDDSample1.Controllers
         [HttpGet("OccupiedRooms")]
         public async Task<ActionResult<IEnumerable<OperationRoomDto>>> GetOccupiedRooms([FromQuery] DateOnly date, [FromQuery] TimeOnly time)
         {
+            if (date == default)
+            {
+                date = DateOnly.FromDateTime(DateTime.Now);
+            }
+
+            if (time == default)
+            {
+                time = TimeOnly.FromDateTime(DateTime.Now);
+            }
             var occupiedRooms = await _service.GetOccupiedAsync(date,time);
             var occupiedRoomsDto = new List<OperationRoomDto>();
 
