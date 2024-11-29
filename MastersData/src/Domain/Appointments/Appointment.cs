@@ -65,5 +65,10 @@ namespace DDDSample1.Domain.Appointments
             return AppointmentTimeSlot.IsTodayAndWithinTimeSlot();
         }
 
+        public bool IsHappeningAt(DateOnly date, TimeOnly time){
+            return AppointmentTimeSlot.IsHappeningAt(date,time);
+        }
+
+
     }
 }

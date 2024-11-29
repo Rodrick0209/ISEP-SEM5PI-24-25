@@ -58,6 +58,11 @@ namespace DDDSample1.Domain.Appointments
             var currentTime = TimeOnly.FromDateTime(DateTime.Now);
             return Date == currentDate && TimeSlot.IsBetween(currentTime);
         }
+    
+        public bool IsHappeningAt(DateOnly date, TimeOnly time)
+        {
+            return Date == date && TimeSlot.IsBetween(time);
+        }
     }
 
 
