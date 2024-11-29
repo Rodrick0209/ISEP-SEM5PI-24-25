@@ -78,7 +78,7 @@ export default class ThumbRaiser {
     tablesSurgeryDataParameters
   ) {
     this.onLoad = async function (description) {
-      const apiUrl = "https://10.9.10.55:5001/api/Appointment/GetHappening";
+      const apiUrl = "https://localhost:5001/api/Appointment/GetHappening";
       await updateRoomOccupancy(apiUrl, description.rooms);
 
       for (const room of description.rooms) {
@@ -374,15 +374,7 @@ export default class ThumbRaiser {
       this.renderer.autoClear = false;
       this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
-      // Show the loading message
-      const loadingMessage = document.getElementById("loading-message");
-      loadingMessage.style.display = "block";
-
-      // Simulate loading process (replace with actual loading logic)
-      setTimeout(() => {
-
-        loadingMessage.style.display = "none";
-      }, 5000); // Simulate a 3-second loading time
+      
 
       // Set the mouse move action (none)
       this.dragMiniMap = false;
@@ -406,9 +398,10 @@ export default class ThumbRaiser {
       this.zoom.step = 0.1;
       this.reset = document.getElementById("reset");
       this.resetAll = document.getElementById("reset-all");
-      this.helpPanel = document.getElementById("help-panel");
-      this.helpPanel.style.visibility = "hidden";
-      this.subwindowsPanel = document.getElementById("subwindows-panel");
+      //this.helpPanel = document.getElementById("help-panel");
+      //this.helpPanel.style.visibility = "hidden";
+      //this.subwindowsPanel = document.getElementById("subwindows-panel");
+      /*
       this.multipleViewsCheckBox = document.getElementById("multiple-views");
       this.multipleViewsCheckBox.checked = false;
       this.userInterfaceCheckBox = document.getElementById("user-interface");
@@ -417,15 +410,16 @@ export default class ThumbRaiser {
       this.helpCheckBox.checked = false;
       this.statisticsCheckBox = document.getElementById("statistics");
       this.statisticsCheckBox.checked = false;
+      */
 
       // Build the help panel
-      this.buildHelpPanel();
+      //this.buildHelpPanel();
 
       // Set the active view camera (fixed view)
       this.setActiveViewCamera(this.fixedViewCamera);
 
       // Arrange viewports by view mode
-      this.arrangeViewports(this.multipleViewsCheckBox.checked);
+      this.arrangeViewports(false);
 
       // Register the event handler to be called on window resize
       window.addEventListener("resize", (event) => this.windowResize(event));
@@ -484,6 +478,7 @@ export default class ThumbRaiser {
       this.zoom.addEventListener("change", (event) =>
         this.elementChange(event)
       );
+      /*
       this.multipleViewsCheckBox.addEventListener("change", (event) =>
         this.elementChange(event)
       );
@@ -496,6 +491,7 @@ export default class ThumbRaiser {
       this.statisticsCheckBox.addEventListener("change", (event) =>
         this.elementChange(event)
       );
+      */
 
       // Register the event handler to be called on input button click
       this.reset.addEventListener("click", (event) => this.buttonClick(event));
@@ -615,16 +611,16 @@ export default class ThumbRaiser {
     let viewport;
     // Check if the pointer is over the remaining camera viewports
     let cameras;
-    if (this.multipleViewsCheckBox.checked) {
+    /*if (this.multipleViewsCheckBox.checked) {
       cameras = [
         this.fixedViewCamera,
         //this.firstPersonViewCamera,
         //this.thirdPersonViewCamera,
         this.topViewCamera,
       ];
-    } else {
+    } else {*/
       cameras = [this.activeViewCamera];
-    }
+    //}
     for (const camera of cameras) {
       viewport = camera.getViewport();
       if (this.pointerIsOverViewport(pointer, viewport)) {
@@ -644,7 +640,7 @@ export default class ThumbRaiser {
   setUserInterfaceVisibility(visible) {
     this.userInterfaceCheckBox.checked = visible;
     this.viewsPanel.style.visibility = visible ? "visible" : "hidden";
-    this.subwindowsPanel.style.visibility = visible ? "visible" : "hidden";
+    //this.subwindowsPanel.style.visibility = visible ? "visible" : "hidden";
     this.userInterface.setVisibility(visible);
   }
 
@@ -664,7 +660,7 @@ export default class ThumbRaiser {
   setHelpVisibility(visible) {
     // Hidden: false; visible: true
     this.helpCheckBox.checked = visible;
-    this.helpPanel.style.visibility = visible ? "visible" : "hidden";
+    this.helpPanel.style.visibility =  "hidden";
   }
 
   setStatisticsVisibility(visible) {
@@ -1252,16 +1248,16 @@ export default class ThumbRaiser {
                 this.scene3D... = ...;
             } */
       let cameras;
-      if (this.multipleViewsCheckBox.checked) {
+      /*if (this.multipleViewsCheckBox.checked) {
         cameras = [
           this.fixedViewCamera,
           //this.firstPersonViewCamera,
           //this.thirdPersonViewCamera,
           this.topViewCamera,
         ];
-      } else {
+      } else { */
         cameras = [this.activeViewCamera];
-      }
+      //}
       for (const camera of cameras) {
         //this.player.object.visible = camera != this.firstPersonViewCamera;
         const viewport = camera.getViewport();

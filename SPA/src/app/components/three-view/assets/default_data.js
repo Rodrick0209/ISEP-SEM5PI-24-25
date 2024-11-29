@@ -48,7 +48,7 @@ export const doorData = {
 
 export const bedData = {
     url: "./assets/models/gltf/bed/bed.glb",
-    scale: new THREE.Vector3(0.002, 0.0015, 0.0019),
+    scale: new THREE.Vector3(0.004, 0.0035, 0.0039),
     bedDirection: 0.0, // Expressed in degrees
     bedName:""
 }
