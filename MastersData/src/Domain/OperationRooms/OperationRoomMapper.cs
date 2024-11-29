@@ -10,10 +10,13 @@ namespace DDDSample1.Domain.OperationRooms
     {
         public static OperationRoomDto ToDTO(OperationRoom operationRoom)
         {
-            // Mapeando os slots de manutenção para DTOs
-            List<MaintenanceSlotsDto> maintenanceSlots = operationRoom.MaintenanceSlots.ConvertAll(MaintenanceSlotMapper.ToDto);
-            List<AppointmentDto> appointments = operationRoom.Appointments.ConvertAll(AppointmentMapper.ToDto);
 
+            // Garantir que as listas não sejam nulas antes de ConvertAll
+            List<MaintenanceSlotsDto> maintenanceSlots = operationRoom.MaintenanceSlots?
+                .ConvertAll(MaintenanceSlotMapper.ToDto) ?? new List<MaintenanceSlotsDto>();
+
+            List<AppointmentDto> appointments = operationRoom.Appointments?
+                .ConvertAll(AppointmentMapper.ToDto) ?? new List<AppointmentDto>();
 
             return new OperationRoomDto(
                 operationRoom.Id.AsGuid(),
