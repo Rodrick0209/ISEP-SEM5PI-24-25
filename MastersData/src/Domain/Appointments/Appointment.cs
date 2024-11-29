@@ -28,10 +28,7 @@ namespace DDDSample1.Domain.Appointments
             this.OperationRequestId = operationRequestId;
         }
 
-        public void ChangeStatus(AppointmentStatus newStatus)
-        {
-            AppointmentStatus = newStatus;
-        }
+       
 
 
         public override string ToString()
@@ -64,6 +61,28 @@ namespace DDDSample1.Domain.Appointments
         public bool isHappening(){
             return AppointmentTimeSlot.IsTodayAndWithinTimeSlot();
         }
+
+        public void Completed()
+        {
+            this.AppointmentStatus = AppointmentStatus.Completed;
+        }
+
+        public void Cancelled()
+        {
+            this.AppointmentStatus = AppointmentStatus.Cancelled;
+        }
+
+        public void ChangeOperationRoomId(string operationRoomId)
+        {
+            this.OperationRoomId = new OperationRoomId(operationRoomId);
+        }
+
+        public void ChangeOperationRequestId(string operationRequestId)
+        {
+            this.OperationRequestId = new OperationRequestId(operationRequestId);
+        }
+
+       
 
     }
 }

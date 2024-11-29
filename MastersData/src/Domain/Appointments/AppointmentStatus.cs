@@ -4,6 +4,6 @@ namespace DDDSample1.Domain.Appointments
     {
         Scheduled,    // Representa um agendamento marcado
         Completed,    // Representa um agendamento que foi realizado
-        Canceled      // Representa um agendamento que foi cancelado
+        Cancelled      // Representa um agendamento que foi cancelado
     }
 }

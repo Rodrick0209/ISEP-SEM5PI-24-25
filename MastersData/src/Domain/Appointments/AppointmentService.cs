@@ -26,12 +26,12 @@ namespace DDDSample1.Domain.Appointments
         }
 
 
-       public async Task<AppointmentDto> AddAsync(CreatingAppointmentDto appointmentDto)
+        public async Task<AppointmentDto> AddAsync(CreatingAppointmentDto appointmentDto)
         {
 
 
             var opRoom = await checkOperationRoomByNameAsync(appointmentDto.OperationRoomId, appointmentDto);
-            await CheckOperationRequestAsync(new OperationRequestId(appointmentDto.OperationRequestId));
+            var opRequest = await CheckOperationRequestAsync(new OperationRequestId(appointmentDto.OperationRequestId));
 
 
 
@@ -61,13 +61,82 @@ namespace DDDSample1.Domain.Appointments
 
 
             opRoom.Appointments.Add(appointment);
-          
-          
+            opRequest.Accepted();
+
+
             // Salva o agendamento no repositório
             await _appointmentRepository.AddAsync(appointment);
             await _unitOfWork.CommitAsync();
 
             return AppointmentMapper.ToDto(appointment);
+        }
+
+
+        public async Task<AppointmentDto> UpdateAsync(EditingAppointmentDto dto)
+        {
+            var app = await _appointmentRepository.GetByIdAsync(new AppointmentId(dto.Id));
+
+            if (app == null)
+            {
+                throw new BusinessRuleValidationException("Appointment not found");
+            }
+
+
+           
+
+
+            await checkOperationRoomByNameForEditingAsync(dto.OperationRoomId, dto);
+
+            if (!string.IsNullOrWhiteSpace(dto.OperationRoomId) && !app.OperationRoomId.Value.Equals(dto.OperationRoomId))
+            {
+                app.ChangeOperationRoomId(dto.OperationRoomId);
+                
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.OperationRequestId) && !app.OperationRequestId.Value.Equals(dto.OperationRequestId))
+            {
+                app.ChangeOperationRequestId(dto.OperationRequestId);
+                
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.AppointmentStatus) && !app.AppointmentStatus.Equals(dto.AppointmentStatus))
+            {
+                if (dto.AppointmentStatus.Equals("Completed"))
+                {
+                    app.Completed();
+                }
+                else
+                {
+                    app.Cancelled();
+                }
+
+            }
+
+
+            if (dto.AppointmentTimeSlot != null && !app.AppointmentTimeSlot.Equals(dto.AppointmentTimeSlot))
+            {
+                if (app.AppointmentTimeSlot.Date.Equals(dto.AppointmentTimeSlot.Date))
+                {
+                    app.AppointmentTimeSlot.ChangeDate(dto.AppointmentTimeSlot.Date);
+                }
+                if (app.AppointmentTimeSlot.TimeSlot.Equals(dto.AppointmentTimeSlot.TimeSlot))
+                {
+                    app.AppointmentTimeSlot.ChangeTimeSlot(dto.AppointmentTimeSlot.TimeSlot.StartTime, dto.AppointmentTimeSlot.TimeSlot.EndTime);
+                }
+
+                
+            }
+
+
+            await _unitOfWork.CommitAsync();
+
+
+
+
+            return AppointmentMapper.ToDto(app);
+
+
+
         }
 
 
@@ -79,6 +148,28 @@ namespace DDDSample1.Domain.Appointments
 
 
         public async Task<OperationRoom> checkOperationRoomByNameAsync(string operationRoom, CreatingAppointmentDto appointment)
+        {
+
+            try
+            {
+                var spec = await this._operationRoomRepository.GetByNameAsync(operationRoom);
+
+                if (spec == null)
+                {
+                    throw new BusinessRuleValidationException("Operation Room not found");
+                }
+                appointment.OperationRoomId = spec.Id.AsString();
+                return spec;
+            }
+            catch (Exception e)
+            {
+                throw new BusinessRuleValidationException("Operation room not Found");
+            }
+        }
+
+
+
+        public async Task<OperationRoom> checkOperationRoomByNameForEditingAsync(string operationRoom, EditingAppointmentDto appointment)
         {
 
             try
