@@ -7,8 +7,7 @@ namespace DDDSample1.Domain.Appointments
 {
     public interface IAppointmentRepository : IRepository<Appointment, AppointmentId>
     {
-
-
+     Task<List<Appointment>> GetAppointmentsByDateTimeAsync(DateOnly date, TimeOnly time);
 
     }
 }

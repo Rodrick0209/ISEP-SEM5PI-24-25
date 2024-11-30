@@ -54,7 +54,7 @@ export default class ThumbRaiser {
   ) {
     this.onLoad = async function (description) {
       rooms = description.rooms;
-      const apiUrl = "https://localhost:5001/api/OperationRoom/OccupiedRooms";
+      const apiUrl = "https://10.9.10.55:5001/api/OperationRoom/OccupiedRooms";
 
       // Construct the URL with date and time as query parameters
       const urlWithParams = `${apiUrl}?date=${date.date}&time=${time.time}`;
