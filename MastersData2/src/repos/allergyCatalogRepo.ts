@@ -5,9 +5,9 @@ import { Document, FilterQuery, Model } from 'mongoose';
 import { IAllergyCatalogItemPersistence } from '../dataschema/IAllergyCatalogItemPersistence';
 
 import IAllergyCatalogRepo from '../services/IRepos/IAllergyCatalogRepo';
-import { AllergyCathalogItem } from '../domain/allergyCathalogItem';
-import { AllergyCathalogItemId } from '../domain/allergyCathalogId';
-import { AllergyMap } from '../mappers/AllergyMap';
+import { AllergyCatalogItem } from '../domain/allergyCatalogItem';
+import { AllergyCatalogItemId } from '../domain/allergyCatalogId';
+import { AllergyCatalogMap } from '../mappers/AllergyCatalogMap';
 
 @Service()
 export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
@@ -23,8 +23,8 @@ export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
         };
     }
 
-    public async exists(allergy: AllergyCathalogItem): Promise<boolean> {
-        const idX = allergy.id instanceof AllergyCathalogItemId ? (<AllergyCathalogItemId>allergy.id).toValue() : allergy.id;
+    public async exists(allergy: AllergyCatalogItem): Promise<boolean> {
+        const idX = allergy.id instanceof AllergyCatalogItemId ? (<AllergyCatalogItemId>allergy.id).toValue() : allergy.id;
 
         const query = { domainId: idX };
 
@@ -33,16 +33,16 @@ export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
         return !!allergyDocument === true;
     }
 
-    public async save (allergy: AllergyCathalogItem): Promise<AllergyCathalogItem> {
+    public async save (allergy: AllergyCatalogItem): Promise<AllergyCatalogItem> {
         const query = { domainId: allergy.id.toString()};
 
         const allergyDocument = await this.allergySchema.findOne( query );
         try {
             if (allergyDocument === null) {
-                const rawAllergy: any = AllergyMap.toPersistence(allergy);
+                const rawAllergy: any = AllergyCatalogMap.toPersistence(allergy);
                 const allergyCreated = await this.allergySchema.create(rawAllergy);
 
-                return AllergyMap.toDomain(allergyCreated);
+                return AllergyCatalogMap.toDomain(allergyCreated);
             } else {
                 allergyDocument.name = allergy.name;
                 await allergyDocument.save();
@@ -55,28 +55,28 @@ export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
     }
 
 
-    public async findByAllergyName(name: string): Promise<AllergyCathalogItem> {
+    public async findByAllergyName(name: string): Promise<AllergyCatalogItem> {
         const query = { name: name };
         const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyCatalogItemPersistence & Document>);
         if (allergyDocument != null) {
-            return AllergyMap.toDomain(allergyDocument);
+            return AllergyCatalogMap.toDomain(allergyDocument);
         } else {
             return null;
         }
     }
 
-    public async findAll(): Promise<AllergyCathalogItem[]> {
+    public async findAll(): Promise<AllergyCatalogItem[]> {
         const allergyDocuments = await this.allergySchema.find();
-        return allergyDocuments.map(doc => AllergyMap.toDomain(doc));
+        return allergyDocuments.map(doc => AllergyCatalogMap.toDomain(doc));
     }
 
 
-    public async findById(allergyId: AllergyCathalogItemId | string): Promise<AllergyCathalogItem> {
-        const idX = allergyId instanceof AllergyCathalogItemId ? (<AllergyCathalogItemId>allergyId).toValue() : allergyId;
+    public async findById(allergyId: AllergyCatalogItemId | string): Promise<AllergyCatalogItem> {
+        const idX = allergyId instanceof AllergyCatalogItemId ? (<AllergyCatalogItemId>allergyId).toValue() : allergyId;
         const query = { domainId: idX };
         const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyCatalogItemPersistence & Document>);
         if (allergyDocument != null) {
-            return AllergyMap.toDomain(allergyDocument);
+            return AllergyCatalogMap.toDomain(allergyDocument);
         } else {
             return null;
         }

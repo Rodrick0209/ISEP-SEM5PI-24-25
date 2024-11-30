@@ -11,7 +11,7 @@ interface AllergyCatalogItemProps {
 }
 
 
-export class AllergyCathalogItem extends AggregateRoot<AllergyCatalogItemProps> {
+export class AllergyCatalogItem extends AggregateRoot<AllergyCatalogItemProps> {
     get id() : UniqueEntityID {
         return this._id;
     }
@@ -29,14 +29,14 @@ export class AllergyCathalogItem extends AggregateRoot<AllergyCatalogItemProps> 
         super(props, id);
     }
 
-    public static create (allergyDTO: IAllergyCathalogItemDTO, id?: UniqueEntityID): Result<AllergyCathalogItem> {
-        const name = allergyDTO.name;
+    public static create (allergyCatalogDTO: IAllergyCathalogItemDTO, id?: UniqueEntityID): Result<AllergyCatalogItem> {
+        const name = allergyCatalogDTO.name;
 
         if (!!name === false || name.length === 0) {
-            return Result.fail<AllergyCathalogItem>('Must provide a name for the allergy')
+            return Result.fail<AllergyCatalogItem>('Must provide a name for the allergy')
         } else {
-            const allergy = new AllergyCathalogItem({ name: name }, id);
-            return Result.ok<AllergyCathalogItem>( allergy )
+            const allergyCatalog = new AllergyCatalogItem({ name: name }, id);
+            return Result.ok<AllergyCatalogItem>( allergyCatalog )
         }
     }
 

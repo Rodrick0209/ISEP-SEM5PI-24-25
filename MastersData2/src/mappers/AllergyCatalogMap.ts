@@ -5,22 +5,22 @@ import { Document, Model } from 'mongoose';
 
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
-import { AllergyCathalogItem } from "../domain/allergyCathalogItem";
+import { AllergyCatalogItem } from "../domain/allergyCatalogItem";
 
 import IAllergyCathalogItemDTO from '../dto/IAllergyCatalogItemDTO';
 import { IAllergyCatalogItemPersistence } from '../dataschema/IAllergyCatalogItemPersistence';
 
-export class AllergyMap extends Mapper<AllergyCathalogItem> {
+export class AllergyCatalogMap extends Mapper<AllergyCatalogItem> {
 
-    public static toDTO (allergy: AllergyCathalogItem): IAllergyCathalogItemDTO {
+    public static toDTO (allergy: AllergyCatalogItem): IAllergyCathalogItemDTO {
         return {
             id: allergy.id.toString(),
             name: allergy.name
         } as IAllergyCathalogItemDTO;
     }
 
-    public static toDomain (allergy: any | Model<IAllergyCatalogItemPersistence & Document>): AllergyCathalogItem {
-        const allergyOrError = AllergyCathalogItem.create(
+    public static toDomain (allergy: any | Model<IAllergyCatalogItemPersistence & Document>): AllergyCatalogItem {
+        const allergyOrError = AllergyCatalogItem.create(
             allergy,
             new UniqueEntityID(allergy.domainId)
         );
@@ -30,7 +30,7 @@ export class AllergyMap extends Mapper<AllergyCathalogItem> {
         return allergyOrError.isSuccess ? allergyOrError.getValue() : null;
     }
 
-    public static toPersistence (allergy: AllergyCathalogItem): any {
+    public static toPersistence (allergy: AllergyCatalogItem): any {
         return {
             domainId: allergy.id.toString(),
             name: allergy.name
