@@ -2,16 +2,15 @@ import { AggregateRoot } from "../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 import { Result } from "../core/logic/Result";
 import { MedicalRecordId } from "./medicalRecordId";
-import { AllergyCathalogItem } from "./allergyCathalogItem";
 import { MedicalCondition } from "./medicalCondition";
-
+import { Allergy} from "./allergy";
 import  IMedicalRecordDTO  from "../dto/IMedicalRecordDTO";
 
 
 
 interface MedicalRecordProps {
     patientId: string;
-    allergies: AllergyCathalogItem[];
+    allergies: Allergy[];
     medicalConditions: MedicalCondition[];
   }
 
@@ -28,7 +27,7 @@ export class MedicalRecord extends AggregateRoot<MedicalRecordProps> {
         return this.props.patientId;
     }
 
-    get allergies (): AllergyCathalogItem[] {
+    get allergies (): Allergy[] {
         return this.props.allergies;
     }
 

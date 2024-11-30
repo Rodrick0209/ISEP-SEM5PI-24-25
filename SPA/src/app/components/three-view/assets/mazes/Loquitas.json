@@ -1,7 +1,7 @@
 {
     "groundTextureUrl": "./assets/textures/ground.jpg",
     "wallTextureUrl": "./assets/textures/wall.jpg",
-    "size": { "width": 14, "height": 14 },
+    "size": { "width": 14, "height": 15 },
     "map": [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 1, 0],
@@ -40,14 +40,11 @@
                 },
             "beds" :
                 {
-                    "position" : [1, 2.2],
-                    "direction" : "west"
+                    "position" : [1.15, 2.2],
+                    "direction" : "south"
                 },
             "doctors" : [
-                {
-                    "position" : [3.5, 2.2],
-                    "direction" : "west"
-                }
+                
             ],
             "isOccupied" : false ,
             "tableSurgery": 
@@ -69,8 +66,8 @@
                 },
             "beds" :
                 {
-                    "position" : [1, 5.2],
-                    "direction" : "west"
+                    "position" : [1.15, 5.2],
+                    "direction" : "south"
                 },
             "doctors" : [
                 
@@ -96,8 +93,8 @@
                 },
             "beds" :
                 {
-                    "position" : [1, 8.2],
-                    "direction" : "west"
+                    "position" : [1.15, 8.2],
+                    "direction" : "south"
                 },
             "doctors" : [
                 
@@ -123,8 +120,8 @@
                 },
             "beds" :
                 {
-                    "position" : [1, 11.2],
-                    "direction" : "west"
+                    "position" : [1.15, 11.2],
+                    "direction" : "south"
                 },
             "doctors" : [
                 
@@ -151,7 +148,7 @@
             "beds" :
                 {
                     "position" : [7.2, 2],
-                    "direction" : "west"
+                    "direction" : "south"
                 },
             "doctors" : [
                 
@@ -177,7 +174,7 @@
             "beds" :
                 {
                     "position" : [7.2, 5],
-                    "direction" : "west"
+                    "direction" : "south"
                 },
             "doctors" : [
                 
@@ -202,8 +199,8 @@
                 },
             "beds" :
                 {
-                    "position" : [12.5, 5.5],
-                    "direction" : "east"
+                    "position" : [12.8, 5.5],
+                    "direction" : "north"
                 },
             "doctors" : [
                 
@@ -211,7 +208,7 @@
             "isOccupied" : false ,  
             "tableSurgery": 
                 {
-                    "position" : [13, 6],
+                    "position" : [12.8, 6],
                     "direction" : "south"
                 } 
         },
@@ -228,8 +225,8 @@
                 },
             "beds" :
                 {
-                    "position" : [12.5, 2.5],
-                    "direction" : "east"
+                    "position" : [12.8, 2.5],
+                    "direction" : "north"
                 },
             "doctors" : [
                 
@@ -237,7 +234,7 @@
             "isOccupied" : false ,  
             "tableSurgery": 
                 {
-                    "position" : [13, 3],
+                    "position" : [12.8, 3],
                     "direction" : "south"
                 } 
         },
@@ -254,8 +251,8 @@
                 },
             "beds" :
                 {
-                    "position" : [11.5, 12.2],
-                    "direction" : "north"
+                    "position" : [11.3, 12.2],
+                    "direction" : "west"
                 },
             "doctors" : [
                 
@@ -263,7 +260,7 @@
             "isOccupied" : false ,  
             "tableSurgery": 
                 {
-                    "position" : [11.2, 12.3],
+                    "position" : [10.8, 12.3],
                     "direction" : "east"
                 } 
         },
@@ -280,8 +277,8 @@
                 },
             "beds" :
                 {
-                    "position" : [7.8, 12.2],
-                    "direction" : "north"
+                    "position" : [8, 12.2],
+                    "direction" : "west"
                 },
             "doctors" : [
                 
@@ -289,7 +286,7 @@
             "isOccupied" : false ,
             "tableSurgery": 
                 {
-                    "position" : [7.5, 12.3],
+                    "position" : [7.4, 12.3],
                     "direction" : "east"
                 } 
         }
