@@ -1,9 +1,9 @@
 import { Service, Inject } from 'typedi';
 import config from "../../config";
 import IAllergyCathalogItemDTO from '../dto/IAllergyCatalogItemDTO';
-import { AllergyCathalogItem } from "../domain/allergyCathalogItem";
+import { AllergyCatalogItem } from "../domain/allergyCatalogItem";
 import { Result } from "../core/logic/Result";
-import { AllergyMap } from '../mappers/AllergyMap';
+import { AllergyCatalogMap } from '../mappers/AllergyCatalogMap';
 import IAllergyCatalogService from './IServices/IAllergyCatalogService';
 import IAllergyCatalogRepo from './IRepos/IAllergyCatalogRepo';
 
@@ -15,7 +15,7 @@ export default class AllergyCatalogService implements IAllergyCatalogService {
 
     public async createAllergyCatalogItem(allergyDTO: IAllergyCathalogItemDTO): Promise<Result<IAllergyCathalogItemDTO>> {
         try {
-            const allergyOrError = await AllergyCathalogItem.create(allergyDTO);
+            const allergyOrError = await AllergyCatalogItem.create(allergyDTO);
 
             if (allergyOrError.isFailure) {
                 return Result.fail<IAllergyCathalogItemDTO>(allergyOrError.errorValue());
@@ -25,7 +25,7 @@ export default class AllergyCatalogService implements IAllergyCatalogService {
 
             await this.allergyRepo.save(allergyResult);
 
-            const allergyDTOResult = AllergyMap.toDTO(allergyResult) as IAllergyCathalogItemDTO;
+            const allergyDTOResult = AllergyCatalogMap.toDTO(allergyResult) as IAllergyCathalogItemDTO;
             return Result.ok<IAllergyCathalogItemDTO>(allergyDTOResult);
         } catch (e) {
             throw e;
@@ -41,7 +41,7 @@ export default class AllergyCatalogService implements IAllergyCatalogService {
                 return Result.fail<IAllergyCathalogItemDTO[]>("No allergies found");
             }
 
-            const allergiesDTO =  allAllergies.map(allergy => AllergyMap.toDTO(allergy) as IAllergyCathalogItemDTO);
+            const allergiesDTO =  allAllergies.map(allergy => AllergyCatalogMap.toDTO(allergy) as IAllergyCathalogItemDTO);
             
             return Result.ok<IAllergyCathalogItemDTO[]>(allergiesDTO);
         } catch (e) {
