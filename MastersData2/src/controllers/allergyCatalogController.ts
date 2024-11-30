@@ -41,7 +41,7 @@ export default class AllergyCatalogController extends BaseController implements 
     };
 
 
-    public async getAllAllergies(req: Request, res: Response, next: NextFunction) {
+    public async getAllAllergiesItemCatalog(req: Request, res: Response, next: NextFunction) {
         try {
             const allergiesOrError = await this.allergyServiceInstance.listAllergiesCatalogItems() as Result<IAllergyCathalogItemDTO[]>;
             
@@ -64,7 +64,7 @@ export default class AllergyCatalogController extends BaseController implements 
         if (req.method === 'POST') {
           await this.createAllergyCatalogItem(req, res, () => {});
         } else if (req.method === 'GET') {
-          await this.getAllAllergies(req, res, () => {});
+          await this.getAllAllergiesItemCatalog(req, res, () => {});
         } else {
           res.status(405).send('Method Not Allowed');
         }
