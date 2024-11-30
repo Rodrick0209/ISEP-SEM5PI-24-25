@@ -55,7 +55,7 @@ export default class ThumbRaiser {
     this.onLoad = async function (description) {
       rooms = description.rooms;
       const apiUrl = "https://localhost:5001/api/OperationRoom/OccupiedRooms";
-      
+
       // Construct the URL with date and time as query parameters
       const urlWithParams = `${apiUrl}?date=${date.date}&time=${time.time}`;
 
@@ -118,7 +118,7 @@ export default class ThumbRaiser {
         tablesSurgeryDataParameters
       );
       // Create a 2D scene (the viewports frames)
-      this.scene2D = new THREE.Scene();
+      //this.scene2D = new THREE.Scene();
 
       // Create a square
       let points = [
@@ -130,8 +130,9 @@ export default class ThumbRaiser {
       let geometry = new THREE.BufferGeometry().setFromPoints(points);
       const material = new THREE.LineBasicMaterial({ color: 0xffffff });
       this.square = new THREE.LineLoop(geometry, material);
-      this.scene2D.add(this.square);
+      //this.scene2D.add(this.square);
 
+      /*
       // Create the camera corresponding to the 2D scene
       this.camera2D = new THREE.OrthographicCamera(
         0.0,
@@ -141,6 +142,7 @@ export default class ThumbRaiser {
         0.0,
         1.0
       );
+      */
 
       // Create a 3D scene (the game itself)
       this.scene3D = new THREE.Scene();
@@ -1276,8 +1278,8 @@ export default class ThumbRaiser {
           viewport.height
         );
         this.renderer.render(this.scene3D, camera.object);
-        this.renderer.render(this.scene2D, this.camera2D);
-        this.renderer.clearDepth();
+        //this.renderer.render(this.scene2D, this.camera2D);
+        //this.renderer.clearDepth();
       }
     }
   }

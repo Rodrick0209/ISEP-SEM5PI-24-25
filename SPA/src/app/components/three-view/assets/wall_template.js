@@ -17,26 +17,49 @@ export default class Wall {
         texture.magFilter = THREE.LinearFilter;
         texture.minFilter = THREE.TrilinearFilter;
 
-        // Cria um grupo de objetos
+        // Create a group for the wall object
         this.object = new THREE.Group();
 
-        // Frente
-        let geometry = new THREE.PlaneGeometry(1, 1.5); // Reduzido para 1.5 em Y
+        // Top Part (White)
+        let geometry = new THREE.PlaneGeometry(1, 1); // 1/3 of the total height
         let material = new THREE.MeshPhongMaterial({ color: 0xffffff, map: texture });
-        let face = new THREE.Mesh(geometry, material);
-        face.position.set(0.0, 0.0, 0.025);
-        this.object.add(face);
+        let topFace = new THREE.Mesh(geometry, material);
+        topFace.position.set(0.0, 0.33, 0.025); // Position at the top part
+        this.object.add(topFace);
 
-        // Traseira
-        face = new THREE.Mesh().copy(face, false);
+        // Middle Part (Blue line)
+        geometry = new THREE.PlaneGeometry(1, 0.2); // 1/3 of the total height
+        material = new THREE.MeshPhongMaterial({ color: 0x68B5E3 }); // Blue color
+        let middleFace = new THREE.Mesh(geometry, material);
+        middleFace.position.set(0.0, 0.0, 0.04); // Position in the middle
+        this.object.add(middleFace);
+
+        // Bottom Part (White)
+        geometry = new THREE.PlaneGeometry(1, 1); // 1/3 of the total height
+        material = new THREE.MeshPhongMaterial({ color: 0xffffff, map: texture });
+        let bottomFace = new THREE.Mesh(geometry, material);
+        bottomFace.position.set(0.0, -0.33, 0.025); // Position at the bottom part
+        this.object.add(bottomFace);
+
+        let face = new THREE.Mesh().copy(topFace, false);
         face.rotation.y = Math.PI;
-        face.position.set(0.0, 0.0, -0.025);
+        face.position.set(0.0, 0.33, -0.025);
         this.object.add(face);
 
-        // Lados Esquerdo e Direito ajustados
+        face = new THREE.Mesh().copy(middleFace, false);
+        face.rotation.y = Math.PI;
+        face.position.set(0.0, 0.0, -0.04);
+        this.object.add(face);
+
+        face = new THREE.Mesh().copy(bottomFace, false);
+        face.rotation.y = Math.PI;
+        face.position.set(0.0, -0.33, -0.025);
+        this.object.add(face);
+
+        // Adjust sides (left and right)
         let points = new Float32Array([
-            -0.5, -0.75, 0.025, // Ajustado para -0.75
-            -0.5, 0.75, 0.025,  // Ajustado para 0.75
+            -0.5, -0.75, 0.025,
+            -0.5, 0.75, 0.025,
             -0.52, 0.75, 0.0,
             -0.52, -0.75, 0.0,
 
@@ -68,22 +91,23 @@ export default class Wall {
         geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
         geometry.setIndex(indices);
         material = new THREE.MeshPhongMaterial({ color: 0xffffff, map: texture });
-        face = new THREE.Mesh(geometry, material);
-        this.object.add(face);
+        
+        let sideFace = new THREE.Mesh(geometry, material);
+        this.object.add(sideFace);
 
-        // Lado Direito
-        face = new THREE.Mesh().copy(face, false);
-        face.rotation.y = Math.PI;
-        this.object.add(face);
+        // Right Side (Duplicate of the side face but rotated 180 degrees)
+        let rightFace = new THREE.Mesh().copy(sideFace, false);
+        rightFace.rotation.y = Math.PI;
+        this.object.add(rightFace);
 
-        // Ajuste do Topo
+        // Top edge adjustment if necessary
         points = new Float32Array([
-            -0.5, 0.75, 0.0,   // Ajustado para 0.75
+            -0.5, 0.75, 0.0,
             -0.48, 0.75, 0.025,
             0.48, 0.75, 0.025,
-            0.5, 0.75, 0.0,    // Ajustado para 0.75
+            0.5, 0.75, 0.0,
             0.48, 0.75, -0.025,
-            -0.48, 0.75, -0.025 // Ajustado para 0.75
+            -0.48, 0.75, -0.025
         ]);
 
         normals = new Float32Array([
@@ -105,7 +129,7 @@ export default class Wall {
         geometry = new THREE.BufferGeometry().setAttribute("position", new THREE.BufferAttribute(points, 3));
         geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
         geometry.setIndex(indices);
-        face = new THREE.Mesh(geometry, material);
-        this.object.add(face);
+        let topEdgeFace = new THREE.Mesh(geometry, material);
+        this.object.add(topEdgeFace);
     }
 }
