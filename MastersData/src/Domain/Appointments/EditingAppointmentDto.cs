@@ -10,7 +10,9 @@ namespace DDDSample1.Domain.Appointments
         public  Guid Id { get; set; }
         public string? OperationRequestId { get; set; }
         public string? OperationRoomId { get; set; }
-        public AppointmentTimeSlotDto? AppointmentTimeSlot { get; set; }
+        public string AppointmentTimeSlotDtoDate { get; set; }
+        public string AppointmentTimeSlotDtoTimeSlotStartMinute { get; set; }
+        public string AppointmentTimeSlotDtoTimeSlotEndMinute { get; set; }
         public string? AppointmentStatus { get; set; }
         
     }

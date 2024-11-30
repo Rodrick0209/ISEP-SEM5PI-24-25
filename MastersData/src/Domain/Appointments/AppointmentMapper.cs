@@ -35,5 +35,19 @@ namespace DDDSample1.Domain.Appointments
                 appointment.OperationRequestId.Value
             );
         }
+
+        public static AppointmentDtoUI ToDtoUI(Appointment appointment, string operationRequestPriority, string operationRequestPatientId, string operationRoomNumber)
+        {
+            AppointmentTimeSlotDto appointmentTimeSlot = AppointmentTimeSlotMapper.ToDto(appointment.AppointmentTimeSlot);
+            // Mapear as propriedades de Appointment para AppointmentDto
+
+            return new AppointmentDtoUI(
+                operationRequestPriority,
+                operationRequestPatientId,
+                appointmentTimeSlot,
+                appointment.AppointmentStatus.ToString(),
+                operationRoomNumber
+            );
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace DDDSample1.Infrastructure.OperationRequests
 
         private readonly DDDSample1DbContext context;
 
-        public OperationRequestRepository(DDDSample1DbContext context):base(context.OperationRequests)
+        public OperationRequestRepository(DDDSample1DbContext context) : base(context.OperationRequests)
         {
             this.context = context;
         }
@@ -29,13 +29,13 @@ namespace DDDSample1.Infrastructure.OperationRequests
         }
 
 
-    
+
         public async Task<List<OperationRequest>> GetAllAsync()
         {
             return await this.context.OperationRequests
                 .ToListAsync();
         }
-    
+
         public async Task<OperationRequest> GetByIdAsync(OperationRequestId id)
         {
             return await this.context.OperationRequests
@@ -68,7 +68,16 @@ namespace DDDSample1.Infrastructure.OperationRequests
             return Task.FromResult(filteredRequests); // Retorna a lista filtrada como uma Task
         }
 
-    
+
+        public async Task<List<OperationRequest>> GetAllWaitingAsync()
+        {
+            return await this.context.OperationRequests
+                .Where(or => or.status == OperationRequestStatus.Waiting)
+                .ToListAsync();
+        }
+
+
+
     }
 
 }
