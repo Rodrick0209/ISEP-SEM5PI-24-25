@@ -40,15 +40,15 @@ export const fogData = {
 
 export const doorData = {
     url: "./assets/models/gltf/door/door.glb",
-    scale: new THREE.Vector3(0.3, 0.312, 0.5),
+    scale: new THREE.Vector3(0.003, 0.00312, 0.005),
     doorDirection: 0.0, // Expressed in degrees
     keyCodes: { open: "KeyQ", close: "KeyA" },
     doorName:""
 }
 
 export const bedData = {
-    url: "./assets/models/gltf/bed/bed.glb",
-    scale: new THREE.Vector3(0.002, 0.0015, 0.0019),
+    url: "./assets/models/gltf/bed/simple_bed/scene.gltf",
+    scale: new THREE.Vector3(0.004, 0.0035, 0.0039),
     bedDirection: 0.0, // Expressed in degrees
     bedName:""
 }
@@ -61,8 +61,8 @@ export const doctorData = {
 
 
 export const bedWithPatientData = {
-    url: "./assets/models/gltf/bed/bedWithPatient.glb",
-    scale: new THREE.Vector3(0.0028, 0.0026, 0.0029),
+    url: "./assets/models/gltf/bed/bed_patient/untitled.gltf",
+    scale: new THREE.Vector3(0.004, 0.0035, 0.0039),
     bedWithPatientDirection: 0.0, // Expressed in degrees
 }
 
