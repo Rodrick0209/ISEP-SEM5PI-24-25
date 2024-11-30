@@ -1,4 +1,4 @@
-import { IAllergyPersistence } from "../../dataschema/IAllergyPersistence";
+import { IAllergyCatalogItemPersistence } from "../../dataschema/IAllergyCatalogItemPersistence";
 import mongoose from 'mongoose';
 
 const AllergyCatalogSchema = new mongoose.Schema(
@@ -11,4 +11,4 @@ const AllergyCatalogSchema = new mongoose.Schema(
     }
     );
 
-export default mongoose.model<IAllergyPersistence & mongoose.Document>('Allergy', AllergyCatalogSchema);
+export default mongoose.model<IAllergyCatalogItemPersistence & mongoose.Document>('AllergyCatalog', AllergyCatalogSchema);

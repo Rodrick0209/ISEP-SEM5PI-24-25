@@ -8,7 +8,7 @@ import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 import { AllergyCathalogItem } from "../domain/allergyCathalogItem";
 
 import IAllergyCathalogItemDTO from '../dto/IAllergyCatalogItemDTO';
-import { IAllergyPersistence } from '../dataschema/IAllergyPersistence';
+import { IAllergyCatalogItemPersistence } from '../dataschema/IAllergyCatalogItemPersistence';
 
 export class AllergyMap extends Mapper<AllergyCathalogItem> {
 
@@ -19,7 +19,7 @@ export class AllergyMap extends Mapper<AllergyCathalogItem> {
         } as IAllergyCathalogItemDTO;
     }
 
-    public static toDomain (allergy: any | Model<IAllergyPersistence & Document>): AllergyCathalogItem {
+    public static toDomain (allergy: any | Model<IAllergyCatalogItemPersistence & Document>): AllergyCathalogItem {
         const allergyOrError = AllergyCathalogItem.create(
             allergy,
             new UniqueEntityID(allergy.domainId)

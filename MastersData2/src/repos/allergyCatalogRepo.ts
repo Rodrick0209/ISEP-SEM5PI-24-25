@@ -2,7 +2,7 @@ import { Service, Inject } from 'typedi';
 
 import { Document, FilterQuery, Model } from 'mongoose';
 
-import { IAllergyPersistence } from '../dataschema/IAllergyPersistence';
+import { IAllergyCatalogItemPersistence } from '../dataschema/IAllergyCatalogItemPersistence';
 
 import IAllergyCatalogRepo from '../services/IRepos/IAllergyCatalogRepo';
 import { AllergyCathalogItem } from '../domain/allergyCathalogItem';
@@ -14,7 +14,7 @@ export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
     private models: any;
 
     constructor(
-        @Inject('allergySchema') private allergySchema: Model<IAllergyPersistence & Document>,
+        @Inject('allergyCatalogSchema') private allergySchema: Model<IAllergyCatalogItemPersistence & Document>,
     ) {}
 
     private createBaseQuery(): any {
@@ -28,7 +28,7 @@ export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
 
         const query = { domainId: idX };
 
-        const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyPersistence & Document>);
+        const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyCatalogItemPersistence & Document>);
 
         return !!allergyDocument === true;
     }
@@ -57,7 +57,7 @@ export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
 
     public async findByAllergyName(name: string): Promise<AllergyCathalogItem> {
         const query = { name: name };
-        const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyPersistence & Document>);
+        const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyCatalogItemPersistence & Document>);
         if (allergyDocument != null) {
             return AllergyMap.toDomain(allergyDocument);
         } else {
@@ -74,7 +74,7 @@ export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
     public async findById(allergyId: AllergyCathalogItemId | string): Promise<AllergyCathalogItem> {
         const idX = allergyId instanceof AllergyCathalogItemId ? (<AllergyCathalogItemId>allergyId).toValue() : allergyId;
         const query = { domainId: idX };
-        const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyPersistence & Document>);
+        const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyCatalogItemPersistence & Document>);
         if (allergyDocument != null) {
             return AllergyMap.toDomain(allergyDocument);
         } else {

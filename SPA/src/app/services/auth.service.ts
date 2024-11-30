@@ -37,6 +37,7 @@ export class AuthService {
   }
   
   saveToken(token: string): void {
+    console.log('Saving login token', token);
     localStorage.setItem('token', token);
     this.loggedIn.next(true); // Atualiza o estado para "logado"
   }

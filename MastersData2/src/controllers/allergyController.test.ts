@@ -8,8 +8,8 @@ import config from "../../config";
 import { Result } from '../core/logic/Result';
 
 
-import IAllergyService from "../services/IServices/IAllergyService";
-import AllergyController from "./allergyController";
+import IAllergyCatalogService from "../services/IServices/IAllergyCatalogService";
+import AllergyCatalogController from "./allergyCatalogController";
 import IAllergyCathalogItemDTO from '../dto/IAllergyCatalogItemDTO';
 
 
@@ -36,9 +36,9 @@ describe('allergy controller', function(){
         allergyServiceInstance = Container.get(config.services.allergy.name); 
         sinon.stub(allergyServiceInstance, "createAllergy").returns( Result.ok<IAllergyCathalogItemDTO>( {"id":"123","name": req.body.name} ));
 
-        const ctrl = new AllergyController(allergyServiceInstance as IAllergyService);
+        const ctrl = new AllergyCatalogController(allergyServiceInstance as IAllergyCatalogService);
 
-        await ctrl.createAllergy(<Request>req, <Response>res, <NextFunction>next);
+        await ctrl.createAllergyCatalogItem(<Request>req, <Response>res, <NextFunction>next);
 
         sinon.assert.calledOnce(res.json);
         sinon.assert.calledWith(res.json, sinon.match({ "name": req.body.name}));

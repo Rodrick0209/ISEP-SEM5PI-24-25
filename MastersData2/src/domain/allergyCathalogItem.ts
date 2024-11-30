@@ -6,12 +6,12 @@ import { AggregateRoot } from "../core/domain/AggregateRoot";
 
 
 
-interface AllergyProps {
+interface AllergyCatalogItemProps {
     name: string;
 }
 
 
-export class AllergyCathalogItem extends AggregateRoot<AllergyProps> {
+export class AllergyCathalogItem extends AggregateRoot<AllergyCatalogItemProps> {
     get id() : UniqueEntityID {
         return this._id;
     }
@@ -25,7 +25,7 @@ export class AllergyCathalogItem extends AggregateRoot<AllergyProps> {
         return this.props.name;
     }
 
-    private constructor (props: AllergyProps, id?: UniqueEntityID) {
+    private constructor (props: AllergyCatalogItemProps, id?: UniqueEntityID) {
         super(props, id);
     }
 

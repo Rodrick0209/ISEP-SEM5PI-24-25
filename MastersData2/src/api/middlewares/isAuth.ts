@@ -1,6 +1,9 @@
 // remove by JRT : import jwt from 'express-jwt';
 var { expressjwt: jwt } = require("express-jwt");
+import { Console } from 'console';
 import config from '../../../config';
+import Logger from '../../loaders/logger';
+
 
 /**
  * We are assuming that the JWT will come in a header with the form
@@ -12,18 +15,18 @@ import config from '../../../config';
  * Luckily this API follow _common sense_ ergo a _good design_ and don't allow that ugly stuff
  */
 const getTokenFromHeader = req => {
-  /**
-   * @TODO Edge and Internet Explorer do some weird things with the headers
-   * So I believe that this should handle more 'edge' cases ;)
-   */
   if (
     (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token') ||
     (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')
   ) {
-    return req.headers.authorization.split(' ')[1];
+    const token = req.headers.authorization.split(' ')[1];
+    Logger.info(`Token found in header: ${token}`);
+    return token;
   }
+  Logger.info("No token found in header");
   return null;
 };
+
 
 const isAuth = jwt({
   secret: config.jwtSecret, // The _secret_ to sign the JWTs

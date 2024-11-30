@@ -4,16 +4,16 @@ import IAllergyCathalogItemDTO from '../dto/IAllergyCatalogItemDTO';
 import { AllergyCathalogItem } from "../domain/allergyCathalogItem";
 import { Result } from "../core/logic/Result";
 import { AllergyMap } from '../mappers/AllergyMap';
-import IAllergyService from './IServices/IAllergyService';
+import IAllergyCatalogService from './IServices/IAllergyCatalogService';
 import IAllergyCatalogRepo from './IRepos/IAllergyCatalogRepo';
 
 @Service()
-export default class AllergyService implements IAllergyService {
+export default class AllergyCatalogService implements IAllergyCatalogService {
     constructor(
-        @Inject(config.repos.allergy.name) private allergyRepo : IAllergyCatalogRepo
+        @Inject(config.repos.allergyCatalog.name) private allergyRepo : IAllergyCatalogRepo
     ) {}
 
-    public async createAllergy(allergyDTO: IAllergyCathalogItemDTO): Promise<Result<IAllergyCathalogItemDTO>> {
+    public async createAllergyCatalogItem(allergyDTO: IAllergyCathalogItemDTO): Promise<Result<IAllergyCathalogItemDTO>> {
         try {
             const allergyOrError = await AllergyCathalogItem.create(allergyDTO);
 
@@ -33,7 +33,7 @@ export default class AllergyService implements IAllergyService {
     }
 
 
-    public async listAllergies(): Promise<Result<IAllergyCathalogItemDTO[]>> {
+    public async listAllergiesCatalogItems(): Promise<Result<IAllergyCathalogItemDTO[]>> {
         try {
             const allAllergies = await this.allergyRepo.findAll();
 
