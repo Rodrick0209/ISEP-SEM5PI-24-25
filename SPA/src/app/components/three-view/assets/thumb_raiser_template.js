@@ -1101,7 +1101,7 @@ export default class ThumbRaiser {
           this.bedWithPatients[i].object.position.set(
             this.bedWithPatients[i].position.x - 0.55,
             this.bedWithPatients[i].position.y + 0.344,
-            this.bedWithPatients[i].position.z + 0.2
+            this.bedWithPatients[i].position.z
           );
           this.bedWithPatients[i].object.rotation.y =
             this.bedWithPatients[i].direction;

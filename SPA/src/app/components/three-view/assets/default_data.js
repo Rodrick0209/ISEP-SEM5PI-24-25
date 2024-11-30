@@ -42,7 +42,6 @@ export const doorData = {
     url: "./assets/models/gltf/door/door.glb",
     scale: new THREE.Vector3(0.003, 0.00312, 0.005),
     doorDirection: 0.0, // Expressed in degrees
-    keyCodes: { open: "KeyQ", close: "KeyA" },
     doorName:""
 }
 
