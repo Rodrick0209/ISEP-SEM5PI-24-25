@@ -10,7 +10,7 @@ import config from "../../../config";
 const route = Router();
 
 export default (app: Router) => {
-  app.use('/allergies', route);
+  app.use('/allergiesCatalog', route);
 
   const ctrl = Container.get(config.controllers.allergyCatalog.name) as IAllergyCatalogController;
 
@@ -24,6 +24,6 @@ export default (app: Router) => {
 
 
 
-  route.get('/getAll',
-    (req, res, next) => ctrl.getAllAllergies(req, res, next));
+  route.get('/getAll', isAuth,
+    (req, res, next) => ctrl.getAllAllergiesItemCatalog(req, res, next));
 }
