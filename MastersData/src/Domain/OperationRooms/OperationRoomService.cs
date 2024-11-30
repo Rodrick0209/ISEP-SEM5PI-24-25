@@ -22,5 +22,16 @@ namespace DDDSample1.Domain.OperationRooms
         }
 
 
+        public async Task<OperationRoomDto> GetByIdAsync(OperationRoomId id)
+        {
+
+            var app = await _operationRoomRepository.GetByIdAsync(id);
+
+            return app == null ? null : OperationRoomMapper.ToDTO(app);
+
+        }
+
+
+
     }
 }
