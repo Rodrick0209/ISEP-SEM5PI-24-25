@@ -5,7 +5,7 @@ import Logger from './logger';
 
 import config from '../../config';
 import path from 'path';
-import allergySchema from '../persistence/schemas/allergySchema';
+import allergyCatalogSchema from '../persistence/schemas/allergyCatalogSchema';
 
 export default async ({ expressApp }) => {
   const mongoConnection = await mongooseLoader();
@@ -17,9 +17,9 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/userSchema',
   };
 
-  const allergySchema = {
-    name: 'allergySchema',
-    schema: '../persistence/schemas/allergySchema',
+  const allergyCatalogSchema = {
+    name: 'allergyCatalogSchema',
+    schema: '../persistence/schemas/allergyCatalogSchema',
   };
 
 
@@ -50,19 +50,19 @@ export default async ({ expressApp }) => {
     path: config.services.role.path
   }
 
-  const allergyController = {
-    name: config.controllers.allergy.name,
-    path: config.controllers.allergy.path
+  const allergyCatalogController = {
+    name: config.controllers.allergyCatalog.name,
+    path: config.controllers.allergyCatalog.path
   }
 
-  const allergyRepo = {
-    name: config.repos.allergy.name,
-    path: config.repos.allergy.path
+  const allergyCatalog = {
+    name: config.repos.allergyCatalog.name,
+    path: config.repos.allergyCatalog.path
   }
 
-  const allergyService = {
-    name: config.services.allergy.name,
-    path: config.services.allergy.path
+  const allergyCatalogService = {
+    name: config.services.allergyCatalog.name,
+    path: config.services.allergyCatalog.path
   }
 
 
@@ -72,20 +72,20 @@ export default async ({ expressApp }) => {
     schemas: [
       userSchema,
       roleSchema,
-      allergySchema
+      allergyCatalogSchema
     ],
     controllers: [
       roleController,
-      allergyController
+      allergyCatalogController
     ],
     repos: [
       roleRepo,
       userRepo,
-      allergyRepo
+      allergyCatalog
     ],
     services: [
       roleService,
-      allergyService
+      allergyCatalogService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

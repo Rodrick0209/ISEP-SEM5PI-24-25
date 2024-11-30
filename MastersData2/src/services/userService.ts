@@ -158,9 +158,6 @@ export default class UserService implements IUserService{
         id: id,
         email: email, // We are gonna use this in the middleware 'isAuth'
         role: role,
-        firstName: firstName,
-        lastName: lastName,
-        exp: exp.getTime() / 1000,
       },
       config.jwtSecret,
     );

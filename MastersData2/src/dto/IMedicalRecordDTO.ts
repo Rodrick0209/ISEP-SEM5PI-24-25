@@ -1,8 +1,8 @@
-import { Allergy } from "../domain/allergy";
+import { AllergyCathalogItem } from "../domain/allergyCathalogItem";
 import { MedicalCondition } from "../domain/medicalCondition";
 
 export default interface IMedicalRecordDTO {
     patientId: string;
-    allergies: Allergy[];
+    allergies: AllergyCathalogItem[];
     medicalConditions: MedicalCondition[]
 }

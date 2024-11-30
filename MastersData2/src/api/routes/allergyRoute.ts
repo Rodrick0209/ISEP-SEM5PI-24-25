@@ -4,7 +4,7 @@ import { celebrate, Joi } from 'celebrate';
 import { Container } from 'typedi';
 
 import IAllergyController from '../../controllers/IControllers/IAllergyController';
-
+import isAuth from '../middlewares/isAuth';
 import config from "../../../config";
 
 const route = Router();
@@ -12,15 +12,15 @@ const route = Router();
 export default (app: Router) => {
   app.use('/allergies', route);
 
-  const ctrl = Container.get(config.controllers.allergy.name) as IAllergyController;
+  const ctrl = Container.get(config.controllers.allergyCatalog    .name) as IAllergyController;
 
-  route.post('/create',
+  route.post('/create', isAuth,
     celebrate({
       body: Joi.object({
         name: Joi.string().required()
       })
     }),
-    (req, res, next) => ctrl.createAllergy(req, res, next) );
+    (req, res, next) => ctrl.createAllergyCatalogItem(req, res, next) );
 
 
 

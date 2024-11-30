@@ -1,5 +1,5 @@
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 
-export class AllergyId extends UniqueEntityID {
+export class AllergyCathalogItemId extends UniqueEntityID {
     
 }

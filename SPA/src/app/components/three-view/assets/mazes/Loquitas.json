@@ -1,7 +1,7 @@
 {
     "groundTextureUrl": "./assets/textures/ground.jpg",
     "wallTextureUrl": "./assets/textures/wall.jpg",
-    "size": { "width": 14, "height": 15 },
+    "size": { "width": 14, "height": 14 },
     "map": [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 1, 0],
@@ -41,7 +41,7 @@
             "beds" :
                 {
                     "position" : [1, 2.2],
-                    "direction" : "south"
+                    "direction" : "west"
                 },
             "doctors" : [
                 {
@@ -70,7 +70,7 @@
             "beds" :
                 {
                     "position" : [1, 5.2],
-                    "direction" : "south"
+                    "direction" : "west"
                 },
             "doctors" : [
                 
@@ -97,7 +97,7 @@
             "beds" :
                 {
                     "position" : [1, 8.2],
-                    "direction" : "south"
+                    "direction" : "west"
                 },
             "doctors" : [
                 
@@ -124,7 +124,7 @@
             "beds" :
                 {
                     "position" : [1, 11.2],
-                    "direction" : "south"
+                    "direction" : "west"
                 },
             "doctors" : [
                 
@@ -151,7 +151,7 @@
             "beds" :
                 {
                     "position" : [7.2, 2],
-                    "direction" : "south"
+                    "direction" : "west"
                 },
             "doctors" : [
                 
@@ -177,7 +177,7 @@
             "beds" :
                 {
                     "position" : [7.2, 5],
-                    "direction" : "south"
+                    "direction" : "west"
                 },
             "doctors" : [
                 
@@ -203,7 +203,7 @@
             "beds" :
                 {
                     "position" : [12.5, 5.5],
-                    "direction" : "north"
+                    "direction" : "east"
                 },
             "doctors" : [
                 
@@ -229,7 +229,7 @@
             "beds" :
                 {
                     "position" : [12.5, 2.5],
-                    "direction" : "north"
+                    "direction" : "east"
                 },
             "doctors" : [
                 
@@ -255,7 +255,7 @@
             "beds" :
                 {
                     "position" : [11.5, 12.2],
-                    "direction" : "west"
+                    "direction" : "north"
                 },
             "doctors" : [
                 
@@ -281,7 +281,7 @@
             "beds" :
                 {
                     "position" : [7.8, 12.2],
-                    "direction" : "west"
+                    "direction" : "north"
                 },
             "doctors" : [
                 

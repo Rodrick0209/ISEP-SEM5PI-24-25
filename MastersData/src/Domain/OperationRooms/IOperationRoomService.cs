@@ -14,7 +14,7 @@ namespace DDDSample1.Domain.OperationRooms
 
         Task<List<OperationRoom>> GetAllAsync();
 
-        Task<List<OperationRoom>> GetOccupiedAsync(DateOnly date, TimeOnly time);
+
     }
 
 

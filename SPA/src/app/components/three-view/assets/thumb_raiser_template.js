@@ -29,7 +29,34 @@ import Doctor from "./doctor.js";
 import BedWithPatient from "./bedWithPatient.js";
 import SurgeryTable from "./surgeryTable.js";
 
-let rooms = null;
+async function updateRoomOccupancy(apiUrl, rooms) {
+  try {
+    // Fetch data from the backend API
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    // Check if there are any appointments happening
+    if (data.length === 0) {
+      // If no appointments are happening, set all rooms as unoccupied
+      rooms.forEach((room) => {
+        room.isOccupied = false;
+      });
+    } else {
+      // If there are appointments happening, update the occupancy based on the appointments
+      rooms.forEach((room) => {
+        // Find if there's an appointment for this room
+        const appointment = data.find((a) => a.operationRoom === room.name);
+        if (appointment) {
+          room.isOccupied = true;
+        } else {
+          room.isOccupied = false;
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching room occupancy data:", error);
+  }
+}
 
 export default class ThumbRaiser {
   constructor(
@@ -48,9 +75,7 @@ export default class ThumbRaiser {
     bedParameters,
     doctorParameters,
     bedWithPatientParameters,
-    tablesSurgeryDataParameters,
-    date,
-    time
+    tablesSurgeryDataParameters
   ) {
     this.onLoad = async function (description) {
       rooms = description.rooms;
@@ -59,12 +84,7 @@ export default class ThumbRaiser {
       // Construct the URL with date and time as query parameters
       const urlWithParams = `${apiUrl}?date=${date.date}&time=${time.time}`;
 
-      const response = await fetch(urlWithParams);
-
-      const data = await response.json();
-      await this.updateRoomOccupancy(data);
-
-      for (const room of rooms) {
+      for (const room of description.rooms) {
         console.log("Description: " + room.name + " " + room.isOccupied);
       }
 
@@ -146,7 +166,8 @@ export default class ThumbRaiser {
 
       // Create a 3D scene (the game itself)
       this.scene3D = new THREE.Scene();
-      this.scene3D.background = new THREE.Color(0xc8c8c8); // Set the background color to sky blue
+      this.scene3D.background = new THREE.Color(0xC8C8C8); // Set the background color to sky blue
+
 
       this.doors = [];
 
@@ -345,6 +366,8 @@ export default class ThumbRaiser {
       this.statistics.dom.style.visibility = "hidden";
       document.body.appendChild(this.statistics.dom);
 
+      
+
       // Create a renderer and attach it to the canvas element
       this.renderer = new THREE.WebGLRenderer({
         antialias: true,
@@ -355,6 +378,16 @@ export default class ThumbRaiser {
       }
       this.renderer.autoClear = false;
       this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+      // Show the loading message
+      const loadingMessage = document.getElementById("loading-message");
+      loadingMessage.style.display = "block";
+
+      // Simulate loading process (replace with actual loading logic)
+      setTimeout(() => {
+
+        loadingMessage.style.display = "none";
+      }, 5000); // Simulate a 3-second loading time
 
       // Set the mouse move action (none)
       this.dragMiniMap = false;
@@ -378,10 +411,9 @@ export default class ThumbRaiser {
       this.zoom.step = 0.1;
       this.reset = document.getElementById("reset");
       this.resetAll = document.getElementById("reset-all");
-      //this.helpPanel = document.getElementById("help-panel");
-      //this.helpPanel.style.visibility = "hidden";
-      //this.subwindowsPanel = document.getElementById("subwindows-panel");
-      /*
+      this.helpPanel = document.getElementById("help-panel");
+      this.helpPanel.style.visibility = "hidden";
+      this.subwindowsPanel = document.getElementById("subwindows-panel");
       this.multipleViewsCheckBox = document.getElementById("multiple-views");
       this.multipleViewsCheckBox.checked = false;
       this.userInterfaceCheckBox = document.getElementById("user-interface");
@@ -390,16 +422,15 @@ export default class ThumbRaiser {
       this.helpCheckBox.checked = false;
       this.statisticsCheckBox = document.getElementById("statistics");
       this.statisticsCheckBox.checked = false;
-      */
 
       // Build the help panel
-      //this.buildHelpPanel();
+      this.buildHelpPanel();
 
       // Set the active view camera (fixed view)
       this.setActiveViewCamera(this.fixedViewCamera);
 
       // Arrange viewports by view mode
-      this.arrangeViewports(false);
+      this.arrangeViewports(this.multipleViewsCheckBox.checked);
 
       // Register the event handler to be called on window resize
       window.addEventListener("resize", (event) => this.windowResize(event));
@@ -458,7 +489,6 @@ export default class ThumbRaiser {
       this.zoom.addEventListener("change", (event) =>
         this.elementChange(event)
       );
-      /*
       this.multipleViewsCheckBox.addEventListener("change", (event) =>
         this.elementChange(event)
       );
@@ -471,7 +501,6 @@ export default class ThumbRaiser {
       this.statisticsCheckBox.addEventListener("change", (event) =>
         this.elementChange(event)
       );
-      */
 
       // Register the event handler to be called on input button click
       this.reset.addEventListener("click", (event) => this.buttonClick(event));
@@ -591,16 +620,16 @@ export default class ThumbRaiser {
     let viewport;
     // Check if the pointer is over the remaining camera viewports
     let cameras;
-    /*if (this.multipleViewsCheckBox.checked) {
+    if (this.multipleViewsCheckBox.checked) {
       cameras = [
         this.fixedViewCamera,
         //this.firstPersonViewCamera,
         //this.thirdPersonViewCamera,
         this.topViewCamera,
       ];
-    } else {*/
-    cameras = [this.activeViewCamera];
-    //}
+    } else {
+      cameras = [this.activeViewCamera];
+    }
     for (const camera of cameras) {
       viewport = camera.getViewport();
       if (this.pointerIsOverViewport(pointer, viewport)) {
@@ -620,7 +649,7 @@ export default class ThumbRaiser {
   setUserInterfaceVisibility(visible) {
     this.userInterfaceCheckBox.checked = visible;
     this.viewsPanel.style.visibility = visible ? "visible" : "hidden";
-    //this.subwindowsPanel.style.visibility = visible ? "visible" : "hidden";
+    this.subwindowsPanel.style.visibility = visible ? "visible" : "hidden";
     this.userInterface.setVisibility(visible);
   }
 
@@ -640,7 +669,7 @@ export default class ThumbRaiser {
   setHelpVisibility(visible) {
     // Hidden: false; visible: true
     this.helpCheckBox.checked = visible;
-    this.helpPanel.style.visibility = "hidden";
+    this.helpPanel.style.visibility = visible ? "visible" : "hidden";
   }
 
   setStatisticsVisibility(visible) {
@@ -689,7 +718,7 @@ export default class ThumbRaiser {
       if (event.code == this.player.keyCodes.fixedView && state) {
         // Select fixed view
         this.setActiveViewCamera(this.fixedViewCamera);
-        /*} else if (event.code == this.player.keyCodes.firstPersonView && state) {
+      /*} else if (event.code == this.player.keyCodes.firstPersonView && state) {
         // Select first-person view
         this.setActiveViewCamera(this.firstPersonViewCamera);
       } else if (event.code == this.player.keyCodes.thirdPersonView && state) {
@@ -969,36 +998,6 @@ export default class ThumbRaiser {
     );
   }
 
-  async updateRoomOccupancy(apiUrl) {
-    try {
-      const data = apiUrl;
-      console.log(data);
-
-      // Check if there are any appointments happening
-      if (data.length === 0) {
-        // If no appointments are happening, set all rooms as unoccupied
-        rooms.forEach((room) => {
-          room.isOccupied = false;
-        });
-      } else {
-        // If there are appointments happening, update the occupancy based on the appointments
-        rooms.forEach((room) => {
-          // Find if there's an appointment for this room
-          const roomData = data.find(
-            (apiRoom) => apiRoom.roomNumber === room.name
-          );
-          if (roomData) {
-            room.isOccupied = true;
-          } else {
-            room.isOccupied = false;
-          }
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching room occupancy data:", error);
-    }
-  }
-
   update() {
     if (!this.gameRunning) {
       const allDoorsLoaded =
@@ -1258,16 +1257,16 @@ export default class ThumbRaiser {
                 this.scene3D... = ...;
             } */
       let cameras;
-      /*if (this.multipleViewsCheckBox.checked) {
+      if (this.multipleViewsCheckBox.checked) {
         cameras = [
           this.fixedViewCamera,
           //this.firstPersonViewCamera,
           //this.thirdPersonViewCamera,
           this.topViewCamera,
         ];
-      } else { */
-      cameras = [this.activeViewCamera];
-      //}
+      } else {
+        cameras = [this.activeViewCamera];
+      }
       for (const camera of cameras) {
         //this.player.object.visible = camera != this.firstPersonViewCamera;
         const viewport = camera.getViewport();

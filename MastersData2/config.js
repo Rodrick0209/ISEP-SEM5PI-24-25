@@ -27,7 +27,11 @@ export default {
   /**
    * Your secret sauce
    */
-  jwtSecret: process.env.JWT_SECRET || "my sakdfho2390asjod$%jl)!sdjas0i secret",
+  jwtSecret: "AMinhaChaveSecretaComMinimo16Caracteres",
+  jwtIssuer: "MyApplication", // Adicione o issuer configurado no backend 1
+  jwtAudience: "MyApplication", // Adicione o audience configurado no backend 1
+
+
 
   /**
    * Used by winston logger
@@ -48,9 +52,9 @@ export default {
       name: "RoleController",
       path: "../controllers/roleController"
     },
-    allergy: {
-      name: "AllergyController",
-      path: "../controllers/allergyController"
+    allergyCatalog: {
+      name: "AllergyCatalogController",
+      path: "../controllers/allergyCatalogController"
     }
   },
 
@@ -63,9 +67,9 @@ export default {
       name: "UserRepo",
       path: "../repos/userRepo"
     },
-    allergy: {
-      name: "AllergyRepo",
-      path: "../repos/allergyRepo"
+    allergyCatalog: {
+      name: "AllergyCatalogRepo",
+      path: "../repos/allergyCatalogRepo"
     }
   },
 
@@ -74,9 +78,9 @@ export default {
       name: "RoleService",
       path: "../services/roleService"
     },
-    allergy: {
-        name: "AllergyService",
-        path: "../services/allergyService"
+    allergyCatalog: {
+        name: "AllergyCatalogService",
+        path: "../services/allergyCatalogService"
     }
   }
 };

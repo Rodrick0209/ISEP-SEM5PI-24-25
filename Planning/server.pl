@@ -16,6 +16,7 @@
 :- set_setting(http:cors, [*]).
 
 :- consult('getInfoFromBd').
+:- consult('saveInfoInBd').
 :- consult('algorithm').
 
 % Definição dos handlers
@@ -59,36 +60,47 @@ convert_assignments_to_json([(DoctorId, Assignments) | Tail], [json{doctorId: Do
     convert_tuples_to_json(Assignments, AssignmentsJson),
     convert_assignments_to_json(Tail, JsonTail).
 
-% Handler para a rota /planning/getSchedule
 getSchedule(Request) :-
     set_cors_headers,
     (   member(method(options), Request) ->
-        format('~n')  % Responde OPTIONS com cabeçalhos CORS
-    ;   
-        % Processa requisições normais
+        format('~n')  % Responds to OPTIONS with CORS headers
+    ;   % Process normal requests
         http_parameters(Request, 
             [ 
                 day(Day, [number]),
                 room(Room, [atom])
             ]
         ),
-    
-        (   obtain_better_sol(Room, Day, X, _, Z) ->
-            % Verifica se o valor de Z é 1441
+
+        % Call predicates to retrieve data
+        doctorSchedules,
+        surgeryTypes,
+        surgeries,
+        operationRooms,
+
+        (   obtain_better_sol(Room, Day, Appointments, _, Z) ->
+            % Check if the value of Z is 1441
             (   Z = 1441 ->
                 reply_json(json([
                     error="Invalid scheduling value (Z = 1441)",
                     day=Day,
                     room=Room
                 ]), [status(400)])
-            ;   % Caso o valor de Z não seja 1441, retorna a resposta normal
-                convert_tuples_to_json(X, XJson),
-                reply_json(json([
-                    room=Room,
-                    day=Day,
-                    agOpRoomBetter=XJson,
-                    tFinOp=Z
-                ]))
+            ;   % If scheduling is successful, save to the database and respond
+                (   saveAppointment(Room, Day, Appointments) ->
+                    reply_json(json([
+                        room=Room,
+                        day=Day,
+                        agOpRoomBetter=Appointments,
+                        tFinOp=Z
+                    ]))
+                ;   % Handle failure during saving
+                    reply_json(json([
+                        error="Failed to save appointments",
+                        day=Day,
+                        room=Room
+                    ]), [status(500)])
+                )
             )
         ;   reply_json(json([
                 error="No better solution found",
@@ -98,36 +110,51 @@ getSchedule(Request) :-
         )
     ).
 
+% Handler for the route /planning/getHeuristicSchedule
 getHeuristicSchedule(Request) :-
     set_cors_headers,
     (   member(method(options), Request) ->
-        format('~n')  % Responde OPTIONS com cabeçalhos CORS
-    ;   
-        % Processa requisições normais
+        format('~n')  % Responds to OPTIONS with CORS headers
+    ;   % Process normal requests
         http_parameters(Request, 
             [ 
                 day(Day, [number]),
                 room(Room, [atom])
             ]
         ),
-        % Chama a heurística para agendar as cirurgias
+
+        % Call predicates to retrieve data
+        doctorSchedules,
+        surgeryTypes,
+        surgeries,
+        operationRooms,
+
+        % Call heuristic scheduling logic
         (   schedule_all_surgeriesHeuristic(Room, Day) ->
-            % Caso o agendamento seja bem-sucedido, tenta agendar a operação
-            (   agenda_operation_room1(Room, Day, X) ->
-                % Converte X para JSON e responde com o agendamento
-                convert_tuples_to_json(X, XJson),
-                reply_json(json([
-                    room=Room,
-                    day=Day,
-                    agOpRoomBetter=XJson
-                ]))
+            % If heuristic succeeds, attempt to assign surgeries to the room
+            (   agenda_operation_room1(Room, Day, Appointments) ->
+                % Save appointments to the database
+                (   saveAppointment(Room, Day, Appointments) ->
+                    % Respond with the scheduled appointments
+                    reply_json(json([
+                        room=Room,
+                        day=Day,
+                        agOpRoomBetter=Appointments
+                    ]))
+                ;   % Handle failure during saving
+                    reply_json(json([
+                        error="Failed to save appointments",
+                        day=Day,
+                        room=Room
+                    ]), [status(500)])
+                )
             ;   reply_json(json([
                     error="Solution not found, try scheduling to another day",
                     day=Day,
                     room=Room
                 ]), [status(404)])
             )
-        ;   % Caso o schedule_all_surgeriesHeuristic falhe
+        ;   % If heuristic scheduling fails
             reply_json(json([
                 error="Heuristic scheduling failed, try another room or day",
                 day=Day,
@@ -135,10 +162,6 @@ getHeuristicSchedule(Request) :-
             ]), [status(404)])
         )
     ).
-
-
-
-
 
 % Predicado de teste para depuração
 testPredicate :-

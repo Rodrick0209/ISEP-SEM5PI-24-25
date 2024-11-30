@@ -76,7 +76,6 @@ namespace DDDSample1.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "doctor")]
         public async Task<ActionResult<AppointmentDto>> Create(CreatingAppointmentDto dto)
         {
 
@@ -91,6 +90,28 @@ namespace DDDSample1.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
 
+        }
+
+        
+        [HttpPut("{id}")]
+        [Authorize(Roles = "doctor")]
+        public async Task<ActionResult<AppointmentDto>> Update(EditingAppointmentDto dto, Guid id)
+        {
+            if (id != dto.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var app = await _service.UpdateAsync(dto);
+
+                return Ok(app);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]

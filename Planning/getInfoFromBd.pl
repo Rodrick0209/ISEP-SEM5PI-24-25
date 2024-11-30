@@ -13,6 +13,7 @@
 :- dynamic surgery/4.        % Declare the surgery/4 predicate as dynamic
 :- dynamic surgery_id/2.     % Declare the surgery_id/2 predicate as dynamic
 :- dynamic assignment_surgery/2.  % Declare the assignment_surgery/2 predicate as dynamic
+:- dynamic agenda_operation_room/3.  % Declare the agenda_operation_room/3 predicate as dynamic
 
 
 %% Função principal para salvar a agenda dos medicos num ficheiro
@@ -98,11 +99,26 @@ saveSurgeries([Data | Rest]) :-
     atom_string(SurgeryNameAtom, SurgeryName),
     atom_string(DoctorAtom, Doctor),
 
-    assertz(surgery(SurgeryNameAtom, _, _, _)),
     assertz(surgery_id(SurgeryIdAtom, SurgeryNameAtom)), 
-    assertz(assignment_surgery(SurgeryIdAtom, DoctorAtom))  
+    assertz(assignment_surgery(SurgeryIdAtom, DoctorAtom)),  
 
     saveSurgeries(Rest).
+
+saveRooms([]).
+saveRooms([Data | Rest]) :-
+    Data = _{
+        id: RoomId,
+        roomNumber: _,
+        roomType: _,
+        roomStatus: _,
+        roomCapacity: _,
+        maintenanceSlots: _,
+        appointments: _
+    },
+    atom_string(RoomIdAtom, RoomId),
+    agenda_staff(_, Date, _),
+    assertz(agenda_operation_room(RoomIdAtom, Date, [])),
+    saveRooms(Rest).
 
 % Converte os slots de tempo para o formato desejado
 convert_time_slots(TimeSlots, TimeSlotsFormatted) :-
@@ -137,7 +153,7 @@ doctorSchedules() :-
     writeln(Data),
     saveDoctorSchedules(Data).  % Salva os dados
 
-allSurgeryTypes() :-
+surgeryTypes() :-
     clear_surgery,
     http_open('https://10.9.10.55:5001/api/OperationType/GetAll', Reply,
                [cert_verify_hook(cert_accept_any)]),
@@ -145,7 +161,7 @@ allSurgeryTypes() :-
     writeln(Data),
     saveSurgeryTypes(Data).  % Salva os dados
 
-allSurgeries() :-
+surgeries() :-
     clear_surgery_id,
     http_open('https://10.9.10.55:5001/api/OperationRequest/GetAll', Reply,
                [cert_verify_hook(cert_accept_any)]),
@@ -153,7 +169,13 @@ allSurgeries() :-
     writeln(Data),
     saveSurgeries(Data).  % Salva os dados
 
-
+operationRooms() :-
+    clear_agenda_operation_room,
+    http_open('https://10.9.10.55:5001/api/OperationRoom/GetAll', Reply,
+               [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(Reply, Data),
+    writeln(Data),
+    saveRooms(Data).  % Salva os dados
 
 % Remove todos os fatos de agenda_staff/3
 clear_agenda_staff :-
@@ -165,3 +187,6 @@ clear_surgery :-
 
 clear_surgery_id :-
     retractall(surgery_id(_, _)).
+
+clear_agenda_operation_room :-
+    retractall(agenda_operation_room(_, _, _)).

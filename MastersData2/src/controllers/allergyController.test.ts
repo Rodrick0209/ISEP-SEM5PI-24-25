@@ -8,9 +8,9 @@ import config from "../../config";
 import { Result } from '../core/logic/Result';
 
 
-import IAllergyService from "../services/IServices/IAllergyService";
-import AllergyController from "./allergyController";
-import IAllergyDTO from '../dto/IAllergyDTO';
+import IAllergyCatalogService from "../services/IServices/IAllergyCatalogService";
+import AllergyCatalogController from "./allergyCatalogController";
+import IAllergyCathalogItemDTO from '../dto/IAllergyCatalogItemDTO';
 
 
 describe('allergy controller', function(){
@@ -34,11 +34,11 @@ describe('allergy controller', function(){
         Container.set(config.services.allergy.name, allergyServiceInstance);
         
         allergyServiceInstance = Container.get(config.services.allergy.name); 
-        sinon.stub(allergyServiceInstance, "createAllergy").returns( Result.ok<IAllergyDTO>( {"id":"123","name": req.body.name} ));
+        sinon.stub(allergyServiceInstance, "createAllergy").returns( Result.ok<IAllergyCathalogItemDTO>( {"id":"123","name": req.body.name} ));
 
-        const ctrl = new AllergyController(allergyServiceInstance as IAllergyService);
+        const ctrl = new AllergyCatalogController(allergyServiceInstance as IAllergyCatalogService);
 
-        await ctrl.createAllergy(<Request>req, <Response>res, <NextFunction>next);
+        await ctrl.createAllergyCatalogItem(<Request>req, <Response>res, <NextFunction>next);
 
         sinon.assert.calledOnce(res.json);
         sinon.assert.calledWith(res.json, sinon.match({ "name": req.body.name}));
