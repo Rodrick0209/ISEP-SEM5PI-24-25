@@ -9,10 +9,12 @@ import { Appointment} from '../models/appointment';
   providedIn: 'root'
 })
 export class AppointmentService {
-    private getAll = '/api/Appointment/GetAll'; // Update with your API URL
+    private getAllAppointments = '/api/Appointment/GetAllUI'; // Update with your API URL
     private url = '/api/Appointment'
     private createUrl = '/api/Appointment'; // Update with your create API URL
-    private getStaffByIdUrl = 'api/Staff/GetByIdForUI'; // Update with your get by ID API URL
+    private getAppByIdUrl = '/api/AppointmentI'; // Update with your get by ID API URL
+    private getAllOpRquests = '/api/OperationRequest/GetAllForUi'
+    private getAllOpRooms = '/api/OperationRoom/GetAll'
   constructor(private http: HttpClient) { }
 
   
@@ -77,4 +79,5 @@ export class AppointmentService {
 
     return this.http.get<StaffsView[]>(this.filterApiUrl, { params });
   }
-}*/
+}
+*/
