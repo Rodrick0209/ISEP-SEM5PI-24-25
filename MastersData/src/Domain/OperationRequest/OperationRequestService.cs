@@ -10,6 +10,7 @@ using DDDSample1.Domain.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using System.Linq;
+using DDDSample1.Domain.Appointments;
 
 
 
@@ -30,10 +31,11 @@ namespace DDDSample1.Domain.OperationRequest
         private readonly IOperationTypeRepository _operationTypeRepository;
 
         private readonly IStaffRepository _staffRepository;
+        private readonly IAppointmentRepository _appointmentRepository;
 
         private readonly IOperationRequestLoggerRepository _operationRequestLoggerRepository;
 
-        public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository repo, IOperationTypeRepository operationTypeRepository, IStaffRepository staffRepository, IPatientRepository patientRepository, IOperationRequestLoggerRepository operationRequestLoggerRepository)
+        public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository repo, IOperationTypeRepository operationTypeRepository, IStaffRepository staffRepository, IPatientRepository patientRepository, IOperationRequestLoggerRepository operationRequestLoggerRepository, IAppointmentRepository appointmentRepository)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
@@ -41,6 +43,7 @@ namespace DDDSample1.Domain.OperationRequest
             this._staffRepository = staffRepository;
             this._patientRepository = patientRepository;
             this._operationRequestLoggerRepository = operationRequestLoggerRepository;
+            this._appointmentRepository = appointmentRepository;
         }
 
 
@@ -66,7 +69,7 @@ namespace DDDSample1.Domain.OperationRequest
             await CheckDoctorIdAsync(new StaffId(operationRequest.DoctorThatWillPerformId));
             await CheckPatientMedicalRecordAsync(operationRequest.PatientId, operationRequest);
             OperationRequest op = OperationRequestMapper.toDomain(operationRequest);
-            
+
 
 
             await this._repo.AddAsync(op);
@@ -100,7 +103,7 @@ namespace DDDSample1.Domain.OperationRequest
 
 
 
-        
+
 
 
 
@@ -253,7 +256,7 @@ namespace DDDSample1.Domain.OperationRequest
             return await this._repo.GetAllAsync();
         }
 
-        private async Task<Patient> CheckPatientAsync(PatientId id )
+        private async Task<Patient> CheckPatientAsync(PatientId id)
         {
             var patient = await this._patientRepository.GetByIdAsync(id);
             if (patient == null)
@@ -267,7 +270,7 @@ namespace DDDSample1.Domain.OperationRequest
             if (patient == null)
                 throw new BusinessRuleValidationException("Patient not found");
 
-            operationRequest.PatientId = patient.Id.AsString();    
+            operationRequest.PatientId = patient.Id.AsString();
             return patient;
         }
 
@@ -425,5 +428,20 @@ namespace DDDSample1.Domain.OperationRequest
 
 
         }
+
+
+
+        public async Task<List<OperationRequestDto>> GetAvailableAsync()
+        {
+            // Obter todas as OperationRequests com status "Waiting"
+            var waitingRequests = await _repo.GetAllWaitingAsync();
+
+            // Converter para DTO e retornar
+            return waitingRequests.Select(OperationRequestMapper.toDTO).ToList();
+        }
+
+
+
+
     }
 }

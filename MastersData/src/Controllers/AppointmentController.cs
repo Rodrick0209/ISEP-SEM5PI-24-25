@@ -72,7 +72,7 @@ namespace DDDSample1.Controllers
 
             return Ok(listDto);
         }
-    
+
 
 
         [HttpPost]
@@ -92,7 +92,7 @@ namespace DDDSample1.Controllers
 
         }
 
-        
+
         [HttpPut("{id}")]
         [Authorize(Roles = "doctor")]
         public async Task<ActionResult<AppointmentDto>> Update(EditingAppointmentDto dto, Guid id)
@@ -115,7 +115,7 @@ namespace DDDSample1.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<AppointmentDto>> GetGetById(String id)
+        public async Task<ActionResult<AppointmentDtoUI>> GetGetById(String id)
         {
             var op = await _service.GetByIdAsync(new AppointmentId(id));
             if (op == null)
@@ -123,6 +123,12 @@ namespace DDDSample1.Controllers
                 return NotFound();
             }
             return op;
+        }
+
+        [HttpGet("GetAllUI")]
+        public async Task<ActionResult<IEnumerable<AppointmentDtoUI>>> GetAllUI()
+        {
+            return await _service.GetAllForUIAsync();
         }
 
 

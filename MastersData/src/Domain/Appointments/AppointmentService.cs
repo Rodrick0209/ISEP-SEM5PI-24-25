@@ -4,8 +4,11 @@ using System.Threading.Tasks;
 using DDDSample1.Domain.Appointments;
 using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Domain.OperationRooms;
+using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Utils;
+using Microsoft.OpenApi.Models;
+using Org.BouncyCastle.Crypto.Prng;
 
 namespace DDDSample1.Domain.Appointments
 {
@@ -16,13 +19,15 @@ namespace DDDSample1.Domain.Appointments
 
         private readonly IOperationRoomRepository _operationRoomRepository;
         private readonly IOperationRequestRepository _operationRequestRepository;
+        private readonly IPatientRepository _patientRepository;
 
-        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentRepository appointmentRepository, IOperationRoomRepository operationRoomRepository, IOperationRequestRepository operationRequestRepository)
+        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentRepository appointmentRepository, IOperationRoomRepository operationRoomRepository, IOperationRequestRepository operationRequestRepository, IPatientRepository patientRepository)
         {
             this._unitOfWork = unitOfWork;
             this._appointmentRepository = appointmentRepository;
             this._operationRoomRepository = operationRoomRepository;
             this._operationRequestRepository = operationRequestRepository;
+            this._patientRepository = patientRepository;
         }
 
 
@@ -36,9 +41,9 @@ namespace DDDSample1.Domain.Appointments
 
 
             // Verifica se o horário está disponível
-            var requestedDate = appointmentDto.AppointmentTimeSlotDto.Date;
-            var requestedStart = appointmentDto.AppointmentTimeSlotDto.TimeSlot.StartTime;
-            var requestedEnd = appointmentDto.AppointmentTimeSlotDto.TimeSlot.EndTime;
+            var requestedDate = DateOnly.Parse(appointmentDto.AppointmentTimeSlotDtoDate); //"yyyy-MM-dd"
+            var requestedStart = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotStartMinute);
+            var requestedEnd = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotEndMinute);
 
             // Verifica se a sala está disponível usando o método do domínio
             if (!opRoom.IsAvailable(
@@ -47,6 +52,12 @@ namespace DDDSample1.Domain.Appointments
                 requestedEnd))
             {
                 throw new Exception("The operation room is occupied during the requested time.");
+            }
+
+
+            if (!opRequest.IsAvailable(opRequest.status))
+            {
+                throw new Exception("The operation request is cancelled or was already accepted.");
             }
 
 
@@ -82,22 +93,53 @@ namespace DDDSample1.Domain.Appointments
             }
 
 
-           
 
 
-            await checkOperationRoomByNameForEditingAsync(dto.OperationRoomId, dto);
 
-            if (!string.IsNullOrWhiteSpace(dto.OperationRoomId) && !app.OperationRoomId.Value.Equals(dto.OperationRoomId))
+
+
+            if (!string.IsNullOrWhiteSpace(dto.OperationRoomId))
             {
-                app.ChangeOperationRoomId(dto.OperationRoomId);
-                
+                var opRoom = await checkOperationRoomByNameForEditingAsync(dto.OperationRoomId, dto);
+                if (!app.OperationRoomId.Value.Equals(dto.OperationRoomId))
+                {
+                    if (opRoom.IsAvailable(app.AppointmentTimeSlot.Date, app.AppointmentTimeSlot.TimeSlot.StartMinute, app.AppointmentTimeSlot.TimeSlot.EndMinute))
+                    {
+                        app.ChangeOperationRoomId(dto.OperationRoomId);
+                    }
+                    else
+                    {
+                        throw new BusinessRuleValidationException("Operation Room is not available");
+                    }
+
+                }
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.OperationRequestId) && !app.OperationRequestId.Value.Equals(dto.OperationRequestId))
+            if (!string.IsNullOrWhiteSpace(dto.OperationRequestId))
             {
-                app.ChangeOperationRequestId(dto.OperationRequestId);
-                
+                var opRequest = await CheckOperationRequestAsync(new OperationRequestId(dto.OperationRequestId));
+
+                // Verifica se o OperationRequest mudou
+                if (!app.OperationRequestId.Value.Equals(dto.OperationRequestId))
+                {
+                    // Verifica disponibilidade do OperationRequest
+                    if (!opRequest.IsAvailable(opRequest.status))
+                    {
+                        throw new BusinessRuleValidationException("Operation Request is not available");
+                    }
+
+                    // Verifica disponibilidade da OperationRoom
+                    var opRoom = await _operationRoomRepository.GetByIdAsync(app.OperationRoomId);
+                    if (!opRoom.IsAvailable(app.AppointmentTimeSlot.Date, app.AppointmentTimeSlot.TimeSlot.StartMinute, app.AppointmentTimeSlot.TimeSlot.EndMinute))
+                    {
+                        throw new BusinessRuleValidationException("Operation Room is not available");
+                    }
+
+                    // Atualiza o OperationRequestId
+                    app.ChangeOperationRequestId(dto.OperationRequestId);
+                }
             }
+
 
             if (!string.IsNullOrWhiteSpace(dto.AppointmentStatus) && !app.AppointmentStatus.Equals(dto.AppointmentStatus))
             {
@@ -113,29 +155,48 @@ namespace DDDSample1.Domain.Appointments
             }
 
 
-            if (dto.AppointmentTimeSlot != null && !app.AppointmentTimeSlot.Equals(dto.AppointmentTimeSlot))
+            var newDate = !string.IsNullOrWhiteSpace(dto.AppointmentTimeSlotDtoDate)
+             ? DateOnly.Parse(dto.AppointmentTimeSlotDtoDate)
+            : (DateOnly?)null;
+
+            var newStartMinute = !string.IsNullOrWhiteSpace(dto.AppointmentTimeSlotDtoTimeSlotStartMinute)
+                ? int.Parse(dto.AppointmentTimeSlotDtoTimeSlotStartMinute)
+                : (int?)null;
+
+            var newEndMinute = !string.IsNullOrWhiteSpace(dto.AppointmentTimeSlotDtoTimeSlotEndMinute)
+                ? int.Parse(dto.AppointmentTimeSlotDtoTimeSlotEndMinute)
+                : (int?)null;
+
+            // Check if updates are needed
+            if ((newDate != null && !app.AppointmentTimeSlot.Date.Equals(newDate)) ||
+                (newStartMinute != null && !app.AppointmentTimeSlot.TimeSlot.StartMinute.Equals(newStartMinute)) ||
+                (newEndMinute != null && !app.AppointmentTimeSlot.TimeSlot.EndMinute.Equals(newEndMinute)))
             {
-                if (app.AppointmentTimeSlot.Date.Equals(dto.AppointmentTimeSlot.Date))
+                var opRoom = await _operationRoomRepository.GetByIdAsync(app.OperationRoomId);
+
+                // Validate availability using the values from dto
+                if (!opRoom.IsAvailable(newDate.Value, newStartMinute.Value, newEndMinute.Value))
                 {
-                    app.AppointmentTimeSlot.ChangeDate(dto.AppointmentTimeSlot.Date);
-                }
-                if (app.AppointmentTimeSlot.TimeSlot.Equals(dto.AppointmentTimeSlot.TimeSlot))
-                {
-                    app.AppointmentTimeSlot.ChangeTimeSlot(dto.AppointmentTimeSlot.TimeSlot.StartTime, dto.AppointmentTimeSlot.TimeSlot.EndTime);
+                    throw new BusinessRuleValidationException("Operation Room is not available for the specified date and/or time slot.");
                 }
 
-                
+                // Apply changes
+                if (newDate != null)
+                {
+                    app.AppointmentTimeSlot.ChangeDate(newDate.Value);
+                }
+
+                if (newStartMinute != null && newEndMinute != null)
+                {
+                    app.AppointmentTimeSlot.ChangeTimeSlot(newStartMinute.Value, newEndMinute.Value);
+                }
             }
 
 
             await _unitOfWork.CommitAsync();
 
 
-
-
             return AppointmentMapper.ToDto(app);
-
-
 
         }
 
@@ -200,14 +261,38 @@ namespace DDDSample1.Domain.Appointments
 
 
 
-        public async Task<AppointmentDto> GetByIdAsync(AppointmentId id)
+        public async Task<AppointmentDtoUI> GetByIdAsync(AppointmentId id)
         {
 
             var app = await _appointmentRepository.GetByIdAsync(id);
+            var opRoomNumber = _operationRoomRepository.GetByIdAsync(app.OperationRoomId).Result.RoomNumber.roomNumber;
+            var opRequest = _operationRequestRepository.GetByIdAsync(app.OperationRequestId).Result;
+            var patientMedicalRecordNumber = _patientRepository.GetByIdAsync(new PatientId(opRequest.patientId)).Result.MedicalRecordNumber._medicalRecordNumber;
+            var priority = opRequest.priority.priority;
 
-            return app == null ? null : AppointmentMapper.ToDto(app);
+            return app == null ? null : AppointmentMapper.ToDtoUI(app, priority, patientMedicalRecordNumber, opRoomNumber);
 
         }
+
+
+        public async Task<List<AppointmentDtoUI>> GetAllForUIAsync()
+        {
+            List<Appointment> appointments = await this._appointmentRepository.GetAllAsync();
+            List<AppointmentDtoUI> appointmentDtos = new List<AppointmentDtoUI>();
+            foreach (Appointment app in appointments)
+            {
+                var opRoomNumber = _operationRoomRepository.GetByIdAsync(app.OperationRoomId).Result.RoomNumber.roomNumber;
+                var opRequest = _operationRequestRepository.GetByIdAsync(app.OperationRequestId).Result;
+                var patientMedicalRecordNumber = _patientRepository.GetByIdAsync(new PatientId(opRequest.patientId)).Result.MedicalRecordNumber._medicalRecordNumber;
+                var priority = opRequest.priority.priority;
+                appointmentDtos.Add(AppointmentMapper.ToDtoUI(app, priority, patientMedicalRecordNumber, opRoomNumber));
+            }
+            return appointmentDtos;
+        }
+
+
+
+
 
     }
 }

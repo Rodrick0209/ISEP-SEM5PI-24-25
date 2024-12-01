@@ -68,6 +68,15 @@ namespace DDDSample1.Domain.OperationRequest
         {
             this.status = OperationRequestStatus.Accepted;
         }
+        public bool IsAvailable(OperationRequestStatus status)
+        {
+            if(status == OperationRequestStatus.Waiting)
+            {
+                return true;
+            }
+
+            return false;
+        }	
 
        
     }

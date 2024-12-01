@@ -8,7 +8,9 @@ namespace DDDSample1.Domain.Appointments
     public class CreatingAppointmentDto
     {
        
-        public AppointmentTimeSlotDto AppointmentTimeSlotDto { get; set; }
+        public string AppointmentTimeSlotDtoDate { get; set; }
+        public string AppointmentTimeSlotDtoTimeSlotStartMinute { get; set; }
+        public string AppointmentTimeSlotDtoTimeSlotEndMinute { get; set; }
         public string OperationRoomId { get; set; }
         public string OperationRequestId { get; set; }
 
