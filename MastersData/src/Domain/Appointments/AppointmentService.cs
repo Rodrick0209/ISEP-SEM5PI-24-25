@@ -45,6 +45,7 @@ namespace DDDSample1.Domain.Appointments
             var requestedStart = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotStartMinute);
             var requestedEnd = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotEndMinute);
 
+
             // Verifica se a sala está disponível usando o método do domínio
             if (!opRoom.IsAvailable(
                 requestedDate,

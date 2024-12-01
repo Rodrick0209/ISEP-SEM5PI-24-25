@@ -72,52 +72,52 @@ namespace DDDSample1.Domain.OperationRooms
 
 
         public bool IsAvailable(DateOnly date, int startMinute, int endMinute)
-{
-    // Inicializa as listas se forem nulas
-    if (Appointments == null)
-        Appointments = new List<Appointment>();
-
-    if (MaintenanceSlots == null)
-        MaintenanceSlots = new List<MaintenanceSlots>();
-
-    // Verifica conflitos com manutenção
-    var maintenanceToday = MaintenanceSlots.FirstOrDefault(slot => slot.Date == date);
-    if (maintenanceToday != null && maintenanceToday.TimeSlots.Any(ts =>
-        ts.StartMinute < endMinute && ts.EndMinute > startMinute))
-    {
-        return false; // Sala está em manutenção durante o período solicitado
-    }
-
-    // Verifica conflitos com agendamentos existentes
-    foreach (var app in Appointments)
-    {
-        var appDate = app.AppointmentTimeSlot.Date;
-        var appStart = app.AppointmentTimeSlot.TimeSlot.StartMinute;
-        var appEnd = app.AppointmentTimeSlot.TimeSlot.EndMinute;
-
-        // Só verifica se a data coincide
-        if (appDate == date)
         {
-            // Casos de sobreposição:
-            if (
-                (startMinute < appStart && endMinute > appEnd) || // Começa antes e termina depois
-                (startMinute < appStart && endMinute > appStart && endMinute <= appEnd) || // Começa antes e termina antes
-                (startMinute < appStart && endMinute == appEnd) || // Começa antes e termina ao mesmo tempo
-                (startMinute == appStart && endMinute > appEnd) || // Começa ao mesmo tempo e termina depois
-                (startMinute == appStart && endMinute < appEnd) || // Começa ao mesmo tempo e termina antes
-                (startMinute == appStart && endMinute == appEnd) || // Começa ao mesmo tempo e termina ao mesmo tempo
-                (startMinute == appEnd) || // Começa exatamente no fim do outro
-                (endMinute > appStart && startMinute < appStart) // Termina depois do início do outro
-            )
-            {
-                return false; // Sala está ocupada
-            }
-        }
-    }
+            // Inicializa as listas se forem nulas
+            if (Appointments == null)
+                Appointments = new List<Appointment>();
 
-    // Nenhum conflito encontrado
-    return true;
-}
+            if (MaintenanceSlots == null)
+                MaintenanceSlots = new List<MaintenanceSlots>();
+
+            // Verifica conflitos com manutenção
+            var maintenanceToday = MaintenanceSlots.FirstOrDefault(slot => slot.Date == date);
+            if (maintenanceToday != null && maintenanceToday.TimeSlots.Any(ts =>
+                ts.StartMinute < endMinute && ts.EndMinute > startMinute))
+            {
+                return false; // Sala está em manutenção durante o período solicitado
+            }
+
+            // Verifica conflitos com agendamentos existentes
+            foreach (var app in Appointments)
+            {
+                var appDate = app.AppointmentTimeSlot.Date;
+                var appStart = app.AppointmentTimeSlot.TimeSlot.StartMinute;
+                var appEnd = app.AppointmentTimeSlot.TimeSlot.EndMinute;
+
+                // Só verifica se a data coincide
+                if (appDate == date)
+                {
+                    // Casos de sobreposição:
+                    if (
+                        (startMinute < appStart && endMinute > appEnd) || // Começa antes e termina depois
+                        (startMinute < appStart && endMinute > appStart && endMinute <= appEnd) || // Começa antes e termina antes
+                        (startMinute < appStart && endMinute == appEnd) || // Começa antes e termina ao mesmo tempo
+                        (startMinute == appStart && endMinute > appEnd) || // Começa ao mesmo tempo e termina depois
+                        (startMinute == appStart && endMinute < appEnd) || // Começa ao mesmo tempo e termina antes
+                        (startMinute == appStart && endMinute == appEnd) || // Começa ao mesmo tempo e termina ao mesmo tempo
+                        (startMinute == appEnd) || // Começa exatamente no fim do outro
+                        (endMinute > appStart && startMinute < appStart) // Termina depois do início do outro
+                    )
+                    {
+                        return false; // Sala está ocupada
+                    }
+                }
+            }
+
+            // Nenhum conflito encontrado
+            return true;
+        }
 
 
     }
