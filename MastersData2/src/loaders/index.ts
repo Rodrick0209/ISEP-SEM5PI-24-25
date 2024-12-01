@@ -5,7 +5,6 @@ import Logger from './logger';
 
 import config from '../../config';
 import path from 'path';
-import allergyCatalogSchema from '../persistence/schemas/allergyCatalogSchema';
 
 export default async ({ expressApp }) => {
   const mongoConnection = await mongooseLoader();
@@ -20,6 +19,26 @@ export default async ({ expressApp }) => {
   const allergyCatalogSchema = {
     name: 'allergyCatalogSchema',
     schema: '../persistence/schemas/allergyCatalogSchema',
+  };
+
+  const medicalConditionSchema = {
+    name: 'medicalConditionSchema',
+    schema: '../persistence/schemas/medicalConditionSchema',
+  };
+
+  const medicalConditionController = {
+    name: config.controllers.medicalCondition.name,
+    path: config.controllers.medicalCondition.path
+  };
+
+  const medicalConditionService = {
+    name: config.services.medicalCondition.name,
+    path: config.services.medicalCondition.path
+  };
+
+  const medicalConditionRepo = {
+    name: config.repos.medicalCondition.name,
+    path: config.repos.medicalCondition.path
   };
 
 
@@ -55,7 +74,7 @@ export default async ({ expressApp }) => {
     path: config.controllers.allergyCatalog.path
   }
 
-  const allergyCatalog = {
+  const allergyCatalogRepo = {
     name: config.repos.allergyCatalog.name,
     path: config.repos.allergyCatalog.path
   }
@@ -65,6 +84,8 @@ export default async ({ expressApp }) => {
     path: config.services.allergyCatalog.path
   }
 
+  
+
 
 
   await dependencyInjectorLoader({
@@ -72,20 +93,24 @@ export default async ({ expressApp }) => {
     schemas: [
       userSchema,
       roleSchema,
-      allergyCatalogSchema
+      allergyCatalogSchema,
+      medicalConditionSchema
     ],
     controllers: [
       roleController,
-      allergyCatalogController
+      allergyCatalogController,
+      medicalConditionController
     ],
     repos: [
       roleRepo,
       userRepo,
-      allergyCatalog
+      allergyCatalogRepo,
+      medicalConditionRepo
     ],
     services: [
       roleService,
-      allergyCatalogService
+      allergyCatalogService,
+      medicalConditionService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

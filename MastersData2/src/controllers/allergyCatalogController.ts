@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Inject, Service } from 'typedi';
 import config from "../../config";
 
-import IAllergyController from './IControllers/IAllergyController';
+import IAllergyCatalogController from './IControllers/IAllergyCatalogController';
 import IAllergyCatalogService from '../services/IServices/IAllergyCatalogService';
 import IAllergyCathalogItemDTO from '../dto/IAllergyCatalogItemDTO';
 
@@ -12,7 +12,7 @@ import { MongoServerError } from 'mongodb';
 
 
 @Service()
-export default class AllergyCatalogController extends BaseController implements IAllergyController {
+export default class AllergyCatalogController extends BaseController implements IAllergyCatalogController {
     constructor(
         @Inject(config.services.allergyCatalog.name) private allergyServiceInstance : IAllergyCatalogService
     ){

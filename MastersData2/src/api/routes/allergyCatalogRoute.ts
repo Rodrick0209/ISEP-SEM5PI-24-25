@@ -3,7 +3,7 @@ import { celebrate, Joi } from 'celebrate';
 
 import { Container } from 'typedi';
 
-import IAllergyCatalogController from '../../controllers/IControllers/IAllergyController';
+import IAllergyCatalogController from '../../controllers/IControllers/IAllergyCatalogController';
 import isAuth from '../middlewares/isAuth';
 import config from "../../../config";
 
