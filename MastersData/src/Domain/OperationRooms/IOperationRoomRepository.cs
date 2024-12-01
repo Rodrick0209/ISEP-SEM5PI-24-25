@@ -9,7 +9,7 @@ namespace DDDSample1.Domain.OperationRooms
     {
         Task<List<OperationRoom>> GetAllAsync();
         Task<OperationRoom> GetByNameAsync(string name);
-        
+                
         
     }
 }

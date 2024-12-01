@@ -40,11 +40,9 @@ namespace DDDSample1.Domain.Appointments
 
 
 
-            // Verifica se o horário está disponível
             var requestedDate = DateOnly.Parse(appointmentDto.AppointmentTimeSlotDtoDate); //"yyyy-MM-dd"
             var requestedStart = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotStartMinute);
             var requestedEnd = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotEndMinute);
-
 
             // Verifica se a sala está disponível usando o método do domínio
             if (!opRoom.IsAvailable(
@@ -56,10 +54,13 @@ namespace DDDSample1.Domain.Appointments
             }
 
 
+
+        
             if (!opRequest.IsAvailable(opRequest.status))
             {
                 throw new Exception("The operation request is cancelled or was already accepted.");
             }
+            
 
 
             // Cria o agendamento
@@ -71,13 +72,13 @@ namespace DDDSample1.Domain.Appointments
                 new OperationRequestId(appointmentDto.OperationRequestId)
             );
 
-
             opRoom.Appointments.Add(appointment);
-            opRequest.Accepted();
 
-
+            // Atualiza o estado da sala no repositório
             // Salva o agendamento no repositório
             await _appointmentRepository.AddAsync(appointment);
+
+            // Salva todas as mudanças no banco de dados
             await _unitOfWork.CommitAsync();
 
             return AppointmentMapper.ToDto(appointment);

@@ -83,7 +83,6 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new AvailabilitySlotEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PhaseEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRoomEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new OperationRoomEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AppointmentEntityTypeConfiguration());
 
 

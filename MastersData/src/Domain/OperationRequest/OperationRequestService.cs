@@ -31,11 +31,10 @@ namespace DDDSample1.Domain.OperationRequest
         private readonly IOperationTypeRepository _operationTypeRepository;
 
         private readonly IStaffRepository _staffRepository;
-        private readonly IAppointmentRepository _appointmentRepository;
 
         private readonly IOperationRequestLoggerRepository _operationRequestLoggerRepository;
 
-        public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository repo, IOperationTypeRepository operationTypeRepository, IStaffRepository staffRepository, IPatientRepository patientRepository, IOperationRequestLoggerRepository operationRequestLoggerRepository, IAppointmentRepository appointmentRepository)
+        public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository repo, IOperationTypeRepository operationTypeRepository, IStaffRepository staffRepository, IPatientRepository patientRepository, IOperationRequestLoggerRepository operationRequestLoggerRepository)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
@@ -43,7 +42,6 @@ namespace DDDSample1.Domain.OperationRequest
             this._staffRepository = staffRepository;
             this._patientRepository = patientRepository;
             this._operationRequestLoggerRepository = operationRequestLoggerRepository;
-            this._appointmentRepository = appointmentRepository;
         }
 
 

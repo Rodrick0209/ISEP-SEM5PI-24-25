@@ -24,7 +24,7 @@ namespace DDDSample1.Infrastructure.OperationRooms
 
         public async Task<OperationRoom> GetByNameAsync(string name)
         {
-            return await this.context.OperationRooms.FirstOrDefaultAsync(p => p.RoomNumber.roomNumber == name);
+            return await this.context.OperationRooms.Include(o => o.Appointments).FirstOrDefaultAsync(p => p.RoomNumber.roomNumber == name);
         }
 
 
