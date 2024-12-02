@@ -69,12 +69,13 @@ namespace DDDSample1.Infrastructure.OperationRequests
         }
 
 
-        public async Task<List<OperationRequest>> GetAllWaitingAsync()
+        public async Task<List<OperationRequest>> GetWaitingOperationRequestsByDoctorIdAsync(string doctorId)
         {
             return await this.context.OperationRequests
-                .Where(or => or.status == OperationRequestStatus.Waiting)
+                .Where(or => or.doctorThatRequestedId == doctorId && or.status == OperationRequestStatus.Waiting)
                 .ToListAsync();
         }
+
 
 
 
