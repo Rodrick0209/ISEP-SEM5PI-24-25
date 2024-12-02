@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using DDDSample1.Domain.OperationRooms;
+using System.Data;
 
 namespace DDDSample1.Infrastructure.OperationRooms
 {
@@ -18,12 +19,9 @@ namespace DDDSample1.Infrastructure.OperationRooms
                 rn.HasIndex(r => r.roomNumber).IsUnique(); // Define o RoomNumber como único
             });
 
-            // Configurando o RoomType como um objeto próprio
-            builder.OwnsOne(b => b.RoomType, rt =>
-            {
-                rt.Property(r => r.roomType).IsRequired(); // Assume que RoomType tem uma propriedade Value
-            });
-
+            // Configurando a relação com RoomType como uma entidade de um agregado
+            builder.HasOne(b => b.RoomType);
+        
             // Configurando o RoomCapacity como um objeto próprio
             builder.OwnsOne(b => b.RoomCapacity, rc =>
             {

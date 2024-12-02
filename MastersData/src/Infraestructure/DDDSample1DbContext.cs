@@ -24,6 +24,8 @@ using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Infrastructure.AvailabilitySlots;
 using DDDSample1.Infrastructure.OperationRooms;
 using DDDSample1.Domain.OperationRooms;
+using DDDSample1.Domain.RoomTypes;
+using DDDSample1.Infrastructure.RoomTypes;
 
 namespace DDDSample1.Infrastructure
 {
@@ -63,6 +65,7 @@ namespace DDDSample1.Infrastructure
 
         public DbSet<StaffLogger> StaffLoggers { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<RoomType> RoomTypes { get; set; }
 
         public DDDSample1DbContext(DbContextOptions options) : base(options)
         {
@@ -84,6 +87,7 @@ namespace DDDSample1.Infrastructure
             modelBuilder.ApplyConfiguration(new PhaseEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationRoomEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AppointmentEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new RoomTypeEntityTypeConfiguration());
 
 
             modelBuilder.ApplyConfiguration(new StaffAssignedSurgeryEntityTypeConfiguration());
