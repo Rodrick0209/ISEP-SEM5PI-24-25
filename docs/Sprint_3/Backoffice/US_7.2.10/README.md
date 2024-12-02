@@ -62,3 +62,23 @@ The room type will be a category to select the room when create a operation room
 - **Service Pattern**: Encapsulates the business logic, making it reusable and easier to test.
 - **Repository Pattern**: Used to manage data operations and abstract the data access logic.
 
+## 5. Tests Plan
+
+### 5.1. Unit Tests
+
+- **Test 1**: Verify that a new room type can be added successfully.
+- **Test 2**: Ensure that adding a room type with a duplicate name is not allowed.
+- **Test 3**: Validate that the room type name is stored correctly in the database.
+- **Test 4**: Check that the system returns an appropriate error message when trying to add a room type with an invalid name (e.g., empty or null).
+
+### 5.2. Integration Tests
+
+- **Test 1**: Verify that the room type addition integrates correctly with the database.
+- **Test 2**: Ensure that the new room type is available for selection when creating an operation room.
+- **Test 3**: Validate that the system handles concurrent requests to add room types without data corruption.
+
+### 5.3. End-to-End Tests
+
+- **Test 1**: Simulate the admin adding a new room type through the user interface and verify that it appears in the list of available room types.
+- **Test 2**: Ensure that the admin cannot add a room type with a duplicate name through the user interface.
+- **Test 3**: Validate that the error messages are displayed correctly in the user interface when invalid data is entered.
