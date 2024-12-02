@@ -13,6 +13,7 @@
   <a [routerLink]="['/operationType']" *ngIf="isAdmin()">Operation Types</a>
   <a [routerLink]="['/staffs']" *ngIf="isAdmin()">Staff Members</a>
   <a [routerLink]="['/profile', getUserEmail()]" *ngIf="isPatientUser()">Profile</a>
+  <a [routerLink]="['/specializations']" *ngIf="isAdmin()">Specializations</a>
   <!-- New container for user information -->
   <div class="user-info">
     <a *ngIf="!isLoggedIn" [routerLink]="['/login']">Login</a>

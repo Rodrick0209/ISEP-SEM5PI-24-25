@@ -36,6 +36,7 @@ import { ThreeViewComponent } from './components/three-view/three-view.component
 import { DeleteUserComponent } from './components/delete-user/delete-user.component';
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
 import { ScheduleResultsComponent } from './components/schedule-results/schedule-results.component';
+import { SpecializationsComponent } from './components/specializations/specializations.component';
 
 
 export const routes: Routes = [
@@ -50,6 +51,11 @@ export const routes: Routes = [
     { path: 'confirmation-error', component: ConfirmationErrorComponent },
     { path: 'confirmation-success', component: ConfirmationSuccessComponent },
     { path: 'reset-password', component: ResetPasswordComponent},
+    { path: 'specializations',
+        component: SpecializationsComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+    },
     { path: 'planning', 
         component:PlanningComponent, 
         canActivate: [AuthGuard],
