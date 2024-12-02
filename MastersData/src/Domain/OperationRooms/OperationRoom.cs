@@ -4,7 +4,8 @@ using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.OperationRooms;
 using DDDSample1.Domain.Utils; // Esta linha deve estar presente
 using System.Linq;
-using DDDSample1.Domain.Appointments; // Ajuste conforme necessário para o namespace correto
+using DDDSample1.Domain.Appointments;
+using DDDSample1.Domain.RoomTypes; // Ajuste conforme necessário para o namespace correto
 
 namespace DDDSample1.Domain.OperationRooms
 {

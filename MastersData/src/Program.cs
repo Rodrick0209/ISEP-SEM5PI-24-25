@@ -47,6 +47,8 @@ using Microsoft.AspNetCore.Authentication.BearerToken;
 using DDDSample1.Domain.Appointments;
 using DDDSample1.Infrastructure.Appointments;
 using Microsoft.Extensions.Configuration;
+using DDDSample1.Domain.RoomTypes;
+using DDDSample1.Infrastructure.RoomTypes;
 
 
 
@@ -267,6 +269,10 @@ namespace DDDSample1.Startup
             services.AddTransient<OperationRoomService>();
 
             services.AddTransient<IStaffAssignedSurgeryRepository, StaffAssignedSurgeryRepository>();
+            
+            services.AddTransient<IRoomTypeRepository, RoomTypeRepository>();
+            services.AddTransient<IRoomTypeService, RoomTypeService>();
+
 
 
         }
