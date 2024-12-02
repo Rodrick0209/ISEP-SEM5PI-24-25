@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DDDSample1.Application.Dtos;
 using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Specializations;
@@ -67,6 +68,17 @@ namespace DDDSample1.Domain.Specializations
             var specializations = await _repo.GetSpecializationMapAsync();
             return specializations.ToDictionary(s => s.Key, s => s.Value.AsGuid());
         }
+
+        public async Task<SpecializationDto> CreateAsync(SpecializationDto dto)
+        {
+            var specialization = new Specialization(dto.Name);
+
+            await _repo.AddAsync(specialization);
+            await _unitOfWork.CommitAsync();
+
+            return new SpecializationDto(specialization.Id.AsString(), specialization.Name);
+        }
+
 
     }
 }

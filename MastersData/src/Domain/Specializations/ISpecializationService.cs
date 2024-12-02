@@ -3,6 +3,7 @@ using DDDSample1.Domain.OperationTypes;
 using System.Collections.Generic;
 using DDDSample1.Domain.Specializations;
 using System;
+using DDDSample1.Application.Dtos;
 
 namespace DDDSample1.Domain.OperationTypes
 {
@@ -15,6 +16,8 @@ namespace DDDSample1.Domain.OperationTypes
         Task<Dictionary<Guid, string>> GetByNameOperationTypeAsync(OperationType op);
 
         Task<Dictionary<string, Guid>> GetSpecializationMapAsync();
+
+        Task<SpecializationDto> CreateAsync(SpecializationDto dto);
 
     }
 }
