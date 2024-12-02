@@ -62,7 +62,7 @@ namespace DDDSample1.Controllers
         }
 
         [HttpPost("CreateUi")]
-        [Authorize (Roles = "doctor")]
+        [Authorize(Roles = "doctor")]
 
         public async Task<ActionResult<OperationRequestDto>> CreateUi(OperationRequestDto dto)
         {
@@ -73,7 +73,7 @@ namespace DDDSample1.Controllers
                 {
                     throw new Exception("Email do doutor não encontrado.");
                 }
-                dto.DoctorThatRequestedId =  new Email(emailDoctorQuerCriar).getFirstPartOfEmail().ToString();
+                dto.DoctorThatRequestedId = new Email(emailDoctorQuerCriar).getFirstPartOfEmail().ToString();
                 var op = await _service.AddAsyncUi(dto, emailDoctorQuerCriar);
                 return CreatedAtAction(nameof(GetGetById), new { id = dto.Id }, dto);
             }
@@ -87,29 +87,30 @@ namespace DDDSample1.Controllers
             }
 
 
-            }
-        
+        }
+
 
         [HttpGet("GetStaffAssignedSurgeryById/{id}")]
 
         public async Task<ActionResult<StaffAssignedSurgeryDto>> GetStaffAssignedSurgeryById(String id)
         {
-            
-            try{
-            var op = await _service.GetStaffAssignedSurgeryByIdAsync(new OperationRequestId(id));
-            if (op == null)
-            {
-                return NotFound();
-            }    
 
-            return Ok(op);
+            try
+            {
+                var op = await _service.GetStaffAssignedSurgeryByIdAsync(new OperationRequestId(id));
+                if (op == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(op);
             }
             catch (BusinessRuleValidationException ex)
             {
                 return BadRequest(new { Message = ex.Message });
             }
 
-            
+
         }
 
 
@@ -214,6 +215,15 @@ namespace DDDSample1.Controllers
         {
             var emailDoctorQuerEditar = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             return await _service.GetAllForUiAsync(emailDoctorQuerEditar);
+        }
+
+        [HttpGet("GetAllAvailableForUi")]
+        [Authorize(Roles = "doctor")]
+
+        public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetAllAvailableForUi()
+        {
+            var emailDoctorQuerEditar = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            return await _service.GetAvailableAsync(emailDoctorQuerEditar);
         }
 
 

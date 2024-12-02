@@ -23,6 +23,7 @@ namespace DDDSample1.Domain.OperationRequest
         Task<OperationRequest> GetByIdAsync(OperationRequestId id);
 
         Task<StaffAssignedSurgeryDto> GetStaffAssignedSurgeryByIdAsync(OperationRequestId id);
+        Task<List<OperationRequestDto>> GetAvailableAsync(string emailDoctorQuerEditar);
 
 
 

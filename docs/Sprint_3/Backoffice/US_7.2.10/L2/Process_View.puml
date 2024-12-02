@@ -1,0 +1,15 @@
+
+```plantuml
+@startuml Process_View
+participant "SPA" as FE <<Container (C4)>>
+participant "MastersData" as BE <<Container (C4)>>
+
+activate FE
+FE -> BE: POST (/api/roomTypes)
+activate BE
+BE -> BE: receive request body info,\nadd new room type\nand saves in DB
+return response
+deactivate BE
+deactivate FE
+@enduml
+```

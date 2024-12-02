@@ -429,13 +429,21 @@ namespace DDDSample1.Domain.OperationRequest
 
 
 
-        public async Task<List<OperationRequestDto>> GetAvailableAsync()
+        public async Task<List<OperationRequestDto>> GetAvailableAsync(string doctor)
         {
-            // Obter todas as OperationRequests com status "Waiting"
-            var waitingRequests = await _repo.GetAllWaitingAsync();
 
-            // Converter para DTO e retornar
-            return waitingRequests.Select(OperationRequestMapper.toDTO).ToList();
+            Email email = new Email(doctor);
+            var doctorThatRequestedId = email.getFirstPartOfEmail();
+            List<OperationRequest> operationRequests = await this._repo.GetWaitingOperationRequestsByDoctorIdAsync(doctorThatRequestedId);
+            List<OperationRequestDto> operationRequestDtos = new List<OperationRequestDto>();
+            foreach (OperationRequest operationRequest in operationRequests)
+            {
+                var patientMedicalRecordNumber = _patientRepository.GetByIdAsync(new PatientId(operationRequest.patientId)).Result.MedicalRecordNumber._medicalRecordNumber;
+                var operationTypeDesignation = _operationTypeRepository.GetByIdAsync(new OperationTypeId(operationRequest.operationTypeId)).Result.name;
+                operationRequestDtos.Add(OperationRequestMapper.toDtoForUI(operationRequest, patientMedicalRecordNumber, operationTypeDesignation));
+            }
+
+            return operationRequestDtos;
         }
 
 

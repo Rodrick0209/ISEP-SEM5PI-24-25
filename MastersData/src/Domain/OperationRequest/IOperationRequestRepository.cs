@@ -15,7 +15,8 @@ namespace DDDSample1.Domain.OperationRequest
 
             Task<List<OperationRequest>> GetOperationRequestsByOperationTypeFromAList(string operationTypeId, List<OperationRequest> operationRequests);
 
-            Task<List<OperationRequest>> GetAllWaitingAsync();
+            Task<List<OperationRequest>> GetWaitingOperationRequestsByDoctorIdAsync(string doctorId);
+
 
     }
 
