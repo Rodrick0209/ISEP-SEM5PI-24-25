@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDSample1.Application.Dtos;
 using DDDSample1.Application.Mappers;
@@ -57,6 +58,23 @@ namespace DDDSample1.Controllers
 
             return SpecializationMapper.ToDto(specialization);
         }
+
+
+        [HttpGet("GetAll")]
+
+        public async Task<ActionResult<IEnumerable<SpecializationDto>>> GetAll()
+        {
+            var specializations = await _service.GetAllAsync();
+            if (specializations == null)
+            {
+                return NotFound();
+            }
+
+
+            return Ok(specializations);
+        }
+
+
 
 
 

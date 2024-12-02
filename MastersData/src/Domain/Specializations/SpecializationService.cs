@@ -80,5 +80,16 @@ namespace DDDSample1.Domain.Specializations
         }
 
 
+        public async Task<List<SpecializationDto>> GetAllAsync()
+        {
+            var specializations = await _repo.GetAllAsync();
+            return specializations.Select(s => new SpecializationDto(s.Id.AsString(), s.Name)).ToList();
+        }
+
+
+
+
+
+
     }
 }

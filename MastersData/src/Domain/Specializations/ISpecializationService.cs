@@ -19,5 +19,7 @@ namespace DDDSample1.Domain.OperationTypes
 
         Task<SpecializationDto> CreateAsync(SpecializationDto dto);
 
+        Task<List<SpecializationDto>> GetAllAsync();
+
     }
 }
