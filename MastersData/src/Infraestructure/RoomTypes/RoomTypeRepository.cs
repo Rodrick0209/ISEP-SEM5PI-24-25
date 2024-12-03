@@ -16,11 +16,11 @@ namespace DDDSample1.Infrastructure.RoomTypes
             _context = context;
         }
 
-        public async Task<RoomType> GetByNameAsync(string name)
+        public async Task<RoomType> GetByInternalCodeAsync(string internalCode)
         {
             return await this._context.RoomTypes
-                .Where(rt => rt.Name.fullName == name)
-                .SingleOrDefaultAsync();
+                .Where(rt => rt.InternalCode.internalCode == internalCode)
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -20,6 +20,11 @@ namespace DDDSample1.Domain.Utils
             {
                 throw new ArgumentNullException("Invalid name");
             }
+            
+            if(fullName.Length > 100 || fullName.Length < 3)
+            {
+                throw new BusinessRuleValidationException("Invalid name length");
+            }
         }
 
 

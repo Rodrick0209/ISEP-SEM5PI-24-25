@@ -4,12 +4,12 @@ namespace DDDSample1.Domain.RoomTypes
     {
         public static RoomTypeDto toDTO(RoomType roomType)
         {
-            return new RoomTypeDto(roomType.Id.AsGuid(), roomType.Name.ToString());
+            return new RoomTypeDto(roomType.Id.AsGuid(), roomType.InternalCode.internalCode, roomType.Designation.fullName, roomType.Description.description, roomType.SultabilityForSurgeries.sultabilityForSurgeries);
         }
 
         public static RoomType toDomain(RoomTypeDto roomTypeDto)
         {
-            return new RoomType(roomTypeDto.Name);
+            return new RoomType(roomTypeDto.InternalCode, roomTypeDto.Designation, roomTypeDto.Description, roomTypeDto.SultabilityForSurgeries);
         }
     }
 }

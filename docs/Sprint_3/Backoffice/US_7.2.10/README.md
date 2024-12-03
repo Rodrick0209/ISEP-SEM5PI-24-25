@@ -27,7 +27,9 @@ The room type is composed by:
 - Description (this field is optional)
 - Sultability for surgeries (Yes or No)
 
-The designation of the room type must be unique on the system.
+The internal code is a 8 character long string constitued only by letters, numbers, and dashes. The internal code is unique and must not have spaces.
+
+The designation is a free text with the maximum of 100 characters.
 
 The room type will be a category to select the room when create a operation room in the system.
 
@@ -73,19 +75,21 @@ The room type will be a category to select the room when create a operation room
 
 ### 5.1. Unit Tests
 
-- **Test 1**: Verify that a new room type can be added successfully.
-- **Test 2**: Ensure that adding a room type with a duplicate name is not allowed.
-- **Test 3**: Validate that the room type name is stored correctly in the database.
-- **Test 4**: Check that the system returns an appropriate error message when trying to add a room type with an invalid name (e.g., empty or null).
+- **Test 1**: Verify that a new room type can be added with valid data.
+- **Test 2**: Verify that adding a room type with an existing internal code fails.
+- **Test 3**: Verify that adding a room type with an invalid internal code fails.
+- **Test 4**: Verify that adding a room type with a designation longer than 100 characters fails.
+- **Test 5**: Verify that adding a room type without a description succeeds.
+- **Test 6**: Verify that adding a room type with suitability for surgeries set to "Yes" or "No" succeeds.
 
 ### 5.2. Integration Tests
 
-- **Test 1**: Verify that the room type addition integrates correctly with the database.
-- **Test 2**: Ensure that the new room type is available for selection when creating an operation room.
-- **Test 3**: Validate that the system handles concurrent requests to add room types without data corruption.
+- **Test 1**: Verify that the room type is correctly saved in the database.
+- **Test 2**: Verify that the room type can be retrieved from the database.
+- **Test 3**: Verify that the room type can be used when creating an operation room.
 
 ### 5.3. End-to-End Tests
 
-- **Test 1**: Simulate the admin adding a new room type through the user interface and verify that it appears in the list of available room types.
-- **Test 2**: Ensure that the admin cannot add a room type with a duplicate name through the user interface.
-- **Test 3**: Validate that the error messages are displayed correctly in the user interface when invalid data is entered.
+- **Test 1**: Verify that an admin can navigate to the add room type page and successfully add a new room type.
+- **Test 2**: Verify that the system displays an error message when trying to add a room type with an existing internal code.
+- **Test 3**: Verify that the system displays an error message when trying to add a room type with invalid data.

@@ -6,14 +6,20 @@ namespace DDDSample1.Domain.RoomTypes
 {
     public class RoomType : Entity<RoomTypeId>, IAggregateRoot
     {
-        public FullName Name { get; private set; }
+        public InternalCode InternalCode { get; private set; }
+        public FullName Designation { get; private set; }
+        public Description Description { get; private set; }
+        public SultabilityForSurgeries SultabilityForSurgeries { get; private set; }
 
         private RoomType() { }
 
-        public RoomType(string name)
+        public RoomType(string internalCode, string designation, string description, bool sultabilityForSurgeries)
         {
             this.Id = new RoomTypeId(Guid.NewGuid());
-            this.Name = new FullName(name);
+            this.InternalCode = new InternalCode(internalCode);
+            this.Designation = new FullName(designation);
+            this.Description = new Description(description);
+            this.SultabilityForSurgeries = new SultabilityForSurgeries(sultabilityForSurgeries);
         }
     }
 }

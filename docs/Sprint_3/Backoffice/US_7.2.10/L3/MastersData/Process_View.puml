@@ -16,7 +16,7 @@ activate Controller
 Controller -> DTO** : recieves request body info
 Controller -> Service : add new room type
 activate Service
-Service -> Service : validate if designation is unique
+Service -> Service : validate if the internal code is unique
 activate Service
 return validation
 Service -> Domain** : creates the entity

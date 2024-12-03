@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using DDDSample1.Domain.RoomTypes;
+using MastersData.Domain.RoomTypes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DDDSample1.Controllers
@@ -19,11 +20,11 @@ namespace DDDSample1.Controllers
 
         // POST: api/RoomTypes
         [HttpPost]
-        public async Task<ActionResult<RoomTypeDto>> AddAsync([FromBody] string name)
+        public async Task<ActionResult<RoomTypeDto>> AddAsync(AddRoomTypeDto dto)
         {
             try
             {
-                var roomType = await _service.AddRoomTypeAsync(name);
+                var roomType = await _service.AddRoomTypeAsync(dto);
 
                 return CreatedAtAction(nameof(GetById), new { id = roomType.Id.ToString() }, roomType);
             }
@@ -35,9 +36,9 @@ namespace DDDSample1.Controllers
 
         // GET: api/RoomTypes/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<RoomTypeDto>> GetById(string id)
+        public async Task<ActionResult<RoomTypeDto>> GetById(Guid id)
         {
-            var roomType = await _service.GetByIdAsync(id);
+            var roomType = await _service.GetByIdAsync(new RoomTypeId(id));
 
             if (roomType == null)
             {

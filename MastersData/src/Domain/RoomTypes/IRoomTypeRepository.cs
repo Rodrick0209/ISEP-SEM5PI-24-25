@@ -5,6 +5,6 @@ namespace DDDSample1.Domain.RoomTypes
 {
     public interface IRoomTypeRepository : IRepository<RoomType, RoomTypeId>
     {
-        Task<RoomType> GetByNameAsync(string name);
+        Task<RoomType> GetByInternalCodeAsync(string name);
     }
 }
