@@ -20,7 +20,14 @@ N/A
 
 The admin will input the name of the type of room to add in the system.
 
-The room type has a unique name. Two or more room types must not have the same name.
+The room type is composed by:
+
+- Internal Code
+- Designation
+- Description (this field is optional)
+- Sultability for surgeries (Yes or No)
+
+The designation of the room type must be unique on the system.
 
 The room type will be a category to select the room when create a operation room in the system.
 

@@ -36,6 +36,10 @@ export class UserProfileComponent implements OnInit {
     this.router.navigate(['/settings', this.email]);
   }
 
+  patientProfile(): void {
+    // Not Implemented yet
+  }
+
   getUserByEmail(email: string): void {
     this.userService.getUserByEmail(email).subscribe({
       next: (data: User) => this.user = data,

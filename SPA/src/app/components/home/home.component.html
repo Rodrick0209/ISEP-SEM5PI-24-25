@@ -1,0 +1,39 @@
+<div *ngIf="isAdmin()">
+    <div class="admin-panel">
+        <h1>Admin Panel</h1>
+        <p>Welcome, Admin! This is the central hub for managing Surgery Appointments and Resources. Here, you can oversee and optimize operations for efficient healthcare delivery.</p>
+        <div class="admin-options">
+            <button class="btn" (click)="scheduleSurgeries()">Schedule Surgeries</button>
+            <button class="btn" (click)="managePatients()">Manage Patient Profiles</button>
+            <button class="btn" (click)="manageOperationTypes()">Manage Operation Types</button>
+            <button class="btn" (click)="manageStaffs()">Manage Staff Profiles</button>
+            <button class="btn" (click)="manageSpecializations()">Manage Specializations</button>
+            <button class="btn" (click)="addRoomTypes()">Add Room Types</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isDoctor()">
+    <div class="doctor-panel">
+        <h1>Doctor Panel</h1>
+        <p>Welcome, Doctor! This is your dashboard for managing your operation requests. Here, you can access and update your patient records.</p>
+        <div class="doctor-options">
+            <button class="btn" (click)="manageOperationRequests()">Manage Operation Requests</button>
+            <button class="btn" (click)="managePatientRecords()">Manage Patient Records</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isPatient()">
+    <div class="patient-panel">
+        <h1>Welcome, patient!</h1>
+        <p>
+            This is your personal dashboard where you can access your profile information and more interesting fields. 
+            Stay informed and in control of your healthcare details.
+        </p>
+        <div class="patient-options">
+            <button class="btn" (click)="viewProfile()">View Profile</button>
+            <button class="btn" (click)="downloadPatientRecord()">Download Patient Record</button>
+        </div>
+    </div>
+</div>

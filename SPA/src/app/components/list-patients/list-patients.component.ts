@@ -28,19 +28,6 @@ export class ListPatientsComponent implements OnInit {
   constructor(private patientService: PatientService, private router: Router, private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.patientService.getPatients().subscribe({
-      next: (data: PatientsView[]) => {
-        this.patients = data;
-        this.filteredPatients = data;
-        this.totalPages = Math.ceil(this.filteredPatients.length / this.itemsPerPage);
-        this.updatePagination();
-      },
-      error: (err: any) => {
-        console.error('Failed to fetch patients', err);
-        this.filteredPatients = []; // Clear the list on error
-        this.errorMessage = 'An error occurred while fetching patients: ' + err.error.message;
-      }
-    });
     this.successMessage = this.messageService.getMessage();
   }
 
