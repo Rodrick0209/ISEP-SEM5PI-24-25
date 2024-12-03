@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Utils;
@@ -8,18 +9,23 @@ namespace DDDSample1.Domain.RoomTypes
     {
         public InternalCode InternalCode { get; private set; }
         public FullName Designation { get; private set; }
-        public Description Description { get; private set; }
-        public SultabilityForSurgeries SultabilityForSurgeries { get; private set; }
+        public Description? Description { get; private set; }
+        public SuitableForSurgeries SuitableForSurgeries { get; private set; }
 
-        private RoomType() { }
+        private RoomType()
+        {
+            this.InternalCode = null!;
+            this.Designation = null!;
+            this.SuitableForSurgeries = null!;
+        }
 
-        public RoomType(string internalCode, string designation, string description, bool sultabilityForSurgeries)
+        public RoomType(string internalCode, string designation, string? description, bool suitableForSurgeries)
         {
             this.Id = new RoomTypeId(Guid.NewGuid());
             this.InternalCode = new InternalCode(internalCode);
             this.Designation = new FullName(designation);
             this.Description = new Description(description);
-            this.SultabilityForSurgeries = new SultabilityForSurgeries(sultabilityForSurgeries);
+            this.SuitableForSurgeries = new SuitableForSurgeries(suitableForSurgeries);
         }
     }
 }

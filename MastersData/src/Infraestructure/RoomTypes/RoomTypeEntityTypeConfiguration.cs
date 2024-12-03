@@ -12,7 +12,7 @@ namespace DDDSample1.Infrastructure.RoomTypes
             builder.OwnsOne(b => b.InternalCode).HasIndex(ic => ic.internalCode).IsUnique();
             builder.OwnsOne(b => b.Designation);
             builder.OwnsOne(b => b.Description);
-            builder.OwnsOne(b => b.SultabilityForSurgeries);
+            builder.OwnsOne(b => b.SuitableForSurgeries);
         }
     }
 }

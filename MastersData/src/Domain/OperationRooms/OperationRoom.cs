@@ -21,22 +21,22 @@ namespace DDDSample1.Domain.OperationRooms
         public List<Appointment> Appointments { get; private set; } // Agendamentos
 
         private OperationRoom() { }
-        public OperationRoom(string roomNumber, string roomType, string roomCapacity, List<MaintenanceSlots> maintenanceSlots, List<Appointment> appointments)
+        public OperationRoom(string roomNumber, RoomType roomType, string roomCapacity, List<MaintenanceSlots> maintenanceSlots, List<Appointment> appointments)
         {
             this.Id = new OperationRoomId(Guid.NewGuid());
             this.RoomNumber = new RoomNumber(roomNumber);
-            this.RoomType = new RoomType(roomType);
+            this.RoomType = roomType;
             this.RoomCapacity = new RoomCapacity(roomCapacity);
             this.RoomStatus = RoomStatus.Available; // Status padrão
             this.MaintenanceSlots = maintenanceSlots;
             this.Appointments = appointments;
         }
 
-        public OperationRoom(string roomNumber, string roomType, string roomCapacity)
+        public OperationRoom(string roomNumber, RoomType roomType, string roomCapacity)
         {
             this.Id = new OperationRoomId(Guid.NewGuid());
             this.RoomNumber = new RoomNumber(roomNumber);
-            this.RoomType = new RoomType(roomType);
+            this.RoomType = roomType;
             this.RoomCapacity = new RoomCapacity(roomCapacity);
             this.RoomStatus = RoomStatus.Available; // Status padrão
             this.MaintenanceSlots = new List<MaintenanceSlots>();

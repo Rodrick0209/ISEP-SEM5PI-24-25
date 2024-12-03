@@ -10,6 +10,5 @@ namespace DDDSample1.Domain.RoomTypes
         Task<RoomTypeDto> AddRoomTypeAsync(AddRoomTypeDto dto);
         Task<RoomTypeDto> GetByIdAsync(RoomTypeId id);
         Task<List<RoomTypeDto>> GetAllAsync();
-        Task RemoveRoomTypeAsync(string id);
     }
 }

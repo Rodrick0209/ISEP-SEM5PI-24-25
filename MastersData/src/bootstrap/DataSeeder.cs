@@ -15,6 +15,8 @@ using DDDSample1.Domain.Appointments;
 using DDDSample1.Domain.Utils;
 using DDDSample1.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using DDDSample1.Domain.RoomTypes;
+using Org.BouncyCastle.Asn1.Pkcs;
 
 public static class DataSeeder
 {
@@ -230,27 +232,28 @@ public static class DataSeeder
     Staff staff2 = new Staff(new StaffId("D202512344"), "staffMario", "12346", specialization3.Id, "emaill@gmail.com", "+951999999998", "Doctor");
     SeedStaff(context, staff2);
 
+    var roomType = new RoomType("R12-2354", "RoomType1", "RoomType1", true);
+    context.RoomTypes.Add(roomType);
 
-
-    var operationRoom = new OperationRoom("or1", "boas", "10");
+    var operationRoom = new OperationRoom("or1", roomType , "10");
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 720, 840);
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1080, 1200);
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1200, 1300);
     SeedOperationRoom(context, operationRoom);
 
-    OperationRoom teste = new OperationRoom("or8", "description8", "10");
+    OperationRoom teste = new OperationRoom("or8", roomType, "10");
 
     var rooms = new List<OperationRoom>
     {
-      new OperationRoom("or2", "description2", "10"),
-      new OperationRoom("or3", "description3", "10"),
-      new OperationRoom("or4", "description4", "10"),
-      new OperationRoom("or5", "description5", "10"),
-      new OperationRoom("or6", "description6", "10"),
-      new OperationRoom("or7", "description7", "10"),
+      new OperationRoom("or2", roomType, "10"),
+      new OperationRoom("or3", roomType, "10"),
+      new OperationRoom("or4", roomType, "10"),
+      new OperationRoom("or5", roomType, "10"),
+      new OperationRoom("or6", roomType, "10"),
+      new OperationRoom("or7", roomType, "10"),
       teste,
-      new OperationRoom("or9", "description9", "10"),
-      new OperationRoom("or10", "description10", "10")
+      new OperationRoom("or9", roomType, "10"),
+      new OperationRoom("or10", roomType, "10")
     };
 
     context.OperationRooms.AddRange(rooms);

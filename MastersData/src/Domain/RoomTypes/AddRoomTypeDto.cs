@@ -6,6 +6,6 @@ namespace MastersData.Domain.RoomTypes
         public required string InternalCode { get; set; }
         public required string Designation { get; set; }
         public string? Description { get; set; }
-        public required bool SultabilityForSurgeries { get; set; }
+        public required bool SuitableForSurgeries { get; set; }
     }
 }

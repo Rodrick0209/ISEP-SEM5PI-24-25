@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using DDDSample1.Domain.RoomTypes;
 using MastersData.Domain.RoomTypes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DDDSample1.Controllers
@@ -20,6 +21,7 @@ namespace DDDSample1.Controllers
 
         // POST: api/RoomTypes
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<RoomTypeDto>> AddAsync(AddRoomTypeDto dto)
         {
             try
@@ -57,20 +59,5 @@ namespace DDDSample1.Controllers
             return Ok(list);
         }
 
-        // DELETE: api/RoomTypes/{id}
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> RemoveAsync(string id)
-        {
-            try
-            {
-                await _service.RemoveRoomTypeAsync(id);
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = ex.Message });
-            }
-        }
     }
 }

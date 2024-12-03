@@ -21,32 +21,30 @@ namespace DDDSample1.Domain.RoomTypes
         {
             await validateInternalCodeIsUnique(dto.InternalCode);
 
-            var roomType = new RoomType(dto.InternalCode, dto.Designation, dto.Description, dto.SultabilityForSurgeries);
+            if (string.IsNullOrWhiteSpace(dto.Description))
+            {
+                dto.Description = null;
+            }
+
+            var roomType = new RoomType(dto.InternalCode, dto.Designation, dto.Description, dto.SuitableForSurgeries);
 
             await _roomTypeRepository.AddAsync(roomType);
             await _unitOfWork.CommitAsync();
 
-            return new RoomTypeDto(roomType.Id.AsGuid(), roomType.InternalCode.internalCode, roomType.Designation.fullName, roomType.Description.description, roomType.SultabilityForSurgeries.sultabilityForSurgeries);
+            return new RoomTypeDto(roomType.Id.AsGuid(), roomType.InternalCode.internalCode, roomType.Designation.fullName, roomType.Description.description, roomType.SuitableForSurgeries.suitableForSurgeries);
         }
 
         public async Task<List<RoomTypeDto>> GetAllAsync()
         {
             return (await _roomTypeRepository.GetAllAsync())
-                .Select(roomType => new RoomTypeDto(roomType.Id.AsGuid(), roomType.InternalCode.internalCode, roomType.Designation.fullName, roomType.Description.description, roomType.SultabilityForSurgeries.sultabilityForSurgeries))
+                .Select(roomType => new RoomTypeDto(roomType.Id.AsGuid(), roomType.InternalCode.internalCode, roomType.Designation.fullName, roomType.Description.description, roomType.SuitableForSurgeries.suitableForSurgeries))
                 .ToList();
         }
 
         public async Task<RoomTypeDto> GetByIdAsync(RoomTypeId id)
         {
             var roomType = await _roomTypeRepository.GetByIdAsync(id);
-            return roomType == null ? null : new RoomTypeDto(roomType.Id.AsGuid(), roomType.InternalCode.internalCode, roomType.Designation.fullName, roomType.Description.description, roomType.SultabilityForSurgeries.sultabilityForSurgeries);
-        }
-
-        public async Task RemoveRoomTypeAsync(string id)
-        {
-            var roomType = await _roomTypeRepository.GetByIdAsync(new RoomTypeId(id));
-            _roomTypeRepository.Remove(roomType);
-            await _unitOfWork.CommitAsync();
+            return roomType == null ? null : new RoomTypeDto(roomType.Id.AsGuid(), roomType.InternalCode.internalCode, roomType.Designation.fullName, roomType.Description.description, roomType.SuitableForSurgeries.suitableForSurgeries);
         }
 
         private async Task validateInternalCodeIsUnique(string internalCode)
