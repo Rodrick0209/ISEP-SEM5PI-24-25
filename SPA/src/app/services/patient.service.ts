@@ -45,7 +45,7 @@ export class PatientService {
     return this.http.post(this.url, body);
   }
 
-  editPatient(medicalRecordNumber: string, name: string, email: string, phoneNumber: string, street: string, postalCode: string, city: string, country: string, medicalConditions: string) : Observable<any> {
+  editPatient(medicalRecordNumber: string, name: string, email: string, phoneNumber: string, street: string, postalCode: string, city: string, country: string) : Observable<any> {
     const body: any = {};
     body.medicalRecordNumber = medicalRecordNumber;
     if (name) body.name = name;
@@ -55,7 +55,6 @@ export class PatientService {
     if (postalCode) body.postalCode = postalCode;
     if (city) body.city = city;
     if (country) body.country = country;
-    if (medicalConditions) body.medicalConditions = medicalConditions;
 
     return this.http.patch(`${this.url}/${medicalRecordNumber}`, body);
   }

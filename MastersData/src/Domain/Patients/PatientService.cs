@@ -68,7 +68,7 @@ namespace DDDSample1.Domain.Patients
                 dto.EmergencyContactPhoneNumber,
                 medicalRecordNumber
             );
-            
+
             await _patientRepository.AddAsync(patient);
             await _unitOfWork.CommitAsync();
 
@@ -144,7 +144,14 @@ namespace DDDSample1.Domain.Patients
 
             if (dto.Email != null || dto.PhoneNumber != null)
             {
-                await _emailSender.SendEmailAsync("Your profile has been updated. If you did not make this change, please contact support immediately.", email, "Profile Update Notification");
+                string subject = "Profile Update Notification";
+                string body = $"Dear User,<br><br>" +
+                              $"We wanted to let you know that changes have been made to your profile. The updated details may include your email address or phone number.<br><br>" +
+                              $"If you made these changes, no further action is required.<br>" +
+                              $"However, if you did not make this update, please contact our support team immediately to ensure the security of your account.<br><br>" +
+                              $"Best regards,<br><br>" +
+                              $"[System Appointment and Resource Management]";
+                await _emailSender.SendEmailAsync(body, email, subject);
             }
 
             return PatientMapper.ToDto(patient);
@@ -180,7 +187,7 @@ namespace DDDSample1.Domain.Patients
                     dto.DateOfBirth = dto.DateOfBirth.Substring(0, 10);
                 }
                 patients = await _patientRepository.GetByFiltersAsync(dto.MedicalRecordNumber, dto.Name, dto.Email, dto.DateOfBirth);
-           }
+            }
 
             List<ViewPatientDto> listDto = patients.ConvertAll<ViewPatientDto>(pat => new ViewPatientDto
             {
