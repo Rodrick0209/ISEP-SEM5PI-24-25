@@ -7,8 +7,6 @@ using DDDSample1.Application.Dtos;
 using DDDSample1.Application.Mappers;
 using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Specializations;
-using DDDSample1.Infrastructure;
 
 namespace DDDSample1.Domain.Specializations
 {
@@ -97,14 +95,22 @@ namespace DDDSample1.Domain.Specializations
             {
                 specializationDtos.Add(SpecializationMapper.ToDto(spec));
             }
-            Console.WriteLine(specializationDtos.Count);
 
             return specializationDtos;
         }
 
+        public async Task<SpecializationDto> UpdateAsync(SpecializationDto dto)
+        {
+            var specialization = await _repo.GetByIdAsync(new SpecializationId(dto.Id));
 
+            if (specialization == null)
+                throw new BusinessRuleValidationException($"No specialization found with the id '{dto.Id}'.");
 
+            specialization.changeName(dto.Name);
 
+            await _unitOfWork.CommitAsync();
 
+            return new SpecializationDto(specialization.Id.AsString(), specialization.Name);
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Specializations;
 
@@ -8,7 +9,7 @@ namespace DDDSample1.Domain.Specializations
   public class Specialization : Entity<SpecializationId>, IAggregateRoot
   {
     
-    public string Name { get; }
+    public string Name { get;set; }
 
 
     private Specialization()
@@ -19,17 +20,21 @@ namespace DDDSample1.Domain.Specializations
 
     public Specialization(string name)
     {
-      this.Id = new SpecializationId(Guid.NewGuid());
+      Id = new SpecializationId(Guid.NewGuid());
       Name = name;
     }
 
     public Specialization(SpecializationId id, string name)
     {
-      this.Id = id;
+      Id = id;
       Name = name;
     }
 
-    
+    public void changeName(string name)
+    {
+      Name = name;
+    }
+
  
   }
 

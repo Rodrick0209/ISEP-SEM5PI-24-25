@@ -88,6 +88,35 @@ namespace DDDSample1.Controllers
             return Ok(specializations);
         }
 
+        [HttpPut("{id}")]
+
+        public async Task<ActionResult<SpecializationDto>> Update(string id, SpecializationDto dto)
+        {
+            if (id != dto.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var specialization = await _service.UpdateAsync(dto);
+
+                if (specialization == null)
+                {
+                    return NotFound();
+                }
+
+                return specialization;
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
 
 
 
