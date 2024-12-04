@@ -37,6 +37,7 @@ import { DeleteUserComponent } from './components/delete-user/delete-user.compon
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
 import { ScheduleResultsComponent } from './components/schedule-results/schedule-results.component';
 import { SpecializationsComponent } from './components/specializations/specializations.component';
+import { CreateSpecializationComponent } from './components/create-specialization/create-specialization.component';
 
 
 export const routes: Routes = [
@@ -55,6 +56,12 @@ export const routes: Routes = [
         component: SpecializationsComponent,
         canActivate: [AuthGuard],
         data: { role: 'admin' }
+    },
+    {
+      path: 'specialization/create',
+      component: CreateSpecializationComponent,
+      canActivate: [AuthGuard],
+      data: { role: 'admin' }
     },
     { path: 'planning', 
         component:PlanningComponent, 

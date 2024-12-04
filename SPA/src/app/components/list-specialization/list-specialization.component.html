@@ -1,1 +1,28 @@
-<p>list-specialization works!</p>
+<div class="specializations-container">
+  <h2>Specializations</h2>
+
+  <!-- Adicionar nova especialização -->
+  <button class="add-btn"(click)="createSpecialization()">Add New Specialization</button>
+
+  <!-- Pesquisa filtrada -->
+  <div class="filter-section">
+    <input type="text" [(ngModel)]="filterName" placeholder="Search specialization by name" />
+    <button class="search-btn"(click)="filterSpecializations()">Search</button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    Loading...
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Lista de especializações -->
+  <div class="specialization-list">
+    <div *ngFor="let specialization of specializations" class="specialization-item">
+      <p>Name: {{ specialization.name }}</p>
+      <button class="update-btn">Update</button>
+    </div>
+  </div>
+</div>

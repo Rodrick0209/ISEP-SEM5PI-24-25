@@ -1,0 +1,125 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Specializations Container */
+.specializations-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.specializations-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #007BFF;
+  text-align: center;
+}
+
+/* Specialization List */
+.specialization-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.specialization-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f5f5f5;
+  transition: transform 0.2s ease-in-out;
+}
+
+.specialization-item:hover {
+  transform: scale(1.02);
+  background-color: #f0f8ff;
+}
+
+.specialization-item p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Buttons */
+button {
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button.update-btn {
+  background-color: #007BFF;
+}
+
+button.update-btn:hover {
+  background-color: #0056b3;
+}
+
+button.add-btn {
+  background-color: #28a745;
+  margin-bottom: 20px;
+}
+
+button.add-btn:hover {
+  background-color: #218838;
+}
+
+button.search-btn {
+  background-color: #17a2b8;
+}
+
+button.search-btn:hover {
+  background-color: #117a8b;
+}
+
+/* Filter/Search Section */
+.filter-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-section input {
+  width: calc(100% - 140px);
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filter-section button {
+  margin-left: 10px;
+}
+
+/* Loading Indicator */
+.loading-indicator {
+  text-align: center;
+  font-size: 16px;
+  color: #007BFF;
+}
+
+/* Error Message */
+.error-message {
+  text-align: center;
+  font-size: 16px;
+  color: red;
+  margin-bottom: 20px;
+}

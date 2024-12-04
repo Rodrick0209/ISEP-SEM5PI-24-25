@@ -74,20 +74,19 @@ namespace DDDSample1.Controllers
             return Ok(specializations);
         }
 
-        [HttpGet("GetFiltered")]
 
-        public async Task<ActionResult<IEnumerable<SpecializationDto>>> GetFiltered(SpecializationFilterDto dto)
+        [HttpGet("GetFiltered")]
+        public async Task<ActionResult<IEnumerable<SpecializationDto>>> GetFiltered([FromQuery] SpecializationFilterDto dto)
         {
             Console.WriteLine(dto.Name);
             var specializations = await _service.GetFilteredAsync(dto);
-            if (specializations == null)
+            if (specializations == null || specializations.Count == 0)
             {
                 return NotFound();
             }
-            
+
             return Ok(specializations);
         }
-
 
 
 

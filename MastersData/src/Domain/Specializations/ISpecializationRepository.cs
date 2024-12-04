@@ -10,7 +10,6 @@ namespace DDDSample1.Domain.Specializations
 {
   public interface ISpecializationRepository : IRepository<Specialization, SpecializationId>
   {
-    Task<Specialization> GetByIdAsync(SpecializationId id);
 
     Task<Specialization> GetByNameAsync(string name);
 

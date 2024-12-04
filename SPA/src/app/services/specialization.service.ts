@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core'
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Specialization } from '../models/specialization';
 import { SpecializationMapper } from '../mappers/specialization.mapper';
@@ -13,15 +13,42 @@ import { SpecializationMapper } from '../mappers/specialization.mapper';
 export class SpecializationService {
     private baseUrl = '/api/Specializations'; // Update with your create API URL
 
+    private getSpecializationUrl = '/GetAll' 
+    private getSpecializationFilteredUrl = '/GetFiltered'
+
     constructor(private http: HttpClient) { }
 
 
     createSpecialization(name: string): Observable<Specialization> {
-        const body = {
-          Name: name
-        };
-    
-        return this.http.post<Specialization>(this.baseUrl, body);
-      }
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      const body = JSON.stringify(SpecializationMapper.mapToBackendFormat(name));
+
+      console.log('Request body being sent:', body);      // Log para verificar o formato do JSON sendo enviado
+          
+      return this.http.post<any>(this.baseUrl, body, { headers }).pipe(
+        tap(data => {
+          console.log('Raw response from POST:', data); // Debug: log the raw response
+        }),
+        map(data => SpecializationMapper.mapToSpecialization(data))
+      );
+    }
+
+    getSpecializations(): Observable<Specialization[]> {
+        const url = `${this.baseUrl}${this.getSpecializationUrl}`;
+        return this.http.get<any[]>(url).pipe(
+        map(data => SpecializationMapper.mapToSpecializations(data))
+        );
+    }
+
+
+    getSpecializationsFiltered(name: string): Observable<Specialization[]> {
+      const params = new HttpParams().set('Name', name); // Envia 'Name' como parâmetro de consulta
+  
+      const url = `${this.baseUrl}${this.getSpecializationFilteredUrl}`;
+      return this.http.get<any[]>(url, { params }).pipe(
+        map(data => SpecializationMapper.mapToSpecializations(data))
+      );
+    }
+
 
 }
