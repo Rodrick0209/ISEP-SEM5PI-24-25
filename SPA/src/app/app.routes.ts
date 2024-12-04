@@ -37,6 +37,7 @@ import { DeleteUserComponent } from './components/delete-user/delete-user.compon
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
 import { ScheduleResultsComponent } from './components/schedule-results/schedule-results.component';
 import { SpecializationsComponent } from './components/specializations/specializations.component';
+import { AddRoomTypeComponent } from './components/add-room-type/add-room-type.component';
 
 
 export const routes: Routes = [
@@ -200,5 +201,11 @@ export const routes: Routes = [
         component: DeleteUserComponent,
         canActivate: [AuthGuard],
         data: {role: 'patient'}
+    },
+    {
+        path: 'room-types/add',
+        component: AddRoomTypeComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'admin'}
     }
 ];

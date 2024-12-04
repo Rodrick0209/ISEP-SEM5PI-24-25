@@ -86,6 +86,6 @@ export class CreatePatientComponent {
 
   onCancel(): void {
     this.showConfirmation = false;
-    this.router.navigate(['/patients']);
+    history.back();
   }
 }

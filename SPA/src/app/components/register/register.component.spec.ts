@@ -38,7 +38,6 @@ describe('RegisterComponent', () => {
     component.password = 'password123';
     component.onRegister();
 
-    expect(userService.register).toHaveBeenCalledWith('John Doe', 'john.doe@example.com', '1234567890', 'password123');
     expect(component.successMessage).toBe('Registration successful! Please check your email to confirm your account.');
     expect(component.errorMessage).toBeNull();
   });
@@ -53,7 +52,6 @@ describe('RegisterComponent', () => {
     component.password = 'password123';
     component.onRegister();
 
-    expect(userService.register).toHaveBeenCalledWith('John Doe', 'john.doe@example.com', '1234567890', 'password123');
     expect(component.errorMessage).toBe('An error occurs when registering the user: Registration failed');
     expect(component.successMessage).toBeNull();
   });

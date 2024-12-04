@@ -39,7 +39,13 @@ describe('UserService', () => {
   it('should register a new user', () => {
     const dummyResponse = { success: true };
 
-    service.register('John Doe', 'john@example.com', '1234567890', 'password123').subscribe(response => {
+    var registerUser = {
+      name: 'John Doe',
+      email: 'john@example.com',
+      phone: '1234567890',
+      password: 'password123'
+    }
+    service.register(registerUser).subscribe(response => {
       expect(response).toEqual(dummyResponse);
     });
 
@@ -57,7 +63,12 @@ describe('UserService', () => {
   it('should confirm registration', () => {
     const dummyResponse = { success: true };
 
-    service.confirmRegistration('token123', 'john@example.com').subscribe(response => {
+    var confirmRegistration = {
+      token: 'token123',
+      email: 'john@example.com'
+    }
+
+    service.confirmRegistration(confirmRegistration).subscribe(response => {
       expect(response).toEqual(dummyResponse);
     });
 
@@ -69,7 +80,14 @@ describe('UserService', () => {
   it('should edit user details', () => {
     const dummyResponse = { success: true };
 
-    service.edit('john@example.com', 'John Doe', 'john.new@example.com', '0987654321').subscribe(response => {
+    var editUser = {
+      email: 'john@example.com',
+      nameToEdit: 'John Doe',
+      emailToEdit: 'john.new@example.com',
+      phoneNumberToEdit: '0987654321'
+    }
+
+    service.edit(editUser).subscribe(response => {
       expect(response).toEqual(dummyResponse);
     });
 
@@ -87,7 +105,14 @@ describe('UserService', () => {
   it('should confirm edit', () => {
     const dummyResponse = { success: true };
 
-    service.confirmEdit('token123', 'john@example.com', 'john.new@example.com', '0987654321').subscribe(response => {
+    var confirmEditUser = {
+      token: 'token123',
+      email: 'john@example.com',
+      emailToEdit: 'john.new@example.com',
+      phoneNumberToEdit: '0987654321'
+    }
+
+    service.confirmEdit(confirmEditUser).subscribe(response => {
       expect(response).toEqual(dummyResponse);
     });
 

@@ -63,7 +63,7 @@ export class HomeComponent {
   }
 
   addRoomTypes(){
-    // Not Implemented yet
+    this.router.navigate(['/room-types/add'])
   }
 
   manageOperationRequests(){

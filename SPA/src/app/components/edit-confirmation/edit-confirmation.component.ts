@@ -30,7 +30,13 @@ export class EditConfirmationComponent implements OnInit {
 
   confirmEdit() {
     if (this.token && this.email) {
-      this.userService.confirmEdit(this.token, this.email, this.emailToEdit, this.phoneNumberToEdit).subscribe({
+      var confirmEditUser = {
+        token: this.token,
+        email: this.email,
+        emailToEdit: this.emailToEdit,
+        phoneNumberToEdit: this.phoneNumberToEdit,
+      }
+      this.userService.confirmEdit(confirmEditUser).subscribe({
         next: (response) => {
           // Handle success
           console.log('User updated:', response);

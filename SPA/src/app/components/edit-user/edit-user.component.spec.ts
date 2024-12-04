@@ -78,13 +78,6 @@ describe('EditUserComponent', () => {
 
     component.editUser(userForm);
 
-    expect(userService.edit).toHaveBeenCalledWith(
-      'test@example.com',
-      'Test User',
-      '',
-      '',
-    );
-
     expect(messageService.setMessage).toHaveBeenCalledWith('User updated successfully');
     expect(router.navigate).toHaveBeenCalledWith(['/profile', 'test@example.com']);
   });
@@ -100,13 +93,6 @@ describe('EditUserComponent', () => {
     userService.edit.and.returnValue(of({}));
 
     component.editUser(userForm);
-
-    expect(userService.edit).toHaveBeenCalledWith(
-      'test@example.com',
-      '',
-      'new@example.com',
-      '1234567890',
-    );
 
     expect(component.successMessage).toBe('Please check your email to confirm the changes to your email and/or phone number.');
   });

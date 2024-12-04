@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { ConfirmEditUser, ConfirmRegisterUser, EditUser, RegisterUser } from '../models/user';
 
 export interface User {
   email: string;
@@ -26,34 +27,34 @@ export class UserService {
     return this.http.get<User>(`${this.urlEmail}/${email}`);
   }
 
-  register(name: string, email: string, phone: string, password: string) : Observable<any> {
+  register(user: RegisterUser) : Observable<any> {
     const body = {
-      name: name,
-      email: email,
-      phoneNumber: phone,
-      password: password
+      name: user.name,
+      email: user.email,
+      phoneNumber: user.phone,
+      password: user.password
     }
     return this.http.post(this.url, body);
   };
 
-  confirmRegistration(token: string, email: string): Observable<any> {
-    const url = `${this.urlConfirm}?token=${token}&email=${email}`;
+  confirmRegistration(confirmation: ConfirmRegisterUser): Observable<any> {
+    const url = `${this.urlConfirm}?token=${confirmation.token}&email=${confirmation.email}`;
 
     return this.http.post(url, {});
   };
 
-  edit(email: string, name: string, newEmail: string, phone: string): Observable<any> {
+  edit(user: EditUser): Observable<any> {
     const body: any = {}
-    if (email) body.email = email;
-    if (name) body.nameToEdit = name;
-    if (newEmail) body.emailToEdit = newEmail;
-    if (phone) body.phoneNumberToEdit = phone;
+    if (user.email) body.email = user.email;
+    if (user.nameToEdit) body.nameToEdit = user.nameToEdit;
+    if (user.emailToEdit) body.emailToEdit = user.emailToEdit;
+    if (user.phoneNumberToEdit) body.phoneNumberToEdit = user.phoneNumberToEdit;
 
     return this.http.patch(this.editUrl, body);
   }
 
-  confirmEdit(token: string, email: string, newEmail: string, phone: string): Observable<any> {
-    const url = `${this.editUrlConfirm}?token=${token}&email=${email}&emailToEdit=${newEmail}&phoneNumberToEdit=${phone}`;
+  confirmEdit(confirmation: ConfirmEditUser): Observable<any> {
+    const url = `${this.editUrlConfirm}?token=${confirmation.token}&email=${confirmation.email}&emailToEdit=${confirmation.emailToEdit}&phoneNumberToEdit=${confirmation.phoneNumberToEdit}`;
 
     return this.http.patch(url, {});
   }
