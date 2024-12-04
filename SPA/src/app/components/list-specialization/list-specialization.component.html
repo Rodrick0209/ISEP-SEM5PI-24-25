@@ -22,7 +22,7 @@
   <div class="specialization-list">
     <div *ngFor="let specialization of specializations" class="specialization-item">
       <p>Name: {{ specialization.name }}</p>
-      <button class="update-btn">Update</button>
+      <button class="update-btn" (click)="updateSpecialization(specialization.id,specialization.name)">Update</button>
     </div>
   </div>
 </div>

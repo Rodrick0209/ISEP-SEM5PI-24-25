@@ -39,6 +39,7 @@ import { ScheduleResultsComponent } from './components/schedule-results/schedule
 import { SpecializationsComponent } from './components/specializations/specializations.component';
 import { CreateSpecializationComponent } from './components/create-specialization/create-specialization.component';
 import { AddRoomTypeComponent } from './components/add-room-type/add-room-type.component';
+import { EditSpecializationComponent } from './components/edit-specialization/edit-specialization.component';
 
 
 export const routes: Routes = [
@@ -57,6 +58,13 @@ export const routes: Routes = [
         component: SpecializationsComponent,
         canActivate: [AuthGuard],
         data: { role: 'admin' }
+    },
+    {
+        path: 'specialization/edit/:id/:name',
+        component: EditSpecializationComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+
     },
     {
       path: 'specialization/create',

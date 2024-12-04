@@ -92,6 +92,7 @@ namespace DDDSample1.Controllers
 
         public async Task<ActionResult<SpecializationDto>> Update(string id, SpecializationDto dto)
         {
+
             if (id != dto.Id)
             {
                 return BadRequest();

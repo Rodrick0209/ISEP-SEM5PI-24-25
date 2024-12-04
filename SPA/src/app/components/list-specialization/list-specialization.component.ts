@@ -46,6 +46,7 @@ export class ListSpecializationComponent {
 
 
     filterSpecializations(): void {
+      this.errorMessage = null;
       this.specializations = [];
       this.isLoading = true;
       this.specializationsService.getSpecializationsFiltered(this.filterName).subscribe({
@@ -63,6 +64,13 @@ export class ListSpecializationComponent {
     
     
     }
+
+    updateSpecialization(id: string, name:string): void {
+      this.router.navigate(['/specialization/edit', id,name]);
+
+    }
+
+
 
 
 

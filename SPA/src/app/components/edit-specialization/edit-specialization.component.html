@@ -1,0 +1,24 @@
+<div class="edit-specialization-container">
+  <h2>Edit Specialization</h2>
+  
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="oldSpecialization">Old Specialization Name</label>
+      <input type="text" id="oldSpecialization" [value]="oldSpecialization" disabled />
+    </div>
+
+    <div class="form-group">
+      <label for="newSpecialization">New Specialization Name</label>
+      <input type="text" id="newSpecialization" [(ngModel)]="newSpecialization" name="newSpecialization" required />
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Update</button>
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+    </div>
+  </form>
+
+  <div *ngIf="message" class="message">
+    {{ message }}
+  </div>
+</div>
