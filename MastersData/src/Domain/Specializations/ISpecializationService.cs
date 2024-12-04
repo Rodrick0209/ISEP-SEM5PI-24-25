@@ -23,5 +23,8 @@ namespace DDDSample1.Domain.OperationTypes
 
         Task<List<SpecializationDto>> GetFilteredAsync(SpecializationFilterDto dto);
 
+        Task<SpecializationDto> UpdateAsync(SpecializationDto dto);
+
+
     }
 }
