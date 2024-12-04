@@ -119,11 +119,23 @@ namespace DDDSample1.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
 
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            try
+            {
+                await _service.RemoveAsync(id);
 
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
 
     }
-
 
 
 

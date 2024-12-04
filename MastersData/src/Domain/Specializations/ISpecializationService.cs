@@ -25,6 +25,8 @@ namespace DDDSample1.Domain.OperationTypes
 
         Task<SpecializationDto> UpdateAsync(SpecializationDto dto);
 
+        Task <SpecializationDto> RemoveAsync(Guid id);
+
 
     }
 }
