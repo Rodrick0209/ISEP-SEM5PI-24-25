@@ -35,28 +35,6 @@ describe('ListStaffsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should fetch staffs on init', () => {
-    const staffs: StaffsView[] = [{ id: '1', fullName: 'John Doe', licenseNumber: '123', phoneNumber: '1234567890', email: 'john@example.com', specializationId: '1', status: 'Active' }];
-    mockStaffService.getStaffs.and.returnValue(of(staffs));
-    mockMessageService.getMessage.and.returnValue('Success message');
-
-    component.ngOnInit();
-
-    expect(component.staffs).toEqual(staffs);
-    expect(component.filteredStaffs).toEqual(staffs);
-    expect(component.successMessage).toBe('Success message');
-  });
-
-  it('should handle error when fetching staffs', () => {
-    const errorResponse = { error: { message: 'Error message' } };
-    mockStaffService.getStaffs.and.returnValue(throwError(errorResponse));
-
-    component.ngOnInit();
-
-    expect(component.errorMessage).toBe('An error occurred while fetching staff members: Error message');
-    expect(component.filteredStaffs).toEqual([]);
-  });
-
   it('should navigate to create staff page', () => {
     component.createStaff();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/staff/create']);

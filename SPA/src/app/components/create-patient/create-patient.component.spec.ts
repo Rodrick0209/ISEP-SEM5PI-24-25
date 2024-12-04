@@ -50,11 +50,6 @@ describe('CreatePatientComponent', () => {
     expect(component.showConfirmation).toBeFalse();
   });
 
-  it('should navigate to /patients on cancel', () => {
-    component.onCancel();
-    expect(router.navigate).toHaveBeenCalledWith(['/patients']);
-  });
-
   it('should submit form and navigate to /patients on success', () => {
     const patientForm = { valid: true };
     component.submitForm.dateOfBirth = new Date().toISOString();

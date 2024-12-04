@@ -12,24 +12,12 @@ import { AddOperationTypeComponent } from '../add-operation-type/add-operation-t
   templateUrl: './list-operation-types.component.html',
   styleUrls: ['./list-operation-types.component.css']
 })
-export class ListOperationTypesComponent implements OnInit {
+export class ListOperationTypesComponent {
   operationTypes: OperationType[] = [];
   filteredOperationTypes: OperationType[] = [];
 
   constructor(private operationTypesService: OperationTypesService, private router: Router) { }
 
-  ngOnInit(): void {
-    this.operationTypesService.getOperationTypes().subscribe({
-      next: (data) => {
-        this.operationTypes = data;
-        this.filteredOperationTypes = data;
-      },
-      error: (err) => {
-        console.error('Failed to fetch operation types', err);
-        this.filteredOperationTypes = []; // Clear the list on error
-      }
-    });
-  }
 
   onFilterChanged(filter: { name: string; status: string; specialization: string }): void {
     this.operationTypesService.filterOperationTypes(filter.name, filter.status, filter.specialization).subscribe({
@@ -50,7 +38,16 @@ export class ListOperationTypesComponent implements OnInit {
   deactivateOperationType(operationType: OperationType): void {
     this.operationTypesService.deactivateOperationType(operationType.id).subscribe({
       next: () => {
-        this.ngOnInit();
+        this.operationTypesService.getOperationTypes().subscribe({
+          next: (data) => {
+            this.operationTypes = data;
+            this.filteredOperationTypes = data;
+          },
+          error: (err) => {
+            console.error('Failed to fetch operation types', err);
+            this.filteredOperationTypes = []; // Clear the list on error
+          }
+        });
       },
       error: (err) => {
         if (err.status === 401) {

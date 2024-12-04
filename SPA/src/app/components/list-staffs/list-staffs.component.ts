@@ -13,7 +13,7 @@ import { StaffService } from '../../services/staff.service';
   templateUrl: './list-staffs.component.html',
   styleUrl: './list-staffs.component.css'
 })
-export class ListStaffsComponent implements OnInit {
+export class ListStaffsComponent {
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
@@ -27,28 +27,6 @@ export class ListStaffsComponent implements OnInit {
   totalPages: number = 0;
 
   constructor(private staffService : StaffService, private router: Router, private messageService: MessageService) { }
-
-  ngOnInit(): void {
-    this.staffService.getStaffs().subscribe({
-      next: (data: StaffsView[]) => {
-        console.log('Dados recebidos no componente:', data)
-        this.staffs = data;
-        console.log('Staff view esta assim',this.staffs)
-        this.filteredStaffs = data;
-        this.totalPages = Math.ceil(this.filteredStaffs.length / this.itemsPerPage);
-        this.updatePagination();
-
-        // Log os dados para depuração
-      console.log('Dados paginados:', this.paginatedStaffs);
-      },
-      error: (err: any) => {
-        console.error('Failed to fetch staff members', err);
-        this.filteredStaffs = []; // Clear the list on error
-        this.errorMessage = 'An error occurred while fetching staff members: ' + err.error.message;
-      }
-    });
-    this.successMessage = this.messageService.getMessage();
-  }
 
   createStaff(): void {
     this.router.navigate(['/staff/create']); // Adjust this route as needed

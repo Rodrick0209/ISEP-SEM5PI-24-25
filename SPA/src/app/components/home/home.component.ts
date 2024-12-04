@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -10,9 +10,16 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  isLoggedIn: boolean = false;
 
   constructor(private authService: AuthService, private router: Router){ }
+
+  ngOnInit(): void {
+    this.authService.isLoggedIn$.subscribe(status => {
+      this.isLoggedIn = status;
+    });
+  }
 
   extractRole(): any {
     return this.authService.extractRoleFromToken();
@@ -37,10 +44,6 @@ export class HomeComponent {
     return role === 'patient';
   }
 
-  isNewUserOrNotRegistered(): boolean {
-    const role = this.extractRole();
-    return role == null;
-  }
 
   scheduleSurgeries() {
     this.router.navigate(['/planning']);
@@ -81,6 +84,22 @@ export class HomeComponent {
 
   downloadPatientRecord(){
     // Not implemented yet
+  }
+
+  login(){
+    this.router.navigate(["/login"])
+  }
+
+  signUp(){
+    this.router.navigate(['/register'])
+  }
+
+  about(){
+    this.router.navigate(['/about'])
+  }
+
+  contact(){
+    this.router.navigate(['/contact'])
   }
 
 }
