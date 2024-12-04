@@ -47,12 +47,13 @@ export class EditUserComponent implements OnInit {
       };
 
       if (this.email) {
-        this.userService.edit(
-          this.email,
-          userData.name,
-          userData.email,
-          userData.phoneNumber
-        ).subscribe({
+        var editUser = {
+          email: this.email,
+          nameToEdit: userData.name,
+          emailToEdit: userData.email,
+          phoneNumberToEdit: userData.phoneNumber
+        };
+        this.userService.edit(editUser).subscribe({
           next: (data: any) => {
             console.log('User updated successfully');
             if (this.submitForm.email || this.submitForm.phoneNumber) {

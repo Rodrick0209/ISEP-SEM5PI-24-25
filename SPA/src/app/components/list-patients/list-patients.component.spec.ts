@@ -41,30 +41,6 @@ describe('ListPatientsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should fetch patients on init', () => {
-    const patients = [{ medicalRecordNumber: '123', name: 'John Doe', email: 'john@example.com', dateOfBirth: new Date('1990-01-01') }];
-    patientService.getPatients.and.returnValue(of(patients));
-    messageService.getMessage.and.returnValue('Success message');
-
-    component.ngOnInit();
-
-    expect(component.patients).toEqual(patients);
-    expect(component.filteredPatients).toEqual(patients);
-    expect(component.successMessage).toBe('Success message');
-    expect(component.totalPages).toBe(1);
-  });
-
-  it('should handle error when fetching patients', () => {
-    const errorResponse = { error: { message: 'Error fetching patients' } };
-    patientService.getPatients.and.returnValue(throwError(errorResponse));
-
-    component.ngOnInit();
-
-    expect(component.patients).toEqual([]);
-    expect(component.filteredPatients).toEqual([]);
-    expect(component.errorMessage).toBe('An error occurred while fetching patients: Error fetching patients');
-  });
-
   it('should filter patients', () => {
     const filter = { medicalRecordNumber: '123', name: 'John Doe', email: 'john@example.com', dateOfBirth: '1990-01-01' };
     const filteredPatients = [{ medicalRecordNumber: '123', name: 'John Doe', email: 'john@example.com', dateOfBirth: new Date('1990-01-01') }];

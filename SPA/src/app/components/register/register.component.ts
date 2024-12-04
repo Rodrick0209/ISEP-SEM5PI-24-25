@@ -20,7 +20,13 @@ export class RegisterComponent {
   constructor(private userService: UserService) { }
 
   onRegister() {
-    this.userService.register(this.name, this.email, this.phone, this.password).subscribe(
+    var createPatient = {
+      name: this.name,
+      email: this.email,
+      phone: this.phone,
+      password: this.password
+    };
+    this.userService.register(createPatient).subscribe(
       (response) => {
         console.log('Registration successful:', response);
         this.successMessage = 'Registration successful! Please check your email to confirm your account.';

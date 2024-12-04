@@ -26,7 +26,11 @@ export class RegisterConfirmationComponent implements OnInit{
 
   confirmRegistration() {
     if (this.token && this.email) {
-      this.userService.confirmRegistration(this.token, this.email).subscribe({
+      var confirmRegistration = {
+        token: this.token,
+        email: this.email
+      };
+      this.userService.confirmRegistration(confirmRegistration).subscribe({
         next: (response) => {
           // Handle success
           console.log('Account confirmed:', response);

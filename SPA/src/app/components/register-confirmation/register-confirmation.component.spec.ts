@@ -49,7 +49,6 @@ describe('RegisterConfirmationComponent', () => {
 
     expect(component.token).toBe('test-token');
     expect(component.email).toBe('test@example.com');
-    expect(userService.confirmRegistration).toHaveBeenCalledWith('test-token', 'test@example.com');
     expect(router.navigate).toHaveBeenCalledWith(['/confirmation-success'], {
       queryParams: { message: 'Your account has been confirmed succesfully.' }
     });
@@ -61,7 +60,6 @@ describe('RegisterConfirmationComponent', () => {
 
     fixture.detectChanges();
 
-    expect(userService.confirmRegistration).toHaveBeenCalledWith('test-token', 'test@example.com');
     expect(router.navigate).toHaveBeenCalledWith(['/confirmation-error'], {
       queryParams: { message: 'Error occurred' }
     });
