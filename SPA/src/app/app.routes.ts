@@ -37,11 +37,8 @@ import { DeleteUserComponent } from './components/delete-user/delete-user.compon
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
 import { ScheduleResultsComponent } from './components/schedule-results/schedule-results.component';
 import { SpecializationsComponent } from './components/specializations/specializations.component';
-<<<<<<< HEAD
 import { CreateSpecializationComponent } from './components/create-specialization/create-specialization.component';
-=======
 import { AddRoomTypeComponent } from './components/add-room-type/add-room-type.component';
->>>>>>> 3ecd1a8c694ebb466265f459d066df0bbf89bdad
 
 
 export const routes: Routes = [
