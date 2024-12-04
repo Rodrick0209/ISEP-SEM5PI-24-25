@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using DDDSample1.Application.Dtos;
 using DDDSample1.Domain.Specializations;
 using DDDSample1.Infrastructure.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +16,7 @@ namespace DDDSample1.Infrastructure.Specializations
         private readonly DDDSample1DbContext context;
 
 
-        public SpecializationRepository(DDDSample1DbContext context):base(context.Specializations)
+        public SpecializationRepository(DDDSample1DbContext context) : base(context.Specializations)
         {
             this.context = context;
         }
@@ -34,6 +36,15 @@ namespace DDDSample1.Infrastructure.Specializations
             return await this.context.Set<Specialization>()
                                  .ToDictionaryAsync(s => s.Name, s => s.Id);
         }
+
+        public async Task<List<Specialization>> GetFilteredAsync(SpecializationFilterDto dto)
+        {
+            return await this.context.Specializations
+                .Where(p => p.Name.ToLower().Contains(dto.Name.ToLower()))
+                .ToListAsync();
+        }
+
+
     }
 
 }

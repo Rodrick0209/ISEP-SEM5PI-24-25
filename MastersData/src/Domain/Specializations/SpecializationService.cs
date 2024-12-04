@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DDDSample1.Application.Dtos;
+using DDDSample1.Application.Mappers;
 using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Specializations;
@@ -86,6 +88,19 @@ namespace DDDSample1.Domain.Specializations
             return specializations.Select(s => new SpecializationDto(s.Id.AsString(), s.Name)).ToList();
         }
 
+        public async Task<List<SpecializationDto>> GetFilteredAsync(SpecializationFilterDto dto)
+        {
+            var specializations = await _repo.GetFilteredAsync(dto);
+            var specializationDtos = new List<SpecializationDto>();
+
+            foreach (var spec in specializations)
+            {
+                specializationDtos.Add(SpecializationMapper.ToDto(spec));
+            }
+            Console.WriteLine(specializationDtos.Count);
+
+            return specializationDtos;
+        }
 
 
 
