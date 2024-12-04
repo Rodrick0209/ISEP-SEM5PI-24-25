@@ -2,27 +2,37 @@
   <h2>Specializations</h2>
 
   <!-- Adicionar nova especialização -->
-  <button class="add-btn"(click)="createSpecialization()">Add New Specialization</button>
+  <button class="add-btn" (click)="createSpecialization()">Add New Specialization</button>
 
   <!-- Pesquisa filtrada -->
   <div class="filter-section">
     <input type="text" [(ngModel)]="filterName" placeholder="Search specialization by name" />
-    <button class="search-btn"(click)="filterSpecializations()">Search</button>
-  </div>
-
-  <div *ngIf="isLoading" class="loading-indicator">
-    Loading...
-  </div>
-
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
+    <button class="search-btn" (click)="filterSpecializations()">Search</button>
   </div>
 
   <!-- Lista de especializações -->
   <div class="specialization-list">
     <div *ngFor="let specialization of specializations" class="specialization-item">
       <p>Name: {{ specialization.name }}</p>
-      <button class="update-btn" (click)="updateSpecialization(specialization.id,specialization.name)">Update</button>
+      <div class="button-group">
+        <button class="update-btn" (click)="updateSpecialization(specialization.id,specialization.name)">Update</button>
+        <button class="delete-btn" (click)="deleteSpecialization(specialization.id)">Delete</button>
+      </div>
     </div>
+  </div>
+
+  <!-- Indicador de Carregamento -->
+  <div *ngIf="isLoading" class="loading-indicator">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Mensagem de Erro -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Mensagem de Sucesso -->
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
   </div>
 </div>

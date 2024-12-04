@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { OperationRequest, OperationRequestService } from '../../services/operationRequestService';
 import { FilterOperationRequestsComponent } from '../filter-operation-requests/filter-operation-requests.component';
 import { MessageService } from '../../services/message.service';
+import { MarkXComponent } from '../template/mark-x/mark-x.component';
 
 @Component({
   selector: 'app-list-operation-requests',
@@ -78,7 +79,10 @@ export class ListOperationRequestsComponent implements OnInit {
     this.router.navigate(['/operationRequests/edit',operationRequest.id]); // Adjust this route as needed
   } 
 
+  
 
+
+  
 
 
 

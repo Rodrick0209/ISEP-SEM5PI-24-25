@@ -40,6 +40,7 @@ import { SpecializationsComponent } from './components/specializations/specializ
 import { CreateSpecializationComponent } from './components/create-specialization/create-specialization.component';
 import { AddRoomTypeComponent } from './components/add-room-type/add-room-type.component';
 import { EditSpecializationComponent } from './components/edit-specialization/edit-specialization.component';
+import { DeleteSpecializationComponent } from './components/delete-specialization/delete-specialization.component';
 
 
 export const routes: Routes = [
@@ -71,6 +72,12 @@ export const routes: Routes = [
       component: CreateSpecializationComponent,
       canActivate: [AuthGuard],
       data: { role: 'admin' }
+    },
+    {
+        path: 'specialization/delete/:id',
+        component: DeleteSpecializationComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
     },
     { path: 'planning', 
         component:PlanningComponent, 

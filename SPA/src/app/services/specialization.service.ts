@@ -57,6 +57,11 @@ export class SpecializationService {
     }
 
 
+    deleteSpecialization(id: string): Observable<Specialization> {
+      return this.http.delete<any>(`${this.baseUrl}/${id}`);
+    }
+
+
 
 
 }
