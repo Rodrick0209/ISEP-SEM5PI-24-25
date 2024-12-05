@@ -46,4 +46,17 @@ export default (app: Router) => {
             res.status(500).send('Error deleting medical records.');
         }
     });
+
+    route.put('/update/:id',
+        celebrate({
+            body: Joi.object({
+                //patientId: Joi.string().guid({ version: 'uuidv4' }).required(),
+                allergies: Joi.array().items(Joi.string()),
+                medicalConditions: Joi.array().items(Joi.string())
+            }),
+            params: Joi.object({
+                id: Joi.string().guid({ version: 'uuidv4' }).required()
+            })
+        }),
+        (req, res, next) => ctrl.updateMedicalRecord(req, res, next));
 }

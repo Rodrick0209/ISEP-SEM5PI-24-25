@@ -43,6 +43,8 @@ import { EditSpecializationComponent } from './components/edit-specialization/ed
 import { DeleteSpecializationComponent } from './components/delete-specialization/delete-specialization.component';
 import { AllergiesCatalogComponent } from './components/allergies-catalog/allergies-catalog.component';
 import { CreateAllergiesCatalogItemComponent } from './components/create-allergies-catalog-item/create-allergies-catalog-item.component';
+import { MedicalConditionsComponent } from './components/medical-conditions/medical-conditions.component';
+import { CreateMedicalConditionsComponent } from './components/create-medical-conditions/create-medical-conditions.component';
 
 
 export const routes: Routes = [
@@ -241,6 +243,18 @@ export const routes: Routes = [
     {
         path: 'allergiesCatalog/add',
         component: CreateAllergiesCatalogItemComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'admin'}
+    },
+    {
+        path: 'medicalConditions',
+        component: MedicalConditionsComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'admin'}
+    },
+    {
+        path: 'medicalConditions/add',
+        component: CreateMedicalConditionsComponent,
         canActivate: [AuthGuard],
         data: {role: 'admin'}
     }
