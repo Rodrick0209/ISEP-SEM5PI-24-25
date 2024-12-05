@@ -1,1 +1,50 @@
-<p>create-medical-conditions works!</p>
+<div class="create-medicalCondition-container">
+    <h2>Create New Medical Condition</h2>
+  
+    <!-- Formulário para criar um novo item de catálogo de alergias -->
+    <form (ngSubmit)="confirmSubmission()" #medicalConditionForm="ngForm">
+      <div class="form-group">
+        <label for="name">Medical Condition:</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="medicalConditionToCreate"
+          #medicalConditionNameField="ngModel"
+          required
+          placeholder="Enter medical condition name"
+        />
+        <div *ngIf="medicalConditionNameField.invalid && medicalConditionNameField.touched" class="error">
+          Medical Condition is required.
+        </div>
+      </div>
+  
+      <!-- Botões -->
+      <div class="button-group">
+        <button type="submit" [disabled]="medicalConditionForm.invalid">Submit</button>
+        <button type="button" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  
+    <!-- Mensagem de erro -->
+    <div *ngIf="message" class="error-message">
+      {{ message }}
+    </div>
+  
+    <!-- Indicador de Carregamento -->
+  <div *ngIf="isLoading" class="loading-indicator">
+      <div class="spinner"></div>
+    </div>
+  
+    <!-- Modal de confirmação -->
+    <div *ngIf="showConfirmation" class="modal">
+      <div class="modal-content">
+        <h3>Confirm Submission</h3>
+        <p>Are you sure you want to create this allergy?</p>
+        <div class="modal-buttons">
+          <button (click)="onSubmit(medicalConditionForm)">Yes</button>
+          <button (click)="closeConfirmationModal()">No</button>
+        </div>
+      </div>
+    </div>
+  
