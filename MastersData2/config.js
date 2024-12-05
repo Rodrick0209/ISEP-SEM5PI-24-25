@@ -43,7 +43,7 @@ export default {
    * API configs
    */
   api: {
-    prefix: '/api',
+    prefix: '/api2',
   },
 
   controllers: {

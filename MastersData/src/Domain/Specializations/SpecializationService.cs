@@ -112,5 +112,20 @@ namespace DDDSample1.Domain.Specializations
 
             return new SpecializationDto(specialization.Id.AsString(), specialization.Name);
         }
+
+        public async Task<SpecializationDto> RemoveAsync(Guid id)
+        {
+            var specialization = await _repo.GetByIdAsync(new SpecializationId(id));
+
+            if (specialization == null)
+                throw new BusinessRuleValidationException($"No specialization found with the id '{id}'.");
+
+            _repo.Remove(specialization);
+            await _unitOfWork.CommitAsync();
+
+            return SpecializationMapper.ToDto(specialization);
+        }
+
+
     }
 }

@@ -23,8 +23,10 @@ export class ListSpecializationComponent {
     constructor(private specializationsService: SpecializationService,private router: Router, private messageService: MessageService) {}
     
     ngOnInit(): void {
+      this.isLoading = true;
       this.specializationsService.getSpecializations().subscribe({
         next: (data: Specialization[]) => {
+          this.isLoading = false;
           this.specializations = data;
         },
         error: (err: any) => {
@@ -46,6 +48,7 @@ export class ListSpecializationComponent {
 
 
     filterSpecializations(): void {
+      this.errorMessage = null;
       this.specializations = [];
       this.isLoading = true;
       this.specializationsService.getSpecializationsFiltered(this.filterName).subscribe({
@@ -63,6 +66,17 @@ export class ListSpecializationComponent {
     
     
     }
+
+    updateSpecialization(id: string, name:string): void {
+      this.router.navigate(['/specialization/edit', id,name]);
+
+    }
+
+    deleteSpecialization(id: string): void {
+      this.router.navigate(['/specialization/delete', id]);
+    }
+    
+
 
 
 

@@ -136,9 +136,18 @@ namespace DDDSample1.Domain.User
 
         public async Task<string> SendEmailForAbusiveAccountAccess(string accountBlockedEmail)
         {
-            await _emailSender.SendEmailAsync("Account with username " + accountBlockedEmail + " has been blocked due to abusive access / failing consequitive logins", (_configuration["Admin:Email"]), "Account Blocked");
+            string subject = "Account Blocked Due to Suspicious Activity";
+            string body = $"Dear Admin,<br><br>" +
+                          $"The account associated with the email address <strong>{accountBlockedEmail}</strong> has been temporarily blocked due to multiple consecutive failed login attempts or suspicious access patterns.<br><br>" +
+                          $"Please review this account for further action, and contact the user if necessary to resolve the issue.<br><br>" +
+                          $"If you require additional details about this activity, please check the system logs.<br><br>" +
+                          $"Best regards,<br><br>" +
+                          $"[System Appointment and Resource Management]";
+
+            await _emailSender.SendEmailAsync(body, _configuration["Admin:Email"], subject);
             return "Email sent";
         }
+
         public async Task<string> ResetPassword(User user, string newPassword, string token)
         {
             Console.WriteLine("Ver se password sao diff");
@@ -169,9 +178,16 @@ namespace DDDSample1.Domain.User
             User user = await _repo.GetByEmailAsync(email);
             string token = GenerateResetPasswordToken(user);
             user.SetResetPasswordToken(token, DateTime.UtcNow.AddMinutes(5));
-            
+
             string url = $"http://localhost:4200/reset-password?token={token}&email={email}";
-            await _emailSender.SendEmailAsync($"Please reset your password by clicking here: <a href='{url}'>link</a>", email, "ResetPassword");
+            string subject = "Reset Your Password";
+            string body = $"Dear User,<br><br>" +
+                          $"We received a request to reset your password. If you initiated this request, please reset your password by clicking the link below:<br>" +
+                          $"<a href='{url}'>Reset Password</a><br><br>" +
+                          $"If you did not request a password reset, please ignore this email or contact our support team if you have concerns about your account's security.<br><br>" +
+                          $"Best regards,<br><br>" +
+                          $"[System Appointment and Resource Management]";
+            await _emailSender.SendEmailAsync(body, email, subject);
             await _unitOfWork.CommitAsync();
 
 
@@ -400,7 +416,8 @@ namespace DDDSample1.Domain.User
             }
 
             _repo.Remove(user);
-            _patientRepo.Remove(patient);
+
+            sendEmailToAdminDeleteRequest(dto.Email, patient.MedicalRecordNumber._medicalRecordNumber);
 
             LogPatientChanges(patient, "delete");
 
@@ -434,19 +451,43 @@ namespace DDDSample1.Domain.User
         private void SendEmailWithUrlConfirmationRegisterPatient(string email, string token)
         {
             string callbackUrl = $"http://localhost:4200/register/confirm?token={token}&email={email}";
-            _emailSender.SendEmailAsync($"Please confirm your register here: <a href='{callbackUrl}'>link</a>", email, "Confirm the register of your account");
+            string subject = "Confirm Your Account Registration";
+            string body = $"Dear User,<br><br>" +
+                          $"Thank you for registering an account with us! To complete your registration, please confirm your email address by clicking the link below:<br>" +
+                          $"<a href='{callbackUrl}'>Confirm Registration</a><br><br>" +
+                          $"If you did not initiate this request, please ignore this email.<br><br>" +
+                          $"Best regards,<br><br>" +
+                          $"[System Appointment and Resource Management]";
+            _emailSender.SendEmailAsync(body, email, subject);
         }
 
         private void SendEmailWithUrlConfirmationEdtPatient(string email, string token, string emailToEdit, string phoneNumberToEdit)
         {
             string callbackUrl = $"http://localhost:4200/edit/confirm?token={token}&email={email}&emailToEdit={emailToEdit}&phoneNumberToEdit={phoneNumberToEdit}";
-            _emailSender.SendEmailAsync($"Please confirm your edition here: <a href='{callbackUrl}'>link</a>", email, "Confirm the edition of your account");
+            string subject = "Confirm Changes to Your Account";
+            string body = $"Dear User,<br><br>" +
+                          $"We have received a request to update your account details. The changes requested are as follows:<br>" +
+                          $"- New Email: {emailToEdit}<br>" +
+                          $"- New Phone Number: {phoneNumberToEdit}<br><br>" +
+                          $"To confirm these changes, please click the link below:<br>" +
+                          $"<a href='{callbackUrl}'>Confirm Changes</a><br><br>" +
+                          $"If you did not request these changes, please contact our support team immediately.<br><br>" +
+                          $"Best regards,<br><br>" +
+                          $"[System Appointment and Resource Management]";
+            _emailSender.SendEmailAsync(body, email, subject);
         }
 
         private void SendEmailWithUrlConfirmationDeletePatient(string email, string token)
         {
             string callbackUrl = $"http://localhost:4200/delete/confirm?token={token}&email={email}";
-            _emailSender.SendEmailAsync($"Please confirm your deletion here: <a href='{callbackUrl}'>link</a>", email, "Confirm the deletion of your account");
+            string subject = "Confirm Account Deletion Request";
+            string body = $"Dear User,<br><br>" +
+                          $"We have received a request to delete your account. If you wish to proceed, please confirm your request by clicking the link below:<br>" +
+                          $"<a href='{callbackUrl}'>Confirm Deletion</a><br><br>" +
+                          $"If you did not initiate this request, please contact our support team immediately.<br><br>" +
+                          $"Best regards,<br><br>" +
+                          $"[System Appointment and Resource Management]";
+            _emailSender.SendEmailAsync(body, email, subject);
         }
 
         private async Task<bool> ValidatePatientNewEmailIsUnique(string email)
@@ -503,5 +544,23 @@ namespace DDDSample1.Domain.User
 
             return user == null ? null : UserMapper.ToDto(user);
         }
+
+        private async void sendEmailToAdminDeleteRequest(string email, string medicalRecordNumber)
+        {
+            string subject = "Request for Personal Data Deletion";
+            string body = $"Dear Admin,<br><br>" +
+                          $"This email is to inform you that a patient has requested the deletion of their personal data in accordance with their right to be forgotten under the General Data Protection Regulation (GDPR).<br><br>" +
+                          $"The patient's details are as follows:<br>" +
+                          $"- <strong>Email:</strong> {email}<br>" +
+                          $"- <strong>Medical Record Number:</strong> {medicalRecordNumber}<br><br>" +
+                          $"Please note that GDPR requires such requests to be processed without undue delay and typically within 30 days of receiving the request. Extensions of up to two additional months are permissible in certain circumstances, provided the patient is informed of the delay and the reasons for it.<br><br>" +
+                          $"Kindly review and process this request promptly. Let the patient know if any additional information is required to complete the process.<br><br>" +
+                          $"Thank you for your attention to this matter.<br><br>" +
+                          $"Best regards,<br><br>" +
+                          $"[System Appointment and Resource Management]";
+
+            await _emailSender.SendEmailAsync(body, _configuration["Admin:Email"], subject);
+        }
+
     }
 }

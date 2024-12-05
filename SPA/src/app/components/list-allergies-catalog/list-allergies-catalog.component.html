@@ -1,0 +1,20 @@
+<div class="allergies-catalog-container">
+    <h2>Allergies Catalog</h2>
+  
+    <!-- Indicador de Carregamento -->
+    <div *ngIf="isLoading" class="loading-indicator">
+      <div class="spinner"></div>
+    </div>
+  
+    <!-- Mensagem de Erro -->
+    <div *ngIf="message" class="error-message">
+      {{ message }}
+    </div>
+  
+    <!-- Lista de Alergias -->
+    <div *ngIf="!isLoading && allergiesCatalogItem.length > 0" class="allergies-list">
+      <div *ngFor="let allergy of allergiesCatalogItem" class="allergy-item">
+        <p>{{ allergy.name }}</p>
+      </div>
+    </div>
+  </div>

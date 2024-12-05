@@ -21,7 +21,6 @@ export class EditPatientComponent implements OnInit {
     postalCode: '',
     city: '',
     country: '',
-    medicalConditions: '',
   }
 
   medicalRecordNumber: string | null = null;
@@ -59,7 +58,6 @@ export class EditPatientComponent implements OnInit {
           patientData.postalCode,
           patientData.city,
           patientData.country,
-          patientData.medicalConditions
         ).subscribe(
           (response) => {
             console.log("Patient edited successfully", response);

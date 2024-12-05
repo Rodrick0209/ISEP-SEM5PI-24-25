@@ -50,5 +50,18 @@ export class SpecializationService {
       );
     }
 
+    editSpecialization(id: string, name: string): Observable<Specialization> {
+      return this.http.put<any>(`${this.baseUrl}/${id}`, SpecializationMapper.mapToEditSpecialization(id,name)).pipe(
+        map(data => SpecializationMapper.mapToSpecialization(data))
+      );
+    }
+
+
+    deleteSpecialization(id: string): Observable<Specialization> {
+      return this.http.delete<any>(`${this.baseUrl}/${id}`);
+    }
+
+
+
 
 }

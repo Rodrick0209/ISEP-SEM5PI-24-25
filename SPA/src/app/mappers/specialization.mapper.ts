@@ -9,6 +9,12 @@ export class SpecializationMapper {
     };
   }
 
+    static mapToEditSpecialization(id:string, name:string): Specialization {
+    return {
+      id: id,
+      name: name
+    };
+  }
 
 
   static mapToSpecializations(items: any[]): Specialization[] {

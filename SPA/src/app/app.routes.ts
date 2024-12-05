@@ -39,6 +39,9 @@ import { ScheduleResultsComponent } from './components/schedule-results/schedule
 import { SpecializationsComponent } from './components/specializations/specializations.component';
 import { CreateSpecializationComponent } from './components/create-specialization/create-specialization.component';
 import { AddRoomTypeComponent } from './components/add-room-type/add-room-type.component';
+import { EditSpecializationComponent } from './components/edit-specialization/edit-specialization.component';
+import { DeleteSpecializationComponent } from './components/delete-specialization/delete-specialization.component';
+import { AllergiesCatalogComponent } from './components/allergies-catalog/allergies-catalog.component';
 
 
 export const routes: Routes = [
@@ -59,10 +62,23 @@ export const routes: Routes = [
         data: { role: 'admin' }
     },
     {
+        path: 'specialization/edit/:id/:name',
+        component: EditSpecializationComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
+
+    },
+    {
       path: 'specialization/create',
       component: CreateSpecializationComponent,
       canActivate: [AuthGuard],
       data: { role: 'admin' }
+    },
+    {
+        path: 'specialization/delete/:id',
+        component: DeleteSpecializationComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
     },
     { path: 'planning', 
         component:PlanningComponent, 
@@ -212,6 +228,12 @@ export const routes: Routes = [
     {
         path: 'room-types/add',
         component: AddRoomTypeComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'admin'}
+    },
+    {
+        path: 'allergiesCatalog',
+        component: AllergiesCatalogComponent,
         canActivate: [AuthGuard],
         data: {role: 'admin'}
     }

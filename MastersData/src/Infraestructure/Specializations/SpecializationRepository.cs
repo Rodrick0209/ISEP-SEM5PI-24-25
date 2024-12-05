@@ -34,6 +34,10 @@ namespace DDDSample1.Infrastructure.Specializations
 
         public async Task<List<Specialization>> GetFilteredAsync(SpecializationFilterDto dto)
         {
+            if (string.IsNullOrWhiteSpace(dto.Name))
+            {
+                return await this.context.Specializations.ToListAsync();
+            }
             return await this.context.Specializations
                 .Where(p => p.Name.ToLower().Contains(dto.Name.ToLower()))
                 .ToListAsync();

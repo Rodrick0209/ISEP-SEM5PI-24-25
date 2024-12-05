@@ -102,4 +102,9 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/contact'])
   }
 
+
+  manageAllergiesCatalog(){
+    this.router.navigate(['/allergiesCatalog'])
+  }
+
 }

@@ -26,7 +26,7 @@
         <tr *ngFor="let patient of paginatedPatients">
             <td>{{ patient.medicalRecordNumber }}</td>
             <td>{{ patient.name }}</td>
-            <td>{{ patient.email | slice:0:3 }}***&#64;***.com</td>
+            <td>{{ patient.email }}</td>
             <td>{{ patient.dateOfBirth | date:'yyyy-MM-dd' }}</td>
             <td>
                 <button (click)="seeDetails(patient)">Details</button>
