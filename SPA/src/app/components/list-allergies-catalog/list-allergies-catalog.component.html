@@ -1,24 +1,37 @@
 <div class="allergies-catalog-container">
-  <h2>Allergies Catalog</h2>
+  <h2 id="allergiesCatalogTitle">Allergies Catalog</h2>
 
   <!-- Indicador de Carregamento -->
-  <div *ngIf="isLoading" class="loading-indicator">
+  <div *ngIf="isLoading" class="loading-indicator" aria-live="polite">
     <div class="spinner"></div>
   </div>
 
   <div class="button-container">
-    <button class="add-btn" (click)="addAllergy()">Add</button>
+    <button class="add-btn" (click)="addAllergy()" aria-label="Add a new allergy">
+      Add
+    </button>
   </div>
 
   <!-- Mensagem de Erro -->
-  <div *ngIf="message" class="error-message">
+  <div *ngIf="message" class="error-message" role="alert">
     {{ message }}
   </div>
 
   <!-- Lista de Alergias -->
-  <div *ngIf="!isLoading && allergiesCatalogItem.length > 0" class="allergies-list">
-    <div *ngFor="let allergy of allergiesCatalogItem" class="allergy-item">
-      <p>{{ allergy.name }}</p>
+  <div *ngIf="!isLoading && allergiesCatalogItem.length > 0" class="allergies-list" role="list" aria-labelledby="allergiesCatalogTitle">
+    <div class="table-wrapper">
+      <table class="allergies-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let allergy of allergiesCatalogItem">
+            <td>{{ allergy.name }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

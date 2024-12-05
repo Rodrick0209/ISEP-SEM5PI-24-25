@@ -1,14 +1,17 @@
 /* Container Styles */
 .allergies-catalog-container {
-  max-width: 800px;
+  max-width: 600px; /* Largura da caixa */
   margin: 20px auto;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
+  height: 100%; /* Para permitir rolagem na página */
+  overflow: auto;
 }
 
+/* Header */
 .allergies-catalog-container h2 {
   font-size: 24px;
   margin-bottom: 20px;
@@ -48,33 +51,71 @@
   margin-top: 20px;
 }
 
-/* Allergies List */
+/* Lista de Alergias (aplicando rolagem) */
 .allergies-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
   margin-top: 20px;
-  align-items: center; /* Centraliza os itens dentro da lista */
+  overflow: hidden;
+  position: relative;
 }
 
-.allergy-item {
-  max-width: 400px; /* Define um tamanho máximo para os itens de alergia */
-  width: 100%; /* Garante que os itens ocupem 100% do tamanho máximo */
-  padding: 15px;
+/* Estilos para a tabela */
+.table-wrapper {
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 0 auto;
+  width: 100%;
   border: 1px solid #ddd;
-  border-radius: 6px;
-  background-color: #f5f5f5;
-  transition: transform 0.2s ease-in-out;
 }
 
-.allergy-item:hover {
-  transform: scale(1.02);
+/* Estilos para a tabela */
+.allergies-table {
+  width: 100%;
+  table-layout: fixed; /* Garante que a tabela tenha largura fixa */
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.allergies-table th,
+.allergies-table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+  word-wrap: break-word; /* Quebra palavras longas */
+}
+
+.allergies-table th {
+  background-color: #007BFF;
+  color: white;
+  position: sticky; /* Fixa cabeçalho no topo */
+  top: 0; /* Fixa o cabeçalho no topo */
+  z-index: 1; /* Garantir que o cabeçalho fique sobre as linhas */
+}
+
+.allergies-table tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+.allergies-table tr:hover {
   background-color: #f0f8ff;
 }
 
-.allergy-item p {
-  margin: 0;
-  font-size: 16px;
+/* Scrollbar personalizada para a tabela */
+.table-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #007BFF;
+  border-radius: 8px;
+  border: 2px solid #f5f5f5;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #0056b3;
 }
 
 /* Button Container */
@@ -85,18 +126,22 @@
 
 /* Button Styles */
 button.add-btn {
-  padding: 10px 60px; /* Reduz a altura e aumenta a largura do botão */
-  font-size: 16px; /* Aumenta o tamanho da fonte */
+  padding: 10px 60px;
+  font-size: 16px;
   font-weight: 600;
   color: white;
   background-color: #28a745;
   border: none;
-  border-radius: 8px; /* Aumenta o raio da borda para um visual mais suave */
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s; /* Adiciona uma transição para a transformação */
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 button.add-btn:hover {
   background-color: #218838;
-  transform: scale(1.05); /* Adiciona um efeito de escala ao passar o mouse */
+  transform: scale(1.05);
+}
+
+.allergies-list td {
+  text-transform: lowercase; /* Transforma o texto em maiúsculas */
 }
