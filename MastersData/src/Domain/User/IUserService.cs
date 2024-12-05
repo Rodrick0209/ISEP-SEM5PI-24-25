@@ -20,4 +20,5 @@ public interface IUserService
     Task<string> GenerateGoogleTokenFromJwt(string email, string role);
     Task<UserDTO> GetByIdAsync(UserId id);
     Task<UserDTO> GetByEmailSearchAsync(string email);
+    Task RequestDeletePersonalData(string email);
 }

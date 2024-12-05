@@ -70,6 +70,11 @@ namespace DDDSample1.Domain.Patients
         {
             this.User = user;
         }
+
+        public void DisassociateUser()
+        {
+            this.User = null;
+        }
         
     }
 }

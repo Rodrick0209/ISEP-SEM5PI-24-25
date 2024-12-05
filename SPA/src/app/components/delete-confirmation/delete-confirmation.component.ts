@@ -30,9 +30,9 @@ export class DeleteConfirmationComponent {
         next: (response) => {
           // Handle success
           console.log('User updated:', response);
-          this.router.navigate(['/confirmation-success'], {
-            queryParams: { message: 'Your account and all associated data has been deleted succesfully.' }
-          });
+            this.router.navigate(['/confirmation-success'], {
+            queryParams: { message: 'Your account has been deleted successfully.' }
+            });
         },
         error: (error) => {
           // Handle error

@@ -415,11 +415,10 @@ namespace DDDSample1.Domain.User
                 throw new BusinessRuleValidationException("Patient not found");
             }
 
+            patient.DisassociateUser();
             _repo.Remove(user);
 
-            sendEmailToAdminDeleteRequest(dto.Email, patient.MedicalRecordNumber._medicalRecordNumber);
-
-            LogPatientChanges(patient, "delete");
+            sendEmailToDPODeleteRequest(dto.Email, patient.MedicalRecordNumber._medicalRecordNumber);
 
             await _unitOfWork.CommitAsync();
         }
@@ -467,8 +466,8 @@ namespace DDDSample1.Domain.User
             string subject = "Confirm Changes to Your Account";
             string body = $"Dear User,<br><br>" +
                           $"We have received a request to update your account details. The changes requested are as follows:<br>" +
-                          $"- New Email: {emailToEdit}<br>" +
-                          $"- New Phone Number: {phoneNumberToEdit}<br><br>" +
+                          $"- New Email: {emailToEdit ?? string.Empty}<br>" +
+                          $"- New Phone Number: {phoneNumberToEdit ?? string.Empty}<br><br>" +
                           $"To confirm these changes, please click the link below:<br>" +
                           $"<a href='{callbackUrl}'>Confirm Changes</a><br><br>" +
                           $"If you did not request these changes, please contact our support team immediately.<br><br>" +
@@ -545,22 +544,46 @@ namespace DDDSample1.Domain.User
             return user == null ? null : UserMapper.ToDto(user);
         }
 
-        private async void sendEmailToAdminDeleteRequest(string email, string medicalRecordNumber)
+        private async void sendEmailToDPODeleteRequest(string email, string medicalRecordNumber)
         {
+            
             string subject = "Request for Personal Data Deletion";
-            string body = $"Dear Admin,<br><br>" +
-                          $"This email is to inform you that a patient has requested the deletion of their personal data in accordance with their right to be forgotten under the General Data Protection Regulation (GDPR).<br><br>" +
-                          $"The patient's details are as follows:<br>" +
+            string body = $"Dear Data Protection Officer,<br><br>" +
+                          $"A formal request for personal data deletion has been received under GDPR Article 17 (Right to Erasure/'Right to be Forgotten').<br><br>" +
+                          $"Request Details:<br>" +
                           $"- <strong>Email:</strong> {email}<br>" +
-                          $"- <strong>Medical Record Number:</strong> {medicalRecordNumber}<br><br>" +
-                          $"Please note that GDPR requires such requests to be processed without undue delay and typically within 30 days of receiving the request. Extensions of up to two additional months are permissible in certain circumstances, provided the patient is informed of the delay and the reasons for it.<br><br>" +
-                          $"Kindly review and process this request promptly. Let the patient know if any additional information is required to complete the process.<br><br>" +
-                          $"Thank you for your attention to this matter.<br><br>" +
-                          $"Best regards,<br><br>" +
+                          $"- <strong>Medical Record Number:</strong> {medicalRecordNumber}<br>" +
+                          $"- <strong>Request Type:</strong> Data Deletion<br>" +
+                          $"- <strong>Date Received:</strong> {DateTime.Now.ToString("yyyy-MM-dd")}<br><br>" +
+                          $"Required Actions:<br>" +
+                          $"1. Verify the identity of the requestor<br>" +
+                          $"2. Review all systems where personal data is stored<br>" +
+                          $"3. Ensure compliance with retention requirements<br>" +
+                          $"4. Document the deletion process<br><br>" +
+                          $"Please process this request within the statutory 30-day period.<br><br>" +
+                          $"Best regards,<br>" +
                           $"[System Appointment and Resource Management]";
-
-            await _emailSender.SendEmailAsync(body, _configuration["Admin:Email"], subject);
+                          
+            await _emailSender.SendEmailAsync(body, "rodrigopontescardoso@gmail.com", subject);
         }
 
+        public async Task RequestDeletePersonalData(string email)
+        {
+            var user = await _repo.GetByEmailAsync(email);
+
+            if (user == null)
+            {
+                throw new BusinessRuleValidationException("User not found");
+            }
+
+            var patient = await _patientRepo.GetByEmailAsync(email);
+
+            if (patient == null)
+            {
+                throw new BusinessRuleValidationException("Patient not found");
+            }
+
+            sendEmailToDPODeleteRequest(email, patient.MedicalRecordNumber._medicalRecordNumber);
+        }
     }
 }

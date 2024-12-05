@@ -112,7 +112,7 @@ namespace DDDSample1.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Message = ex.ToString() });
+                return BadRequest(new { Message = ex.Message });
             }
 
 
@@ -130,7 +130,7 @@ namespace DDDSample1.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Message = ex.ToString() });
+                return BadRequest(new { Message = ex.Message });
             }
         }
 
@@ -163,7 +163,7 @@ namespace DDDSample1.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Message = ex.ToString() });
+                return BadRequest(new { Message = ex.Message });
             }
         }
 
@@ -178,7 +178,7 @@ namespace DDDSample1.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Message = ex.ToString() });
+                return BadRequest(new { Message = ex.Message });
             }
         }
 
@@ -195,7 +195,7 @@ namespace DDDSample1.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Message = ex.ToString() });
+                return BadRequest(new { Message = ex.Message });
             }
         }
 
@@ -211,7 +211,24 @@ namespace DDDSample1.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Message = ex.ToString() });
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        // DELETE: api/user/patients/request-delete-data/{email}
+        [HttpDelete("patients/request-delete-data/{email}")]
+        [Authorize]
+        public async Task<ActionResult> RequestDeletePersonalData(string email)
+        {
+            try
+            {
+                await _service.RequestDeletePersonalData(email);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
             }
         }
 
