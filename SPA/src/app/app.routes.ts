@@ -41,6 +41,7 @@ import { CreateSpecializationComponent } from './components/create-specializatio
 import { AddRoomTypeComponent } from './components/add-room-type/add-room-type.component';
 import { EditSpecializationComponent } from './components/edit-specialization/edit-specialization.component';
 import { DeleteSpecializationComponent } from './components/delete-specialization/delete-specialization.component';
+import { AllergiesCatalogComponent } from './components/allergies-catalog/allergies-catalog.component';
 
 
 export const routes: Routes = [
@@ -227,6 +228,12 @@ export const routes: Routes = [
     {
         path: 'room-types/add',
         component: AddRoomTypeComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'admin'}
+    },
+    {
+        path: 'allergiesCatalog',
+        component: AllergiesCatalogComponent,
         canActivate: [AuthGuard],
         data: {role: 'admin'}
     }
