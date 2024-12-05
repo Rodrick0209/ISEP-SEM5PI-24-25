@@ -15,23 +15,22 @@ export default {
   /**
    * Your favorite port : optional change to 4000 by JRT
    */
-  port: parseInt(process.env.PORT, 10) || 4000, 
+  port: parseInt(process.env.PORT, 10) || 4000,
 
   /**
    * That long string from mlab
    */
-//  databaseURL: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/test",
-    // should save it in a .env file
-    databaseURL: "mongodb+srv://rodrigocastro2004:projetolaprsem5@sem5g55isep.gtdw4.mongodb.net/?retryWrites=true&w=majority&appName=sem5g55isep",
+  //  databaseURL: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/test",
+  // should save it in a .env file
+  databaseURL:
+    'mongodb+srv://rodrigocastro2004:projetolaprsem5@sem5g55isep.gtdw4.mongodb.net/?retryWrites=true&w=majority&appName=sem5g55isep',
 
   /**
    * Your secret sauce
    */
-  jwtSecret: "AMinhaChaveSecretaComMinimo16Caracteres",
-  jwtIssuer: "MyApplication", // Adicione o issuer configurado no backend 1
-  jwtAudience: "MyApplication", // Adicione o audience configurado no backend 1
-
-
+  jwtSecret: 'AMinhaChaveSecretaComMinimo16Caracteres',
+  jwtIssuer: 'MyApplication', // Adicione o issuer configurado no backend 1
+  jwtAudience: 'MyApplication', // Adicione o audience configurado no backend 1
 
   /**
    * Used by winston logger
@@ -49,50 +48,62 @@ export default {
 
   controllers: {
     role: {
-      name: "RoleController",
-      path: "../controllers/roleController"
+      name: 'RoleController',
+      path: '../controllers/roleController',
     },
     allergyCatalog: {
-      name: "AllergyCatalogController",
-      path: "../controllers/allergyCatalogController"
+      name: 'AllergyCatalogController',
+      path: '../controllers/allergyCatalogController',
     },
     medicalCondition: {
-      name: "MedicalConditionController",
-      path: "../controllers/medicalConditionController"
-    }
+      name: 'MedicalConditionController',
+      path: '../controllers/medicalConditionController',
+    },
+    medicalRecord: {
+      name: 'MedicalRecordController',
+      path: '../controllers/medicalRecordController',
+    },
   },
 
   repos: {
     role: {
-      name: "RoleRepo",
-      path: "../repos/roleRepo"
+      name: 'RoleRepo',
+      path: '../repos/roleRepo',
     },
     user: {
-      name: "UserRepo",
-      path: "../repos/userRepo"
+      name: 'UserRepo',
+      path: '../repos/userRepo',
     },
     allergyCatalog: {
-      name: "AllergyCatalogRepo",
-      path: "../repos/allergyCatalogRepo"
+      name: 'AllergyCatalogRepo',
+      path: '../repos/allergyCatalogRepo',
     },
     medicalCondition: {
-      name: "MedicalConditionRepo",
-      path: "../repos/medicalConditionRepo"
+      name: 'MedicalConditionRepo',
+      path: '../repos/medicalConditionRepo',
+    },
+    medicalRecord: {
+      name: 'MedicalRecordRepo',
+      path: '../repos/medicalRecordRepo',
     }
   },
 
   services: {
     role: {
-      name: "RoleService",
-      path: "../services/roleService"
+      name: 'RoleService',
+      path: '../services/roleService',
     },
     allergyCatalog: {
-        name: "AllergyCatalogService",
-        path: "../services/allergyCatalogService"
+      name: 'AllergyCatalogService',
+      path: '../services/allergyCatalogService',
     },
     medicalCondition: {
-        name: "MedicalConditionService",
-        path: "../services/medicalConditionService"
-    }
-  }
+      name: 'MedicalConditionService',
+      path: '../services/medicalConditionService',
+    },
+    medicalRecord: {
+      name: 'MedicalRecordService',
+      path: '../services/medicalRecordService',
+    },
+  },
 };

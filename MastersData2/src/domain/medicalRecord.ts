@@ -19,7 +19,7 @@ export class MedicalRecord extends AggregateRoot<MedicalRecordProps> {
         return this._id;
     }
 
-    get roleId (): MedicalRecordId {
+    get MedicalRecordId (): MedicalRecordId {
         return new MedicalRecordId(this.id.toValue());
     }
 
@@ -31,6 +31,14 @@ export class MedicalRecord extends AggregateRoot<MedicalRecordProps> {
         return this.props.allergies;
     }
 
+    set allergies(allergies: Allergy[]) {
+        this.props.allergies = allergies;
+    }
+
+    set medicalConditions(medicalConditions: MedicalCondition[]) {
+        this.props.medicalConditions = medicalConditions;
+    }
+
     get medicalConditions (): MedicalCondition[] {
         return this.props.medicalConditions;
     }
@@ -39,11 +47,14 @@ export class MedicalRecord extends AggregateRoot<MedicalRecordProps> {
         super(props, id);
     }
 
-    public static create (IMedicalRecordDTO: IMedicalRecordDTO, id?: UniqueEntityID): Result<MedicalRecord> {
-        const allergies = IMedicalRecordDTO.allergies;
-        const medicalConditions = IMedicalRecordDTO.medicalConditions;
+    public static create (IMedicalRecordDTO: IMedicalRecordDTO, allergies: Allergy[] ,medicalConditions : MedicalCondition[],id?: UniqueEntityID):  Result<MedicalRecord> {
+        const patientId = IMedicalRecordDTO.patientId;
 
-        const medicalRecord = new MedicalRecord({ patientId: IMedicalRecordDTO.patientId, allergies: allergies, medicalConditions: medicalConditions }, id);
+        const medicalRecord = new MedicalRecord(
+            { patientId: patientId, 
+                allergies: allergies, 
+                medicalConditions: medicalConditions }
+                ,id);
         return Result.ok<MedicalRecord>( medicalRecord )
     }
 

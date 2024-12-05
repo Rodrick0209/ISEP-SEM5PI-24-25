@@ -16,6 +16,16 @@ export default class MedicalConditionRepo implements IMedicalConditionRepo {
         @Inject('medicalConditionSchema') private medicalConditionSchema : Model<IMedicalConditionPersistence & Document>,
     ) {}
 
+    public async findByMedicalConditionName(medicalConditionName: string): Promise<MedicalCondition> {
+        const query = { name: medicalConditionName };
+        const medicalConditionDocument = await this.medicalConditionSchema.findOne(query as FilterQuery<IMedicalConditionPersistence & Document>);
+        if (medicalConditionDocument != null) {
+            return MedicalConditionMap.toDomain(medicalConditionDocument);
+        } else {
+            return null;
+        }
+    }
+
     private createBaseQuery (): any {
         return {
             where: {},
@@ -54,7 +64,7 @@ export default class MedicalConditionRepo implements IMedicalConditionRepo {
         }
     }
 
-    public async findByDomainId (medicalConditionId: MedicalConditionId | string): Promise<MedicalCondition> {
+    public async findByDomainId (medicalConditionId: MedicalConditionId | string | MedicalCondition): Promise<MedicalCondition> {
         const query = { domainId: medicalConditionId};
         const medicalConditionRecord = await this.medicalConditionSchema.findOne( query as FilterQuery<IMedicalConditionPersistence & Document> );
         if (medicalConditionRecord != null)
