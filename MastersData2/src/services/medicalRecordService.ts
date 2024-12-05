@@ -77,7 +77,6 @@ export default class MedicalRecordService implements IMedicalRecordService {
                 
                 const medicalConditionIds = [];
                 for (const condition of record.medicalConditions) {
-                    console.log(condition);
                     const conditionRecord = await this.MedicalConditionRepo.findByDomainId(condition);
                     if (conditionRecord) {
                         medicalConditionIds.push(conditionRecord);

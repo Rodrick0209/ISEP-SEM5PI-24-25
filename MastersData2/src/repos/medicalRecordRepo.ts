@@ -42,7 +42,6 @@ export default class MedicalRecordRepo implements IMedicalRecordRepo {
             if (medicalRecordDocument === null ) {
                 
                 const rawMedicalRecord: any = MedicalRecordMap.toPersistence(medicalRecord);
-                console.log(medicalRecord);
                 const medicalRecordCreated = await this.medicalRecordSchema.create(rawMedicalRecord);
                 
                 return MedicalRecordMap.toDomain(medicalRecordCreated);
