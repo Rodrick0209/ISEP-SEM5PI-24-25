@@ -6,4 +6,6 @@ export default interface IMedicalRecordController  {
 
     getAllMedicalRecord(req: Request, res: Response, next: NextFunction);
 
+    updateMedicalRecord(req: Request, res: Response, next: NextFunction);
+
 }
