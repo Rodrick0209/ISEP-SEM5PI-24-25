@@ -59,7 +59,7 @@ export class CreateMedicalConditionsComponent {
   
     onCancel(): void {
       this.showConfirmation = false;
-      this.router.navigate(['/allergiesCatalog']);
+      this.router.navigate(['/medicalConditions']);
     }
   
 

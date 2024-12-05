@@ -142,3 +142,6 @@
     transform: scale(1.05);
   }
   
+  .medicalConditions-table td {
+    text-transform: lowercase; /* Transforma o texto em maiúsculas */
+  }
