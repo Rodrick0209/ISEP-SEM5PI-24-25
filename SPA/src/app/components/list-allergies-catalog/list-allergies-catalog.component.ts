@@ -32,9 +32,14 @@ export class ListAllergiesCatalogComponent {
           console.error('Failed to fetch allergies', err);
           this.isLoading = false;
           this.allergiesCatalogItem = [];
-          this.message = 'An error occurred while fetching allergies: ' + err.error.message;
+          this.message = 'An error occurred while fetching allergies: ';
         }
       });
 
+    }
+
+
+    addAllergy() {
+      this.router.navigate(['/allergiesCatalog/add']);
     }
 }

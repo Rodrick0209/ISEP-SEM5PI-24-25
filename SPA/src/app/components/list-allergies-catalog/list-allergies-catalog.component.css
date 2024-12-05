@@ -1,75 +1,102 @@
 /* Container Styles */
 .allergies-catalog-container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.allergies-catalog-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #007BFF;
+}
+
+/* Loading Indicator */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #007BFF;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  .allergies-catalog-container h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #007BFF;
+  100% {
+    transform: rotate(360deg);
   }
-  
-  /* Loading Indicator */
-  .loading-indicator {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-left-color: #007BFF;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-  
-  /* Error Message */
-  .error-message {
-    font-size: 16px;
-    color: red;
-    margin-top: 20px;
-  }
-  
-  /* Allergies List */
-  .allergies-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 20px;
-  }
-  
-  .allergy-item {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background-color: #f5f5f5;
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .allergy-item:hover {
-    transform: scale(1.02);
-    background-color: #f0f8ff;
-  }
-  
-  .allergy-item p {
-    margin: 0;
-    font-size: 16px;
-  }
+}
+
+/* Error Message */
+.error-message {
+  font-size: 16px;
+  color: red;
+  margin-top: 20px;
+}
+
+/* Allergies List */
+.allergies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+  align-items: center; /* Centraliza os itens dentro da lista */
+}
+
+.allergy-item {
+  max-width: 400px; /* Define um tamanho máximo para os itens de alergia */
+  width: 100%; /* Garante que os itens ocupem 100% do tamanho máximo */
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f5f5f5;
+  transition: transform 0.2s ease-in-out;
+}
+
+.allergy-item:hover {
+  transform: scale(1.02);
+  background-color: #f0f8ff;
+}
+
+.allergy-item p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Button Container */
+.button-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Button Styles */
+button.add-btn {
+  padding: 10px 60px; /* Reduz a altura e aumenta a largura do botão */
+  font-size: 16px; /* Aumenta o tamanho da fonte */
+  font-weight: 600;
+  color: white;
+  background-color: #28a745;
+  border: none;
+  border-radius: 8px; /* Aumenta o raio da borda para um visual mais suave */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Adiciona uma transição para a transformação */
+}
+
+button.add-btn:hover {
+  background-color: #218838;
+  transform: scale(1.05); /* Adiciona um efeito de escala ao passar o mouse */
+}
