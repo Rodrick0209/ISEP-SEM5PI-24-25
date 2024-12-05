@@ -18,7 +18,7 @@ export class ListAllergiesCatalogComponent {
     isLoading = false;  
     message: string = '';
 
-    constructor(private allergyCatalogService: AllergyCatalogService, private router: Router,) { }
+    constructor(private allergyCatalogService: AllergyCatalogService, private router: Router) { }
 
     ngOnInit(): void {
       this.message = '';

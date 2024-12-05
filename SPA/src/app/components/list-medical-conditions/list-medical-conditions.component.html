@@ -1,0 +1,38 @@
+<div class="medicalConditions-container">
+    <h2 id="medicalConditionsTitle">Medical Conditions</h2>
+  
+    <!-- Indicador de Carregamento -->
+    <div *ngIf="isLoading" class="loading-indicator" aria-live="polite">
+      <div class="spinner"></div>
+    </div>
+  
+    <div class="button-container">
+      <button class="add-btn" (click)="addMedicalCondition()" aria-label="Add a new medical condition">
+        Add
+      </button>
+    </div>
+  
+    <!-- Mensagem de Erro -->
+    <div *ngIf="message" class="error-message" role="alert">
+      {{ message }}
+    </div>
+  
+    <!-- Lista de Condições Médicas -->
+    <div *ngIf="!isLoading && medicalConditions.length > 0" class="medicalConditions-list" role="list" aria-labelledby="medicalConditionsTitle">
+      <div class="table-wrapper">
+        <table class="medicalConditions-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let medicalCondition of medicalConditions">
+              <td>{{ medicalCondition.name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
