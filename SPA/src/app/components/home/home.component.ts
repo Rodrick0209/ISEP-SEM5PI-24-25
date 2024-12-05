@@ -107,4 +107,8 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/allergiesCatalog'])
   }
 
+  manageMedicalConditions(){
+    this.router.navigate(['/medicalConditions'])
+  }
+
 }

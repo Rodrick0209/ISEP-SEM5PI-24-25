@@ -18,7 +18,7 @@ export class ListAllergiesCatalogComponent {
     isLoading = false;  
     message: string = '';
 
-    constructor(private allergyCatalogService: AllergyCatalogService, private router: Router,) { }
+    constructor(private allergyCatalogService: AllergyCatalogService, private router: Router) { }
 
     ngOnInit(): void {
       this.message = '';
@@ -32,9 +32,14 @@ export class ListAllergiesCatalogComponent {
           console.error('Failed to fetch allergies', err);
           this.isLoading = false;
           this.allergiesCatalogItem = [];
-          this.message = 'An error occurred while fetching allergies: ' + err.error.message;
+          this.message = 'An error occurred while fetching allergies: ';
         }
       });
 
+    }
+
+
+    addAllergy() {
+      this.router.navigate(['/allergiesCatalog/add']);
     }
 }
