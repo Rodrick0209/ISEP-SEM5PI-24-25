@@ -8,6 +8,7 @@ import IAllergyCatalogRepo from '../services/IRepos/IAllergyCatalogRepo';
 import { AllergyCatalogItem } from '../domain/allergyCatalogItem';
 import { AllergyCatalogItemId } from '../domain/allergyCatalogId';
 import { AllergyCatalogMap } from '../mappers/AllergyCatalogMap';
+import { Allergy } from '../domain/allergy';
 
 @Service()
 export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
@@ -71,7 +72,7 @@ export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
     }
 
 
-    public async findById(allergyId: AllergyCatalogItemId | string): Promise<AllergyCatalogItem> {
+    public async findById(allergyId: AllergyCatalogItemId | string | Allergy): Promise<AllergyCatalogItem> {
         const idX = allergyId instanceof AllergyCatalogItemId ? (<AllergyCatalogItemId>allergyId).toValue() : allergyId;
         const query = { domainId: idX };
         const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyCatalogItemPersistence & Document>);

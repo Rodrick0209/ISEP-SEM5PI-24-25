@@ -25,6 +25,11 @@ export default async ({ expressApp }) => {
     name: 'medicalConditionSchema',
     schema: '../persistence/schemas/medicalConditionSchema',
   };
+  
+  const medicalRecordSchema= {
+    name: 'medicalRecordSchema',
+    schema: '../persistence/schemas/medicalRecordSchema',
+  };
 
   const medicalConditionController = {
     name: config.controllers.medicalCondition.name,
@@ -41,6 +46,10 @@ export default async ({ expressApp }) => {
     path: config.repos.medicalCondition.path
   };
 
+  const medicalRecordRepo = {
+    name: config.repos.medicalRecord.name,
+    path: config.repos.medicalRecord.path
+  };
 
 
   const roleSchema = {
@@ -84,7 +93,16 @@ export default async ({ expressApp }) => {
     path: config.services.allergyCatalog.path
   }
 
-  
+
+  const medicalRecordController = {
+    name: config.controllers.medicalRecord.name,
+    path: config.controllers.medicalRecord.path
+  };
+
+  const medicalRecordService = {
+    name: config.services.medicalRecord.name,
+    path: config.services.medicalRecord.path
+  };
 
 
 
@@ -94,23 +112,27 @@ export default async ({ expressApp }) => {
       userSchema,
       roleSchema,
       allergyCatalogSchema,
-      medicalConditionSchema
+      medicalConditionSchema,
+      medicalRecordSchema
     ],
     controllers: [
       roleController,
       allergyCatalogController,
-      medicalConditionController
+      medicalConditionController,
+      medicalRecordController
     ],
     repos: [
       roleRepo,
       userRepo,
       allergyCatalogRepo,
-      medicalConditionRepo
+      medicalConditionRepo,
+      medicalRecordRepo
     ],
     services: [
       roleService,
       allergyCatalogService,
-      medicalConditionService
+      medicalConditionService,
+      medicalRecordService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
