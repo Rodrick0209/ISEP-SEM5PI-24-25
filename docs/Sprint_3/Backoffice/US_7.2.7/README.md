@@ -62,3 +62,24 @@ The results are filtered.
 - **MVVM (Model-View-ViewModel) Pattern**: Separates the development of the graphical user interface from the business logic or back-end logic.
 - **Service Pattern**: Encapsulates the business logic, making it reusable and easier to test.
 - **Repository Pattern**: Used to manage data operations and abstract the data access logic.
+
+## 5. Tests Plan
+
+### 5.1. Unit Tests
+
+- **Test 1**: Verify that the system can search for a patient medical record by patient ID.
+- **Test 2**: Verify that the system displays the correct table for allergies when searched by name.
+- **Test 3**: Verify that the system displays the correct table for medical conditions when searched by name.
+- **Test 4**: Verify that the search results are correctly filtered based on the input criteria.
+
+### 5.2. Integration Tests
+
+- **Test 1**: Verify that the search functionality integrates correctly with the database and retrieves the correct patient medical record.
+- **Test 2**: Verify that the system correctly integrates with the user interface to display search results for allergies.
+- **Test 3**: Verify that the system correctly integrates with the user interface to display search results for medical conditions.
+
+### 5.3. End-to-End Tests
+
+- **Test 1**: Verify that a doctor can successfully search for a patient medical record by patient ID and view the results.
+- **Test 2**: Verify that a doctor can successfully search for allergies by name and view the filtered results.
+- **Test 3**: Verify that a doctor can successfully search for medical conditions by name and view the filtered results.
