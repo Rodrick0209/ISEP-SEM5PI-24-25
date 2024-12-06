@@ -1,0 +1,30 @@
+```plantuml
+@startuml Process_View
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+participant Service as Service <<Component>>
+participant HTTPDriver as HTTPDriver <<Component>>
+participant MastersData as BE <<Container (C4)>>
+
+activate View
+View -> Component: submit the filter form
+activate Component
+Component -> Model**: get the data in filter form
+Component -> Service: search for medical record entries based on filter form data
+activate Service
+Service -> HTTPDriver: GET
+activate HTTPDriver
+HTTPDriver -> BE: GET (/api/medicalRecords/:medicalRecordNumber/search)
+activate BE
+BE -> BE: receive request body info, search for medical records \nbased on patients' medical record number and search filters\n(medical conditions and/or allergies)
+return response
+return response
+Service -> Model: transforms response data
+activate Model
+return room type
+return room type
+return success/fail message
+
+@enduml
+```
