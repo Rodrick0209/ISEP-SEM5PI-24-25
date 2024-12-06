@@ -8,4 +8,6 @@ export default interface IMedicalRecordController  {
 
     updateMedicalRecord(req: Request, res: Response, next: NextFunction);
 
+    searchMedicalRecordEntries(req: Request, res: Response, next: NextFunction);
+
 }
