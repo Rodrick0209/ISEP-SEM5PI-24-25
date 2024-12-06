@@ -16,3 +16,12 @@ N/A
 ### 2.2. User Story Dependencies
 
 N/A
+
+## 3. Analysis
+
+The system first will search the medical record by his patient ID (medical record number)
+
+The system will display two tables, one for allergies and other for medical conditions, and the doctor will search for each based on his name (in case of allergy, his cataloged name).
+
+The results are filtered.
+
