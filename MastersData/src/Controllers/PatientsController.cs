@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Text;
+using Newtonsoft.Json;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.User;
 using Microsoft.AspNetCore.Authorization;
@@ -28,6 +31,25 @@ namespace DDDSample1.Controllers
             try
             {
                 var patient = await _service.CreateAsync(dto);
+
+                using (var httpClient = new HttpClient())
+                {
+                    var medicalRecordDto = new
+                    {
+                        patientId = patient.MedicalRecordNumber,
+                        allergies = new string[] { }, 
+                        medicalConditions = new string[] { }, 
+                    };
+
+                    var content = new StringContent(JsonConvert.SerializeObject(medicalRecordDto), Encoding.UTF8, "application/json");
+
+                    var response = await httpClient.PostAsync("http://localhost:4000/api2/medicalRecord/create", content);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception("Failed to create medical record for the patient.");
+                    }
+                }
 
                 return CreatedAtAction(nameof(GetGetById), new { id = patient.Id }, patient);
             }

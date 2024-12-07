@@ -98,7 +98,7 @@ export default class MedicalRecordService implements IMedicalRecordService {
 
     public async updateMedicalRecord(MedicalRecordDTO: IMedicalRecordDTO, id : string): Promise<Result<IMedicalRecordDTO>> {
         try {
-            const medicalRecord = await this.MedicalRecordRepo.findById(id.toString());
+            const medicalRecord = await this.MedicalRecordRepo.findByPatientId(id.toString());
             
             if (!medicalRecord) {
                 return Result.fail<IMedicalRecordDTO>("Medical record not found");
@@ -124,6 +124,40 @@ export default class MedicalRecordService implements IMedicalRecordService {
             medicalRecord.allergies = allergyIds;
 
             await this.MedicalRecordRepo.updateMedicalRecord(medicalRecord);
+
+            const MedicalRecordDTOResult = MedicalRecordMap.toDTO(medicalRecord) as IMedicalRecordDTO;
+            return Result.ok<IMedicalRecordDTO>(MedicalRecordDTOResult);
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    public async getMedicalRecordByPatientId(patientId: string): Promise<Result<IMedicalRecordDTO>> {
+        try {
+            const medicalRecord = await this.MedicalRecordRepo.findByPatientId(patientId);
+
+            if (!medicalRecord) {
+                return Result.fail<IMedicalRecordDTO>("Medical record not found");
+            }
+
+            const allergyIds = [];
+            for (const allergy of medicalRecord.allergies) {
+                const allergyRecord = await this.AllergyCatalogRepo.findById(allergy);
+                if (allergyRecord) {
+                    allergyIds.push(allergyRecord);
+                }
+            }
+
+            const medicalConditionIds = [];
+            for (const condition of medicalRecord.medicalConditions) {
+                const conditionRecord = await this.MedicalConditionRepo.findByDomainId(condition);
+                if (conditionRecord) {
+                    medicalConditionIds.push(conditionRecord);
+                }
+            }
+
+            medicalRecord.allergies = allergyIds;
+            medicalRecord.medicalConditions = medicalConditionIds;
 
             const MedicalRecordDTOResult = MedicalRecordMap.toDTO(medicalRecord) as IMedicalRecordDTO;
             return Result.ok<IMedicalRecordDTO>(MedicalRecordDTOResult);

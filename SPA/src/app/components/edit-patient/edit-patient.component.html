@@ -1,57 +1,158 @@
 <div class="edit-patient-container">
-    <h2>Edit Patient</h2>
-    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
-    <form (ngSubmit)="confirmSubmission()" #patientForm="ngForm">
-        <h3>Patient Information</h3>
-        <div class="patient-information">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" [(ngModel)]="submitForm.name" />
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" [(ngModel)]="submitForm.email" />
-            </div>
-            <div class="form-group">
-                <label for="phoneNumber">Phone Number</label>
-                <input type="tel" id="phoneNumber" name="phoneNumber" [(ngModel)]="submitForm.phoneNumber" />
-            </div>
-        </div>
-
-        <h3>Address</h3>
-        <div class="address">
-            <div class="form-group">
-                <label for="street">Street</label>
-                <input type="text" id="street" name="street" [(ngModel)]="submitForm.street" />
-            </div>
-            <div class="form-group">
-                <label for="postalCode">Postal Code</label>
-                <input type="text" id="postalCode" name="postalCode" [(ngModel)]="submitForm.postalCode" />
-            </div>
-            <div class="form-group">
-                <label for="city">City</label>
-                <input type="text" id="city" name="city" [(ngModel)]="submitForm.city" />
-            </div>
-            <div class="form-group">
-                <label for="country">Country</label>
-                <input type="text" id="country" name="country" [(ngModel)]="submitForm.country" />
-            </div>
-        </div>
-
-        <div class="form-actions">
-            <button type="submit" class="btn-submit">Save Changes</button>
-            <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
-        </div>
-    </form>
-
-    <div class="modal" *ngIf="showConfirmation">
-        <div class="modal-content">
-            <h3>Confirm Submission</h3>
-            <p>Are you sure you want to save the changes to this patient profile?</p>
-            <div class="modal-actions">
-                <button (click)="onSubmit(patientForm)" class="btn-confirm">Yes</button>
-                <button (click)="closeConfirmationModal()" class="btn-cancel">No</button>
-            </div>
-        </div>
+  <h2>Edit Patient</h2>
+  <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <form (ngSubmit)="confirmSubmission()" #patientForm="ngForm">
+    <h3>Patient Information</h3>
+    <div class="patient-information">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="submitForm.name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="submitForm.email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          name="phoneNumber"
+          [(ngModel)]="submitForm.phoneNumber"
+        />
+      </div>
     </div>
+
+    <h3>Address</h3>
+    <div class="address">
+      <div class="form-group">
+        <label for="street">Street</label>
+        <input
+          type="text"
+          id="street"
+          name="street"
+          [(ngModel)]="submitForm.street"
+        />
+      </div>
+      <div class="form-group">
+        <label for="postalCode">Postal Code</label>
+        <input
+          type="text"
+          id="postalCode"
+          name="postalCode"
+          [(ngModel)]="submitForm.postalCode"
+        />
+      </div>
+      <div class="form-group">
+        <label for="city">City</label>
+        <input
+          type="text"
+          id="city"
+          name="city"
+          [(ngModel)]="submitForm.city"
+        />
+      </div>
+      <div class="form-group">
+        <label for="country">Country</label>
+        <input
+          type="text"
+          id="country"
+          name="country"
+          [(ngModel)]="submitForm.country"
+        />
+      </div>
+    </div>
+
+    <h3>Medical Record</h3>
+
+    <!-- Allergies Section -->
+    <div class="medical-section">
+      <h4 style="margin-bottom: 15px">Allergies</h4>
+      <div
+        *ngFor="let allergy of submitForm.allergies; let i = index"
+        class="form-group"
+      >
+        <label>Allergy:</label>
+        <select [(ngModel)]="allergy.name" name="allergyName{{ i }}">
+          <option *ngFor="let option of allergyOptions" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <label>Date:</label>
+        <input
+          type="date"
+          [(ngModel)]="allergy.date"
+          name="allergyDate{{ i }}"
+        />
+        <label>Description:</label>
+        <input
+          type="text"
+          [(ngModel)]="allergy.description"
+          name="allergyDesc{{ i }}"
+        />
+        <button type="button" (click)="removeAllergy(i)">Remove</button>
+      </div>
+      <button type="button" (click)="addAllergy()">+ Add Allergy</button>
+    </div>
+
+    <!-- Medical Conditions Section -->
+    <div class="medical-section">
+      <h4 style="margin: 15px 0px">Medical Conditions</h4>
+      <div
+        *ngFor="let condition of submitForm.medicalConditions; let i = index"
+        class="form-group"
+      >
+        <label>Condition:</label>
+        <select [(ngModel)]="condition.name" name="conditionName{{ i }}">
+          <option *ngFor="let option of conditionOptions" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <label>Date:</label>
+        <input
+          type="date"
+          [(ngModel)]="condition.date"
+          name="conditionDate{{ i }}"
+        />
+        <label>Description:</label>
+        <input
+          type="text"
+          [(ngModel)]="condition.description"
+          name="conditionDesc{{ i }}"
+        />
+        <button type="button" (click)="removeCondition(i)">Remove</button>
+      </div>
+      <button type="button" (click)="addCondition()">+ Add Condition</button>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-submit">Save Changes</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+
+  <div class="modal" *ngIf="showConfirmation">
+    <div class="modal-content">
+      <h3>Confirm Submission</h3>
+      <p>Are you sure you want to save the changes to this patient profile?</p>
+      <div class="modal-actions">
+        <button (click)="onSubmit(patientForm)" class="btn-confirm">Yes</button>
+        <button (click)="closeConfirmationModal()" class="btn-cancel">
+          No
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

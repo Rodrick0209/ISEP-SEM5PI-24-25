@@ -7,8 +7,8 @@ const MedicalRecordSchema = new mongoose.Schema(
     {
         id: { type: String, unique: true },
         patientId: { type: String, unique: true },
-        allergies: { type: [mongoose.Schema.Types.UUID], ref: 'Allergy'},
-        medicalConditions: { type: [mongoose.Schema.Types.UUID], ref: 'MedicalCondition'}
+        allergies: { type: [mongoose.Schema.Types.String], ref: 'Allergy'},
+        medicalConditions: { type: [mongoose.Schema.Types.String], ref: 'MedicalCondition'}
     },
     {
         timestamps: true

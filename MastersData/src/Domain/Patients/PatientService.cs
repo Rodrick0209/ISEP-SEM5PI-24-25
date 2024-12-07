@@ -69,6 +69,8 @@ namespace DDDSample1.Domain.Patients
                 medicalRecordNumber
             );
 
+            
+
             await _patientRepository.AddAsync(patient);
             await _unitOfWork.CommitAsync();
 
@@ -97,7 +99,7 @@ namespace DDDSample1.Domain.Patients
             if (!string.IsNullOrWhiteSpace(dto.Email))
             {
                 bool emailIsUnique = await ValidateEmailIsUnique(dto.Email);
-                if (!emailIsUnique)
+                if (!emailIsUnique && patient.Email.email!=dto.Email)
                 {
                     throw new BusinessRuleValidationException("Email already exists");
                 }
@@ -107,7 +109,7 @@ namespace DDDSample1.Domain.Patients
             if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
             {
                 bool phoneNumberIsUnique = await ValidatePhoneNumberIsUnique(dto.PhoneNumber);
-                if (!phoneNumberIsUnique)
+                if (!phoneNumberIsUnique && patient.PhoneNumber.phoneNumber!=dto.PhoneNumber)
                 {
                     throw new BusinessRuleValidationException("Phone Number already exists");
                 }

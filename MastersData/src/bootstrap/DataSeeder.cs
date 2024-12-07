@@ -17,6 +17,9 @@ using DDDSample1.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using DDDSample1.Domain.RoomTypes;
 using Org.BouncyCastle.Asn1.Pkcs;
+using System.Net.Http;
+using System.Text;
+using Newtonsoft.Json;
 
 public static class DataSeeder
 {
@@ -121,6 +124,12 @@ public static class DataSeeder
     johnCena3.MedicalHistory.ChangeMedicalConditions("Covid");
 
     context.Patients.AddRange(patients);
+
+    foreach (var patient in patients)
+    {
+      await CreateMedicalRecordForPatient(patient);
+    }
+
 
     var specialization1 = new Specialization("Ortopedia");
     var specialization2 = new Specialization("Oncologia");
@@ -235,7 +244,7 @@ public static class DataSeeder
     var roomType = new RoomType("R12-2354", "RoomType1", "RoomType1", true);
     context.RoomTypes.Add(roomType);
 
-    var operationRoom = new OperationRoom("or1", roomType , "10");
+    var operationRoom = new OperationRoom("or1", roomType, "10");
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 720, 840);
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1080, 1200);
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1200, 1300);
@@ -328,7 +337,7 @@ public static class DataSeeder
       context.StaffAssignedSurgeries.Add(staffAssignedSurgery);
     }
   }
-  
+
   private static void SeedSpecializations(DDDSample1DbContext context, Specialization specialization)
   {
     if (!context.Specializations.Any())
@@ -344,6 +353,32 @@ public static class DataSeeder
     if (!context.Specializations.Any())
     {
       context.StaffMembers.Add(staff);
+    }
+  }
+  private static async Task CreateMedicalRecordForPatient(Patient patient)
+  {
+    using (var httpClient = new HttpClient())
+    {
+      var medicalRecordDto = new
+      {
+        patientId = patient.MedicalRecordNumber._medicalRecordNumber,
+        allergies = new string[] { },
+        medicalConditions = new string[] { }
+      };
+
+      var content = new StringContent(JsonConvert.SerializeObject(medicalRecordDto), Encoding.UTF8, "application/json");
+
+      try
+      {
+        var response = await httpClient.PostAsync("http://localhost:4000/api2/medicalRecord/create", content);
+        response.EnsureSuccessStatusCode();
+        Console.WriteLine("Medical record created");
+
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine($"Failed to create medical record for patient {patient.MedicalRecordNumber}: {ex.Message}");
+      }
     }
   }
 
@@ -362,6 +397,8 @@ public static class DataSeeder
       context.Appointments.Add(appointment);
     }
   }
+
+
 
   public static async Task UnseedAsync(IServiceProvider serviceProvider)
   {
@@ -411,5 +448,6 @@ public static class DataSeeder
     // Save the changes to the database
     await context.SaveChangesAsync();
   }
+
 
 }

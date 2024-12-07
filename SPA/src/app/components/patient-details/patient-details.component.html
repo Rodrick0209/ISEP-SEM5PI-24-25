@@ -1,32 +1,88 @@
 <div class="patient-details" *ngIf="patient">
-    <div class="patient-header">
-        <h2>Patient Details</h2>
+  <div class="patient-header">
+    <h2>Patient Details</h2>
+  </div>
+
+  <div class="patient-info">
+    <h3>Patient Information</h3>
+    <div class="patient-field">
+      <strong>Medical Record Number:</strong> {{ patient.medicalRecordNumber }}
+    </div>
+    <div class="patient-field"><strong>Name:</strong> {{ patient.name }}</div>
+    <div class="patient-field">
+      <strong>Date of Birth:</strong> {{ patient.dateOfBirth }}
+    </div>
+    <div class="patient-field">
+      <strong>Gender:</strong>{{ patient.gender }}
+    </div>
+    <div class="patient-field"><strong>Email:</strong> {{ patient.email }}</div>
+    <div class="patient-field">
+      <strong>Phone Number:</strong> {{ patient.phoneNumber }}
     </div>
 
-    <div class="patient-info">
-        <h3>Patient Information</h3>
-        <div class="patient-field"><strong>Medical Record Number:</strong> {{ patient.medicalRecordNumber }}</div>
-        <div class="patient-field"><strong>Name:</strong> {{ patient.name }}</div>
-        <div class="patient-field"><strong>Date of Birth:</strong> {{ patient.dateOfBirth }}</div>
-        <div class="patient-field"><strong>Gender:</strong>{{ patient.gender }}</div>
-        <div class="patient-field"><strong>Email:</strong> {{ patient.email }}</div>
-        <div class="patient-field"><strong>Phone Number:</strong> {{ patient.phoneNumber }}</div>
-        <div class="address">
-            <h4>Address</h4>
-            <div class="patient-field"><strong>Street:</strong> {{ patient.address.street }}</div>
-            <div class="patient-field"><strong>Postal Code:</strong> {{ patient.address.postalCode }}</div>
-            <div class="patient-field"><strong>City:</strong> {{ patient.address.city }}</div>
-            <div class="patient-field"><strong>Country:</strong> {{ patient.address.country }}</div>
+    <!-- Medical Record Section -->
+    <div class="address">
+        <h4>Medical Record</h4>
+      
+        <!-- Allergies Section -->
+        <div class="patient-field">
+          <strong>Allergies:</strong>
+          <ul>
+            <span *ngFor="let allergy of medicalRecord?.allergies; let last = last">
+              {{ allergy }}<span *ngIf="!last">, </span>
+            </span>
+          </ul>
+          <ng-template #noAllergies>
+            <span>None</span>
+          </ng-template>
         </div>
-        <div class="emergency-contact">
-            <h4>Emergency Contact</h4>
-            <div class="patient-field"><strong>Name:</strong> {{ patient.emergencyContact.name }}</div>
-            <div class="patient-field"><strong>Email:</strong> {{ patient.emergencyContact.email }}</div>
-            <div class="patient-field"><strong>Phone Number:</strong> {{ patient.emergencyContact.phoneNumber }} </div>
+      
+        <!-- Medical Conditions Section -->
+        <div class="patient-field">
+          <strong>Medical Conditions:</strong>
+          <ul>
+            <span *ngFor="let condition of medicalRecord?.medicalConditions; let last = last">
+              {{ condition }}<span *ngIf="!last">, </span>
+            </span>
+          </ul>
+          <ng-template #noConditions>
+            <span>None</span>
+          </ng-template>
         </div>
+      </div>
+
+    <div class="address">
+      <h4>Address</h4>
+      <div class="patient-field">
+        <strong>Street:</strong> {{ patient.address.street }}
+      </div>
+      <div class="patient-field">
+        <strong>Postal Code:</strong> {{ patient.address.postalCode }}
+      </div>
+      <div class="patient-field">
+        <strong>City:</strong> {{ patient.address.city }}
+      </div>
+      <div class="patient-field">
+        <strong>Country:</strong> {{ patient.address.country }}
+      </div>
     </div>
 
-    <div class="back-button">
-        <button onclick="history.back()">← Back</button>
+    <div class="emergency-contact">
+      <h4>Emergency Contact</h4>
+      <div class="patient-field">
+        <strong>Name:</strong> {{ patient.emergencyContact.name }}
+      </div>
+      <div class="patient-field">
+        <strong>Email:</strong> {{ patient.emergencyContact.email }}
+      </div>
+      <div class="patient-field">
+        <strong>Phone Number:</strong>
+        {{ patient.emergencyContact.phoneNumber }}
+      </div>
     </div>
+  </div>
+
+  <div class="back-button">
+    <button onclick="history.back()">← Back</button>
+  </div>
 </div>

@@ -1,4 +1,5 @@
 export interface Patient {
+    id: string;
     medicalRecordNumber: string;
     name: string;
     dateOfBirth: Date;
@@ -8,6 +9,26 @@ export interface Patient {
     address: Address;
     emergencyContact: EmergencyContact;
     medicalHistory: MedicalHistory;
+    medicalRecord: MedicalRecord;
+  }
+
+  export interface MedicalRecord {
+    id: string;
+    patientId: string;
+    allergies : Allergy[];
+    medicalConditions : MedicalCondition[];
+  }
+
+  export interface Allergy{
+    name: string;
+    //date: Date;
+    //description:string;
+  }
+
+  export interface MedicalCondition{
+    name: string;
+    date: Date;
+    description:string;
   }
   
   export interface Address {
@@ -33,4 +54,13 @@ export interface Patient {
     name: string;
     dateOfBirth: Date;
     email: string
+  }
+
+  export interface AllergiesView {
+    name: string;
+    
+  }
+
+  export interface MedicalConditionView {
+    name: string;
   }

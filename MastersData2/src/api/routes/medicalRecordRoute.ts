@@ -25,7 +25,7 @@ export default (app: Router) => {
     route.post('/create',
         celebrate({
             body: Joi.object({
-                patientId: Joi.string().guid({ version: 'uuidv4' }).required(),
+                patientId: Joi.string().required(),
                 allergies: Joi.array().items(Joi.string()),
                 medicalConditions: Joi.array().items(Joi.string())
 
@@ -55,8 +55,17 @@ export default (app: Router) => {
                 medicalConditions: Joi.array().items(Joi.string())
             }),
             params: Joi.object({
-                id: Joi.string().guid({ version: 'uuidv4' }).required()
+                id: Joi.string().required()
             })
         }),
         (req, res, next) => ctrl.updateMedicalRecord(req, res, next));
+
+
+        route.get('/getByPatientId/:patientId',
+            celebrate({
+                params: Joi.object({
+                    patientId: Joi.string().required()
+                })
+            }),
+            (req, res, next) => ctrl.getMedicalRecordByPatientId(req, res, next));
 }
