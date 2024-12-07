@@ -24,6 +24,6 @@ export default (app: Router) => {
 
 
 
-  route.get('/getAll', isAuth,
+  route.get('/getAll',
     (req, res, next) => ctrl.getAllAllergiesItemCatalog(req, res, next));
 }

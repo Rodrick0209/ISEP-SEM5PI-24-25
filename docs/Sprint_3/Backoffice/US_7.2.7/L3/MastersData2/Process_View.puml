@@ -1,0 +1,31 @@
+```plantuml
+@startuml Process_View
+participant SPA as SPA <<Container (C4)>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant DTO as DTO <<DTO>>
+participant Service as Service <<Service>>
+participant Repository as Repository <<Repository>>
+participant Mapper as Mapper <<Domain Service>>
+activate SPA
+SPA -> Route: GET (/api/medicalRecords/:medicalRecordNumber/search)
+activate Route
+Route -> Controller : GET
+activate Controller
+Controller -> DTO** : recieves medical record number\nand search filters from query
+Controller -> Service : search for entries in patients' medical records
+activate Service
+Service -> Repository : get patient's medical record entries \n(medical conditions and/or allergies)\nbased on search filters
+activate Repository
+return medical record entries
+loop for each entry
+Service -> Mapper : map medical record entry to DTO
+activate Mapper
+return DTO
+end loop
+return DTOs
+return response
+return response
+
+@enduml
+```

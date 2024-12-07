@@ -28,7 +28,6 @@ export default (app: Router) => {
                 patientId: Joi.string().required(),
                 allergies: Joi.array().items(Joi.string()),
                 medicalConditions: Joi.array().items(Joi.string())
-
             })
         }),
         (req, res, next) => ctrl.createMedicalRecord(req, res, next));
@@ -61,11 +60,21 @@ export default (app: Router) => {
         (req, res, next) => ctrl.updateMedicalRecord(req, res, next));
 
 
-        route.get('/getByPatientId/:patientId',
-            celebrate({
-                params: Joi.object({
-                    patientId: Joi.string().required()
-                })
+    route.get('/getByPatientId/:patientId',
+        celebrate({
+            params: Joi.object({
+                patientId: Joi.string().required()
+            })
+        }),
+        (req, res, next) => ctrl.getMedicalRecordByPatientId(req, res, next));
+    route.get('/:patientId/search',
+        celebrate({
+            params: Joi.object({
+                patientId: Joi.string().guid({ version: 'uuidv4' }).required(),
             }),
-            (req, res, next) => ctrl.getMedicalRecordByPatientId(req, res, next));
+            query: Joi.object({
+                name: Joi.string().required()
+            })
+        }),
+        (req, res, next) => ctrl.searchMedicalRecordEntries(req, res, next));
 }

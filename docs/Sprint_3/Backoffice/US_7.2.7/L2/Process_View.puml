@@ -1,0 +1,20 @@
+
+```plantuml
+@startuml Process_View
+participant "SPA" as FE <<Container (C4)>>
+participant "MastersData" as BE <<Container (C4)>>
+participant "MastersData2" as BE2 <<Container (C4)>>
+
+activate FE
+FE -> BE: GET (/api/patients)
+activate BE
+BE -> BE: receive request body info,\nget all patients from database
+return patients
+deactivate FE
+FE -> BE2: GET (/api/medicalRecords/:medicalRecordNumber/search)
+activate FE
+activate BE2
+BE2 -> BE2: receive request body info,\nsearch for medical records based\non patients' medical record number
+return response
+@enduml
+```

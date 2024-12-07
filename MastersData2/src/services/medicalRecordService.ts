@@ -132,6 +132,42 @@ export default class MedicalRecordService implements IMedicalRecordService {
         }
     }
 
+    public async searchMedicalRecordEntries(patientId: string, name: string): Promise<Result<IMedicalRecordDTO>> {
+        try {
+            const medicalRecord = await this.MedicalRecordRepo.findByPatientId(patientId);
+
+            if (!medicalRecord) {
+                return Result.fail<IMedicalRecordDTO>("No medical record found for the given patient");
+            }
+
+
+            const allergyIds = [];
+            for (const allergy of medicalRecord.allergies) {
+                const allergyRecord = await this.AllergyCatalogRepo.findById(allergy);
+                if (allergyRecord && allergyRecord.name.includes(name)) {
+                    allergyIds.push(allergyRecord);
+                }
+            }
+
+            const medicalConditionIds = [];
+            for (const condition of medicalRecord.medicalConditions) {
+                const conditionRecord = await this.MedicalConditionRepo.findByDomainId(condition);
+                if (conditionRecord && conditionRecord.name.includes(name)) {
+                    medicalConditionIds.push(conditionRecord);
+                }
+            }
+
+            medicalRecord.allergies = allergyIds;
+            medicalRecord.medicalConditions = medicalConditionIds;
+
+            const MedicalRecordDTO = MedicalRecordMap.toDTO(medicalRecord) as IMedicalRecordDTO;
+
+            return Result.ok<IMedicalRecordDTO>(MedicalRecordDTO);
+        } catch (e) {
+            throw e;
+        }
+    }
+
     public async getMedicalRecordByPatientId(patientId: string): Promise<Result<IMedicalRecordDTO>> {
         try {
             const medicalRecord = await this.MedicalRecordRepo.findByPatientId(patientId);
