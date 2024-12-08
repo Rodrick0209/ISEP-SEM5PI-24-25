@@ -117,7 +117,7 @@ namespace DDDSample1.Controllers
 
         // GET: api/Patients/MedicalRecordNumber/{medicalRecordNumber}
         [HttpGet("MedicalRecordNumber/{medicalRecordNumber}")]
-        [Authorize(Roles = "admin, doctor")]
+        [Authorize(Roles = "admin, doctor, patient")]
         public async Task<ActionResult<PatientDto>> GetByMedicalRecordNumberAsync(string medicalRecordNumber)
         {
             var patient = await _service.GetByMedicalRecordNumberAsync(medicalRecordNumber);
@@ -136,6 +136,21 @@ namespace DDDSample1.Controllers
         public async Task<ActionResult<PatientDto>> GetGetById(Guid id)
         {
             var patient = await _service.GetByIdAsync(new PatientId(id));
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            return patient;
+        }
+
+        // GET: api/Patients/email/{email}
+        [HttpGet("email/{email}")]
+        [Authorize(Roles = "patient")]
+        public async Task<ActionResult<PatientDto>> GetByEmailAsync(string email)
+        {
+            var patient = await _service.GetByEmailAsync(email);
 
             if (patient == null)
             {

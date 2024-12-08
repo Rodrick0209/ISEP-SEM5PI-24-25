@@ -14,5 +14,6 @@ namespace DDDSample1.Domain.Patients
         Task<List<PatientDto>> GetAllAsync();
         Task<List<ViewPatientDto>> SearchAsync(SearchFiltersDto dto);
         Task<PatientDto> GetByMedicalRecordNumberAsync(string medicalRecordNumber);
+        Task<PatientDto> GetByEmailAsync(string email);
     }
 }

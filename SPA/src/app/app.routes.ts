@@ -167,7 +167,7 @@ export const routes: Routes = [
         path: 'patient/details/:medicalRecordNumber',
         component: PatientDetailsComponent,
         canActivate: [AuthGuard],
-        data: { roles: ['admin', 'doctor'] }
+        data: { roles: ['admin', 'doctor', 'patient'] }
     },
     {
         path: 'patient/create',

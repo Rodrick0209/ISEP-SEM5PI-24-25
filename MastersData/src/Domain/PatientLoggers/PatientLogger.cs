@@ -10,7 +10,6 @@ namespace DDDSample1.Domain.PatientLoggers
     {
         public PatientId PatientId { get; private set; }
         public string MedicalRecordNumber { get; private set; }
-        public string? MedicalConditions { get; private set; }
 
         public string TypeOfChange { get; private set; }
         public DateTime ModificationDate { get; private set; }
@@ -22,12 +21,11 @@ namespace DDDSample1.Domain.PatientLoggers
             TypeOfChange = default!;
         }
 
-        public PatientLogger(PatientId patientId, string medicalRecordNumber, string? medicalConditions, string typeOfChange)
+        public PatientLogger(PatientId patientId, string medicalRecordNumber, string typeOfChange)
         {
             this.Id = new PatientLoggerId(Guid.NewGuid());
             this.PatientId = patientId;
             this.MedicalRecordNumber = medicalRecordNumber;
-            this.MedicalConditions = medicalConditions;
             this.TypeOfChange = typeOfChange;
             this.ModificationDate = DateTime.Now;
         }

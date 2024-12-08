@@ -19,7 +19,6 @@ namespace DDDSample1.Domain.Patients
         public Address Address { get; private set; }
         public EmergencyContact EmergencyContact { get; private set; }
         public MedicalRecordNumber MedicalRecordNumber { get; private set; }
-        public MedicalHistory MedicalHistory { get; private set; }
         public User.User? User { get; private set; }
 
         private Patient()
@@ -32,7 +31,6 @@ namespace DDDSample1.Domain.Patients
             this.Address = default!;
             this.MedicalRecordNumber = default!;
             this.EmergencyContact = default!;
-            this.MedicalHistory = default!;
         }
 
         public Patient(string fullName, string dateOfBirth, string gender, string email, string phoneNumber, string street, string postalCode, string city, string country, string emergencyContactName, string emergencyContactEmail, string emergencyContactPhoneNumber, string medicalRecordNumber)
@@ -47,7 +45,6 @@ namespace DDDSample1.Domain.Patients
             this.EmergencyContact = new EmergencyContact(emergencyContactName, 
                                                         emergencyContactEmail, 
                                                         emergencyContactPhoneNumber);
-            this.MedicalHistory = new MedicalHistory();
             this.MedicalRecordNumber = new MedicalRecordNumber(medicalRecordNumber);
         }
         

@@ -1,18 +1,33 @@
+body {
+    font-family: 'Arial', sans-serif;
+    color: #1f2937; /* Dark text color for readability */
+    margin: 0;
+    padding: 0;
+    background-color: #f9fafb; /* Light background for a clean look */
+}
+
 .user-profile {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 40px auto;
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
+    background-color: #ffffff; /* White background for contrast */
+    border-radius: 12px; /* Softer rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.user-profile:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Elevated shadow on hover */
+    transform: translateY(-5px); /* Slight lift on hover */
 }
 
 .user-header h2 {
     margin: 0;
     padding-bottom: 10px;
-    border-bottom: 2px solid #ddd;
-    color: #333;
+    border-bottom: 2px solid #e5e7eb; /* Neutral separator */
+    color: #111827; /* Dark header text */
+    font-weight: 600;
+    font-size: 1.5em;
 }
 
 .user-info {
@@ -21,51 +36,63 @@
 
 .user-info h3 {
     margin-bottom: 10px;
-    color: #555;
+    color: #374151; /* Subtle dark gray */
 }
 
 .user-field {
     margin-bottom: 10px;
-    color: #666;
+    color: #6b7280; /* Light gray for less emphasis */
 }
 
 .user-field strong {
-    color: #333;
+    color: #111827; /* Dark text for labels */
 }
 
 .success-message {
     margin-top: 20px;
-    padding: 10px;
-    background-color: #e0ffe0;
-    border: 1px solid #b2ffb2;
-    border-radius: 5px;
-    color: #2d7a2d;
-}
-
-.user-settings {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.user-settings button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.user-settings button:hover {
-    background-color: #0056b3;
+    padding: 15px;
+    background-color: #d1fae5; /* Light green background */
+    border: 1px solid #34d399; /* Green border for success */
+    border-radius: 8px;
+    color: #065f46; /* Dark green text */
 }
 
 .error-message {
     margin-top: 20px;
-    padding: 10px;
-    background-color: #ffe0e0;
-    border: 1px solid #ffb2b2;
-    border-radius: 5px;
-    color: #7a2d2d;
+    padding: 15px;
+    background-color: #fee2e2; /* Light red background */
+    border: 1px solid #f87171; /* Red border for error */
+    border-radius: 8px;
+    color: #7f1d1d; /* Dark red text */
+}
+
+.user-settings,
+.view-patient-profile {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.user-settings button,
+.view-patient-profile button {
+    padding: 12px 24px;
+    background-color: #1d4ed8; /* Blue primary button */
+    color: #ffffff; /* White text for contrast */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+}
+
+.user-settings button:hover,
+.view-patient-profile button:hover {
+    background-color: #1e40af; /* Darker blue for hover state */
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.user-settings button:not(:last-child),
+.view-patient-profile button:not(:last-child) {
+    margin-right: 10px;
 }

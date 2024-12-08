@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MessageService } from '../../services/message.service';
 import { CommonModule } from '@angular/common';
+import { PatientService } from '../../services/patient.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -14,16 +15,16 @@ import { CommonModule } from '@angular/common';
 })
 export class UserProfileComponent implements OnInit {
   user: User | undefined;
-  
-  email: string | null = null;
+  email: string | '' = '';
+  medicalRecordNumber: string | null = null;
   successMessage: string | null = null;
   errorMessage: string | null = null; 
 
-  constructor(private userService: UserService, private authService: AuthService, private route: ActivatedRoute, private messageService : MessageService, private router: Router) { }
+  constructor(private userService: UserService, private authService: AuthService, private route: ActivatedRoute, private messageService : MessageService, private router: Router, private patientService: PatientService) { }
   
   ngOnInit(): void {
     this.successMessage = this.messageService.getMessage();
-    this.email = this.route.snapshot.paramMap.get('email');
+    this.email = this.route.snapshot.paramMap.get('email') || '';
     if (this.email) {
       this.getUserByEmail(this.email);
     } else {
@@ -40,8 +41,16 @@ export class UserProfileComponent implements OnInit {
     this.router.navigate(['/settings', this.email]);
   }
 
-  patientProfile(): void {
-    // Not Implemented yet
+  viewPatientProfile(): void {
+    this.patientService.getPatientByEmail(this.email).subscribe({
+      next: (data) => {
+        this.medicalRecordNumber = data.medicalRecordNumber;
+        this.router.navigate(['/patient/details', this.medicalRecordNumber]);
+      },
+      error: (err) => {
+        console.error('Error loading patient', err);
+      }
+    });
   }
 
   getUserByEmail(email: string): void {

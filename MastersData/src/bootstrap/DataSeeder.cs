@@ -119,10 +119,6 @@ public static class DataSeeder
 
     var patients = new List<Patient> { johnCena, johnCena2, johnCena3, johnCena4, johnCena5, rodrick };
 
-    johnCena.MedicalHistory.ChangeMedicalConditions("Healthy");
-    johnCena2.MedicalHistory.ChangeMedicalConditions("Ashma");
-    johnCena3.MedicalHistory.ChangeMedicalConditions("Covid");
-
     context.Patients.AddRange(patients);
 
     foreach (var patient in patients)
@@ -157,10 +153,11 @@ public static class DataSeeder
     var user = new User("D202512345@gmail.com", "doctor", password);
     var user2 = new User("D202512344@gmail.com", "doctor", password);
     var user3 = new User("admin@teste.com", "admin", password);
-    var user4 = new User("john.cena@gmail.com", "patient", password);
-    var user5 = new User("rodrigopontescardoso@gmail.com", "admin", password);
+    var user4 = new User("john.cena@example.com", "patient", password);
+    var user5 = new User("1221083@isep.ipp.pt", "patient", password);
+    var user6 = new User("rodrigopontescardoso@gmail.com", "admin", password);
 
-    var users = new List<User> { user, user2, user3, user4, user5 };
+    var users = new List<User> { user, user2, user3, user4, user5, user6 };
 
     context.Users.AddRange(users);
 
