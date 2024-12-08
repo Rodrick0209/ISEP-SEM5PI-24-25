@@ -15,3 +15,9 @@ N/A
 ### 2.2. User Story Dependencies
 
 **US 6.2.6** - The patient profile must be created on the system
+
+## 3. Analysis
+
+When access the details of the patient, will exists a button to access the medical record of the patient.
+
+When clicked the button, the system will appear the menu of manage the patient record.
