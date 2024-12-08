@@ -1,23 +1,26 @@
 <div class="contact-container">
     <div class="contact">
-        <h1>Contact Information</h1>
-        <section>
-            <h2>For any inquiries or feedback, please contact us at:</h2>
-            <ul>
-                <li><strong>Email: </strong> <a href="mailto:contact@example.com">contact&#64;example.com</a></li>
-                <li><strong>Phone:</strong> +1 (555) 123-4567</li>
-            </ul>
-        </section>
+      <h1>Contact Information</h1>
+      <section>
+        <h2>For any inquiries or feedback, please contact us at:</h2>
+        <ul>
+          <li><strong>Email: </strong> <a href="mailto:contact@example.com">contact&#64;example.com</a></li>
+          <li><strong>Phone:</strong> +1 (555) 123-4567</li>
+        </ul>
+      </section>
     </div>
-
+  
     <div class="social-media">
-        <h1>Follow Us on Social Media</h1>
-        <section>
-            <ul>
-                <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
-                <li><a href="https://www.twitter.com" target="_blank">Twitter</a></li>
-                <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
-            </ul>
-        </section>
+      <h1>Follow Us on Social Media</h1>
+      <section>
+        <ul>
+          <li *ngFor="let link of socialMediaLinks">
+            <a [href]="link.url" target="_blank">
+              <i [class]="link.icon"></i> {{ link.name }}
+            </a>
+          </li>
+        </ul>
+      </section>
     </div>
-</div>
+  </div>
+  

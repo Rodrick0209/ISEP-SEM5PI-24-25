@@ -1,70 +1,71 @@
 <div id="parent">
-    <div id="views-panel">
-      <table class="views">
-        <tr>
-          <td>
-            <label>View:</label>
-            <select id="view">
-              <option value="fixed">Fixed</option>
-              <!--option value="first">First-person</option-->
-              <!--option value="third">Third-person</option-->
-              <option value="top">Top</option>
-            </select>
-          </td>
-          <td>
-            <label>Orientation (h):</label>
-            <input type="number" id="horizontal" required />
-          </td>
-          <td>
-            <label>Orientation (v):</label>
-            <input type="number" id="vertical" required />
-          </td>
-          <td>
-            <input type="button" id="reset" value="Reset view" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label>Projection:</label>
-            <select id="projection">
-              <option value="perspective">Perspective</option>
-              <option value="orthographic">Orthographic</option>
-            </select>
-          </td>
-          <td>
-            <label>Distance:</label>
-            <input type="number" id="distance" required />
-          </td>
-          <td>
-            <label>Zoom:</label>
-            <input type="number" id="zoom" required />
-          </td>
-          <td>
-            <input type="button" id="reset-all" value="Reset all views" />
-          </td>
-        </tr>
-      </table>
-    </div>
-  
-    <div id="main-view">
-      <canvas id="three-canvas"></canvas>
-    </div>
-  
-    <div id="subwindows-panel">
-      <table class="views">
-        <tr>
-          <td>
-            <label>Date:</label>
-            <input type="date" id="date" [(ngModel)]="currentDate" required />
-          </td>
-          <td>
-            <label>Time:</label>
-            <input type="time" id="time" [(ngModel)]="currentTime" required />
-          </td>
-          <td>
-            <input type="button" id="reset-all" value="Search" (click)="search()"/>
-          </td>
-        </tr>
-      </table>
-    </div>
+  <div id="config-panel">
+    <table class="views">
+      <tr>
+        <td>
+          <label>View:</label>
+          <select id="view">
+            <option value="fixed">Fixed</option>
+            <!--option value="first">First-person</option-->
+            <!--option value="third">Third-person</option-->
+            <option value="top">Top</option>
+          </select>
+        </td>
+        <td>
+          <label>Orientation (h):</label>
+          <input type="number" id="horizontal" required />
+        </td>
+        <td>
+          <label>Orientation (v):</label>
+          <input type="number" id="vertical" required />
+        </td>
+        <td>
+          <input type="button" id="reset" value="Reset view" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Projection:</label>
+          <select id="projection">
+            <option value="perspective">Perspective</option>
+            <option value="orthographic">Orthographic</option>
+          </select>
+        </td>
+        <td>
+          <label>Distance:</label>
+          <input type="number" id="distance" required />
+        </td>
+        <td>
+          <label>Zoom:</label>
+          <input type="number" id="zoom" required />
+        </td>
+        <td>
+          <input type="button" id="reset-all" value="Reset all views" />
+        </td>
+      </tr>
+    </table>
   </div>
+
+  <div id="subwindows-panel">
+    <table class="views">
+      <tr>
+        <td>
+          <label>Date:</label>
+          <input type="date" id="date" [(ngModel)]="currentDate" required />
+        </td>
+        <td>
+          <label>Time:</label>
+          <input type="time" id="time" [(ngModel)]="currentTime" required />
+        </td>
+        <td>
+          <input type="button" id="search" value="Search" (click)="search()"/>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="game-container">
+    <canvas id="three-canvas"></canvas>
+  </div>
+
+</div>

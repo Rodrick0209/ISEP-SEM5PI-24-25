@@ -1,0 +1,13 @@
+<div class="filter-container">
+    <form (submit)="onSearch($event)" class="filter-form">
+
+        <div class="filter-field">
+            <label for="name">Name:</label>
+            <div class="input-group">
+                <input type="text" id="name" name="name" [(ngModel)]="filter.name" placeholder="Enter name..." />
+                <button type="submit" class="btn-search">Search</button>
+            </div>
+        </div>
+
+    </form>
+</div>

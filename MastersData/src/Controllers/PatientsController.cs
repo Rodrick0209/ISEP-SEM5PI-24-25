@@ -106,9 +106,10 @@ namespace DDDSample1.Controllers
             return await _service.SearchAsync(dto);
         }
 
+
         // GET: api/Patients
         [HttpGet]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, doctor")]
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllAsync()
         {
             return await _service.GetAllAsync();

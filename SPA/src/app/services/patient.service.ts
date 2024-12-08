@@ -15,6 +15,7 @@ export class PatientService {
   private getAllAllergiesUrl = '/api2/allergiesCatalog/getAll';
   private getAllMedicalCondsUrl = '/api2/medicalConditions/getAll';
   private editRecordUrl ='/api2/medicalRecord/update';
+  private recordUrl = '/api2/medicalRecord';
 
   constructor(private http: HttpClient) { }
 
@@ -28,6 +29,10 @@ export class PatientService {
 
   getAllAllMedicalConditions(): Observable<MedicalConditionView[]>{
     return this.http.get<MedicalConditionView[]>(this.getAllMedicalCondsUrl);
+  }
+
+  filterMedicalRecordEntries(selectedMedicalRecordNumber: string | null, name: string): Observable<MedicalRecord> {
+    return this.http.get<MedicalRecord>(`${this.recordUrl}/${selectedMedicalRecordNumber}/${name}`);
   }
 
   

@@ -12,6 +12,7 @@
             <button class="btn" (click)="manageSpecializations()">Manage Specializations</button>
             <button class="btn" (click)="addRoomTypes()">Add Room Types</button>
             <button class="btn" (click)="manageMedicalConditions()">Manage Medical Conditions</button>
+            <button class="btn" (click)="viewOperationRooms()">View Operation Rooms</button>
         </div>
     </div>
 </div>
@@ -23,7 +24,8 @@
             your patient records.</p>
         <div class="doctor-options">
             <button class="btn" (click)="manageOperationRequests()">Manage Operation Requests</button>
-            <button class="btn" (click)="managePatientRecords()">Manage Patient Records</button>
+            <button class="btn" (click)="manageMedicalRecord()">Manage Medical Record</button>
+            <button class="btn" (click)="viewOperationRooms()">View Operation Rooms</button>
         </div>
     </div>
 </div>
@@ -45,12 +47,12 @@
 <div *ngIf="!isLoggedIn">
     <div class="welcome-panel">
         <h1>Welcome to Surgery Appointment and Resource Management</h1>
-        <p>Please log in or sign up to access your personalized dashboard and manage your healthcare details
+        <p>Please login or register to access your personalized dashboard and manage your healthcare details
             efficiently.
         </p>
         <div class="welcome-options">
-            <button class="btn" (click)="login()">Log In</button>
-            <button class="btn" (click)="signUp()">Sign up</button>
+            <button class="btn" (click)="login()">Login</button>
+            <button class="btn" (click)="signUp()">Register</button>
             <button class="btn" (click)="about()">About the App</button>
             <button class="btn" (click)="contact()">Contact Information</button>
         </div>
