@@ -4,7 +4,7 @@ import config from "../../config";
 
 import IMedicalConditionController from "./IControllers/IMedicalConditionController";
 import IMedicalConditionService from '../services/IServices/IMedicalConditionService';
-import IMedicalConditionDTO from '../dto/IMedicalConditionDTO';
+import IMedicalConditionDTO from '../dto/IMedicalConditionCatalogDTO';
 
 import { Result } from "../core/logic/Result";
 

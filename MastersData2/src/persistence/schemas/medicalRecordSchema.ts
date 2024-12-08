@@ -1,13 +1,13 @@
 import { IMedicalRecordPersistence } from "../../dataschema/IMedicalRecordPersistence";
 import mongoose from 'mongoose';
 import { Allergy } from "../../domain/allergy";
-import { MedicalCondition } from "../../domain/medicalCondition";
+import allergySchema from "./allergySchema";
 
 const MedicalRecordSchema = new mongoose.Schema(
     {
         id: { type: String, unique: true },
         patientId: { type: String, unique: true },
-        allergies: { type: [mongoose.Schema.Types.String], ref: 'Allergy'},
+        allergies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Allergy' }], // Reference to Allergy model
         medicalConditions: { type: [mongoose.Schema.Types.String], ref: 'MedicalCondition'}
     },
     {

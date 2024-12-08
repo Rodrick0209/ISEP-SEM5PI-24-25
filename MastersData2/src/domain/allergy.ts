@@ -7,7 +7,7 @@ import { AllergyCatalogItem } from "./allergyCatalogItem";
 
 interface AllergyProps {
     allergyCatalogItem: AllergyCatalogItem;
-    date: Date;
+    description: string;
 }
 
 export class Allergy extends AggregateRoot<AllergyProps> {
@@ -23,26 +23,27 @@ export class Allergy extends AggregateRoot<AllergyProps> {
         return this.props.allergyCatalogItem.name;
     }
 
-    get date (): Date {
-        return this.props.date;
+    get description (): string {
+        return this.props.description;
     }
 
     private constructor (props: AllergyProps, id?: UniqueEntityID) {
         super(props, id);
     }
 
-    public static create (allergyDTO: IAllergyDTO, id?: UniqueEntityID): Result<Allergy> {
-        const allergyCatalogItem = allergyDTO.allergyCatalogItem;
-        const date = allergyDTO.date;
+    public static create (allergyDTO: AllergyCatalogItem,desc:string, id?: UniqueEntityID): Result<Allergy> {
+        const allergyCatalogItem = allergyDTO;
+        const description = desc;
 
-        if ( allergyCatalogItem === null || date === null) {
-            return Result.fail<Allergy>('Must provide a valid allergy and date for the allergy')
+        if ( allergyCatalogItem === null || description === null) {
+            return Result.fail<Allergy>('Must provide a valid allergy and description for the allergy')
         } else {
-            const allergy = new Allergy({ allergyCatalogItem: allergyCatalogItem, date: date }, id);
+            const allergy = new Allergy({ allergyCatalogItem: allergyCatalogItem, description: description }, id);
             return Result.ok<Allergy>( allergy )
         }
 
     }
+
 
 
 

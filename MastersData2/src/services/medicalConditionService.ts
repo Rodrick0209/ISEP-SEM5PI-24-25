@@ -1,11 +1,11 @@
 import { Service, Inject } from 'typedi';
 import config from "../../config";
-import IMedicalConditionDTO from '../dto/IMedicalConditionDTO';
+import IMedicalConditionDTO from '../dto/IMedicalConditionCatalogDTO';
 import IMedicalConditionRepo from './IRepos/IMedicalConditionRepo';
 import IMedicalConditionService from './IServices/IMedicalConditionService';
 import { Result } from "../core/logic/Result";
-import { MedicalCondition } from "../domain/medicalCondition";
-import { MedicalConditionMap } from '../mappers/MedicalConditionMap';
+import { MedicalConditionCatalog } from "../domain/medicalConditionCatalog";
+import { MedicalConditionCatalogMap } from '../mappers/MedicalConditionCatalogMap';
 
 @Service()
 export default class MedicalConditionService implements IMedicalConditionService {
@@ -15,7 +15,7 @@ export default class MedicalConditionService implements IMedicalConditionService
 
     public async createMedicalCondition(medicalConditionDTO: IMedicalConditionDTO): Promise<Result<IMedicalConditionDTO>> {
         try { 
-            const medicalConditionOrError = await MedicalCondition.create(medicalConditionDTO);
+            const medicalConditionOrError = await MedicalConditionCatalog.create(medicalConditionDTO);
             
             if (medicalConditionOrError.isFailure) {
                 return Result.fail<IMedicalConditionDTO>(medicalConditionOrError.errorValue());
@@ -25,7 +25,7 @@ export default class MedicalConditionService implements IMedicalConditionService
 
             await this.medicalConditionRepo.save(medicalConditionResult);
 
-            const medicalConditionDTOResult = MedicalConditionMap.toDTO(medicalConditionResult) as IMedicalConditionDTO;
+            const medicalConditionDTOResult = MedicalConditionCatalogMap.toDTO(medicalConditionResult as MedicalConditionCatalog) as IMedicalConditionDTO;
             return Result.ok<IMedicalConditionDTO>(medicalConditionDTOResult);
         } catch (e) {
             throw e;
@@ -40,7 +40,7 @@ export default class MedicalConditionService implements IMedicalConditionService
                 return Result.fail<IMedicalConditionDTO[]>("No medical conditions found");
             }
 
-            const medicalConditionsDTO =  allMedicalConditions.map(medicalCondition => MedicalConditionMap.toDTO(medicalCondition) as IMedicalConditionDTO);
+            const medicalConditionsDTO =  allMedicalConditions.map(medicalCondition => MedicalConditionCatalogMap.toDTO(medicalCondition) as IMedicalConditionDTO);
             
             return Result.ok<IMedicalConditionDTO[]>(medicalConditionsDTO);
         } catch (e) {

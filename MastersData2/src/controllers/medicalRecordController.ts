@@ -8,27 +8,28 @@ import IMedicalRecordDTO from '../dto/IMedicalRecordDTO';
 
 
 @Service()
-export default class MedicalRecordController implements IMedicalRecordController{
+export default class MedicalRecordController implements IMedicalRecordController {
   constructor(
-      @Inject(config.services.medicalRecord.name) private medicalRecordServiceInstance : IMedicalRecordService
-  ) {}
+    @Inject(config.services.medicalRecord.name) private medicalRecordServiceInstance: IMedicalRecordService
+  ) { }
 
   public async createMedicalRecord(req: Request, res: Response, next: NextFunction) {
     try {
-      const medicalConditionOrError = await this.medicalRecordServiceInstance.createMedicalRecord(req.body as IMedicalRecordDTO) as Result<IMedicalRecordDTO>;
-        
+      const medicalConditionOrError = await this.medicalRecordServiceInstance.createMedicalRecord(
+        req.body as IMedicalRecordDTO) as Result<IMedicalRecordDTO>;
+
       if (medicalConditionOrError.isFailure) {
         return res.status(402).send();
       }
 
       const medicalConditionDTO = medicalConditionOrError.getValue();
-      return res.json( medicalConditionDTO ).status(201);
+      return res.json(medicalConditionDTO).status(201);
     }
     catch (e) {
       return next(e);
     }
   };
-  
+
 
   public async getAllMedicalRecord(req: Request, res: Response, next: NextFunction) {
     try {
@@ -39,7 +40,7 @@ export default class MedicalRecordController implements IMedicalRecordController
       }
 
       const medicalRecordDTO = medicalRecordOrError.getValue();
-      return res.status(200).json( medicalRecordDTO );
+      return res.status(200).json(medicalRecordDTO);
     }
     catch (e) {
       return next(e);
@@ -49,9 +50,9 @@ export default class MedicalRecordController implements IMedicalRecordController
 
   public async updateMedicalRecord(req: Request, res: Response, next: NextFunction) {
     try {
-      
+
       const medicalConditionOrError = await this.medicalRecordServiceInstance.updateMedicalRecord(req.body as IMedicalRecordDTO, req.params.id) as Result<IMedicalRecordDTO>;
-  
+
 
       if (medicalConditionOrError.isFailure) {
         return res.status(400).send(medicalConditionOrError.error);

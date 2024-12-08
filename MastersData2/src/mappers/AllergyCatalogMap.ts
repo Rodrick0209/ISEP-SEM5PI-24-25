@@ -12,17 +12,17 @@ import { IAllergyCatalogItemPersistence } from '../dataschema/IAllergyCatalogIte
 
 export class AllergyCatalogMap extends Mapper<AllergyCatalogItem> {
 
-    public static toDTO (allergy: AllergyCatalogItem): IAllergyCathalogItemDTO {
+    public static toDTO(allergy: AllergyCatalogItem): IAllergyCathalogItemDTO {
         return {
             id: allergy.id.toString(),
             name: allergy.name
         } as IAllergyCathalogItemDTO;
     }
 
-    public static toDomain (allergy: any | Model<IAllergyCatalogItemPersistence & Document>): AllergyCatalogItem {
+    public static toDomain(allergy: any | Model<IAllergyCatalogItemPersistence & Document>): AllergyCatalogItem {
         const allergyOrError = AllergyCatalogItem.create(
             allergy,
-            new UniqueEntityID(allergy.domainId)
+            allergy.domainId
         );
 
         allergyOrError.isFailure ? console.log(allergyOrError.error) : '';
@@ -30,7 +30,7 @@ export class AllergyCatalogMap extends Mapper<AllergyCatalogItem> {
         return allergyOrError.isSuccess ? allergyOrError.getValue() : null;
     }
 
-    public static toPersistence (allergy: AllergyCatalogItem): any {
+    public static toPersistence(allergy: AllergyCatalogItem): any {
         return {
             domainId: allergy.id.toString(),
             name: allergy.name
@@ -38,5 +38,5 @@ export class AllergyCatalogMap extends Mapper<AllergyCatalogItem> {
     }
 
 
-    
+
 }
