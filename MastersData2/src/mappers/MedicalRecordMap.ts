@@ -4,18 +4,22 @@ import { IMedicalRecordPersistence } from "../dataschema/IMedicalRecordPersisten
 import IMedicalRecordDTO from '../dto/IMedicalRecordDTO';
 import { MedicalRecord } from "../domain/medicalRecord";
 
-import { UniqueEntityID } from "../core/domain/UniqueEntityID";
-import { Allergy } from "../domain/allergy";
 
 export class MedicalRecordMap extends Mapper<MedicalRecord> {
   
   public static toDTO( medicalRecord: MedicalRecord): IMedicalRecordDTO {
     return {
-      id: medicalRecord.id.toString(),
       patientId: medicalRecord.patientId,
-      allergies: medicalRecord.allergies.map(allergy => allergy.name),
-      medicalConditions: medicalRecord.medicalConditions.map(cond => cond.name)
-    } as IMedicalRecordDTO;
+      allergies: medicalRecord.allergies.map(allergy => ({
+          name: allergy.name, // Extraindo o nome do item do catálogo
+          description: allergy.description
+      })),
+      medicalConditions: medicalRecord.medicalConditions.map(med => ({
+          name: med.name, // Extraindo o nome do item do catálogo
+          date: med.date.toISOString().split('T')[0] // Formatando a data para "YYYY-MM-DD"
+      }))
+  } as unknown as IMedicalRecordDTO;
+  
   }
 
   public static toDomain (medicalRecord: any | Model<IMedicalRecordPersistence & Document> ): MedicalRecord {

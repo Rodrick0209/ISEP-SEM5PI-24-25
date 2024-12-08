@@ -1,5 +1,5 @@
 import { Result } from "../../core/logic/Result";
-import IMedicalConditionDTO from "../../dto/IMedicalConditionDTO";
+import IMedicalConditionDTO from "../../dto/IMedicalConditionCatalogDTO";
 
 
 export default interface IMedicalConditionService {

@@ -1,7 +1,7 @@
 import { AllergyCatalogItem } from "../domain/allergyCatalogItem";
+import IAllergyCathalogItemDTO from "./IAllergyCatalogItemDTO";
 
 export interface IAllergyDTO {
-    id: string;
-    allergyCatalogItem: AllergyCatalogItem;
-    date: Date
+    name: string;
+    description: string;
 }

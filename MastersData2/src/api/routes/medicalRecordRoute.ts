@@ -26,8 +26,14 @@ export default (app: Router) => {
         celebrate({
             body: Joi.object({
                 patientId: Joi.string().required(),
-                allergies: Joi.array().items(Joi.string()),
-                medicalConditions: Joi.array().items(Joi.string())
+                allergies: Joi.array().items(Joi.object({
+                    name: Joi.string().required(),
+                    description: Joi.string().required()
+                })),
+                medicalConditions: Joi.array().items(Joi.object({
+                    name: Joi.string().required(),
+                    date: Joi.date().iso().required()
+                }))
             })
         }),
         (req, res, next) => ctrl.createMedicalRecord(req, res, next));
