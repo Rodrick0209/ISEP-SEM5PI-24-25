@@ -19,7 +19,7 @@ export class UserProfileComponent implements OnInit {
   successMessage: string | null = null;
   errorMessage: string | null = null; 
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private messageService : MessageService, private router: Router) { }
+  constructor(private userService: UserService, private authService: AuthService, private route: ActivatedRoute, private messageService : MessageService, private router: Router) { }
   
   ngOnInit(): void {
     this.successMessage = this.messageService.getMessage();
@@ -28,6 +28,10 @@ export class UserProfileComponent implements OnInit {
       this.getUserByEmail(this.email);
     } else {
       this.errorMessage = 'Invalid user';
+    }
+    var emailVerified = this.authService.extractEmailFromToken();
+    if (emailVerified != this.email) {
+      this.router.navigate(['/home']);
     }
   }
 

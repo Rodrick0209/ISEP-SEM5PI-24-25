@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MarkXComponent } from '../template/mark-x/mark-x.component';
 import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-delete-user',
@@ -16,10 +17,14 @@ export class DeleteUserComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private route: ActivatedRoute, private userService: UserService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private userService: UserService, private authService: AuthService, private router: Router) { }
   
   ngOnInit(): void {
     this.email = this.route.snapshot.paramMap.get('email');
+    var emailVerified = this.authService.extractEmailFromToken();
+    if (emailVerified != this.email) {
+      this.router.navigate(['/home']);
+    }
   }
 
   isConfirmed = false; // Track if the "X" mark has been clicked
