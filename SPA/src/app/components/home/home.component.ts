@@ -73,8 +73,8 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/operationRequests'])
   }
 
-  managePatientRecords(){
-    // Not Implemented yet
+  manageMedicalRecord(){
+    this.router.navigate(['/medical-record'])
   }
 
   viewProfile(){
@@ -109,6 +109,10 @@ export class HomeComponent implements OnInit {
 
   manageMedicalConditions(){
     this.router.navigate(['/medicalConditions'])
+  }
+
+  viewOperationRooms(){
+    this.router.navigate(['/view'])
   }
 
 }

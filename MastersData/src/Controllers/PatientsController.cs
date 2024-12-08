@@ -100,15 +100,16 @@ namespace DDDSample1.Controllers
 
         //GET: api/Patients/search
         [HttpGet("search")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, doctor")]
         public async Task<ActionResult<IEnumerable<ViewPatientDto>>> SearchAsync([FromQuery] SearchFiltersDto dto)
         {
             return await _service.SearchAsync(dto);
         }
 
+
         // GET: api/Patients
         [HttpGet]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, doctor")]
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllAsync()
         {
             return await _service.GetAllAsync();
@@ -116,7 +117,7 @@ namespace DDDSample1.Controllers
 
         // GET: api/Patients/MedicalRecordNumber/{medicalRecordNumber}
         [HttpGet("MedicalRecordNumber/{medicalRecordNumber}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, doctor")]
         public async Task<ActionResult<PatientDto>> GetByMedicalRecordNumberAsync(string medicalRecordNumber)
         {
             var patient = await _service.GetByMedicalRecordNumberAsync(medicalRecordNumber);

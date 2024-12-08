@@ -45,6 +45,7 @@ import { AllergiesCatalogComponent } from './components/allergies-catalog/allerg
 import { CreateAllergiesCatalogItemComponent } from './components/create-allergies-catalog-item/create-allergies-catalog-item.component';
 import { MedicalConditionsComponent } from './components/medical-conditions/medical-conditions.component';
 import { CreateMedicalConditionsComponent } from './components/create-medical-conditions/create-medical-conditions.component';
+import { MedicalRecordEntriesComponent } from './components/medical-record-entries/medical-record-entries.component';
 
 
 export const routes: Routes = [
@@ -52,7 +53,11 @@ export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'about', component: AboutComponent },
     { path: 'contact', component: ContactComponent },
-    { path: 'view', component: ThreeViewComponent },
+    {   path: 'view',
+        component: ThreeViewComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['admin', 'doctor'] }
+    },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'register/confirm', component: RegisterConfirmationComponent },
@@ -156,13 +161,13 @@ export const routes: Routes = [
         path: 'patients',
         component: PatientsComponent,
         canActivate: [AuthGuard],
-        data: { role: 'admin' }
+        data: { roles: ['admin', 'doctor'] }
     },
     {
         path: 'patient/details/:medicalRecordNumber',
         component: PatientDetailsComponent,
         canActivate: [AuthGuard],
-        data: { role: 'admin' }
+        data: { roles: ['admin', 'doctor'] }
     },
     {
         path: 'patient/create',
@@ -257,6 +262,12 @@ export const routes: Routes = [
         component: CreateMedicalConditionsComponent,
         canActivate: [AuthGuard],
         data: {role: 'admin'}
+    },
+    {
+        path: 'patient/medical-record/:medicalRecordNumber',
+        component: MedicalRecordEntriesComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'doctor'}
     }
 
 ];

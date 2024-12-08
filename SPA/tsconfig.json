@@ -23,8 +23,12 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
   },
+  "exclude": [
+    "cypress/**/*.ts",
+    "cypress.config.ts"
+  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

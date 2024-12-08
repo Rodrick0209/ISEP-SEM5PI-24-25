@@ -1,0 +1,16 @@
+
+```plantuml
+@startuml Process_View
+actor Doctor
+participant Doctor <<Doctor (C4)>>
+
+activate Doctor
+
+Doctor -> System: Make a request to access the\nmedical record by patient details
+activate System
+System --> Doctor: Success/Error message
+deactivate System
+deactivate Doctor
+
+@enduml
+```

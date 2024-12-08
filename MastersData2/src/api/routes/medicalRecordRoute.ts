@@ -76,7 +76,7 @@ export default (app: Router) => {
     route.get('/:patientId/search',
         celebrate({
             params: Joi.object({
-                patientId: Joi.string().guid({ version: 'uuidv4' }).required(),
+                patientId: Joi.string().required()
             }),
             query: Joi.object({
                 name: Joi.string().required()

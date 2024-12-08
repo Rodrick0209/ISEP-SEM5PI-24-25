@@ -1,5 +1,5 @@
 <div class="list-patients-container">
-    <button class="create-patient-button" (click)="createPatient()">Create Patient Profile</button>
+    <button class="create-patient-button" (click)="createPatient()" [disabled]="!isAdmin()">Create Patient Profile</button>
 
     <div *ngIf="successMessage" class="success-message">
         {{ successMessage }}
@@ -32,10 +32,10 @@
                 <button (click)="seeDetails(patient)">Details</button>
             </td>
             <td>
-                <button (click)="editPatient(patient)">Edit</button>
+                <button (click)="editPatient(patient)" [disabled]="!isAdmin()">Edit</button>
             </td>
             <td>
-                <button (click)="deletePatient(patient)">Delete</button>
+                <button (click)="deletePatient(patient)" [disabled]="!isAdmin()">Delete</button>
             </td>
         </tr>
     </tbody>

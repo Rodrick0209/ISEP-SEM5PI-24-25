@@ -1,0 +1,14 @@
+```plantuml
+@startuml Process_View
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+
+activate View
+View -> Component: clicks on button to access medical record
+activate Component
+Component -> Model**: get the medical record number on forms
+return redirect to /medical-record/{medical-record-number}
+
+@enduml
+```

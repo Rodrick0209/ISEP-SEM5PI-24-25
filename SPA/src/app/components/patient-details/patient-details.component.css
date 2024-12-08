@@ -63,15 +63,40 @@
     box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
 }
 
-.back-button button:hover {
-    background-color: #155bb5;
+.medical-record-button {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.medical-record-button button {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    background-color: #e23b3b;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+}
+
+.medical-record-button button:hover {
+    background-color: #772727;
     transform: translateY(-2px);
 }
 
-.patient-info .patient-field, .medical-history .patient-field, .emergency-contact .patient-field, .address .patient-field .medical-record{
+.medical-record-button button:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.patient-info .patient-field, .medical-history .patient-field, .emergency-contact .patient-field, .address .patient-field{
     padding-bottom: 12px;
 }
 
-.patient-info .patient-field:last-child, .medical-history .patient-field:last-child, .emergency-contact .patient-field:last-child, .address .medical-record .patient-field:last-child {
+.patient-info .patient-field:last-child, .medical-history .patient-field:last-child, .emergency-contact .patient-field:last-child, .address .patient-field:last-child {
     border-bottom: none;
 }
