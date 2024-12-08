@@ -43,3 +43,19 @@ When clicked the button, the system will appear the menu of manage the patient r
 #### 4.5.1. SPA
 
 - **MVVM (Model-View-ViewModel) Pattern**: Separates the development of the graphical user interface from the business logic or back-end logic.
+
+## 5. Test Plan
+
+### 5.1. Unit Tests
+
+- **Test 1**: Verify that the button to access the medical record is present on the patient profile page.
+- **Test 2**: Ensure that clicking the button opens the patient medical record management menu.
+
+### 5.2. Integration Tests
+
+- **Test 1**: Check the integration between the patient profile module and the medical record module.
+
+### 5.3. End-to-End Tests
+
+- **Test 1**: Simulate a doctor logging in, navigating to a patient profile, and accessing the medical record.
+- **Test 2**: Verify the complete workflow from accessing the patient profile to managing the medical record and saving changes.
