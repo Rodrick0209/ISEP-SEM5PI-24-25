@@ -94,6 +94,11 @@ button:disabled {
 .create-patient-button:hover {
     background-color: #218838; /* Darker green on hover */
 }
+.create-patient-button:disabled {
+    background-color: #ccc; /* Gray background for disabled state */
+    cursor: not-allowed; /* Not-allowed cursor for disabled button */
+    color: #666; /* Darker text color for disabled state */
+}
 
 .required-note {
     text-align: center;

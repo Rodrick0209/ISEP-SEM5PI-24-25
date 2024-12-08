@@ -161,13 +161,13 @@ export const routes: Routes = [
         path: 'patients',
         component: PatientsComponent,
         canActivate: [AuthGuard],
-        data: { role: 'admin' }
+        data: { roles: ['admin', 'doctor'] }
     },
     {
         path: 'patient/details/:medicalRecordNumber',
         component: PatientDetailsComponent,
         canActivate: [AuthGuard],
-        data: { role: 'admin' }
+        data: { roles: ['admin', 'doctor'] }
     },
     {
         path: 'patient/create',
@@ -264,7 +264,7 @@ export const routes: Routes = [
         data: {role: 'admin'}
     },
     {
-        path: 'medical-record',
+        path: 'patient/medical-record/:medicalRecordNumber',
         component: MedicalRecordEntriesComponent,
         canActivate: [AuthGuard],
         data: {role: 'doctor'}

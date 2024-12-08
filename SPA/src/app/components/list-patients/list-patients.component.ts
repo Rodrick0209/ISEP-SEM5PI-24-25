@@ -5,6 +5,7 @@ import { FilterPatientsComponent } from '../filter-patients/filter-patients.comp
 import { MessageService } from '../../services/message.service';
 import { PatientsView } from '../../models/patient';
 import { PatientService } from '../../services/patient.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-list-patients',
@@ -25,10 +26,19 @@ export class ListPatientsComponent implements OnInit {
   itemsPerPage: number = 10;
   totalPages: number = 0;
 
-  constructor(private patientService: PatientService, private router: Router, private messageService: MessageService) { }
+  constructor(private patientService: PatientService, private router: Router, private messageService: MessageService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.successMessage = this.messageService.getMessage();
+  }
+
+  extractRole(): any {
+    return this.authService.extractRoleFromToken();
+  }
+
+  isAdmin(): boolean {
+    const role = this.extractRole();
+    return role === 'admin';
   }
 
   createPatient(): void {

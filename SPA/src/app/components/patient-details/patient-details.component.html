@@ -13,43 +13,12 @@
       <strong>Date of Birth:</strong> {{ patient.dateOfBirth }}
     </div>
     <div class="patient-field">
-      <strong>Gender:</strong>{{ patient.gender }}
+      <strong>Gender:</strong> {{ patient.gender | titlecase }}
     </div>
     <div class="patient-field"><strong>Email:</strong> {{ patient.email }}</div>
     <div class="patient-field">
       <strong>Phone Number:</strong> {{ patient.phoneNumber }}
     </div>
-
-    <!-- Medical Record Section -->
-    <div class="address">
-        <h4>Medical Record</h4>
-      
-        <!-- Allergies Section -->
-        <div class="patient-field">
-          <strong>Allergies:</strong>
-          <ul>
-            <span *ngFor="let allergy of medicalRecord?.allergies; let last = last">
-              {{ allergy }}<span *ngIf="!last">, </span>
-            </span>
-          </ul>
-          <ng-template #noAllergies>
-            <span>None</span>
-          </ng-template>
-        </div>
-      
-        <!-- Medical Conditions Section -->
-        <div class="patient-field">
-          <strong>Medical Conditions:</strong>
-          <ul>
-            <span *ngFor="let condition of medicalRecord?.medicalConditions; let last = last">
-              {{ condition }}<span *ngIf="!last">, </span>
-            </span>
-          </ul>
-          <ng-template #noConditions>
-            <span>None</span>
-          </ng-template>
-        </div>
-      </div>
 
     <div class="address">
       <h4>Address</h4>
@@ -80,6 +49,10 @@
         {{ patient.emergencyContact.phoneNumber }}
       </div>
     </div>
+  </div>
+
+  <div class="medical-record-button">
+    <button (click)="onMedicalRecord()" [disabled]="!isDoctor()">View Medical Record</button>
   </div>
 
   <div class="back-button">

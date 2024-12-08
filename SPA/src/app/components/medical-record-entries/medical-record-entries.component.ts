@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ListMedicalRecordEntriesComponent } from '../list-medical-record-entries/list-medical-record-entries.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-medical-record-entries',
@@ -10,6 +11,9 @@ import { ListMedicalRecordEntriesComponent } from '../list-medical-record-entrie
 })
 export class MedicalRecordEntriesComponent {
   medicalRecordEntries: string[] = [];
+  medicalRecordNumber: string = '';
+
+  constructor(private route: ActivatedRoute) { }
 
   onMedicalRecordEntryAdded(newMedicalRecordEntry: string) {
     this.medicalRecordEntries.push(newMedicalRecordEntry); // Adiciona novo registro médico à lista

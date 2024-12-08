@@ -1,58 +1,5 @@
 <div class="container">
-    <div class="form-group">
-        <label for="medicalRecordSearch">Select Medical Record Number:</label>
-        <div class="input-group">
-            <!-- Search box -->
-            <input type="text" id="medicalRecordSearch" class="form-control"
-                placeholder="Search Medical Record Number..." [(ngModel)]="searchQuery" (input)="filterMedicalRecords()"
-                aria-describedby="searchHelp">
-
-            <!-- Dropdown that shows filtered options or all options when cleared -->
-            <div *ngIf="filteredPatients.length > 0" class="dropdown-menu">
-                <div *ngFor="let patient of filteredPatients" (click)="selectPatient(patient)" class="dropdown-item">
-                    {{ patient.medicalRecordNumber }}
-                </div>
-            </div>
-        </div>
-
-        <!-- Deselect button -->
-        <button *ngIf="selectedMedicalRecordNumber" class="btn btn-secondary mt-2"
-            (click)="onRecordNumberDeselected()">Deselect</button>
-    </div>
-
-    <!-- Medical Record Section (only shows when a valid record is selected) -->
-    <div *ngIf="selectedPatient" class="mt-4">
-        <h3>Medical Record for {{ selectedPatient.medicalRecordNumber }}</h3>
-        <app-filter-medical-record-entries ></app-filter-medical-record-entries>
-        
-        <div *ngIf="medicalRecord?.allergies || medicalRecord?.medicalConditions; else noRecord">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let allergy of medicalRecord?.allergies">
-                        <td>Allergy</td>
-                        <td>{{ allergy.name }}</td>
-                    </tr>
-                    <tr *ngFor="let condition of medicalRecord?.medicalConditions">
-                        <td>Medical Condition</td>
-                        <td>{{ condition.name }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <ng-template #noRecord>
-            <h4 class="no-record-message">No medical record to show</h4>
-        </ng-template>
-
-        <!-- Update Button -->
-        <button class="btn btn-primary" (click)="updateMedicalRecord()">Update Medical Record</button>
-    </div>
-
+    
     <!-- Success/Error messages -->
     <div *ngIf="successMessage" class="alert alert-success mt-4">
         {{ successMessage }}
@@ -60,4 +7,33 @@
     <div *ngIf="errorMessage" class="alert alert-danger mt-4">
         {{ errorMessage }}
     </div>
+
+    <app-filter-medical-record-entries></app-filter-medical-record-entries>
+
+    <div *ngIf="medicalRecord?.allergies || medicalRecord?.medicalConditions; else noRecord">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let allergy of medicalRecord?.allergies">
+                    <td>Allergy</td>
+                    <td>{{ allergy.name }}</td>
+                </tr>
+                <tr *ngFor="let condition of medicalRecord?.medicalConditions">
+                    <td>Medical Condition</td>
+                    <td>{{ condition.name }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <ng-template #noRecord>
+        <h4 class="no-record-message">No medical record to show</h4>
+    </ng-template>
+
+    <!-- Update Button -->
+    <button class="btn btn-primary" (click)="updateMedicalRecord()">Update Medical Record</button>
 </div>
