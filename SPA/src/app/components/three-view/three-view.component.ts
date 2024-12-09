@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
+import TWEEN from '@tweenjs/tween.js';
 import { merge } from './assets/merge';
 import ThumbRaiser from './assets/thumb_raiser_template';
 import { mazeData } from './assets/default_data';

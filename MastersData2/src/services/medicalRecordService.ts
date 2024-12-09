@@ -13,7 +13,7 @@ import IMedicalConditionRepo from './IRepos/IMedicalConditionRepo';
 import { AllergyId } from '../domain/allergyId';
 import { Allergy } from '../domain/allergy';
 import { MedicalConditionCatalog } from '../domain/medicalConditionCatalog';
-import { cond } from 'lodash';
+import { cond, forEach } from 'lodash';
 import mongoose from 'mongoose';
 import { MedicalCondition } from '../domain/medicalCondition';
 
@@ -55,7 +55,7 @@ export default class MedicalRecordService implements IMedicalRecordService {
             }
             
             
-            const MedicalRecordOrError = await MedicalRecord.create(MedicalRecordDTO, allergyIds, medicalConditionIds);
+            const MedicalRecordOrError = await MedicalRecord.create(MedicalRecordDTO.patientId, allergyIds, medicalConditionIds);
             
 
 
@@ -82,38 +82,9 @@ export default class MedicalRecordService implements IMedicalRecordService {
             if (allMedicalRecords === null || allMedicalRecords.length === 0) {
                 return Result.fail<IMedicalRecordDTO[]>('No medical conditions found');
             }
-
-            for (const record of allMedicalRecords) {
-                console.log(record);
-                const allergyIds = [];
-
-                for (const allergy of record.allergies) {
-                    const allergyRecord = await this.AllergyCatalogRepo.findById(allergy);
-                    const allergyResult = Allergy.create(allergyRecord, allergy.description, allergyRecord.id);
-
-                    if (allergyResult.isSuccess) {
-                        allergyIds.push(allergyResult.getValue());
-                    }
-                }
-
-                const medicalConditionIds = [];
-                for (const condition of record.medicalConditions) {
-                    const conditionRecord = await this.MedicalConditionRepo.findByDomainId(condition);
-
-                    const conditionResult = MedicalCondition.create(conditionRecord, condition.date, conditionRecord.id);
-
-
-                    if (conditionResult.isSuccess) {
-                        medicalConditionIds.push(conditionResult.getValue());
-                    }
-                }
-
-                record.allergies = allergyIds;
-                record.medicalConditions = medicalConditionIds;
-            }
-
+                        
             const MedicalRecordsDTO = allMedicalRecords.map(rec => MedicalRecordMap.toDTO(rec) as IMedicalRecordDTO);
-
+            console.log('Chegou aqui 3');
             return Result.ok<IMedicalRecordDTO[]>(MedicalRecordsDTO);
         } catch (e) {
             throw e;

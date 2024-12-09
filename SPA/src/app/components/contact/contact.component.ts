@@ -10,10 +10,10 @@ import { Component } from '@angular/core';
 })
 export class ContactComponent {
   socialMediaLinks = [
-    { name: 'Facebook', url: 'https://www.facebook.com', icon: 'fab fa-facebook-f' },
-    { name: 'X', url: 'https://www.x.com', icon: 'fab fa-x-twitter' },
-    { name: 'Instagram', url: 'https://www.instagram.com', icon: 'fab fa-instagram' },
-    { name: 'LinkedIn', url: 'https://www.linkedin.com', icon: 'fab fa-linkedin-in' },
-    { name: 'YouTube', url: 'https://www.youtube.com', icon: 'fab fa-youtube' },
+    { name: 'Example', url: 'https://www.facebook.com', icon: 'fab fa-facebook-f' },
+    { name: '@example123', url: 'https://www.x.com', icon: 'fab fa-x-twitter' },
+    { name: 'example.123', url: 'https://www.instagram.com', icon: 'fab fa-instagram' },
+    { name: 'Example', url: 'https://www.linkedin.com', icon: 'fab fa-linkedin-in' },
+    { name: 'Example', url: 'https://www.youtube.com', icon: 'fab fa-youtube' },
   ];
 }
