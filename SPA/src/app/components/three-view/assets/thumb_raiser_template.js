@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import * as GSAP from "gsap";
 import Stats from "three/addons/libs/stats.module.js";
 import Orientation from "./orientation.js";
 import {
@@ -436,8 +437,11 @@ export default class ThumbRaiser {
         this.contextMenu(event)
       );
 
+      // Register the event handler to be called on mouse move
+      this.renderer.domElement.addEventListener("mousemove", (event) => this.highlightSurgeryTable(event));
+
       // Register the event handler to be called on mouse click
-      this.renderer.domElement.addEventListener("click", (event) => 
+      this.renderer.domElement.addEventListener("click", (event) =>
         this.selectRoom(event)
       );
 
@@ -750,6 +754,44 @@ export default class ThumbRaiser {
     }
   }
 
+  highlightSurgeryTable(event) {
+    // Calculate mouse position in normalized device coordinates (-1 to +1) for both components
+    const mouse = new THREE.Vector2(
+      (event.clientX / window.innerWidth) * 2 - 1,
+      -(event.clientY / window.innerHeight) * 2 + 1
+    );
+
+    // Create a raycaster
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, this.activeViewCamera.object);
+
+    // Check for intersections with surgical tables
+    const intersects = raycaster.intersectObjects(this.surgeryTables.map(table => table.object), true);
+
+    if (intersects.length > 0) {
+      // Find the corresponding surgery table
+      for (const table of this.surgeryTables) {
+        if (table.object.getObjectById(intersects[0].object.id)) {
+          // Change the color of the table to red
+          table.object.traverse((child) => {
+            if (child.isMesh) {
+              child.material.color.set(0xff0000);
+            }
+          });
+          // Set a timeout to revert the color back to the original after a short delay
+          setTimeout(() => {
+            table.object.traverse((child) => {
+              if (child.isMesh) {
+                child.material.color.set(0xffffff); // Assuming the original color is white
+              }
+            });
+          }, 1000); // Change the delay as needed
+          break;
+        }
+      }
+    }
+  }
+
   mouseDown(event) {
     if (event.buttons == 1 || event.buttons == 2) {
       // Primary or secondary button down
@@ -869,448 +911,455 @@ export default class ThumbRaiser {
     raycaster.setFromCamera(mouse, this.activeViewCamera.object);
 
     // Check for intersections with surgical tables
-    const intersects = raycaster.intersectObjects(this.scene3D.children, true);
-    console.log(intersects);
+    const intersects = raycaster.intersectObjects(this.surgeryTables.map(table => table.object), true);
 
     if (intersects.length > 0) {
       // Find the corresponding surgery table
       for (const table of this.surgeryTables) {
         if (table.object.getObjectById(intersects[0].object.id)) {
-          // Move the camera to target the room center point
           const roomCenter = table.position.clone();
-          this.activeViewCamera.setTarget(roomCenter);
+          const target = new THREE.Vector3(roomCenter.x, roomCenter.y, roomCenter.z);
+          GSAP.gsap.to(this.activeViewCamera.object.position, {
+            duration: 1,
+            x: target.x - 5,
+            z: target.z,
+            ease: "power2.inOut",
+            onUpdate: () => {
+              this.activeViewCamera.object.lookAt(target);
+            },
+          });
           break;
         }
       }
     }
   }
-  
-    contextMenu(event) {
-      // Prevent the context menu from appearing when the secondary mouse button is clicked
-      event.preventDefault();
-    }
 
-    elementChange(event) {
-      switch (event.target.id) {
-        case "view":
-          this.setActiveViewCamera(
-            [
-              this.fixedViewCamera,
-              //this.firstPersonViewCamera,
-              //this.thirdPersonViewCamera,
-              this.topViewCamera,
-            ][this.view.options.selectedIndex]
-          );
-          break;
-        case "projection":
-          this.activeViewCamera.setActiveProjection(
-            ["perspective", "orthographic"][this.projection.options.selectedIndex]
-          );
-          this.displayPanel();
-          break;
-        case "horizontal":
-        case "vertical":
-        case "distance":
-        case "zoom":
-          if (event.target.checkValidity()) {
-            switch (event.target.id) {
-              case "horizontal":
-              case "vertical":
-                this.activeViewCamera.setOrientation(
-                  new Orientation(this.horizontal.value, this.vertical.value)
-                );
-                break;
-              case "distance":
-                this.activeViewCamera.setDistance(this.distance.value);
-                break;
-              case "zoom":
-                this.activeViewCamera.setZoom(this.zoom.value);
-                break;
-            }
-          }
-          break;
-        case "multiple-views":
-          this.setViewMode(event.target.checked);
-          break;
-        case "user-interface":
-          this.setUserInterfaceVisibility(event.target.checked);
-          break;
-        case "help":
-          this.setHelpVisibility(event.target.checked);
-          break;
-        case "statistics":
-          this.setStatisticsVisibility(event.target.checked);
-          break;
-      }
-    }
+  contextMenu(event) {
+    // Prevent the context menu from appearing when the secondary mouse button is clicked
+    event.preventDefault();
+  }
 
-    buttonClick(event) {
-      switch (event.target.id) {
-        case "reset":
-          this.activeViewCamera.initialize();
-          break;
-        case "reset-all":
-          this.fixedViewCamera.initialize();
-          //this.firstPersonViewCamera.initialize();
-          //this.thirdPersonViewCamera.initialize();
-          this.topViewCamera.initialize();
-          break;
-      }
-      this.displayPanel();
-    }
-
-    finalSequence() {
-      /* To-do #43 - Trigger the final sequence
-              1 - Disable the fog
-              2 - Reconfigure the third-person view camera:
-                  - horizontal orientation: -180.0
-                  - vertical orientation: this.thirdPersonViewCamera.initialOrientation.v
-                  - distance: this.thirdPersonViewCamera.initialDistance
-                  - zoom factor: 2.0
-              3 - Set it as the active view camera
-              4 - Set single-view mode:
-                  - false: single-view
-                  - true: multiple-views
-              5 - Set the final action:
-                  - action: "Dance"
-                  - duration: 0.2 seconds
-          this.fog.enabled = ...;
-          this.thirdPersonViewCamera.setOrientation(new Orientation(..., ...));
-          this.thirdPersonViewCamera.setDistance(...);
-          this.thirdPersonViewCamera.setZoom(...);
-          this.setActiveViewCamera(...);
-          this.setViewMode(...);
-          this.animations.fadeToAction(..., ...); */
-    }
-
-    collision(position) {
-      /* To-do #24 - Check if the player collided with a wall
-              - assume that a collision is detected if the distance between the player position and any of the walls is less than the player radius.
-              - player position: position
-              - player radius: this.player.radius
-              - remove the previous instruction and replace it with the following one (after completing it)
-          return this.maze.distanceToWestWall(position) < ... || ... || ... || ...; */
-
-      return (
-        this.maze.distanceToWestWall(position) < this.player.radius ||
-        this.maze.distanceToEastWall(position) < this.player.radius ||
-        this.maze.distanceToNorthWall(position) < this.player.radius ||
-        this.maze.distanceToSouthWall(position) < this.player.radius
-      );
-    }
-
-  async updateRoomOccupancy(apiUrl) {
-      try {
-        const data = apiUrl;
-        console.log(data);
-
-        // Check if there are any appointments happening
-        if (data.length === 0) {
-          // If no appointments are happening, set all rooms as unoccupied
-          rooms.forEach((room) => {
-            room.isOccupied = false;
-          });
-        } else {
-          // If there are appointments happening, update the occupancy based on the appointments
-          rooms.forEach((room) => {
-            // Find if there's an appointment for this room
-            const roomData = data.find(
-              (apiRoom) => apiRoom.roomNumber === room.name
-            );
-            if (roomData) {
-              room.isOccupied = true;
-            } else {
-              room.isOccupied = false;
-            }
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching room occupancy data:", error);
-      }
-    }
-
-    update() {
-      if (!this.gameRunning) {
-        const allDoorsLoaded =
-          this.doors && this.doors.every((door) => door && door.loaded);
-        const allBedsLoaded =
-          this.beds &&
-          this.beds.length > 0 &&
-          this.beds.every((bed) => bed && bed.loaded);
-        const allBedsOccupiedLoaded =
-          this.bedWithPatients &&
-          this.bedWithPatients.every(
-            (bedPatient) => bedPatient && bedPatient.loaded
-          );
-
-        const allDoctorsLoaded =
-          //this.doctors.length > 0 &&
-          this.doctors && this.doctors.every((doctor) => doctor && doctor.loaded);
-        const allSurgeryTablesLoaded =
-          this.surgeryTables &&
-          this.surgeryTables.length > 0 &&
-          this.surgeryTables.every((table) => table && table.loaded);
-
-        //const allSurgeryTablesLoaded = this.surgeryTables && this.surgeryTables.length > 0 && this.surgeryTables.every((table) => table && table.loaded);
-
-        if (
-          this.maze &&
-          this.player &&
-          this.maze.loaded &&
-          this.player.loaded &&
-          allDoorsLoaded &&
-          allBedsLoaded &&
-          allDoctorsLoaded &&
-          allBedsOccupiedLoaded &&
-          allSurgeryTablesLoaded
-        ) {
-          // If all resources have been loaded
-          // Add the maze, the player and the lights to the scene
-          this.scene3D.add(this.maze.object);
-          //this.scene3D.add(this.player.object);
-          this.scene3D.add(this.lights.object);
-
-          // Create the clock
-          this.clock = new THREE.Clock();
-
-          // Create model animations (states, emotes and expressions)
-          this.animations = new Animations(
-            this.player.object,
-            this.player.animations
-          );
-
-          // Set the player's position and direction
-          this.player.position = this.maze.initialPosition.clone();
-          this.player.direction = this.maze.initialDirection;
-
-          for (let i = 0; i < this.doors.length; i++) {
-            this.doors[i].position = this.doorPositionList[i].clone();
-            this.doors[i].doorDirection = THREE.MathUtils.degToRad(
-              this.doorDirectionList[i]
-            );
-          }
-
-          this.doors.forEach((door) => {
-            //console.log("Esta a adicionar a porta a cena: ");
-            this.scene3D.add(door.object);
-          });
-
-          this.doors.forEach((door) => {
-            door.object.position.set(
-              door.position.x - 0.51,
-              door.position.y,
-              door.position.z
-            );
-          });
-
-          this.doors.forEach((door) => {
-            door.object.rotation.y = door.doorDirection;
-          });
-
-          for (let i = 0; i < this.beds.length; i++) {
-            this.beds[i].position = this.bedPositionList[i].clone();
-            this.beds[i].direction = THREE.MathUtils.degToRad(
-              this.bedDirectionList[i]
-            );
-            this.scene3D.add(this.beds[i].object);
-            this.beds[i].object.position.set(
-              this.beds[i].position.x - 0.5,
-              this.beds[i].position.y + 0.291,
-              this.beds[i].position.z
-            );
-            this.beds[i].object.rotation.y = this.beds[i].direction;
-          }
-
-          for (let i = 0; i < this.bedWithPatients.length; i++) {
-            this.bedWithPatients[i].position =
-              this.bedWithPatientPositionList[i].clone();
-            this.bedWithPatients[i].direction = THREE.MathUtils.degToRad(
-              this.bedWithPatientDirectionList[i]
-            );
-            this.scene3D.add(this.bedWithPatients[i].object);
-            this.bedWithPatients[i].object.position.set(
-              this.bedWithPatients[i].position.x - 0.55,
-              this.bedWithPatients[i].position.y + 0.344,
-              this.bedWithPatients[i].position.z
-            );
-            this.bedWithPatients[i].object.rotation.y =
-              this.bedWithPatients[i].direction;
-          }
-
-          for (let i = 0; i < this.doctors.length; i++) {
-            this.doctors[i].position = this.doctorsPositionList[i].clone();
-            this.doctors[i].direction = THREE.MathUtils.degToRad(
-              this.doctorsDirectionList[i]
-            );
-            this.scene3D.add(this.doctors[i].object);
-            this.doctors[i].object.position.set(
-              this.doctors[i].position.x - 1,
-              this.doctors[i].position.y + 0.58,
-              this.doctors[i].position.z - 2.5
-            );
-            this.doctors[i].object.rotation.y = this.doctors[i].direction;
-          }
-
-          for (let i = 0; i < this.surgeryTables.length; i++) {
-            this.surgeryTables[i].position =
-              this.surgeryTablesPositionList[i].clone();
-            this.surgeryTables[i].direction = THREE.MathUtils.degToRad(
-              this.surgeryTablesDirectionList[i]
-            );
-            this.scene3D.add(this.surgeryTables[i].object);
-            this.surgeryTables[i].object.position.set(
-              this.surgeryTables[i].position.x - 0.5,
-              this.surgeryTables[i].position.y,
-              this.surgeryTables[i].position.z
-            );
-            this.surgeryTables[i].object.rotation.y =
-              this.surgeryTables[i].direction;
-          }
-
-          /* To-do #40 - Create the user interface
-                      - parameters: this.scene3D, this.renderer, this.lights, this.fog, this.player.object, this.animations
-                  this.userInterface = new UserInterface(...); */
-
-          // Start the game
-          this.gameRunning = true;
-        }
-      } else {
-        // Update the model animations
-        const deltaT = this.clock.getDelta();
-        this.animations.update(deltaT);
-
-        // Update the player
-        if (!this.animations.actionInProgress) {
-          // Check if the player found the exit
-          if (this.maze.foundExit(this.player.position)) {
-            this.finalSequence();
-          } else {
-            let coveredDistance = this.player.walkingSpeed * deltaT;
-            let directionIncrement = this.player.turningSpeed * deltaT;
-
-            if (this.player.keyStates.run) {
-              coveredDistance *= this.player.runningFactor;
-              directionIncrement *= this.player.runningFactor;
-            }
-            if (this.player.keyStates.left) {
-              this.player.direction += directionIncrement;
-            } else if (this.player.keyStates.right) {
-              this.player.direction -= directionIncrement;
-            }
-
-            const direction = THREE.MathUtils.degToRad(this.player.direction);
-            if (this.player.keyStates.backward) {
-              const newPosition = new THREE.Vector3(
-                -coveredDistance * Math.sin(direction),
-                0.0,
-                -coveredDistance * Math.cos(direction)
-              ).add(this.player.position);
-              if (this.collision(newPosition)) {
-                this.animations.fadeToAction("Death", 0.2);
-              } else {
-                this.animations.fadeToAction(
-                  this.player.keyStates.run ? "Running" : "Walking",
-                  0.2
-                );
-                this.player.position = newPosition;
-              }
-            } else if (this.player.keyStates.forward) {
-              // The player is moving forward
-              const newPosition = new THREE.Vector3(
-                coveredDistance * Math.sin(direction),
-                0.0,
-                coveredDistance * Math.cos(direction)
-              ).add(this.player.position);
-              if (this.collision(newPosition)) {
-                this.animations.fadeToAction("Death", 0.2);
-              } else {
-                this.animations.fadeToAction(
-                  this.player.keyStates.run ? "Running" : "Walking",
-                  0.2
-                );
-                this.player.position = newPosition;
-              }
-            } else if (this.player.keyStates.jump) {
-              this.animations.fadeToAction("Jump", 0.2);
-            } else if (this.player.keyStates.yes) {
-              this.animations.fadeToAction("Yes", 0.2);
-            } else if (this.player.keyStates.no) {
-              this.animations.fadeToAction("No", 0.2);
-            } else if (this.player.keyStates.wave) {
-              this.animations.fadeToAction("Wave", 0.2);
-            } else if (this.player.keyStates.punch) {
-              this.animations.fadeToAction("Punch", 0.2);
-            } else if (this.player.keyStates.thumbsUp) {
-              this.animations.fadeToAction("ThumbsUp", 0.2);
-            } else {
-              this.animations.fadeToAction(
-                "Idle",
-                this.animations.activeName != "Death" ? 0.2 : 0.6
-              );
-            }
-
-            this.player.object.position.set(
-              this.player.position.x,
-              this.player.position.y,
-              this.player.position.z
-            );
-            this.player.object.rotation.y =
-              direction - this.player.initialDirection;
-          }
-        }
-
-        // Update first-person, third-person and top view cameras parameters (player direction and target)
-        //this.firstPersonViewCamera.playerDirection = this.player.direction;
-        //this.thirdPersonViewCamera.playerDirection = this.player.direction;
-        this.topViewCamera.playerDirection = this.player.direction;
-        const target = new THREE.Vector3(
-          this.player.position.x,
-          this.player.position.y + this.player.eyeHeight,
-          this.player.position.z
-        );
-        //this.firstPersonViewCamera.setTarget(target);
-        //this.thirdPersonViewCamera.setTarget(target);
-        this.topViewCamera.setTarget(target);
-
-        // Update statistics
-        this.statistics.update();
-
-        // Render primary viewport(s)
-        this.renderer.clear();
-
-        /* To-do #39 - If the fog is enabled, then assign it to the scene; else, assign null
-                  - fog enabled: this.fog.enabled
-                  - fog: this.fog.object
-              if (...) {
-                  this.scene3D... = ...;
-              }
-              else {
-                  this.scene3D... = ...;
-              } */
-        let cameras;
-        /*if (this.multipleViewsCheckBox.checked) {
-          cameras = [
+  elementChange(event) {
+    switch (event.target.id) {
+      case "view":
+        this.setActiveViewCamera(
+          [
             this.fixedViewCamera,
             //this.firstPersonViewCamera,
             //this.thirdPersonViewCamera,
             this.topViewCamera,
-          ];
-        } else { */
-        cameras = [this.activeViewCamera];
-        //}
-        for (const camera of cameras) {
-          //this.player.object.visible = camera != this.firstPersonViewCamera;
-          const viewport = camera.getViewport();
-          this.renderer.setViewport(
-            viewport.x,
-            viewport.y,
-            viewport.width,
-            viewport.height
-          );
-          this.renderer.render(this.scene3D, camera.object);
-          //this.renderer.render(this.scene2D, this.camera2D);
-          //this.renderer.clearDepth();
+          ][this.view.options.selectedIndex]
+        );
+        break;
+      case "projection":
+        this.activeViewCamera.setActiveProjection(
+          ["perspective", "orthographic"][this.projection.options.selectedIndex]
+        );
+        this.displayPanel();
+        break;
+      case "horizontal":
+      case "vertical":
+      case "distance":
+      case "zoom":
+        if (event.target.checkValidity()) {
+          switch (event.target.id) {
+            case "horizontal":
+            case "vertical":
+              this.activeViewCamera.setOrientation(
+                new Orientation(this.horizontal.value, this.vertical.value)
+              );
+              break;
+            case "distance":
+              this.activeViewCamera.setDistance(this.distance.value);
+              break;
+            case "zoom":
+              this.activeViewCamera.setZoom(this.zoom.value);
+              break;
+          }
         }
+        break;
+      case "multiple-views":
+        this.setViewMode(event.target.checked);
+        break;
+      case "user-interface":
+        this.setUserInterfaceVisibility(event.target.checked);
+        break;
+      case "help":
+        this.setHelpVisibility(event.target.checked);
+        break;
+      case "statistics":
+        this.setStatisticsVisibility(event.target.checked);
+        break;
+    }
+  }
+
+  buttonClick(event) {
+    switch (event.target.id) {
+      case "reset":
+        this.activeViewCamera.initialize();
+        break;
+      case "reset-all":
+        this.fixedViewCamera.initialize();
+        //this.firstPersonViewCamera.initialize();
+        //this.thirdPersonViewCamera.initialize();
+        this.topViewCamera.initialize();
+        break;
+    }
+    this.displayPanel();
+  }
+
+  finalSequence() {
+    /* To-do #43 - Trigger the final sequence
+            1 - Disable the fog
+            2 - Reconfigure the third-person view camera:
+                - horizontal orientation: -180.0
+                - vertical orientation: this.thirdPersonViewCamera.initialOrientation.v
+                - distance: this.thirdPersonViewCamera.initialDistance
+                - zoom factor: 2.0
+            3 - Set it as the active view camera
+            4 - Set single-view mode:
+                - false: single-view
+                - true: multiple-views
+            5 - Set the final action:
+                - action: "Dance"
+                - duration: 0.2 seconds
+        this.fog.enabled = ...;
+        this.thirdPersonViewCamera.setOrientation(new Orientation(..., ...));
+        this.thirdPersonViewCamera.setDistance(...);
+        this.thirdPersonViewCamera.setZoom(...);
+        this.setActiveViewCamera(...);
+        this.setViewMode(...);
+        this.animations.fadeToAction(..., ...); */
+  }
+
+  collision(position) {
+    /* To-do #24 - Check if the player collided with a wall
+            - assume that a collision is detected if the distance between the player position and any of the walls is less than the player radius.
+            - player position: position
+            - player radius: this.player.radius
+            - remove the previous instruction and replace it with the following one (after completing it)
+        return this.maze.distanceToWestWall(position) < ... || ... || ... || ...; */
+
+    return (
+      this.maze.distanceToWestWall(position) < this.player.radius ||
+      this.maze.distanceToEastWall(position) < this.player.radius ||
+      this.maze.distanceToNorthWall(position) < this.player.radius ||
+      this.maze.distanceToSouthWall(position) < this.player.radius
+    );
+  }
+
+  async updateRoomOccupancy(apiUrl) {
+    try {
+      const data = apiUrl;
+      console.log(data);
+
+      // Check if there are any appointments happening
+      if (data.length === 0) {
+        // If no appointments are happening, set all rooms as unoccupied
+        rooms.forEach((room) => {
+          room.isOccupied = false;
+        });
+      } else {
+        // If there are appointments happening, update the occupancy based on the appointments
+        rooms.forEach((room) => {
+          // Find if there's an appointment for this room
+          const roomData = data.find(
+            (apiRoom) => apiRoom.roomNumber === room.name
+          );
+          if (roomData) {
+            room.isOccupied = true;
+          } else {
+            room.isOccupied = false;
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching room occupancy data:", error);
+    }
+  }
+
+  update() {
+    if (!this.gameRunning) {
+      const allDoorsLoaded =
+        this.doors && this.doors.every((door) => door && door.loaded);
+      const allBedsLoaded =
+        this.beds &&
+        this.beds.length > 0 &&
+        this.beds.every((bed) => bed && bed.loaded);
+      const allBedsOccupiedLoaded =
+        this.bedWithPatients &&
+        this.bedWithPatients.every(
+          (bedPatient) => bedPatient && bedPatient.loaded
+        );
+
+      const allDoctorsLoaded =
+        //this.doctors.length > 0 &&
+        this.doctors && this.doctors.every((doctor) => doctor && doctor.loaded);
+      const allSurgeryTablesLoaded =
+        this.surgeryTables &&
+        this.surgeryTables.length > 0 &&
+        this.surgeryTables.every((table) => table && table.loaded);
+
+      //const allSurgeryTablesLoaded = this.surgeryTables && this.surgeryTables.length > 0 && this.surgeryTables.every((table) => table && table.loaded);
+
+      if (
+        this.maze &&
+        this.player &&
+        this.maze.loaded &&
+        this.player.loaded &&
+        allDoorsLoaded &&
+        allBedsLoaded &&
+        allDoctorsLoaded &&
+        allBedsOccupiedLoaded &&
+        allSurgeryTablesLoaded
+      ) {
+        // If all resources have been loaded
+        // Add the maze, the player and the lights to the scene
+        this.scene3D.add(this.maze.object);
+        //this.scene3D.add(this.player.object);
+        this.scene3D.add(this.lights.object);
+
+        // Create the clock
+        this.clock = new THREE.Clock();
+
+        // Create model animations (states, emotes and expressions)
+        this.animations = new Animations(
+          this.player.object,
+          this.player.animations
+        );
+
+        // Set the player's position and direction
+        this.player.position = this.maze.initialPosition.clone();
+        this.player.direction = this.maze.initialDirection;
+
+        for (let i = 0; i < this.doors.length; i++) {
+          this.doors[i].position = this.doorPositionList[i].clone();
+          this.doors[i].doorDirection = THREE.MathUtils.degToRad(
+            this.doorDirectionList[i]
+          );
+        }
+
+        this.doors.forEach((door) => {
+          //console.log("Esta a adicionar a porta a cena: ");
+          this.scene3D.add(door.object);
+        });
+
+        this.doors.forEach((door) => {
+          door.object.position.set(
+            door.position.x - 0.51,
+            door.position.y,
+            door.position.z
+          );
+        });
+
+        this.doors.forEach((door) => {
+          door.object.rotation.y = door.doorDirection;
+        });
+
+        for (let i = 0; i < this.beds.length; i++) {
+          this.beds[i].position = this.bedPositionList[i].clone();
+          this.beds[i].direction = THREE.MathUtils.degToRad(
+            this.bedDirectionList[i]
+          );
+          this.scene3D.add(this.beds[i].object);
+          this.beds[i].object.position.set(
+            this.beds[i].position.x - 0.5,
+            this.beds[i].position.y + 0.291,
+            this.beds[i].position.z
+          );
+          this.beds[i].object.rotation.y = this.beds[i].direction;
+        }
+
+        for (let i = 0; i < this.bedWithPatients.length; i++) {
+          this.bedWithPatients[i].position =
+            this.bedWithPatientPositionList[i].clone();
+          this.bedWithPatients[i].direction = THREE.MathUtils.degToRad(
+            this.bedWithPatientDirectionList[i]
+          );
+          this.scene3D.add(this.bedWithPatients[i].object);
+          this.bedWithPatients[i].object.position.set(
+            this.bedWithPatients[i].position.x - 0.55,
+            this.bedWithPatients[i].position.y + 0.344,
+            this.bedWithPatients[i].position.z
+          );
+          this.bedWithPatients[i].object.rotation.y =
+            this.bedWithPatients[i].direction;
+        }
+
+        for (let i = 0; i < this.doctors.length; i++) {
+          this.doctors[i].position = this.doctorsPositionList[i].clone();
+          this.doctors[i].direction = THREE.MathUtils.degToRad(
+            this.doctorsDirectionList[i]
+          );
+          this.scene3D.add(this.doctors[i].object);
+          this.doctors[i].object.position.set(
+            this.doctors[i].position.x - 1,
+            this.doctors[i].position.y + 0.58,
+            this.doctors[i].position.z - 2.5
+          );
+          this.doctors[i].object.rotation.y = this.doctors[i].direction;
+        }
+
+        for (let i = 0; i < this.surgeryTables.length; i++) {
+          this.surgeryTables[i].position =
+            this.surgeryTablesPositionList[i].clone();
+          this.surgeryTables[i].direction = THREE.MathUtils.degToRad(
+            this.surgeryTablesDirectionList[i]
+          );
+          this.scene3D.add(this.surgeryTables[i].object);
+          this.surgeryTables[i].object.position.set(
+            this.surgeryTables[i].position.x - 0.5,
+            this.surgeryTables[i].position.y,
+            this.surgeryTables[i].position.z
+          );
+          this.surgeryTables[i].object.rotation.y =
+            this.surgeryTables[i].direction;
+        }
+
+        /* To-do #40 - Create the user interface
+                    - parameters: this.scene3D, this.renderer, this.lights, this.fog, this.player.object, this.animations
+                this.userInterface = new UserInterface(...); */
+
+        // Start the game
+        this.gameRunning = true;
+      }
+    } else {
+      // Update the model animations
+      const deltaT = this.clock.getDelta();
+      this.animations.update(deltaT);
+
+      // Update the player
+      if (!this.animations.actionInProgress) {
+        // Check if the player found the exit
+        if (this.maze.foundExit(this.player.position)) {
+          this.finalSequence();
+        } else {
+          let coveredDistance = this.player.walkingSpeed * deltaT;
+          let directionIncrement = this.player.turningSpeed * deltaT;
+
+          if (this.player.keyStates.run) {
+            coveredDistance *= this.player.runningFactor;
+            directionIncrement *= this.player.runningFactor;
+          }
+          if (this.player.keyStates.left) {
+            this.player.direction += directionIncrement;
+          } else if (this.player.keyStates.right) {
+            this.player.direction -= directionIncrement;
+          }
+
+          const direction = THREE.MathUtils.degToRad(this.player.direction);
+          if (this.player.keyStates.backward) {
+            const newPosition = new THREE.Vector3(
+              -coveredDistance * Math.sin(direction),
+              0.0,
+              -coveredDistance * Math.cos(direction)
+            ).add(this.player.position);
+            if (this.collision(newPosition)) {
+              this.animations.fadeToAction("Death", 0.2);
+            } else {
+              this.animations.fadeToAction(
+                this.player.keyStates.run ? "Running" : "Walking",
+                0.2
+              );
+              this.player.position = newPosition;
+            }
+          } else if (this.player.keyStates.forward) {
+            // The player is moving forward
+            const newPosition = new THREE.Vector3(
+              coveredDistance * Math.sin(direction),
+              0.0,
+              coveredDistance * Math.cos(direction)
+            ).add(this.player.position);
+            if (this.collision(newPosition)) {
+              this.animations.fadeToAction("Death", 0.2);
+            } else {
+              this.animations.fadeToAction(
+                this.player.keyStates.run ? "Running" : "Walking",
+                0.2
+              );
+              this.player.position = newPosition;
+            }
+          } else if (this.player.keyStates.jump) {
+            this.animations.fadeToAction("Jump", 0.2);
+          } else if (this.player.keyStates.yes) {
+            this.animations.fadeToAction("Yes", 0.2);
+          } else if (this.player.keyStates.no) {
+            this.animations.fadeToAction("No", 0.2);
+          } else if (this.player.keyStates.wave) {
+            this.animations.fadeToAction("Wave", 0.2);
+          } else if (this.player.keyStates.punch) {
+            this.animations.fadeToAction("Punch", 0.2);
+          } else if (this.player.keyStates.thumbsUp) {
+            this.animations.fadeToAction("ThumbsUp", 0.2);
+          } else {
+            this.animations.fadeToAction(
+              "Idle",
+              this.animations.activeName != "Death" ? 0.2 : 0.6
+            );
+          }
+
+          this.player.object.position.set(
+            this.player.position.x,
+            this.player.position.y,
+            this.player.position.z
+          );
+          this.player.object.rotation.y =
+            direction - this.player.initialDirection;
+        }
+      }
+
+      // Update first-person, third-person and top view cameras parameters (player direction and target)
+      //this.firstPersonViewCamera.playerDirection = this.player.direction;
+      //this.thirdPersonViewCamera.playerDirection = this.player.direction;
+      this.topViewCamera.playerDirection = this.player.direction;
+      const target = new THREE.Vector3(
+        this.player.position.x,
+        this.player.position.y + this.player.eyeHeight,
+        this.player.position.z
+      );
+      //this.firstPersonViewCamera.setTarget(target);
+      //this.thirdPersonViewCamera.setTarget(target);
+      this.topViewCamera.setTarget(target);
+
+      // Update statistics
+      this.statistics.update();
+
+      // Render primary viewport(s)
+      this.renderer.clear();
+
+      /* To-do #39 - If the fog is enabled, then assign it to the scene; else, assign null
+                - fog enabled: this.fog.enabled
+                - fog: this.fog.object
+            if (...) {
+                this.scene3D... = ...;
+            }
+            else {
+                this.scene3D... = ...;
+            } */
+      let cameras;
+      /*if (this.multipleViewsCheckBox.checked) {
+        cameras = [
+          this.fixedViewCamera,
+          //this.firstPersonViewCamera,
+          //this.thirdPersonViewCamera,
+          this.topViewCamera,
+        ];
+      } else { */
+      cameras = [this.activeViewCamera];
+      //}
+      for (const camera of cameras) {
+        //this.player.object.visible = camera != this.firstPersonViewCamera;
+        const viewport = camera.getViewport();
+        this.renderer.setViewport(
+          viewport.x,
+          viewport.y,
+          viewport.width,
+          viewport.height
+        );
+        this.renderer.render(this.scene3D, camera.object);
+        //this.renderer.render(this.scene2D, this.camera2D);
+        //this.renderer.clearDepth();
       }
     }
   }
+}

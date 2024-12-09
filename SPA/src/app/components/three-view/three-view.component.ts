@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
+import TWEEN from '@tweenjs/tween.js';
 import { merge } from './assets/merge';
 import Orientation from './assets/orientation';
 import ThumbRaiser from './assets/thumb_raiser_template';
@@ -66,7 +67,6 @@ export class ThreeViewComponent implements AfterViewInit, OnInit {
     const updateFrame = () => {
       requestAnimationFrame(updateFrame);
       this.thumbRaiser?.update();
-      
     };
     updateFrame();
     
