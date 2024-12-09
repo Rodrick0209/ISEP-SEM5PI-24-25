@@ -52,10 +52,9 @@ export default class MedicalRecordRepo implements IMedicalRecordRepo {
 
         try {
             if (medicalRecordDocument === null) {
-
                 const rawMedicalRecord: any = MedicalRecordMap.toPersistence(medicalRecord);
+                console.log('rawMedicalRecord', rawMedicalRecord);
                 const medicalRecordCreated = await this.medicalRecordSchema.create(rawMedicalRecord);
-
                 return MedicalRecordMap.toDomain(medicalRecordCreated);
             } else {
                 medicalRecordDocument.id = medicalRecord.id;
@@ -79,8 +78,18 @@ export default class MedicalRecordRepo implements IMedicalRecordRepo {
 
     public async findAll(): Promise<MedicalRecord[]> {
         const medicalRecordRecords = await this.medicalRecordSchema.find();
-        return medicalRecordRecords.map((medicalRecordRecord) => MedicalRecordMap.toDomain(medicalRecordRecord));
-    }
+        console.log('Medical records found: ', medicalRecordRecords);
+        if (medicalRecordRecords === null || medicalRecordRecords.length === 0) {
+          return [];
+        } else {
+          const medicalRecords = await Promise.all(
+            medicalRecordRecords.map(async (medicalRecordRecord) => {
+              return await MedicalRecordMap.toDomain(medicalRecordRecord);
+            })
+          );
+          return medicalRecords;
+        }
+      }
 
     public async removeAll(): Promise<void> {
         await this.medicalRecordSchema.deleteMany({});

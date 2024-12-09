@@ -5,6 +5,7 @@ import { IMedicalConditionDTO } from "./IMedicalConditionDTO";
 
 
 export default interface IMedicalRecordDTO {
+    id: string;
     patientId: string;
     allergies: IAllergyDTO[];
     medicalConditions: IMedicalConditionDTO[]
