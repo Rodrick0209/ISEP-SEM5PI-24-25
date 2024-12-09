@@ -514,7 +514,6 @@ namespace DDDSample1.Domain.User
             var patientLogger = new PatientLogger(
                 patient.Id,
                 patient.MedicalRecordNumber._medicalRecordNumber,
-                patient.MedicalHistory.MedicalConditions?.medicalConditions ?? null,
                 typeOfChange
             );
 

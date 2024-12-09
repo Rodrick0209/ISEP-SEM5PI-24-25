@@ -4,15 +4,15 @@
     <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
     <form (ngSubmit)="confirmSubmission()" #userForm="ngForm">
         <div class="form-group">
-            <label for="fullName">Name <span class="required">*</span></label>
+            <label for="fullName">Name</label>
             <input type="text" id="name" name="name" [(ngModel)]="submitForm.name" />
         </div>
         <div class="form-group">
-            <label for="email">Email <span class="required">*</span></label>
+            <label for="email">Email</label>
             <input type="email" id="email" name="email" [(ngModel)]="submitForm.email" />
         </div>
         <div class="form-group">
-            <label for="phoneNumber">Phone Number <span class="required">*</span></label>
+            <label for="phoneNumber">Phone Number</label>
             <input type="tel" id="phoneNumber" name="phoneNumber" [(ngModel)]="submitForm.phoneNumber" />
         </div>
         <div class="form-actions">

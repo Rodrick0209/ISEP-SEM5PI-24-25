@@ -1,4 +1,6 @@
 <div class="container">
+      <!-- Update Button -->
+      <button class="btn btn-primary" (click)="updateMedicalRecord()">Update Medical Record</button>
     
     <!-- Success/Error messages -->
     <div *ngIf="successMessage" class="alert alert-success mt-4">
@@ -8,7 +10,7 @@
         {{ errorMessage }}
     </div>
 
-    <app-filter-medical-record-entries></app-filter-medical-record-entries>
+    <app-filter-medical-record-entries (filterChanged)="onFilterChanged($event)"></app-filter-medical-record-entries>
 
     <div *ngIf="medicalRecord?.allergies || medicalRecord?.medicalConditions; else noRecord">
         <table class="table">
@@ -33,7 +35,4 @@
     <ng-template #noRecord>
         <h4 class="no-record-message">No medical record to show</h4>
     </ng-template>
-
-    <!-- Update Button -->
-    <button class="btn btn-primary" (click)="updateMedicalRecord()">Update Medical Record</button>
 </div>

@@ -137,11 +137,6 @@ namespace DDDSample1.Domain.Patients
             }
 
 
-            if (!string.IsNullOrWhiteSpace(dto.MedicalConditions))
-            {
-                patient.MedicalHistory.ChangeMedicalConditions(dto.MedicalConditions);
-            }
-
             await _unitOfWork.CommitAsync();
 
             if (dto.Email != null || dto.PhoneNumber != null)
@@ -252,12 +247,17 @@ namespace DDDSample1.Domain.Patients
             var patientLogger = new PatientLogger(
                 patient.Id,
                 patient.MedicalRecordNumber._medicalRecordNumber,
-                patient.MedicalHistory.MedicalConditions?.medicalConditions ?? null,
                 typeOfChange
             );
 
             _patientLoggerRepository.AddAsync(patientLogger);
         }
 
+        public async Task<PatientDto> GetByEmailAsync(string email)
+        {
+            var patient = await _patientRepository.GetByEmailAsync(email);
+
+            return patient == null ? null : PatientMapper.ToDto(patient);
+        }
     }
 }

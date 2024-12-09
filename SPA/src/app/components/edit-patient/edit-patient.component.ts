@@ -21,13 +21,7 @@ export class EditPatientComponent implements OnInit {
     postalCode: '',
     city: '',
     country: '',
-    allergies: [{ name: '', date: '', description: '' }],
-    medicalConditions: [{ name: '', date: '', description: '' }]
-
   }
-
-  allergyOptions: string[] = [];
-  conditionOptions: string[] = [];
 
 
   medicalRecordNumber: string | null = null;
@@ -56,39 +50,6 @@ export class EditPatientComponent implements OnInit {
       });
     }
 
-    let medRec;
-    if (this.medicalRecordNumber != null) {
-      medRec = this.patientService.getMedicalRecordByPatientId(this.medicalRecordNumber);
-
-      medRec.subscribe({
-        next: (data) => {
-          console.log('Medical record data:', data.allergies);
-          this.submitForm.allergies = data.allergies.map((allergy: any) => ({
-            name: allergy,       // Assign string to 'name'
-            date: '',            // Default empty date
-            description: ''      // Default empty description
-          }));
-        },
-        error: (err) => console.error('Error loading patient', err)
-      });
-
-    }
-
-    this.patientService.getAllAllergies().subscribe({
-      next: (data) => {
-        this.allergyOptions = data.map(allergy => allergy.name);
-      },
-      error: (err) => console.error('Error loading allergies', err)
-    });
-
-    // Carrega opções de condições médicas
-    this.patientService.getAllAllMedicalConditions().subscribe({
-      next: (data) => {
-        this.conditionOptions = data.map(condition => condition.name);
-      },
-      error: (err) => console.error('Error loading medical conditions', err)
-    });
-
   }
 
   confirmSubmission(): void {
@@ -116,7 +77,6 @@ export class EditPatientComponent implements OnInit {
           patientData.postalCode,
           patientData.city,
           patientData.country,
-          patientData.allergies
         ).subscribe(
           (response) => {
             console.log("Patient edited successfully", response);
@@ -137,23 +97,5 @@ export class EditPatientComponent implements OnInit {
   onCancel(): void {
     this.showConfirmation = false;
     this.router.navigate(['/patients']);
-  }
-
-  // Methods for Allergies
-  addAllergy(): void {
-    this.submitForm.allergies.push({ name: '', date: '', description: '' });
-  }
-
-  removeAllergy(index: number): void {
-    this.submitForm.allergies.splice(index, 1);
-  }
-
-  // Methods for Medical Conditions
-  addCondition(): void {
-    this.submitForm.medicalConditions.push({ name: '', date: '', description: '' });
-  }
-
-  removeCondition(index: number): void {
-    this.submitForm.medicalConditions.splice(index, 1);
   }
 }

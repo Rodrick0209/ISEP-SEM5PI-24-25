@@ -64,7 +64,7 @@ export class PatientService {
     return this.http.post(this.url, body);
   }
 
-  editPatient(medicalRecordNumber: string, name: string, email: string, phoneNumber: string, street: string, postalCode: string, city: string, country: string, allergies: AllergiesView[]) : Observable<any> {
+  editPatient(medicalRecordNumber: string, name: string, email: string, phoneNumber: string, street: string, postalCode: string, city: string, country: string) : Observable<any> {
     const body: any = {};
     body.medicalRecordNumber = medicalRecordNumber;
     if (name) body.name = name;
@@ -74,17 +74,6 @@ export class PatientService {
     if (postalCode) body.postalCode = postalCode;
     if (city) body.city = city;
     if (country) body.country = country;
-    
-    const bodyMedicalRecord: any = {};
-
-    bodyMedicalRecord.allergies = [];
-    if (allergies) bodyMedicalRecord.allergies = allergies.map(allergy => allergy.name);
-    bodyMedicalRecord.medicalConditions = [];
-    
-    // Update the medical record in the api2
-    this.http.put(`${this.editRecordUrl}/${medicalRecordNumber}`, bodyMedicalRecord).subscribe(result => {
-      console.log(result);
-    });
 
     return this.http.patch(`${this.url}/${medicalRecordNumber}`, body);
   }
@@ -113,5 +102,9 @@ export class PatientService {
     }
 
     return this.http.get<PatientsView[]>(this.searchUrl, { params });
+  }
+
+  getPatientByEmail(email: string): Observable<Patient> {
+    return this.http.get<Patient>(`${this.url}/email/${email}`);
   }
 }

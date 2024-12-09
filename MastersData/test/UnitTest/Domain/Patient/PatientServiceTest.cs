@@ -241,50 +241,6 @@ namespace UnitTest.Domain.Patient
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldUpdateMedicalConditions_WhenValidData()
-        {
-            // Arrange
-            _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _patientRepositoryMock = new Mock<IPatientRepository>();
-            _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
-            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, null);
-
-            var dto = new EditingPatientProfileDto
-            {
-                MedicalRecordNumber = "202410000001",
-                MedicalConditions = "Asthma, Diabetes"
-            };
-
-            var existingPatient = new DDDSample1.Domain.Patients.Patient(
-                "John Doe",
-                "1990-01-01",
-                "male",
-                "john.doe@example.com",
-                "+351 123456780",
-                "Main Street",
-                "12345",
-                "City",
-                "Country",
-                "Jane Doe",
-                "jane.doe@example.com",
-                "+351 234567890",
-                "202410000001"
-            );
-
-            _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(It.IsAny<string>())).ReturnsAsync(existingPatient);
-            _patientRepositoryMock.Setup(repo => repo.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync(default(DDDSample1.Domain.Patients.Patient));
-
-            // Act
-            var result = await _patientService.UpdateAsync(dto);
-
-            // Assert
-            Assert.NotNull(result);
-            _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
-            Assert.Equal("Asthma, Diabetes", result.MedicalHistory.MedicalConditions);
-            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
-        }
-
-        [Fact]
         public async Task UpdateAsync_ShouldUpdatePatient_WhenValidData()
         {
             // Arrange
@@ -300,7 +256,6 @@ namespace UnitTest.Domain.Patient
                 Name = "John Doe Updated",
                 Email = "john.doe.updated@example.com",
                 PhoneNumber = "+351 098765432",
-                MedicalConditions = "Asthma"
             };
 
             var existingPatient = new DDDSample1.Domain.Patients.Patient(
@@ -331,7 +286,6 @@ namespace UnitTest.Domain.Patient
             Assert.Equal("John Doe Updated", result.Name);
             Assert.Equal("john.doe.updated@example.com", result.Email);
             Assert.Equal("+351 098765432", result.PhoneNumber);
-            Assert.Equal("Asthma", result.MedicalHistory.MedicalConditions);
             _patientLoggerRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<PatientLogger>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
             _emailSenderMock.Verify(sender => sender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);

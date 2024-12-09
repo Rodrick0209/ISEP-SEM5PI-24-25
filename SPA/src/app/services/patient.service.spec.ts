@@ -61,7 +61,15 @@ describe('PatientService', () => {
       },
       medicalHistory: {
         medicalConditions: 'None'
-      }
+      },
+      id: '',
+      medicalRecord:
+        {
+          id: '1',
+          patientId: '12345',
+          allergies: [],
+          medicalConditions: []
+        }
     };
 
     service.getPatientByMedicalRecordNumber('12345').subscribe(patient => {
@@ -98,8 +106,7 @@ describe('PatientService', () => {
     const updatedPatient = { medicalRecordNumber: '12345', name: 'John Doe', email: 'john.doe@example.com', phoneNumber: '1234567890', street: '123 Main St', postalCode: '12345', city: 'Anytown', country: 'USA', medicalConditions: 'None' };
 
     service.editPatient(
-      updatedPatient.medicalRecordNumber, updatedPatient.name, updatedPatient.email, updatedPatient.phoneNumber, updatedPatient.street, updatedPatient.postalCode, updatedPatient.city, updatedPatient.country, updatedPatient.medicalConditions
-    ).subscribe(response => {
+      updatedPatient.medicalRecordNumber, updatedPatient.name, updatedPatient.email, updatedPatient.phoneNumber, updatedPatient.street, updatedPatient.postalCode, updatedPatient.city, updatedPatient.country).subscribe(response => {
       expect(response).toEqual(updatedPatient);
     });
 

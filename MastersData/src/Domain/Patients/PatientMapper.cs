@@ -22,9 +22,6 @@ namespace DDDSample1.Domain.Patients
                     patient.EmergencyContact.Name.fullName,
                     patient.EmergencyContact.Email.email,
                     patient.EmergencyContact.PhoneNumber.phoneNumber
-                ),
-                new MedicalHistoryDto(
-                    patient.MedicalHistory.MedicalConditions?.medicalConditions ?? null
                 )
             );
         }

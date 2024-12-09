@@ -38,6 +38,11 @@ export class PatientDetailsComponent implements OnInit {
     return role === 'doctor';
   }
 
+  isPatient(): boolean {
+    const role = this.extractRole();
+    return role === 'patient';
+  }
+
   onMedicalRecord(): void {
     this.router.navigate(['/patient/medical-record', this.patient?.medicalRecordNumber]); // Adjust this route as needed
   }
@@ -46,12 +51,19 @@ export class PatientDetailsComponent implements OnInit {
     this.errorMessage = '';
 
    this.patientService.getPatientByMedicalRecordNumber(medicalRecordNumber).subscribe({
-      next: (data: Patient) => this.patient = data,
+      next: (data: Patient) => {
+          this.patient = data;
+          if(this.isPatient()){
+            var emailVerified = this.authService.extractEmailFromToken();
+            if (emailVerified != this.patient?.email) {
+              this.router.navigate(['/home']);
+            }
+          }
+        },
       error: (err: any) => {
         console.log('Failed to fetch patient details', err);
         this.errorMessage = 'Failed to fetch patient details';
       }
     });
-  };
-
+  }
 }
