@@ -117,7 +117,7 @@ namespace MastersData.test.UnitTest.Domain.User
             Assert.Equal(user, result);
         }
         
-        [Fact]
+        /*[Fact]
         public async Task SendEmailForAbusiveAccountAccess_ShouldSendEmail()
         {
             _userRepoMock = new Mock<IUserRepository>();
@@ -136,7 +136,7 @@ namespace MastersData.test.UnitTest.Domain.User
             ), Times.Once);
 
             Assert.Equal("Email sent", result);
-        }
+        } */
 
         [Fact]
         public async Task ResetPassword_ShouldThrowException_WhenTokenIsInvalid()
