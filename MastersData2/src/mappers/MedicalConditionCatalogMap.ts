@@ -19,7 +19,7 @@ export class MedicalConditionCatalogMap extends Mapper<MedicalConditionCatalog> 
   public static toDomain(medicalCondition: any | Model<IMedicalConditionPersistence & Document>): MedicalConditionCatalog {
     const medicalConditionOrError = MedicalConditionCatalog.create(
       medicalCondition,
-      new UniqueEntityID(medicalCondition.domainId)
+      medicalCondition.domainId
     );
     medicalConditionOrError.isFailure ? console.log(medicalConditionOrError.error) : '';
 

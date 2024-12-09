@@ -47,8 +47,7 @@ export class MedicalRecord extends AggregateRoot<MedicalRecordProps> {
         super(props, id);
     }
 
-    public static create (IMedicalRecordDTO: IMedicalRecordDTO, allergies: Allergy[] ,medicalConditions : MedicalCondition[],id?: UniqueEntityID):  Result<MedicalRecord> {
-        const patientId = IMedicalRecordDTO.patientId;
+    public static create (patientId: string, allergies: Allergy[] ,medicalConditions : MedicalCondition[],id?: UniqueEntityID):  Result<MedicalRecord> {
         const medicalRecord = new MedicalRecord(
             { patientId: patientId, 
                 allergies: allergies, 
