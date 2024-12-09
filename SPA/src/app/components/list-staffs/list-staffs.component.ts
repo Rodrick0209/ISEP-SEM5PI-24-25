@@ -28,6 +28,11 @@ export class ListStaffsComponent {
 
   constructor(private staffService : StaffService, private router: Router, private messageService: MessageService) { }
 
+  ngOnInit(): void {
+    const initialFilter = { fullName: '', licenseNumber: '', phoneNumber: '', email: '', specializationId: '' };
+    this.onFilterChanged(initialFilter);
+  }
+
   createStaff(): void {
     this.router.navigate(['/staff/create']); // Adjust this route as needed
   }

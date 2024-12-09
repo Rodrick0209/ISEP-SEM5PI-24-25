@@ -30,6 +30,7 @@ export class ListPatientsComponent implements OnInit {
 
   ngOnInit(): void {
     this.successMessage = this.messageService.getMessage();
+    this.onFilterChanged({ medicalRecordNumber: '', name: '', email: '', dateOfBirth: '' });
   }
 
   extractRole(): any {

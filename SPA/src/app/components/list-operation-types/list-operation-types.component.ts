@@ -18,6 +18,18 @@ export class ListOperationTypesComponent {
 
   constructor(private operationTypesService: OperationTypesService, private router: Router) { }
 
+  ngOnInit(): void {
+    this.operationTypesService.getOperationTypes().subscribe({
+      next: (data) => {
+        this.operationTypes = data;
+        this.filteredOperationTypes = data;
+      },
+      error: (err) => {
+        console.error('Failed to fetch operation types', err);
+        this.filteredOperationTypes = []; // Clear the list on error
+      }
+    });
+  }
 
   onFilterChanged(filter: { name: string; status: string; specialization: string }): void {
     this.operationTypesService.filterOperationTypes(filter.name, filter.status, filter.specialization).subscribe({

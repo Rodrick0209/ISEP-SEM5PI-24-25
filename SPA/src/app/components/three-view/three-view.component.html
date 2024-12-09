@@ -1,4 +1,28 @@
 <div id="parent">
+  
+
+  <div id="subwindows-panel">
+    <table class="views">
+      <tr>
+        <td>
+          <label>Date:</label>
+          <input type="date" id="date" [(ngModel)]="currentDate" required />
+        </td>
+        <td>
+          <label>Time:</label>
+          <input type="time" id="time" [(ngModel)]="currentTime" required />
+        </td>
+        <td>
+          <input type="button" id="search" value="Search" (click)="search()"/>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="game-container">
+    <canvas id="three-canvas"></canvas>
+  </div>
+
   <div id="config-panel">
     <table class="views">
       <tr>
@@ -45,27 +69,4 @@
       </tr>
     </table>
   </div>
-
-  <div id="subwindows-panel">
-    <table class="views">
-      <tr>
-        <td>
-          <label>Date:</label>
-          <input type="date" id="date" [(ngModel)]="currentDate" required />
-        </td>
-        <td>
-          <label>Time:</label>
-          <input type="time" id="time" [(ngModel)]="currentTime" required />
-        </td>
-        <td>
-          <input type="button" id="search" value="Search" (click)="search()"/>
-        </td>
-      </tr>
-    </table>
-  </div>
-
-  <div id="game-container">
-    <canvas id="three-canvas"></canvas>
-  </div>
-
 </div>

@@ -1,12 +1,10 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { merge } from './assets/merge';
-import Orientation from './assets/orientation';
 import ThumbRaiser from './assets/thumb_raiser_template';
 import { mazeData } from './assets/default_data';
-import { HttpClient, HttpParams } from '@angular/common/http'; // Import HttpClient and HttpParams
+import { HttpClient } from '@angular/common/http'; // Import HttpClient
 import { FormsModule } from '@angular/forms';
-import { update } from 'lodash';
 
 @Component({
   selector: 'app-three-view',
@@ -19,15 +17,27 @@ export class ThreeViewComponent implements AfterViewInit, OnInit {
   thumbRaiser: any;
   currentDate: string;
   currentTime: string;
+  previousTime: string;
 
   constructor(private http: HttpClient) {
     const now = new Date();
     this.currentDate = now.toISOString().split('T')[0];
     this.currentTime = now.toTimeString().split(' ')[0].substring(0, 5);
+    this.previousTime = this.currentTime;
   }
 
   ngOnInit(): void {
-    
+    // Set an interval to check for time change every second
+    setInterval(() => {
+      const now = new Date();
+      const newTime = now.toTimeString().split(' ')[0].substring(0, 5);
+      
+      // If the time has changed, call the search method
+      if (newTime !== this.previousTime) {
+        this.previousTime = newTime;
+        this.search();
+      }
+    }, 2000); // Check every second
   }
 
   ngAfterViewInit(): void {
@@ -35,7 +45,7 @@ export class ThreeViewComponent implements AfterViewInit, OnInit {
     this.animate();
   }
 
-  initializeGame(date:string,time:string): void {
+  initializeGame(date: string, time: string): void {
     const parameters = merge({}, mazeData, { scale: new THREE.Vector3(1.0, 0.5, 1.0) });
     this.thumbRaiser = new ThumbRaiser(
       parameters, // Parameters
@@ -56,7 +66,7 @@ export class ThreeViewComponent implements AfterViewInit, OnInit {
       {}, // Bed with patient parameters
       {}, // Tables surgery data parameters
       { date: date }, // Date
-      { time: time} // Time
+      { time: time } // Time
     );
     console.log(date);
     console.log(time);
@@ -66,14 +76,11 @@ export class ThreeViewComponent implements AfterViewInit, OnInit {
     const updateFrame = () => {
       requestAnimationFrame(updateFrame);
       this.thumbRaiser?.update();
-      
     };
     updateFrame();
-    
   }
 
   search(): void {
     this.initializeGame(this.currentDate, this.currentTime);
-    
   }
 }
