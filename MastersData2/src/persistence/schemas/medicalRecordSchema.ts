@@ -10,15 +10,15 @@ const MedicalRecordSchema = new mongoose.Schema(
         allergies: [
             {
                 id: { type: String, unique: true },
-                name: { type: String, required: true },
-                description: { type: String, required: true }
+                name: { type: String},
+                description: { type: String }
             }
         ],
         medicalConditions: [
             {
                 id: { type: String, unique: true },
-                name: { type: String, required: true },
-                date: { type: Date, required: true }
+                name: { type: String },
+                date: { type: Date }
             }
         ]
     },

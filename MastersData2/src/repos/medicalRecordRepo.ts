@@ -53,7 +53,7 @@ export default class MedicalRecordRepo implements IMedicalRecordRepo {
         try {
             if (medicalRecordDocument === null) {
                 const rawMedicalRecord: any = MedicalRecordMap.toPersistence(medicalRecord);
-                console.log('rawMedicalRecord', rawMedicalRecord);
+                
                 const medicalRecordCreated = await this.medicalRecordSchema.create(rawMedicalRecord);
                 return MedicalRecordMap.toDomain(medicalRecordCreated);
             } else {
@@ -78,7 +78,6 @@ export default class MedicalRecordRepo implements IMedicalRecordRepo {
 
     public async findAll(): Promise<MedicalRecord[]> {
         const medicalRecordRecords = await this.medicalRecordSchema.find();
-        console.log('Medical records found: ', medicalRecordRecords);
         if (medicalRecordRecords === null || medicalRecordRecords.length === 0) {
           return [];
         } else {

@@ -1,37 +1,41 @@
+<!-- Update Button -->
+<button class="btn btn-primary" (click)="updateMedicalRecord()">
+    Update Medical Record
+</button>
 
-      <!-- Update Button -->
-      <button class="btn btn-primary" (click)="updateMedicalRecord()">Update Medical Record</button>
-    
-    <!-- Success/Error messages -->
-    <div *ngIf="successMessage" class="alert alert-success mt-4">
-        {{ successMessage }}
-    </div>
-    <div *ngIf="errorMessage" class="alert alert-danger mt-4">
-        {{ errorMessage }}
-    </div>
+<!-- Success/Error messages -->
+<div *ngIf="successMessage" class="alert alert-success mt-4">
+    {{ successMessage }}
+</div>
+<div *ngIf="errorMessage" class="alert alert-danger mt-4">
+    {{ errorMessage }}
+</div>
 
-    <app-filter-medical-record-entries (filterChanged)="onFilterChanged($event)"></app-filter-medical-record-entries>
+<app-filter-medical-record-entries (filterChanged)="onFilterChanged($event)"></app-filter-medical-record-entries>
 
-    <div *ngIf="medicalRecord?.allergies || medicalRecord?.medicalConditions; else noRecord">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let allergy of medicalRecord?.allergies">
-                    <td>Allergy</td>
-                    <td>{{ allergy.name }}</td>
-                </tr>
-                <tr *ngFor="let condition of medicalRecord?.medicalConditions">
-                    <td>Medical Condition</td>
-                    <td>{{ condition.name }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <ng-template #noRecord>
-        <h4 class="no-record-message">No medical record to show</h4>
-    </ng-template>
+<div *ngIf="
+    medicalRecord?.allergies || medicalRecord?.medicalConditions;
+    else noRecord
+  ">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Types</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let allergy of medicalRecord?.allergies">
+                <td>{{ allergy.name }}</td>
+                <td>Allergy</td>
+            </tr>
+            <tr *ngFor="let condition of medicalRecord?.medicalConditions">
+                <td>{{ condition.name }}</td>
+                <td>Medical Condition</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<ng-template #noRecord>
+    <h4 class="no-record-message">No medical record to show</h4>
+</ng-template>

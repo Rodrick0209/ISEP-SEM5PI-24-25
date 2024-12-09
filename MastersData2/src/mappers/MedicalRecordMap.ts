@@ -46,21 +46,21 @@ public static async toDomain(medicalRecord: any): Promise<MedicalRecord> {
     const allergies = await Promise.all(
       medicalRecord.allergies.map(async (allergy: any) => {
         const allergyCatalogItem = await repoAllergiesCatalogRepo.findByAllergyName(allergy.name);
-        return Allergy.create(allergyCatalogItem, allergy.description); // Passando o catálogo ao invés do id
+        return Allergy.create(allergyCatalogItem, allergy.description, allergy.id); // Passando o catálogo ao invés do id
       })
     );
   
     const medicalConditions = await Promise.all(
       medicalRecord.medicalConditions.map(async (condition: any) => {
         const medicalConditionCatalog = await medicalConditionsCatalogRepo.findByMedicalConditionName(condition.name);
-        return MedicalCondition.create(medicalConditionCatalog, new Date(condition.date)); // Passando o catálogo e a data
+        return MedicalCondition.create(medicalConditionCatalog, new Date(condition.date), condition.id); // Passando o catálogo e a data
       })
     );
   
     // Extrair os valores dos resultados para impressão
     const extractedAllergies = allergies.map(result => result.getValue());
     const extractedMedicalConditions = medicalConditions.map(result => result.getValue());
-    console.log('paTIENT  ID = ',medicalRecord.patientId);
+    
 
     const medicalRecordOrError = MedicalRecord.create(
       medicalRecord.patientId, 
@@ -69,10 +69,8 @@ public static async toDomain(medicalRecord: any): Promise<MedicalRecord> {
       medicalRecord.id
     );
 
-    console.log(medicalRecordOrError);
   
     if (medicalRecordOrError.isFailure) {
-      console.log(medicalRecordOrError.error);
       throw new Error(medicalRecordOrError.error.toString());
     }
   

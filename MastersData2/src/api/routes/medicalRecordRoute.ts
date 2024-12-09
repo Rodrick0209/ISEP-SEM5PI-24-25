@@ -73,14 +73,13 @@ export default (app: Router) => {
             })
         }),
         (req, res, next) => ctrl.getMedicalRecordByPatientId(req, res, next));
-    route.get('/:patientId/search',
+        
+    route.get('/search/:patientId/:name',
         celebrate({
             params: Joi.object({
-                patientId: Joi.string().required()
+                patientId: Joi.string().required(),
+                name:Joi.string().required()
             }),
-            query: Joi.object({
-                name: Joi.string().required()
-            })
         }),
         (req, res, next) => ctrl.searchMedicalRecordEntries(req, res, next));
 }

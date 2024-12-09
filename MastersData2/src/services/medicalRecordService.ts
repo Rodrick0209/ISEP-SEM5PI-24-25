@@ -30,11 +30,11 @@ export default class MedicalRecordService implements IMedicalRecordService {
 
         try {
             let allergyIds: Allergy[] = [];
+            
             for (const allergyName of MedicalRecordDTO.allergies) {
                 const allergy = await this.AllergyCatalogRepo.findByAllergyName(allergyName.name);
-
                 if (allergy) {
-                    const allergyResult = Allergy.create(allergy, allergyName.description, allergy.id);
+                    const allergyResult = Allergy.create(allergy, allergyName.description);
 
                     if (allergyResult.isSuccess) {
                         allergyIds.push(allergyResult.getValue());
@@ -47,7 +47,7 @@ export default class MedicalRecordService implements IMedicalRecordService {
             for (const conditionName of MedicalRecordDTO.medicalConditions) {
                 const condition = await this.MedicalConditionRepo.findByMedicalConditionName(conditionName.name);
 
-                const conditionResult = MedicalCondition.create(condition, conditionName.date, condition.id);
+                const conditionResult = MedicalCondition.create(condition, conditionName.date);
 
                 if (conditionResult.isSuccess) {
                     medicalConditionIds.push(conditionResult.getValue());
@@ -64,7 +64,7 @@ export default class MedicalRecordService implements IMedicalRecordService {
             }
 
             const MedicalRecordResult = MedicalRecordOrError.getValue();
-
+            
             await this.MedicalRecordRepo.save(MedicalRecordResult);
             
             
@@ -84,7 +84,7 @@ export default class MedicalRecordService implements IMedicalRecordService {
             }
                         
             const MedicalRecordsDTO = allMedicalRecords.map(rec => MedicalRecordMap.toDTO(rec) as IMedicalRecordDTO);
-            console.log('Chegou aqui 3');
+            
             return Result.ok<IMedicalRecordDTO[]>(MedicalRecordsDTO);
         } catch (e) {
             throw e;
@@ -148,7 +148,7 @@ export default class MedicalRecordService implements IMedicalRecordService {
 
             const medicalConditionIds = [];
             for (const condition of medicalRecord.medicalConditions) {
-                const conditionRecord = await this.MedicalConditionRepo.findByDomainId(condition.name);
+                const conditionRecord = await this.MedicalConditionRepo.findByDomainId(condition);
                 if (conditionRecord && conditionRecord.name.includes(name)) {
                     medicalConditionIds.push(conditionRecord);
                 }
@@ -169,31 +169,16 @@ export default class MedicalRecordService implements IMedicalRecordService {
         try {
             const medicalRecord = await this.MedicalRecordRepo.findByPatientId(patientId);
 
+            
+            
             if (!medicalRecord) {
                 return Result.fail<IMedicalRecordDTO>('Medical record not found');
             }
 
-            const allergyIds = [];
-            for (const allergy of medicalRecord.allergies) {
-                const allergyRecord = await this.AllergyCatalogRepo.findById(allergy);
-                if (allergyRecord) {
-                    allergyIds.push(allergyRecord);
-                }
-            }
+            const MedicalRecordsDTO = MedicalRecordMap.toDTO(medicalRecord) as IMedicalRecordDTO;
+            
+            return Result.ok<IMedicalRecordDTO>(MedicalRecordsDTO);
 
-            const medicalConditionIds = [];
-            for (const condition of medicalRecord.medicalConditions) {
-                const conditionRecord = await this.MedicalConditionRepo.findByDomainId(condition.name);
-                if (conditionRecord) {
-                    medicalConditionIds.push(conditionRecord);
-                }
-            }
-
-            medicalRecord.allergies = allergyIds;
-            medicalRecord.medicalConditions = medicalConditionIds;
-
-            const MedicalRecordDTOResult = MedicalRecordMap.toDTO(medicalRecord) as IMedicalRecordDTO;
-            return Result.ok<IMedicalRecordDTO>(MedicalRecordDTOResult);
         } catch (e) {
             throw e;
         }

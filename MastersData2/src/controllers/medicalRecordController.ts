@@ -67,7 +67,7 @@ export default class MedicalRecordController implements IMedicalRecordController
 
   public async searchMedicalRecordEntries(req: Request, res: Response, next: NextFunction) {
     try {
-      const medicalRecordOrError = await this.medicalRecordServiceInstance.searchMedicalRecordEntries(req.params.patientId, req.query.name as string) as Result<IMedicalRecordDTO[]>;
+      const medicalRecordOrError = await this.medicalRecordServiceInstance.searchMedicalRecordEntries(req.params.patientId, req.params.name as string) as Result<IMedicalRecordDTO[]>;
 
       if (medicalRecordOrError.isFailure) {
         return res.status(404).send(medicalRecordOrError.error);

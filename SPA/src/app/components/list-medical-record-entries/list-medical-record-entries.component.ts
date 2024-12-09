@@ -26,10 +26,12 @@ export class ListMedicalRecordEntriesComponent implements OnInit {
   ngOnInit(): void {
     this.successMessage = this.messageService.getMessage();
     this.medicalRecordNumber = this.route.snapshot.paramMap.get('medicalRecordNumber') || ''
+    this.getMedicalRecord();
   }
 
   onFilterChanged(filter: { name: string }): void {
-    if (!this.medicalRecordNumber) {
+    
+    if (this.medicalRecordNumber) {
       this.patientService.filterMedicalRecordEntries(this.medicalRecordNumber, filter.name).subscribe({
         next: (value: MedicalRecord) => {
           this.medicalRecord = value;
@@ -41,8 +43,23 @@ export class ListMedicalRecordEntriesComponent implements OnInit {
     }
   }
 
+  getMedicalRecord(): void {
+    if (this.medicalRecordNumber) {
+      this.patientService.getMedicalRecordByPatientId(this.medicalRecordNumber).subscribe({
+        next: (record: MedicalRecord) => {
+          this.medicalRecord = record;
+        },
+        error: (err: any) => {
+          console.error('Failed to get medical record', err);
+          this.errorMessage = 'Failed to get medical record';
+        }
+      });
+    }
+  }
+
   updateMedicalRecord() {
-    // To be implemented
+
+    
   }
 
 }
