@@ -5,18 +5,18 @@ import allergySchema from "./allergySchema";
 
 const MedicalRecordSchema = new mongoose.Schema(
     {
-        id: { type: String, unique: true },
+        id: { type: String, unique: true }, 
         patientId: { type: String }, 
         allergies: [
             {
-                id: { type: String, unique: true },
-                name: { type: String},
+                id: { type: String }, 
+                name: { type: String },
                 description: { type: String }
             }
         ],
         medicalConditions: [
             {
-                id: { type: String, unique: true },
+                id: { type: String }, 
                 name: { type: String },
                 date: { type: Date }
             }
@@ -26,5 +26,6 @@ const MedicalRecordSchema = new mongoose.Schema(
         timestamps: true
     }
 );
+
 
 export default mongoose.model<IMedicalRecordPersistence & mongoose.Document>('MedicalRecord', MedicalRecordSchema);
