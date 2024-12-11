@@ -5,18 +5,19 @@
 :-dynamic agenda_operation_room/3.
 :-dynamic agenda_operation_room1/3.
 :-dynamic better_sol/5.
+:-dynamic lastSurgeryTime/1.
 
 
 
 % Agenda staff
-agenda_staff(d001,20241130,[(200,300,m01),(400,500,c01)]).
-agenda_staff(d002,20241130,[(600,700,m02),(800,900,c02)]).
-agenda_staff(d003,20241130,[(135,160,m03),(300,400,c03)]).
-agenda_staff(d004,20241130,[(500,600,m04),(700,800,c04)]).
-agenda_staff(d005,20241130,[(900,1000,m05),(1100,1200,c05)]).
-agenda_staff(e001,20241130,[(200,300,e01),(400,500,e02)]).
-agenda_staff(e002,20241130,[(600,700,e03),(800,900,e04)]).
-agenda_staff(e003,20241130,[(1000,1100,e05),(1200,1300,e06)]).
+agenda_staff(d001,20241130,[]).
+agenda_staff(d002,20241130,[]).
+agenda_staff(d003,20241130,[]).
+agenda_staff(d004,20241130,[]).
+agenda_staff(d005,20241130,[]).
+agenda_staff(e001,20241130,[]).
+agenda_staff(e002,20241130,[]).
+agenda_staff(e003,20241130,[]).
 
 % Timetable
 timetable(d001,20241130,(300,1400)).
@@ -40,8 +41,6 @@ surgery_id(so100002,so3).
 surgery_id(so100003,so4).
 surgery_id(so100004,so5).
 surgery_id(so100005,so2).
-%surgery_id(so100006,so3).
-%surgery_id(so100007,so5).
 
 
 % Assignment surgery
@@ -137,6 +136,48 @@ intersect_availability((Ini,Fim),[(Ini1,Fim1)|LD],[(Imax,Fmin)|LI],LA):-
 
 min_max(I,I1,I,I1):- I<I1,!.
 min_max(I,I1,I1,I).
+
+
+schedule_surgeries_fromList(Room,Day,LOpCode):-
+    retractall(lastSurgeryTime(_)),
+    retractall(agenda_staff1(_,_,_)),
+    retractall(agenda_operation_room1(_,_,_)),
+    retractall(availability(_,_,_)),
+    findall(_,(agenda_staff(D,Day,Agenda),assertz(agenda_staff1(D,Day,Agenda))),_),
+    agenda_operation_room(Or,Date,Agenda),assert(agenda_operation_room1(Or,Date,Agenda)),
+    findall(_,(agenda_staff1(D,Date,L),free_agenda0(L,LFA),adapt_timetable(D,Date,LFA,LFA2),assertz(availability(D,Date,LFA2))),_),
+    write('Lista de operacoes a ser marcadas'),write(LOpCode),nl,
+    asserta(lastSurgeryTime(0)),
+    availability_all_surgeries3(LOpCode,Room,Day),write('Last surgery time'),lastSurgeryTime(LastSurgeryTime),write(LastSurgeryTime),!.
+
+
+availability_all_surgeries3([],_,_).
+availability_all_surgeries3([OpCode|LOpCode],Room,Day):-
+    write('Cirurgia com OpCode: '),write(OpCode),nl,
+    surgery_id(OpCode,OpType),surgery(OpType,TAnesthesy,TSurgery,TCleaning),
+    availability_operation(OpCode,Room,Day,Interval,LDoctorsSurgery,LStaffAnesthesy,LStaffCleaning),
+    calculate_intervals(Interval,TAnesthesy,TSurgery,TCleaning,MinuteStartAnesthesia,MinuteStartSurgery,MinuteStartCleaning,MinuteEndProcess),
+    retract(agenda_operation_room1(Room,Day,Agenda)),
+    insert_agenda((MinuteStartAnesthesia,MinuteEndProcess,OpCode),Agenda,Agenda1),
+    assertz(agenda_operation_room1(Room,Day,Agenda1)),
+    insert_agenda_staff((MinuteStartSurgery,MinuteStartCleaning,OpCode),Day,LDoctorsSurgery),
+    insert_agenda_staff((MinuteStartAnesthesia,MinuteStartCleaning,OpCode),Day,LStaffAnesthesy),
+    insert_agenda_staff((MinuteStartCleaning,MinuteEndProcess,OpCode),Day,LStaffCleaning),
+    lastSurgeryTime(LastSurgeryTime),
+    % Atualizando LastSurgeryTime apenas se for maior que o valor atual
+    (LastSurgeryTime < MinuteEndProcess ->
+        retract(lastSurgeryTime(_)),
+        assert(lastSurgeryTime(MinuteEndProcess))
+    ),
+    % Agora LastSurgeryTime1 possui o valor atualizado
+    availability_all_surgeries3(LOpCode, Room, Day).
+
+
+
+
+
+
+
 
 
 

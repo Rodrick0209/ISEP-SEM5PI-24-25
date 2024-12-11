@@ -15,6 +15,9 @@ task(t5,3,8,2).
 % tasks(NTasks).
 tasks(5).
 
+:- consult('algorithm').
+
+
 
 % parameters initialization
 initialize:-write('Number of new generations: '),read(NG), 			
