@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { AppointmentService } from '../../services/appointment.service';
 import { StaffService } from '../../services/staff.service';
 import { MessageService } from '../../services/message.service';
+import { OperationRoom } from '../../models/operationRoom';
+import { OperationRequest } from '../../services/operationRequestService';
 
 @Component({
   selector: 'app-edit-appointment',
@@ -29,6 +31,8 @@ export class EditAppointmentComponent implements OnInit {
   errorMessage: string = '';
   showConfirmation: boolean = false;
   availableStaff: any[] = []; // Lista de equipes obtida do `getStaff`
+  operationRooms: OperationRoom[] = [];
+  operationRequests: OperationRequest[] = []; // Lista de salas de operação 
 
   constructor(
     private router: Router,
@@ -39,15 +43,15 @@ export class EditAppointmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
-
+  
     if (this.id) {
       // Obtém os detalhes do agendamento a editar
       this.appointmentService.getAppointmentByIdEdit(this.id).subscribe(
         (appointment) => {
           this.submitForm = {
             appointmentTimeSlotDtoDate: appointment.appointmentTimeSlot.date,
-            appointmentTimeSlotDtoTimeSlotStartMinute: appointment.appointmentTimeSlot.startTime,
-            appointmentTimeSlotDtoTimeSlotEndMinute: appointment.appointmentTimeSlot.endTime,
+            appointmentTimeSlotDtoTimeSlotStartMinute: appointment.appointmentTimeSlot.timeSlot.startTime,
+            appointmentTimeSlotDtoTimeSlotEndMinute: appointment.appointmentTimeSlot.timeSlot.endTime,
             operationRoomId: appointment.operationRoomId,
             operationRequestId: appointment.operationRequestId,
             appointmentStatus: appointment.appointmentStatus,
@@ -62,16 +66,39 @@ export class EditAppointmentComponent implements OnInit {
       );
     }
 
+    this.appointmentService.getOperationRooms().subscribe(
+      (rooms) => {
+        this.operationRooms = rooms;
+      },
+      (error) => {
+        console.error('Failed to fetch operation rooms', error);
+      }
+    );
+  
     // Carrega a lista de equipes
     this.appointmentService.getStaff().subscribe(
       (staffList) => {
+        console.log('Staff List:', staffList);
         this.availableStaff = staffList;
       },
       (error) => {
         console.error('Failed to fetch staff list', error);
       }
     );
+  
+    // **Carrega a lista de Operation Requests**
+    this.appointmentService.getOperationRequestsAvailable().subscribe(
+      (requestsList) => {
+        console.log('Operation Requests:', requestsList);
+        this.operationRequests = requestsList; // Certifique-se de que esta variável exista no componente
+      },
+      (error) => {
+        console.error('Failed to fetch operation requests', error);
+        this.errorMessage = 'Failed to load operation requests.';
+      }
+    );
   }
+  
 
   confirmSubmission(): void {
     this.showConfirmation = true;

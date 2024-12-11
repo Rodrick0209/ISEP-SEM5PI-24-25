@@ -14,7 +14,7 @@
     <table *ngIf="paginatedAppointments.length > 0">
         <thead>
             <tr>
-                <th>ID</th>
+                
                 <th>Priority</th>
                 <th>Patient ID</th>
                 <th>Time Slot</th>
@@ -26,12 +26,17 @@
         </thead>
         <tbody>
             <tr *ngFor="let appointment of paginatedAppointments">
-                <td>{{ appointment.id }}</td>
+                
                 <td>{{ appointment.operationRequestPriority }}</td>
                 <td>{{ appointment.operationRequestPatientId }}</td>
-                <td>{{ appointment.appointmentTimeSlot | date:'short' }}</td>
                 <td>
-                    <span class="appointment-status" [ngClass]="{'scheduled': appointment.appointmentStatus === 'Scheduled', 'completed': appointment.appointmentStatus === 'Completed', 'cancelled' : appointment.appointmentStatus === 'Cancelled'}">
+                    <!-- Exibir date, startTime e endTime do time slot -->
+                    {{ appointment.appointmentTimeSlot.date }} 
+                    <br> 
+                    {{ appointment.appointmentTimeSlot.timeSlot.startTime }} - {{ appointment.appointmentTimeSlot.timeSlot.endTime }}
+                </td>
+                <td>
+                    <span class="appointment-status">
                         {{ appointment.appointmentStatus }}
                     </span>
                 </td>
@@ -39,7 +44,6 @@
                 <td>
                     <button (click)="editAppointment(appointment)">Edit</button>
                 </td>
-              
             </tr>
         </tbody>
     </table>

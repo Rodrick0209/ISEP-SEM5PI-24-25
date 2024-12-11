@@ -53,7 +53,7 @@
                 >
                     <option value="" disabled selected>Select Operation Room</option>
                     <option *ngFor="let room of operationRooms" [value]="room.id">
-                        {{ room.name }}
+                        {{ room.roomNumber }}
                     </option>
                 </select>
             </div>
@@ -68,7 +68,7 @@
                 >
                     <option value="" disabled selected>Select Operation Request</option>
                     <option *ngFor="let request of operationRequests" [value]="request.id">
-                        {{ request.description }}
+                        {{ request.id }}
                     </option>
                 </select>
             </div>

@@ -67,11 +67,11 @@ export class ListAppointmentsComponent implements OnInit {
   }
 
   createAppointment(): void {
-    this.router.navigate(['/appointments/create']);
+    this.router.navigate(['/appointment/create']);
   }
 
   editAppointment(appointment: AppointmentsView): void {
-    this.router.navigate(['/appointments/edit', appointment.id]);
+    this.router.navigate(['/appointment/edit', appointment.id]);
   }
 
 }

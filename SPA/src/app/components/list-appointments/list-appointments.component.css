@@ -26,6 +26,8 @@ th, td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
+    vertical-align: middle; /* Alinha o conteúdo no centro verticalmente */
+    word-wrap: break-word; /* Evita que o texto quebre a linha */
 }
 
 tbody tr:nth-child(even) {
@@ -114,29 +116,15 @@ button:disabled {
     font-style: italic;
 }
 
-/* Estilo para o status do agendamento */
+/* Ajustes para o status do agendamento */
 .appointment-status {
-    font-weight: bold;
+    display: inline-block; /* Alinha o status na mesma linha */
+    text-align: center;
     padding: 0.3rem 0.5rem;
     border-radius: 4px;
-    display: inline-block;
-    text-align: center;
 }
 
-/* Status agendado */
-.appointment-status.scheduled {
-    color: #ffffff;
-    background-color: #28a745; /* Verde */
-}
-
-/* Status concluído */
-.appointment-status.completed {
-    color: #ffffff;
-    background-color: #1a73e8; /* Azul */
-}
-
-/* Status cancelado */
-.appointment-status.cancelled {
-    color: #ffffff;
-    background-color: #d9534f; /* Vermelho */
+/* Ajuste para as células da tabela */
+td {
+    text-align: center; /* Centraliza os dados na célula */
 }

@@ -18,6 +18,11 @@ export interface Appointment {
   
   export interface AppointmentTimeSlot {
     date : string;
+    timeSlot : TimeSlot;
+    
+  }
+
+  export interface TimeSlot {
     startTime : string;
     endTime : string;
   }
