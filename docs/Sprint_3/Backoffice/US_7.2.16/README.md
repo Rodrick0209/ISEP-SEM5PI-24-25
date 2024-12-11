@@ -60,3 +60,21 @@ The allergy should still in the catalog but when edited, a new object will be cr
 - **MVVM (Model-View-ViewModel) Pattern**: Separates the development of the graphical user interface from the business logic or back-end logic.
 - **Service Pattern**: Encapsulates the business logic, making it reusable and easier to test.
 - **Repository Pattern**: Used to manage data operations and abstract the data access logic.
+
+## 5. Tests Plan
+
+### 5.1. Unit Tests
+
+- **Test 1**: Verify that the system can update the name/designation of an allergy.
+- **Test 2**: Verify that the system creates a new object when an allergy is edited.
+- **Test 3**: Verify that the original allergy remains in the catalog after editing.
+
+### 5.2. Integration Tests
+
+- **Test 1**: Verify that the update functionality integrates correctly with the database and updates the allergy information.
+- **Test 2**: Verify that the system correctly integrates with the user interface to display the updated allergy information.
+
+### 5.3. End-to-End Tests
+
+- **Test 1**: Verify that an admin can successfully update an allergy and view the updated information in the catalog.
+- **Test 2**: Verify that the system creates a new object for the edited allergy and retains the original allergy in the catalog.
