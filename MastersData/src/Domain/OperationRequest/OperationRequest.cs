@@ -50,6 +50,7 @@ namespace DDDSample1.Domain.OperationRequest
         {
             return this.staffAssignedSurgery.staffSurgeryPhase;
         }
+       
 
         public void ChangeDeadLineDate(string deadLineDate)
         {
@@ -67,6 +68,11 @@ namespace DDDSample1.Domain.OperationRequest
         public void Accepted()
         {
             this.status = OperationRequestStatus.Accepted;
+        }
+
+        public void Cancelled()
+        {
+            this.status = OperationRequestStatus.Waiting;
         }
         public bool IsAvailable(OperationRequestStatus status)
         {

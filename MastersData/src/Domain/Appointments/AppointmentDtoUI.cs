@@ -7,7 +7,7 @@ namespace DDDSample1.Domain.Appointments
 {
     public class AppointmentDtoUI
     {
-        
+        public Guid AppointmentId { get; set; }
         public string OperationRequestPriority { get; set; }
         public string OperationRequestPatientId { get; set; }
         public AppointmentTimeSlotDto AppointmentTimeSlot { get; set; }
@@ -17,8 +17,9 @@ namespace DDDSample1.Domain.Appointments
 
 
 
-        public AppointmentDtoUI(string operationRequestPriority, string operationRequestPatientId, AppointmentTimeSlotDto appointmentTimeSlot, string appointmentStatus, string operationRoomNumber)
+        public AppointmentDtoUI(Guid appointmentId, string operationRequestPriority, string operationRequestPatientId, AppointmentTimeSlotDto appointmentTimeSlot, string appointmentStatus, string operationRoomNumber)
         {
+            this.AppointmentId = appointmentId;
             this.OperationRequestPriority = operationRequestPriority;
             this.OperationRequestPatientId = operationRequestPatientId;
             this.AppointmentTimeSlot = appointmentTimeSlot;

@@ -1,5 +1,6 @@
 export interface Appointment {
     
+    id: string;
     appointmentTimeSlot: AppointmentTimeSlot; 
     appointmentStatus: AppointmentStatus; 
     operationRoomId: string; 
@@ -19,6 +20,29 @@ export interface Appointment {
     date : string;
     startTime : string;
     endTime : string;
+  }
+
+
+  export interface AppointmentEdit {
+    id: string;
+    appointmentTimeSlot: AppointmentTimeSlot;
+    appointmentStatus: AppointmentStatus;
+    operationRoomId: string;
+    operationRequestId: string;
+    operationRequestTeamForAnesthesy : string[];
+    operationRequestTeamForSurgery : string[];
+  }
+
+
+  export interface AppointmentsView {
+
+    id: string;
+    operationRequestPriority : string;
+    operationRequestPatientId : string;
+    appointmentTimeSlot: AppointmentTimeSlot; 
+    appointmentStatus: AppointmentStatus;
+    operationRoomNumber : string;
+
   }
   
   

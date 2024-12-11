@@ -1,0 +1,142 @@
+.list-appointments-container {
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+thead {
+    background-color: #007bff;
+    color: white;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+button {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-controls button {
+    padding: 10px 15px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.pagination-controls button:hover {
+    background-color: #155ab6;
+}
+
+.pagination-controls button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.create-appointment-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.create-appointment-button:hover {
+    background-color: #218838;
+}
+
+.success-message {
+    text-align: center;
+    color: #28a745;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    text-align: center;
+    color: #d9534f;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.no-appointments-message {
+    text-align: center;
+    color: #999;
+    font-size: 1rem;
+    margin-top: 20px;
+    font-style: italic;
+}
+
+/* Estilo para o status do agendamento */
+.appointment-status {
+    font-weight: bold;
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Status agendado */
+.appointment-status.scheduled {
+    color: #ffffff;
+    background-color: #28a745; /* Verde */
+}
+
+/* Status concluído */
+.appointment-status.completed {
+    color: #ffffff;
+    background-color: #1a73e8; /* Azul */
+}
+
+/* Status cancelado */
+.appointment-status.cancelled {
+    color: #ffffff;
+    background-color: #d9534f; /* Vermelho */
+}

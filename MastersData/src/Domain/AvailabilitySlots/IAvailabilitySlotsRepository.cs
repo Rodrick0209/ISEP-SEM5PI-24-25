@@ -8,6 +8,7 @@ namespace DDDSample1.Domain.AvailabilitySlots
   public interface IAvailabilitySlotsRepository : IRepository<AvailabilitySlot, AvailabilitySlotsId>
   {
     Task<AvailabilitySlot> GetByIdAsync(AvailabilitySlotsId id);
+    Task<AvailabilitySlot> GetByStaffIdAsync(string staffId);
 
 
   }

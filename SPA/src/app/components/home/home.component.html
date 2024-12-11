@@ -20,15 +20,22 @@
 <div *ngIf="isDoctor()">
     <div class="doctor-panel">
         <h1>Doctor Panel</h1>
-        <p>Welcome, Doctor! This is your dashboard for managing your operation requests. Here, you can access and update
-            your patient records.</p>
+        <p>Welcome, Doctor! This is your dashboard for managing your operation requests. Here, you can access and update your patient records.</p>
+        
         <div class="doctor-options">
             <button class="btn" (click)="manageOperationRequests()">Manage Operation Requests</button>
+<<<<<<< Updated upstream
             <button class="btn" (click)="managePatients()">Manage Patients</button>
             <button class="btn" (click)="viewOperationRooms()">View Operation Rooms</button>
+=======
+            <button class="btn" (click)="managePatientRecords()">Manage Patient Records</button>
+            <!-- Novo botão para Gerenciar Agendamentos -->
+            <button class="btn" (click)="manageAppointments()">Manage Appointments</button>
+>>>>>>> Stashed changes
         </div>
     </div>
 </div>
+
 
 <div *ngIf="isPatient()">
     <div class="patient-panel">

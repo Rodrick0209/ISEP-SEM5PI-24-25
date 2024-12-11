@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Domain.Specializations;
+using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Infrastructure.Shared;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,13 @@ namespace DDDSample1.Infrastructure.AvailabilitySlots
             return await this.context.AvailabilitySlots
                 .Include(slot => slot.Availability) // Inclui a lista de DailyAvailability
                 .ToListAsync(); // Retorna uma lista
+        }
+
+
+        public async Task<AvailabilitySlot> GetByStaffIdAsync(string staffId)
+        {
+            return await this.context.Set<AvailabilitySlot>()
+                                 .FirstOrDefaultAsync(slot => slot.StaffId == staffId);
         }
 
 

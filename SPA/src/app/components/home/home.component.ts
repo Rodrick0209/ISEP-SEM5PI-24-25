@@ -72,6 +72,9 @@ export class HomeComponent implements OnInit {
   manageOperationRequests(){
     this.router.navigate(['/operationRequests'])
   }
+  manageAppointments(){
+    this.router.navigate(['/appointments'])
+  }
 
   manageMedicalRecord(){
     this.router.navigate(['/medical-record'])

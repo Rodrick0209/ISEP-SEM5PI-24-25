@@ -42,6 +42,7 @@ namespace DDDSample1.Domain.Appointments
             // Mapear as propriedades de Appointment para AppointmentDto
 
             return new AppointmentDtoUI(
+                appointment.Id.AsGuid(),
                 operationRequestPriority,
                 operationRequestPatientId,
                 appointmentTimeSlot,

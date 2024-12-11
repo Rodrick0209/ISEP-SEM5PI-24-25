@@ -45,7 +45,12 @@ import { AllergiesCatalogComponent } from './components/allergies-catalog/allerg
 import { CreateAllergiesCatalogItemComponent } from './components/create-allergies-catalog-item/create-allergies-catalog-item.component';
 import { MedicalConditionsComponent } from './components/medical-conditions/medical-conditions.component';
 import { CreateMedicalConditionsComponent } from './components/create-medical-conditions/create-medical-conditions.component';
+<<<<<<< Updated upstream
 import { MedicalRecordEntriesComponent } from './components/medical-record-entries/medical-record-entries.component';
+=======
+import { CreateAppointmentComponent } from './components/create-appointment/create-appointment.component';
+import { EditAppointmentComponent } from './components/edit-appointment/edit-appointment.component';
+>>>>>>> Stashed changes
 
 
 export const routes: Routes = [
@@ -264,8 +269,19 @@ export const routes: Routes = [
         data: {role: 'admin'}
     },
     {
+<<<<<<< Updated upstream
         path: 'patient/medical-record/:medicalRecordNumber',
         component: MedicalRecordEntriesComponent,
+=======
+        path: 'appointment/create',
+        component: CreateAppointmentComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'doctor'}
+    },
+    {
+        path: 'appointment/edit/:id',
+        component: EditAppointmentComponent,
+>>>>>>> Stashed changes
         canActivate: [AuthGuard],
         data: {role: 'doctor'}
     }
