@@ -15,3 +15,10 @@ N/A
 ### 2.2. User Story Dependencies
 
 **7.2.2** The allergy must be added on the system.
+
+## 3. Analysis
+
+The admin can edit the following fields from the allergy:
+- Name/Designation
+
+The allergy should still in the catalog but when edited, a new object will be created.
