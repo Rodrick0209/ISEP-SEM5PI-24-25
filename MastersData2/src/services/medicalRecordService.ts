@@ -26,11 +26,11 @@ export default class MedicalRecordService implements IMedicalRecordService {
     ) { }
 
     public async createMedicalRecord(MedicalRecordDTO: IMedicalRecordDTO): Promise<Result<IMedicalRecordDTO>> {
-        
+
 
         try {
             let allergyIds: Allergy[] = [];
-            
+
             for (const allergyName of MedicalRecordDTO.allergies) {
                 const allergy = await this.AllergyCatalogRepo.findByAllergyName(allergyName.name);
                 if (allergy) {
@@ -53,10 +53,10 @@ export default class MedicalRecordService implements IMedicalRecordService {
                     medicalConditionIds.push(conditionResult.getValue());
                 }
             }
-            
-            
+
+
             const MedicalRecordOrError = await MedicalRecord.create(MedicalRecordDTO.patientId, allergyIds, medicalConditionIds);
-            
+
 
 
             if (MedicalRecordOrError.isFailure) {
@@ -64,10 +64,10 @@ export default class MedicalRecordService implements IMedicalRecordService {
             }
 
             const MedicalRecordResult = MedicalRecordOrError.getValue();
-            
+
             await this.MedicalRecordRepo.save(MedicalRecordResult);
-            
-            
+
+
             const MedicalRecordDTOResult = MedicalRecordMap.toDTO(MedicalRecordResult) as IMedicalRecordDTO;
             return Result.ok<IMedicalRecordDTO>(MedicalRecordDTOResult);
         } catch (e) {
@@ -82,9 +82,9 @@ export default class MedicalRecordService implements IMedicalRecordService {
             if (allMedicalRecords === null || allMedicalRecords.length === 0) {
                 return Result.fail<IMedicalRecordDTO[]>('No medical conditions found');
             }
-                        
+
             const MedicalRecordsDTO = allMedicalRecords.map(rec => MedicalRecordMap.toDTO(rec) as IMedicalRecordDTO);
-            
+
             return Result.ok<IMedicalRecordDTO[]>(MedicalRecordsDTO);
         } catch (e) {
             throw e;
@@ -104,17 +104,23 @@ export default class MedicalRecordService implements IMedicalRecordService {
 
             const allergyIds = [];
             for (const allergyName of MedicalRecordDTO.allergies) {
-                const allergy = await this.AllergyCatalogRepo.findByAllergyName(allergyName.toString());
+                const allergy = await this.AllergyCatalogRepo.findByAllergyName(allergyName.name.toString());
                 if (allergy) {
-                    allergyIds.push(allergy);
+                    const allergyResult = Allergy.create(allergy, allergyName.description, allergy.id);
+
+                    if (allergyResult.isSuccess) {
+                        allergyIds.push(allergyResult.getValue());
+                    }
                 }
             }
 
             const medicalConditionIds = [];
             for (const conditionName of MedicalRecordDTO.medicalConditions) {
-                const condition = await this.MedicalConditionRepo.findByMedicalConditionName(conditionName.toString());
-                if (condition) {
-                    medicalConditionIds.push(condition);
+                const condition = await this.MedicalConditionRepo.findByMedicalConditionName(conditionName.name.toString());
+                const conditionResult = MedicalCondition.create(condition, conditionName.date, condition.id);
+
+                if (conditionResult.isSuccess) {
+                    medicalConditionIds.push(conditionResult.getValue());
                 }
             }
 
@@ -142,23 +148,36 @@ export default class MedicalRecordService implements IMedicalRecordService {
             for (const allergy of medicalRecord.allergies) {
                 const allergyRecord = await this.AllergyCatalogRepo.findById(allergy);
                 if (allergyRecord && allergyRecord.name.includes(name)) {
-                    allergyIds.push(allergyRecord);
+                    const allergyResult = Allergy.create(allergyRecord, allergy.description, allergyRecord.id);
+
+                    if (allergyResult.isSuccess) {
+                        allergyIds.push(allergyResult.getValue());
+                    }
                 }
             }
 
             const medicalConditionIds = [];
             for (const condition of medicalRecord.medicalConditions) {
                 const conditionRecord = await this.MedicalConditionRepo.findByDomainId(condition);
+                console.log(conditionRecord);
                 if (conditionRecord && conditionRecord.name.includes(name)) {
-                    medicalConditionIds.push(conditionRecord);
+
+                    const conditionResult = MedicalCondition.create(conditionRecord, condition.date, conditionRecord.id);
+
+                    if (conditionResult.isSuccess) {
+                        medicalConditionIds.push(conditionResult.getValue());
+                    }
+
                 }
             }
 
             medicalRecord.allergies = allergyIds;
             medicalRecord.medicalConditions = medicalConditionIds;
 
-            const MedicalRecordDTO = MedicalRecordMap.toDTO(medicalRecord) as IMedicalRecordDTO;
 
+
+            const MedicalRecordDTO = MedicalRecordMap.toDTO(medicalRecord) as IMedicalRecordDTO;
+            console.log(MedicalRecordDTO);
             return Result.ok<IMedicalRecordDTO>(MedicalRecordDTO);
         } catch (e) {
             throw e;
@@ -169,14 +188,14 @@ export default class MedicalRecordService implements IMedicalRecordService {
         try {
             const medicalRecord = await this.MedicalRecordRepo.findByPatientId(patientId);
 
-            
-            
+
+
             if (!medicalRecord) {
                 return Result.fail<IMedicalRecordDTO>('Medical record not found');
             }
 
             const MedicalRecordsDTO = MedicalRecordMap.toDTO(medicalRecord) as IMedicalRecordDTO;
-            
+
             return Result.ok<IMedicalRecordDTO>(MedicalRecordsDTO);
 
         } catch (e) {

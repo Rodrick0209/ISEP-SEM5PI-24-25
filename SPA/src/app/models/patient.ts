@@ -20,15 +20,15 @@ export interface Patient {
   }
 
   export interface Allergy{
+    id: string;
     name: string;
-    //date: Date;
-    //description:string;
+    description:string;
   }
 
   export interface MedicalCondition{
+    id: string;
     name: string;
     date: Date;
-    description:string;
   }
   
   export interface Address {

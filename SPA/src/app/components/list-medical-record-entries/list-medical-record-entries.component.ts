@@ -4,9 +4,10 @@ import { FilterMedicalRecordEntriesComponent } from '../filter-medical-record-en
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '../../services/message.service';
 import { PatientService } from '../../services/patient.service';
-import { MedicalRecord, Patient, PatientsView } from '../../models/patient';
+import { MedicalCondition, MedicalRecord, Patient, PatientsView } from '../../models/patient';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { code } from 'three/webgpu';
 
 @Component({
   selector: 'app-list-medical-record-entries',
@@ -34,6 +35,7 @@ export class ListMedicalRecordEntriesComponent implements OnInit {
     if (this.medicalRecordNumber) {
       this.patientService.filterMedicalRecordEntries(this.medicalRecordNumber, filter.name).subscribe({
         next: (value: MedicalRecord) => {
+          console.log(value);
           this.medicalRecord = value;
         },
         error: (err: any) => {
@@ -58,8 +60,11 @@ export class ListMedicalRecordEntriesComponent implements OnInit {
   }
 
   updateMedicalRecord() {
-
+    if (this.medicalRecordNumber) {
+      this.router.navigate(['/edit-medical-record', this.medicalRecordNumber]);
+    }
     
   }
+
 
 }

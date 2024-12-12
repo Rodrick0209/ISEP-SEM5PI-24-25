@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs';
 import { AllergiesView, MedicalConditionView, MedicalRecord, Patient, PatientsView } from '../models/patient';
 import { MedicalCondition } from '../models/medicalCondition';
+import { Allergy } from '../models/Allergy';
 
 
 @Injectable({
@@ -115,5 +116,23 @@ export class PatientService {
 
   getPatientByEmail(email: string): Observable<Patient> {
     return this.http.get<Patient>(`${this.url}/email/${email}`);
+  }
+
+
+  updateMedicalRecord(medicalRecordNumber: string, allergies: Allergy[], medicalConditions: MedicalCondition[]): Observable<any> {
+    const body = {
+      allergies: allergies.map(allergy => ({
+        name: allergy.name,
+        description: allergy.description,
+      })),
+      medicalConditions: medicalConditions.map(condition => ({
+        name: condition.name,
+        date: condition.date
+      }))
+    };
+
+    
+
+    return this.http.put(`${this.editRecordUrl}/${medicalRecordNumber}`, body);
   }
 }

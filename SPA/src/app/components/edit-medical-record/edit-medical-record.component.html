@@ -1,0 +1,106 @@
+<div class="container">
+  <!-- Medical Record Table -->
+  <div>
+    <h3>Update Medical Record</h3>
+    <button class="btn btn-success btn-lg" (click)="addAllergy()">
+      Add Allergy
+    </button>
+    <button class="btn btn-success btn-lg" (click)="addMedicalCondition()">
+      Add Medical Condition
+    </button>
+    <!-- Check if medical records exist -->
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Editable Allergies Rows -->
+          <tr *ngFor="let allergy of medicalRecord?.allergies">
+            <td>
+              <select
+                class="form-control form-control-lg custom-select"
+                [(ngModel)]="allergy.name"
+              >
+                <option
+                  *ngFor="let existingAllergy of existingAllergies"
+                  [value]="existingAllergy.name"
+                >
+                  {{ existingAllergy.name }}
+                </option>
+              </select>
+            </td>
+            <td class="text-secondary">Allergy</td>
+            <td>
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                [(ngModel)]="allergy.description"
+                [value]="allergy.description"
+                placeholder="Enter allergy description"
+              />
+            </td>
+            <td>
+              <button
+                class="btn btn-danger btn-sm"
+                style="margin: -2px"
+                (click)="deleteAllergy(allergy)"
+              >
+                Remove
+              </button>
+            </td>
+          </tr>
+
+          <!-- Editable Medical Conditions Rows -->
+          <tr *ngFor="let condition of medicalRecord?.medicalConditions">
+            <td>
+              <select
+                class="form-control form-control-lg custom-select"
+                [(ngModel)]="condition.name"
+              >
+                <option
+                  *ngFor="let existingCondition of existingMedicalConditions"
+                  [value]="existingCondition.name"
+                >
+                  {{ existingCondition.name }}
+                </option>
+              </select>
+            </td>
+            <td class="text-secondary">Medical Condition</td>
+            <td>
+              <input
+                type="date"
+                class="form-control form-control-lg"
+                [ngModel]="formatDateForInput(condition.date)"
+                (ngModelChange)="updateConditionDate($event, condition)"
+                placeholder="Enter condition date"
+              />
+            </td>
+            <td>
+              <button
+                class="btn btn-danger btn-sm"
+                style="margin: -2px"
+                (click)="deleteCondition(condition)"
+              >
+                Remove
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Save/Cancel Buttons -->
+  <div class="center">
+    <button class="btn btn-primary btn-lg" (click)="saveAll()">Save All</button>
+    <button class="btn btn-secondary btn-lg" (click)="cancelAll()">
+      Cancel All
+    </button>
+  </div>
+</div>

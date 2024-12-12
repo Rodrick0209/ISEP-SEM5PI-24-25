@@ -46,6 +46,7 @@ import { CreateAllergiesCatalogItemComponent } from './components/create-allergi
 import { MedicalConditionsComponent } from './components/medical-conditions/medical-conditions.component';
 import { CreateMedicalConditionsComponent } from './components/create-medical-conditions/create-medical-conditions.component';
 import { MedicalRecordEntriesComponent } from './components/medical-record-entries/medical-record-entries.component';
+import { EditMedicalRecordComponent } from './components/edit-medical-record/edit-medical-record.component';
 
 
 export const routes: Routes = [
@@ -216,6 +217,13 @@ export const routes: Routes = [
         component: EditUserComponent,
         canActivate: [AuthGuard],
         data: { role: 'patient' }
+    },
+    {
+        path: 'edit-medical-record/:medicalRecordNumber',
+        component: EditMedicalRecordComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'doctor' }
+        
     },
     {
         path: 'view',
