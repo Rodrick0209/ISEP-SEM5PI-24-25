@@ -439,7 +439,9 @@ export default class ThumbRaiser {
       );
 
       // Register the event handler to be called on mouse move
-      this.renderer.domElement.addEventListener("mousemove", (event) => this.highlightSurgeryTable(event));
+      this.renderer.domElement.addEventListener("mousemove", (event) =>
+        this.highlightSurgeryTable(event)
+      );
 
       // Register the event handler to be called on mouse click
       this.renderer.domElement.addEventListener("click", (event) =>
@@ -756,46 +758,69 @@ export default class ThumbRaiser {
   }
 
   highlightSurgeryTable(event) {
-    // Calculate mouse position in normalized device coordinates (-1 to +1) for both components
-    const rect = this.renderer.domElement.getBoundingClientRect();
-    const mouse = new THREE.Vector2(
-      ((event.clientX - rect.left) / rect.width) * 2 - 1,
-      -((event.clientY - rect.top) / rect.height) * 2 + 1
-    );
+    
+    if (event.type === "click") {
+      // Calculate mouse position in normalized device coordinates (-1 to +1) for both components
+      const rect = this.renderer.domElement.getBoundingClientRect();
+      const mouse = new THREE.Vector2(
+        ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        -((event.clientY - rect.top) / rect.height) * 2 + 1
+      );
+      
 
-    // Create a raycaster
-    const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(mouse, this.activeViewCamera.object);
+      // Create a raycaster
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, this.activeViewCamera.object);
 
-    // Check for intersections with surgical tables
-    const intersects = raycaster.intersectObjects(this.surgeryTables.map(table => table.object), true);
+      // Check for intersections with surgical tables (or beds in this case)
+      const validObjects = this.beds
+        .map((table) => table.object)
+        .filter((object) => object !== undefined && object !== null);
 
-    // Reset all tables to their original color
-    this.surgeryTables.forEach(table => {
-      table.object.traverse((child) => {
-        if (child.isMesh) {
-          child.material.color.set(0xffffff); // Assuming the original color is white
-        }
-      });
-    });
-
-    if (intersects.length > 0) {
-      // Find the corresponding surgery table
-      for (const table of this.surgeryTables) {
-        if (table.object.getObjectById(intersects[0].object.id)) {
-          // Change the color of the table to red
-          table.object.traverse((child) => {
-            if (child.isMesh) {
-              child.material.color.set(0xff0000);
-            }
+      const intersects = raycaster.intersectObjects(validObjects, true);
+      
+      if (intersects.length > 0) {
+        const target = intersects[0].point;
+        if (this.isZoomedIn) {
+          // Zooming out: restore the original camera position
+          console.log("restore");
+          GSAP.gsap.to(this.activeViewCamera.object.position, {
+            duration: 1,
+            x: this.originalCameraPosition.x,
+            y: this.originalCameraPosition.y,
+            z: this.originalCameraPosition.z,
+            ease: "power2.inOut",
+            onUpdate: () => {
+              this.activeViewCamera.object.lookAt(target); // Ensure the camera keeps looking at the target
+            },
+            onComplete: () => {
+              this.isZoomedIn = false; // Mark as zoomed out
+            },
           });
-          break;
+        } else {
+          // Zooming in: store original position and move camera to target
+          this.originalCameraPosition =
+            this.activeViewCamera.object.position.clone();
+
+          GSAP.gsap.to(this.activeViewCamera.object.position, {
+            duration: 1,
+            x: target.x,
+            y: target.y + 1, // Slightly above the target for better visibility
+            z: target.z + 2, // Move back a little to avoid clipping
+            ease: "power2.inOut",
+            onUpdate: () => {
+              this.activeViewCamera.object.lookAt(target); // Focus on the target point
+              this.isZoomedIn = true; // Mark as zoomed in
+            },
+            onComplete: () => {
+              this.isZoomedIn = true; // Mark as zoomed in
+            },
+          });
         }
       }
     }
   }
 
-  
   mouseDown(event) {
     if (event.buttons == 1 || event.buttons == 2) {
       // Primary or secondary button down
@@ -915,15 +940,22 @@ export default class ThumbRaiser {
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(mouse, this.activeViewCamera.object);
 
-    // Check for intersections with surgical tables
-    const intersects = raycaster.intersectObjects(this.surgeryTables.map(table => table.object), true);
+    // Check for intersections with beds
+    const intersects = raycaster.intersectObjects(
+      this.beds.map((bed) => bed.object),
+      true
+    );
 
     if (intersects.length > 0) {
-      // Find the corresponding surgery table
-      for (const table of this.surgeryTables) {
-        if (table.object.getObjectById(intersects[0].object.id)) {
-          const roomCenter = table.position.clone();
-          const target = new THREE.Vector3(roomCenter.x, roomCenter.y, roomCenter.z);
+      // Find the corresponding bed
+      for (const bed of this.beds) {
+        if (bed.object.getObjectById(intersects[0].object.id)) {
+          const roomCenter = bed.position;
+          const target = new THREE.Vector3(
+            roomCenter.x,
+            roomCenter.y,
+            roomCenter.z
+          );
           GSAP.gsap.to(this.activeViewCamera.object.position, {
             duration: 1,
             x: target.x,
@@ -931,7 +963,7 @@ export default class ThumbRaiser {
             ease: "power2.inOut",
             onUpdate: () => {
               this.activeViewCamera.object.lookAt(target);
-            }
+            },
           });
           break;
         }
