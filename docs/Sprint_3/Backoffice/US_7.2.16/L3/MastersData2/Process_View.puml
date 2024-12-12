@@ -1,0 +1,32 @@
+```plantuml
+@startuml Process_View
+participant SPA as SPA <<Container (C4)>>
+participant Route as Route <<Route>>
+participant Controller as Controller <<Controller>>
+participant DTO as DTO <<DTO>>
+participant Service as Service <<Service>>
+participant Repository as Repository <<Repository>>
+participant Mapper as Mapper <<Domain Service>>
+participant Domain as Aggregate <<Domain>>
+activate SPA
+SPA -> Route: PUT (/api/allergies/:name)
+activate Route
+Route -> Controller : PUT
+activate Controller
+Controller -> DTO** : receive request body info
+Controller -> Service : update allergy
+activate Service
+Service -> Repository : find allergy by name
+activate Repository
+return allergy
+Service -> Aggregate : update allergy with new info
+Service -> Repository : save allergy
+Service -> Mapper : map allergy to DTO
+activate Mapper
+return DTO
+return response
+return response
+return response
+
+@enduml
+```

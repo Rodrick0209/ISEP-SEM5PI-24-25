@@ -51,5 +51,26 @@ namespace DDDSample1.Domain.AvailabilitySlots
             }
         }
 
+        public bool IsAvailable(DateOnly date, int startMinute, int endMinute)
+        {
+            // Validações básicas para os parâmetros
+            if (startMinute < 0 || endMinute > 1440 || startMinute >= endMinute)
+                throw new ArgumentException("Intervalo de tempo inválido.");
+
+            // Procura pela disponibilidade para a data fornecida
+            var dailyAvailability = this.Availability.FirstOrDefault(avail => avail.Date == date);
+
+            if (dailyAvailability == null)
+            {
+                // Se não houver disponibilidade registrada para a data, retorna falso
+                return false;
+            }
+
+            // Verifica se o intervalo solicitado está dentro de algum dos TimeSlots disponíveis
+            return dailyAvailability.TimeSlots.Any(slot =>
+                slot.StartMinute <= startMinute && slot.EndMinute >= endMinute);
+        }
+
+
     }
 }

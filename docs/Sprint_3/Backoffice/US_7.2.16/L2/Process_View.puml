@@ -1,0 +1,13 @@
+
+```plantuml
+@startuml Process_View
+participant "SPA" as FE <<Container (C4)>>
+participant "MastersData2" as BE2 <<Container (C4)>>
+
+activate FE
+FE -> BE2: PUT (/api/allergies/:name)
+activate BE2
+BE2 -> BE2: receive request body info,\nupdate allergy
+return response
+@enduml
+```

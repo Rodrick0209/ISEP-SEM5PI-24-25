@@ -1,0 +1,120 @@
+<div class="create-appointment-container">
+    <h2>Create New Appointment</h2>
+    <p class="required-note"><span class="required">*</span> Required</p>
+    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <form (ngSubmit)="confirmSubmission()" #appointmentForm="ngForm">
+        <h3>Appointment Information</h3>
+        <div class="appointment-information">
+            <!-- Date -->
+            <div class="form-group">
+                <label for="appointmentDate">Appointment Date <span class="required">*</span></label>
+                <input
+                    type="date"
+                    id="appointmentDate"
+                    name="appointmentDate"
+                    [(ngModel)]="submitForm.appointmentTimeSlotDate"
+                    required
+                />
+            </div>
+            <!-- Start Time -->
+            <div class="form-group">
+                <label for="startTime">Start Time (Minutes from Midnight) <span class="required">*</span></label>
+                <input
+                    type="number"
+                    id="startTime"
+                    name="startTime"
+                    [(ngModel)]="submitForm.appointmentTimeSlotStartMinute"
+                    required
+                    min="0"
+                    max="1439"
+                />
+            </div>
+            <!-- End Time -->
+            <div class="form-group">
+                <label for="endTime">End Time (Minutes from Midnight) <span class="required">*</span></label>
+                <input
+                    type="number"
+                    id="endTime"
+                    name="endTime"
+                    [(ngModel)]="submitForm.appointmentTimeSlotEndMinute"
+                    required
+                    min="0"
+                    max="1439"
+                />
+            </div>
+            <!-- Operation Room -->
+            <div class="form-group">
+                <label for="operationRoom">Operation Room <span class="required">*</span></label>
+                <select
+                    id="operationRoom"
+                    name="operationRoom"
+                    [(ngModel)]="submitForm.operationRoomId"
+                    required
+                >
+                    <option value="" disabled selected>Select Operation Room</option>
+                    <option *ngFor="let room of operationRooms" [value]="room.id">
+                        {{ room.roomNumber }}
+                    </option>
+                </select>
+            </div>
+            <!-- Operation Request -->
+            <div class="form-group">
+                <label for="operationRequest">Operation Request <span class="required">*</span></label>
+                <select
+                    id="operationRequest"
+                    name="operationRequest"
+                    [(ngModel)]="submitForm.operationRequestId"
+                    required
+                >
+                    <option value="" disabled selected>Select Operation Request</option>
+                    <option *ngFor="let request of operationRequests" [value]="request.id">
+                        {{ request.id }}
+                    </option>
+                </select>
+            </div>
+            <!-- Appointment Status -->
+            <div class="form-group">
+                <label for="appointmentStatus">Appointment Status <span class="required">*</span></label>
+                <select
+                    id="appointmentStatus"
+                    name="appointmentStatus"
+                    [(ngModel)]="submitForm.appointmentStatus"
+                    required
+                >
+                    <option value="" disabled selected>Select Status</option>
+                    <option *ngFor="let status of statusOptions" [value]="status">
+                        {{ status }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button
+                type="submit"
+                [disabled]="!appointmentForm.form.valid"
+                class="btn-submit"
+            >
+                Create Appointment
+            </button>
+            <button type="button" class="btn-cancel" (click)="onCancel()">
+                Cancel
+            </button>
+        </div>
+    </form>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" *ngIf="showConfirmation">
+        <div class="modal-content">
+            <h3>Confirm Submission</h3>
+            <p>Are you sure you want to create this appointment?</p>
+            <div class="modal-actions">
+                <button (click)="onSubmit(appointmentForm)" class="btn-confirm">
+                    Yes
+                </button>
+                <button (click)="closeConfirmationModal()" class="btn-cancel">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

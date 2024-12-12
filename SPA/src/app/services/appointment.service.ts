@@ -1,83 +1,97 @@
-/*import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core'
 import { Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
-import { Appointment} from '../models/appointment';
+import { Appointment, AppointmentEdit, AppointmentsView } from '../models/appointment';
+import { OperationRequest } from './operationRequestService';
+import { OperationRoom } from '../models/operationRoom';
+import { Staff } from '../models/staff';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppointmentService {
-    private getAllAppointments = '/api/Appointment/GetAllUI'; // Update with your API URL
-    private url = '/api/Appointment'
-    private createUrl = '/api/Appointment'; // Update with your create API URL
-    private getAppByIdUrl = '/api/AppointmentI'; // Update with your get by ID API URL
-    private getAllOpRquests = '/api/OperationRequest/GetAllForUi'
-    private getAllOpRooms = '/api/OperationRoom/GetAll'
+  private getAllAppointments = '/api/Appointment/GetAllUI'; // Update with your API URL
+  private url = '/api/Appointment';
+  private createUrl = '/api/Appointment'; // Update with your create API URL
+  private getAppByIdUrl = '/api/Appointment'; // Update with your get by ID API URL
+  private getAllOpRquestsAvailable = '/api/OperationRequest/GetAllAvailableForUi';
+  private getAllOpRooms = '/api/OperationRoom/GetAll';
+  private getAllStaff = '/api/Staff/GetAllForUi';
   constructor(private http: HttpClient) { }
 
-  
 
-  getStaffs(): Observable<StaffsView[]> {
-    return this.http.get<StaffsView[]>(this.getAll).pipe(
-      tap(data => console.log('Dados brutos recebidos da API:', data))
-    );
+
+  getAppointments(): Observable<AppointmentsView[]> {
+    return this.http.get<AppointmentsView[]>(this.getAllAppointments);
   }
 
-  getStaffById(id: string): Observable<Staff> {
-    return this.http.get<Staff>(`${this.getStaffByIdUrl}/${id}`);
+  getAppointmentById(id: string): Observable<Appointment> {
+    return this.http.get<Appointment>(`${this.getAppByIdUrl}/${id}`);
+  }
+
+  getAppointmentByIdEdit(id: string): Observable<AppointmentEdit> {
+    return this.http.get<AppointmentEdit>(`${this.getAppByIdUrl}/${id}`);
+  }
+
+  getOperationRequestsAvailable(): Observable<OperationRequest[]> {
+    return this.http.get<OperationRequest[]>(this.getAllOpRquestsAvailable);
+  }
+
+  getOperationRooms(): Observable<OperationRoom[]> {
+    return this.http.get<OperationRoom[]>(this.getAllOpRooms);
+  }
+
+  getStaff(): Observable<Staff[]> {
+    return this.http.get<Staff[]>(this.getAllStaff);
   }
 
 
-  createStaff(fullName : string, licenseNumber : string, specializationId : string, email : string, phoneNumber : string, category : string): Observable<any> {
+  createAppointment(appointmentTimeSlotDtoDate: string, appointmentTimeSlotDtoTimeSlotStartMinute: string, appointmentTimeSlotDtoTimeSlotEndMinute: string, operationRoomId: string, operationRequestId: string): Observable<any> {
     const body = {
-        fullName: fullName,
-        licenseNumber: licenseNumber,
-        specializationId: specializationId,
-        email: email,
-        phoneNumber: phoneNumber,
-        category: category
+      appointmentTimeSlotDtoDate: appointmentTimeSlotDtoDate,
+      appointmentTimeSlotDtoTimeSlotStartMinute: appointmentTimeSlotDtoTimeSlotStartMinute,
+      appointmentTimeSlotDtoTimeSlotEndMinute: appointmentTimeSlotDtoTimeSlotEndMinute,
+      operationRoomId: operationRoomId,
+      operationRequestId: operationRequestId
     }
 
     return this.http.post(this.createUrl, body);
   }
 
-  editStaff(id: string, fullName: string, licenseNumber : string, phoneNumber : string, email: string, specializationId : string) : Observable<any> {
+  editAppointment(
+    id: string,
+    operationRequestId: string,
+    operationRoomId: string,
+    appointmentTimeSlotDtoDate: string,
+    appointmentTimeSlotDtoTimeSlotStartMinute: string,
+    appointmentTimeSlotDtoTimeSlotEndMinute: string,
+    appointmentStatus: string,
+    operationRequestTeamForAnesthesy?: string[], // Novo parâmetro para a equipe de anestesia
+    operationRequestTeamForSurgery?: string[]   // Novo parâmetro para a equipe de cirurgia
+  ): Observable<any> {
     const body: any = {};
     body.id = id;
-    if (fullName) body.fullName = fullName;
-    if (licenseNumber) body.licenseNumber = licenseNumber;
-    if (phoneNumber) body.phoneNumber = phoneNumber;
-    if (email) body.email = email;
-    if (specializationId) body.specializationId = specializationId;
-    
+
+    if (operationRequestId) body.operationRequestId = operationRequestId;
+    if (operationRoomId) body.operationRoomId = operationRoomId;
+    if (appointmentTimeSlotDtoDate) body.appointmentTimeSlotDtoDate = appointmentTimeSlotDtoDate;
+    if (appointmentTimeSlotDtoTimeSlotStartMinute) body.appointmentTimeSlotDtoTimeSlotStartMinute = appointmentTimeSlotDtoTimeSlotStartMinute;
+    if (appointmentTimeSlotDtoTimeSlotEndMinute) body.appointmentTimeSlotDtoTimeSlotEndMinute = appointmentTimeSlotDtoTimeSlotEndMinute;
+    if (appointmentStatus) body.appointmentStatus = appointmentStatus;
+
+    // Adicionando as novas listas, se existirem
+    if (operationRequestTeamForAnesthesy && operationRequestTeamForAnesthesy.length > 0) {
+      body.operationRequestTeamForAnesthesy = operationRequestTeamForAnesthesy;
+    }
+    if (operationRequestTeamForSurgery && operationRequestTeamForSurgery.length > 0) {
+      body.operationRequestTeamForSurgery = operationRequestTeamForSurgery;
+    }
+
     return this.http.put(`${this.url}/${id}`, body);
   }
 
-  deleteStaff(id: string) : Observable<any> {
-    return this.http.delete(`${this.url}/${id}`);
-  }
 
-  filterStaffs(fullName: string, licenseNumber: string, phoneNumber: string, email: string, specializationId : string): Observable<StaffsView[]> {
-    let params = new HttpParams();
-    if (fullName) {
-      params = params.set('name', fullName);
-    }
-    if (licenseNumber) {
-      params = params.set('licenseNumber', licenseNumber);
-    }
-    if (phoneNumber) {
-      params = params.set('phoneNumber', phoneNumber);
-    }
-    if (email) {
-      params = params.set('email', email);
-    }
-    if (specializationId) {
-        params = params.set('specialization', specializationId);
-      }
 
-    return this.http.get<StaffsView[]>(this.filterApiUrl, { params });
-  }
 }
-*/

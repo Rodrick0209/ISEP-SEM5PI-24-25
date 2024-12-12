@@ -1,0 +1,84 @@
+<div class="edit-appointment-container">
+  <h2>Edit Appointment</h2>
+  <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <form (ngSubmit)="confirmSubmission()" #appointmentForm="ngForm">
+    <h3>Appointment Information</h3>
+    
+    <div class="appointment-information">
+      <div class="form-group">
+        <label for="appointmentTimeSlotDtoDate">Appointment Date</label>
+        <input type="date" id="appointmentTimeSlotDtoDate" name="appointmentTimeSlotDtoDate" [(ngModel)]="submitForm.appointmentTimeSlotDtoDate" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="appointmentTimeSlotDtoTimeSlotStartMinute">Start Time (minutes)</label>
+        <input type="number" id="appointmentTimeSlotDtoTimeSlotStartMinute" name="appointmentTimeSlotDtoTimeSlotStartMinute" [(ngModel)]="submitForm.appointmentTimeSlotDtoTimeSlotStartMinute" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="appointmentTimeSlotDtoTimeSlotEndMinute">End Time (minutes)</label>
+        <input type="number" id="appointmentTimeSlotDtoTimeSlotEndMinute" name="appointmentTimeSlotDtoTimeSlotEndMinute" [(ngModel)]="submitForm.appointmentTimeSlotDtoTimeSlotEndMinute" required />
+      </div>
+      
+      <!-- Atualização: Select para Operation Room -->
+      <div class="form-group">
+        <label for="operationRoomId">Operation Room</label>
+        <select id="operationRoomId" name="operationRoomId" [(ngModel)]="submitForm.operationRoomId" required>
+          <option *ngFor="let room of operationRooms" [value]="room.id">
+            {{ room.roomNumber }}
+          </option>
+        </select>
+      </div>
+      
+      <!-- Atualização: Select para Operation Requests -->
+      <div class="form-group">
+        <label for="operationRequestId">Operation Request</label>
+        <select id="operationRequestId" name="operationRequestId" [(ngModel)]="submitForm.operationRequestId" required>
+          <option *ngFor="let request of operationRequests" [value]="request.id">
+            {{ request.id }}
+          </option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="appointmentStatus">Appointment Status</label>
+        <select id="appointmentStatus" name="appointmentStatus" [(ngModel)]="submitForm.appointmentStatus" required>
+          <option value="Scheduled">Scheduled</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="operationRequestTeamForAnesthesy">Anesthesia Team</label>
+        <select id="operationRequestTeamForAnesthesy" name="operationRequestTeamForAnesthesy" [(ngModel)]="submitForm.operationRequestTeamForAnesthesy" multiple>
+          <option *ngFor="let staff of availableStaff" [value]="staff.id">{{ staff.fullName }}</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="operationRequestTeamForSurgery">Surgery Team</label>
+        <select id="operationRequestTeamForSurgery" name="operationRequestTeamForSurgery" [(ngModel)]="submitForm.operationRequestTeamForSurgery" multiple>
+          <option *ngFor="let staff of availableStaff" [value]="staff.id">{{ staff.fullName }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-submit">Save Changes</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+    </div>
+  </form>
+
+  <div class="modal" *ngIf="showConfirmation">
+    <div class="modal-content">
+      <h3>Confirm Submission</h3>
+      <p>Are you sure you want to save the changes to this appointment?</p>
+      <div class="modal-actions">
+        <button (click)="onSubmit(appointmentForm)" class="btn-confirm">Yes</button>
+        <button (click)="closeConfirmationModal()" class="btn-cancel">No</button>
+      </div>
+    </div>
+  </div>
+</div>

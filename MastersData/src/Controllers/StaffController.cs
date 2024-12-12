@@ -138,7 +138,7 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("GetAllForUi")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,doctor")]
 
         public async Task<ActionResult<IEnumerable<StaffDtoUI>>> GetAllForUi()
         {

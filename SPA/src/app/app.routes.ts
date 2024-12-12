@@ -46,6 +46,9 @@ import { CreateAllergiesCatalogItemComponent } from './components/create-allergi
 import { MedicalConditionsComponent } from './components/medical-conditions/medical-conditions.component';
 import { CreateMedicalConditionsComponent } from './components/create-medical-conditions/create-medical-conditions.component';
 import { MedicalRecordEntriesComponent } from './components/medical-record-entries/medical-record-entries.component';
+import { CreateAppointmentComponent } from './components/create-appointment/create-appointment.component';
+import { EditAppointmentComponent } from './components/edit-appointment/edit-appointment.component';
+import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { EditMedicalRecordComponent } from './components/edit-medical-record/edit-medical-record.component';
 
 
@@ -274,6 +277,24 @@ export const routes: Routes = [
     {
         path: 'patient/medical-record/:medicalRecordNumber',
         component: MedicalRecordEntriesComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'doctor'}
+    },
+    {
+        path: 'appointment/create',
+        component: CreateAppointmentComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'doctor'}
+    },
+    {
+        path: 'appointment/edit/:id',
+        component: EditAppointmentComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'doctor'}
+    },
+    {
+        path: 'appointments',
+        component: AppointmentsComponent,
         canActivate: [AuthGuard],
         data: {role: 'doctor'}
     }

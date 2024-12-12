@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Appointments;
+using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Domain.OperationRooms;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Domain.Utils;
 using Microsoft.OpenApi.Models;
 using Org.BouncyCastle.Crypto.Prng;
@@ -19,15 +22,18 @@ namespace DDDSample1.Domain.Appointments
 
         private readonly IOperationRoomRepository _operationRoomRepository;
         private readonly IOperationRequestRepository _operationRequestRepository;
+        private readonly IAvailabilitySlotsRepository _availabilitySlotsRepository;
         private readonly IPatientRepository _patientRepository;
+        private readonly IStaffRepository _staffRepository;
 
-        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentRepository appointmentRepository, IOperationRoomRepository operationRoomRepository, IOperationRequestRepository operationRequestRepository, IPatientRepository patientRepository)
+        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentRepository appointmentRepository, IOperationRoomRepository operationRoomRepository, IOperationRequestRepository operationRequestRepository, IPatientRepository patientRepository, IAvailabilitySlotsRepository availabilitySlotsRepository)
         {
             this._unitOfWork = unitOfWork;
             this._appointmentRepository = appointmentRepository;
             this._operationRoomRepository = operationRoomRepository;
             this._operationRequestRepository = operationRequestRepository;
             this._patientRepository = patientRepository;
+            this._availabilitySlotsRepository = availabilitySlotsRepository;
         }
 
 
@@ -55,12 +61,32 @@ namespace DDDSample1.Domain.Appointments
 
 
 
-        
+
             if (!opRequest.IsAvailable(opRequest.status))
             {
                 throw new Exception("The operation request is cancelled or was already accepted.");
             }
-            
+
+            foreach (StaffId staff in opRequest.getStaffAnesthesyPhase())
+            {
+                var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Value);
+                if (!availabilitySlot.IsAvailable(requestedDate, requestedStart, requestedEnd))
+                {
+                    throw new Exception("The staff member is not available during the requested time.");
+                }
+            }
+
+            foreach (StaffId staff in opRequest.getStaffSurgeryPhase())
+            {
+                var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Value);
+                if (!availabilitySlot.IsAvailable(requestedDate, requestedStart, requestedEnd))
+                {
+                    throw new Exception("The staff member is not available during the requested time.");
+                }
+            }
+
+
+
 
 
             // Cria o agendamento
@@ -73,6 +99,7 @@ namespace DDDSample1.Domain.Appointments
             );
 
             opRoom.Appointments.Add(appointment);
+            opRequest.Accepted();
 
             // Atualiza o estado da sala no repositório
             // Salva o agendamento no repositório
@@ -117,30 +144,46 @@ namespace DDDSample1.Domain.Appointments
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.OperationRequestId))
+            if (dto.OperationRequestTeamForAnesthesy != null && dto.OperationRequestTeamForAnesthesy.Count > 0)
             {
-                var opRequest = await CheckOperationRequestAsync(new OperationRequestId(dto.OperationRequestId));
+                var opRequest = await CheckOperationRequestAsync(app.OperationRequestId);
 
-                // Verifica se o OperationRequest mudou
-                if (!app.OperationRequestId.Value.Equals(dto.OperationRequestId))
+                var staffIds = dto.OperationRequestTeamForAnesthesy.Select(id => new StaffId(id)).ToList();
+
+                foreach (var staffId in staffIds)
                 {
-                    // Verifica disponibilidade do OperationRequest
-                    if (!opRequest.IsAvailable(opRequest.status))
+                    // Verificar se o staff existe na base de dados
+                    var staffExists = await _staffRepository.GetByIdAsync(staffId);
+                    if (staffExists == null)
                     {
-                        throw new BusinessRuleValidationException("Operation Request is not available");
+                        throw new BusinessRuleValidationException($"Staff member with ID {staffId.Value} does not exist.");
                     }
 
-                    // Verifica disponibilidade da OperationRoom
-                    var opRoom = await _operationRoomRepository.GetByIdAsync(app.OperationRoomId);
-                    if (!opRoom.IsAvailable(app.AppointmentTimeSlot.Date, app.AppointmentTimeSlot.TimeSlot.StartMinute, app.AppointmentTimeSlot.TimeSlot.EndMinute))
-                    {
-                        throw new BusinessRuleValidationException("Operation Room is not available");
-                    }
-
-                    // Atualiza o OperationRequestId
-                    app.ChangeOperationRequestId(dto.OperationRequestId);
+                    // Adicionar o staff à equipe de anestesia
+                    opRequest.staffAssignedSurgery.addStaffAnesthesyPhase(staffId);
                 }
             }
+
+            if (dto.OperationRequestTeamForSurgery != null && dto.OperationRequestTeamForSurgery.Count > 0)
+            {
+                var opRequest = await CheckOperationRequestAsync(app.OperationRequestId);
+
+                var staffIds = dto.OperationRequestTeamForSurgery.Select(id => new StaffId(id)).ToList();
+
+                foreach (var staffId in staffIds)
+                {
+                    // Verificar se o staff existe na base de dados
+                    var staffExists = await _staffRepository.GetByIdAsync(staffId);
+                    if (staffExists == null)
+                    {
+                        throw new BusinessRuleValidationException($"Staff member with ID {staffId.Value} does not exist.");
+                    }
+
+                    // Adicionar o staff à equipe de cirurgia
+                    opRequest.staffAssignedSurgery.addStaffSurgeryPhase(staffId);
+                }
+            }
+
 
 
             if (!string.IsNullOrWhiteSpace(dto.AppointmentStatus) && !app.AppointmentStatus.Equals(dto.AppointmentStatus))
@@ -158,39 +201,62 @@ namespace DDDSample1.Domain.Appointments
 
 
             var newDate = !string.IsNullOrWhiteSpace(dto.AppointmentTimeSlotDtoDate)
-             ? DateOnly.Parse(dto.AppointmentTimeSlotDtoDate)
-            : (DateOnly?)null;
+                ? DateOnly.Parse(dto.AppointmentTimeSlotDtoDate)
+                : app.AppointmentTimeSlot.Date; // Usa o valor atual como fallback
 
             var newStartMinute = !string.IsNullOrWhiteSpace(dto.AppointmentTimeSlotDtoTimeSlotStartMinute)
                 ? int.Parse(dto.AppointmentTimeSlotDtoTimeSlotStartMinute)
-                : (int?)null;
+                : app.AppointmentTimeSlot.TimeSlot.StartMinute; // Usa o valor atual como fallback
 
             var newEndMinute = !string.IsNullOrWhiteSpace(dto.AppointmentTimeSlotDtoTimeSlotEndMinute)
                 ? int.Parse(dto.AppointmentTimeSlotDtoTimeSlotEndMinute)
-                : (int?)null;
+                : app.AppointmentTimeSlot.TimeSlot.EndMinute; // Usa o valor atual como fallback
 
-            // Check if updates are needed
-            if ((newDate != null && !app.AppointmentTimeSlot.Date.Equals(newDate)) ||
-                (newStartMinute != null && !app.AppointmentTimeSlot.TimeSlot.StartMinute.Equals(newStartMinute)) ||
-                (newEndMinute != null && !app.AppointmentTimeSlot.TimeSlot.EndMinute.Equals(newEndMinute)))
+            // Verifica se é necessário atualizar
+            if (!app.AppointmentTimeSlot.Date.Equals(newDate) ||
+                !app.AppointmentTimeSlot.TimeSlot.StartMinute.Equals(newStartMinute) ||
+                !app.AppointmentTimeSlot.TimeSlot.EndMinute.Equals(newEndMinute))
             {
+                // Valida a disponibilidade da sala de operações
                 var opRoom = await _operationRoomRepository.GetByIdAsync(app.OperationRoomId);
-
-                // Validate availability using the values from dto
-                if (!opRoom.IsAvailable(newDate.Value, newStartMinute.Value, newEndMinute.Value))
+                if (!opRoom.IsAvailable(newDate, newStartMinute, newEndMinute))
                 {
                     throw new BusinessRuleValidationException("Operation Room is not available for the specified date and/or time slot.");
                 }
 
-                // Apply changes
-                if (newDate != null)
+                // Obtém os membros do staff atribuídos à operação
+                var opRequest = await _operationRequestRepository.GetByIdAsync(app.OperationRequestId);
+
+
+                // Valida a disponibilidade de cada membro do staff
+                foreach (StaffId staff in opRequest.getStaffAnesthesyPhase())
                 {
-                    app.AppointmentTimeSlot.ChangeDate(newDate.Value);
+                    var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Value);
+                    if (!availabilitySlot.IsAvailable(newDate, newStartMinute, newEndMinute))
+                    {
+                        throw new Exception("The staff member is not available during the requested time, please update it.");
+                    }
                 }
 
-                if (newStartMinute != null && newEndMinute != null)
+                foreach (StaffId staff in opRequest.getStaffSurgeryPhase())
                 {
-                    app.AppointmentTimeSlot.ChangeTimeSlot(newStartMinute.Value, newEndMinute.Value);
+                    var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Value);
+                    if (!availabilitySlot.IsAvailable(newDate, newStartMinute, newEndMinute))
+                    {
+                        throw new Exception("The staff member is not available during the requested time, please update it.");
+                    }
+                }
+
+                // Aplica as alterações
+                if (!app.AppointmentTimeSlot.Date.Equals(newDate))
+                {
+                    app.AppointmentTimeSlot.ChangeDate(newDate);
+                }
+
+                if (!app.AppointmentTimeSlot.TimeSlot.StartMinute.Equals(newStartMinute) ||
+                    !app.AppointmentTimeSlot.TimeSlot.EndMinute.Equals(newEndMinute))
+                {
+                    app.AppointmentTimeSlot.ChangeTimeSlot(newStartMinute, newEndMinute);
                 }
             }
 

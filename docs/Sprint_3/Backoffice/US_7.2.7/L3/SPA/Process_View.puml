@@ -22,8 +22,8 @@ return response
 return response
 Service -> Model: transforms response data
 activate Model
-return room type
-return room type
+return medical record entries
+return medical record entries
 return success/fail message
 
 @enduml
