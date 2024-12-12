@@ -25,6 +25,10 @@ export class AllergyCatalogItem extends AggregateRoot<AllergyCatalogItemProps> {
         return this.props.name;
     }
 
+    set name (name: string) {
+        this.props.name = name;
+    }
+
     private constructor (props: AllergyCatalogItemProps, id?: UniqueEntityID) {
         super(props, id);
     }

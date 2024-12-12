@@ -22,8 +22,17 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.createAllergyCatalogItem(req, res, next) );
 
-
-
   route.get('/getAll',
     (req, res, next) => ctrl.getAllAllergiesItemCatalog(req, res, next));
+
+  route.put('/update/:name',
+    celebrate({
+      body: Joi.object({
+        nameToEdit: Joi.string().required()
+      }),
+      params: Joi.object({
+        name: Joi.string().required()
+      })
+    }),
+    (req, res, next) => ctrl.updateAllergyCatalogItem(req, res, next) );
 }
