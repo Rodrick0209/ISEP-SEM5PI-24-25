@@ -48,14 +48,18 @@ export class ThreeViewComponent implements AfterViewInit, OnInit {
 
   initializeGame(date: string, time: string): void {
     const parameters = merge({}, mazeData, { scale: new THREE.Vector3(1.0, 0.5, 1.0) });
+    
     this.thumbRaiser = new ThumbRaiser(
       parameters, // Parameters
       {}, // General Parameters
       { scale: new THREE.Vector3(1.0, 0.5, 1.0) }, // Maze parameters
       {}, // Player parameters
       { ambientLight: { intensity: 0.5 }, 
-        pointLight1: { intensity: 70.0, distance: 20.0, position: new THREE.Vector3(-3.5, 10.0, 2.5) },
-        pointLight2: { intensity: 70.0, distance: 20.0, position: new THREE.Vector3(3.5, 10.0, -2.5) }
+        pointLight1: { intensity: 20.0, distance: 70.0, position: new THREE.Vector3(-2.9, 3.0, -5) },
+        pointLight2: { intensity: 20.0, distance: 70.0, position: new THREE.Vector3(2.7, 3.0, -5) },
+        pointLight3: { intensity: 20.0, distance: 70.0, position: new THREE.Vector3(-2.9, 3.0, 1) },
+        pointLight4: { intensity: 20.0, distance: 70.0, position: new THREE.Vector3(-2.9, 3.0, 5.5) },
+        pointLight5: { intensity: 20.0, distance: 70.0, position: new THREE.Vector3(5, 3.0, 2.5) },
       }, // Lights parameters
       {}, // Fog parameters
       {}, // Fixed view camera parameters
@@ -66,6 +70,7 @@ export class ThreeViewComponent implements AfterViewInit, OnInit {
       {}, // Doctor parameters
       {}, // Bed with patient parameters
       {}, // Tables surgery data parameters
+      {}, //waitingChair
       { date: date }, // Date
       { time: time } // Time
     );

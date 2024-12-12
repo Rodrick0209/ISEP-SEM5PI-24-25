@@ -1,108 +1,84 @@
 import * as THREE from "three";
 
-/*
- * parameters = {
- *  ambientLight: { color: Integer, intensity: Float },
- *  pointLight1: { color: Integer, intensity: Float, distance: Float, position: Vector3 },
- *  pointLight2: { color: Integer, intensity: Float, distance: Float, position: Vector3 },
- *  spotLight: { color: Integer, intensity: Float, distance: Float, angle: Float, penumbra: Float, position: Vector3, direction: Float }
- * }
- */
-
 export default class Lights {
-    constructor(parameters) {
-        for (const [key, value] of Object.entries(parameters)) {
-            Object.defineProperty(this, key, { value: value, writable: true, configurable: true, enumerable: true });
-        }
-
-        // Create a group of objects
-        this.object = new THREE.Group();
-
-        // Create the ambient light
-        this.object.ambientLight = new THREE.AmbientLight(this.ambientLight.color, this.ambientLight.intensity);
-
-        this.object.add(this.object.ambientLight);
-
-        /* To-do #26 - Create the first point light and set its position in the scene
-            - light color: this.pointLight1.color
-            - light intensity: this.pointLight1.intensity
-            - light distance: this.pointLight1.distance
-            - light position: this.pointLight1.position.x, this.pointLight1.position.y, this.pointLight1.position.z
-        this.object.pointLight1 = new ...;
-        this.object.pointLight1...; */
-        this.object.pointLight1 = new THREE.PointLight(this.pointLight1.color, this.pointLight1.intensity, this.pointLight1.distance);
-        this.object.pointLight1.position.set(this.pointLight1.position.x, this.pointLight1.position.y, this.pointLight1.position.z);; 
-        
-        /* To-do #31 - Turn on shadows for this light and set its properties:
-            - shadow map width: 512
-            - shadow map height: 512
-            - shadow camera near plane: 5.0
-            - shadow camera far plane: 15.0
-
-        this.object.pointLight1.castShadow = ...; */
-        this.object.pointLight1.castShadow = true;
-
-        // Set up shadow properties for this light */
-        this.object.pointLight1.shadow.mapSize.width = 512;
-        this.object.pointLight1.shadow.mapSize.height = 512;
-        this.object.pointLight1.shadow.camera.near = 5.0;
-        this.object.pointLight1.shadow.camera.far = 15.0;
-        /* To-do #28 - Add this light to the scene
-        this.object.add(...); */
-        this.object.add(this.object.pointLight1); 
-
-        /* To-do #27 - Create the second point light and set its position in the scene
-            - light color: this.pointLight2.color
-            - light intensity: this.pointLight2.intensity
-            - light distance: this.pointLight2.distance
-            - light position: this.pointLight2.position.x, this.pointLight2.position.y, this.pointLight2.position.z
-        this.object.pointLight2 = new ...;
-        this.object.pointLight2...; */
-        this.object.pointLight2 = new THREE.PointLight(this.pointLight2.color, this.pointLight2.intensity, this.pointLight2.distance);
-        this.object.pointLight2.position.set(this.pointLight2.position.x, this.pointLight2.position.y, this.pointLight2.position.z);
-
-        // Create the spot light and set its position and direction in the scene
-        this.object.spotLight = new THREE.SpotLight(this.spotLight.color, this.spotLight.intensity, this.spotLight.distance, this.spotLight.angle, this.spotLight.penumbra);
-        this.object.spotLight.position.set(this.spotLight.position.x, this.spotLight.position.y, this.spotLight.position.z);
-        this.object.spotLight.target.position.set(this.spotLight.direction.x, this.spotLight.direction.y, this.spotLight.direction.z);
-        this.object.add(this.object.spotLight.target);
-
-        /* To-do #33 - Turn on shadows for this light and set its properties:
-            - shadow map width: 512
-            - shadow map height: 512
-            - shadow camera near plane: 5.0
-            - shadow camera far plane: 15.0
-
-        this.object.spotLight.castShadow = ...; */
-        this.object.spotLight.castShadow = true;
-
-        // Set up shadow properties for this light */
-        this.object.spotLight.shadow.mapSize.width = 512;
-        this.object.spotLight.shadow.mapSize.height = 512;
-        this.object.spotLight.shadow.camera.near = 5.0;
-        this.object.spotLight.shadow.camera.far = 15.0;
-
-        /* To-do #30 - Add this light to the scene
-        this.object.add(...); */
-        this.object.add(this.object.spotLight);
-
-        
-        /* To-do #32 - Turn on shadows for this light and set its properties:
-            - shadow map width: 512
-            - shadow map height: 512
-            - shadow camera near plane: 5.0
-            - shadow camera far plane: 15.0
-
-        this.object.pointLight2.castShadow = ...; */
-        this.object.pointLight2.castShadow = true;
-
-        // Set up shadow properties for this light */
-        this.object.pointLight2.shadow.mapSize.width = 512;
-        this.object.pointLight2.shadow.mapSize.height = 512;
-        this.object.pointLight2.shadow.camera.near = 5.0;
-        this.object.pointLight2.shadow.camera.far = 15.0;
-        /* To-do #29 - Add this light to the scene
-        this.object.add(...); */
-        this.object.add(this.object.pointLight2); 
+  constructor(parameters) {
+    // Assign all parameters to the class
+    for (const [key, value] of Object.entries(parameters)) {
+      Object.defineProperty(this, key, {
+        value: value,
+        writable: true,
+        configurable: true,
+        enumerable: true,
+      });
     }
+
+    // Create a group of lights
+    this.object = new THREE.Group();
+
+    // Create the ambient light
+    this.object.ambientLight = new THREE.AmbientLight(
+      this.ambientLight.color,
+      this.ambientLight.intensity
+    );
+    this.object.add(this.object.ambientLight);
+
+    // Create multiple point lights in a loop (from pointLight1 to pointLightN)
+    this.pointLights = []; // Array to store point lights for reference
+    for (let i = 1; i <= 10; i++) {
+      const lightParam = this[`pointLight${i}`]; // Access parameters dynamically
+      if (lightParam) {
+        const pointLight = new THREE.PointLight(
+          lightParam.color,
+          lightParam.intensity,
+          lightParam.distance
+        );
+
+        pointLight.position.set(
+          lightParam.position.x,
+          lightParam.position.y,
+          lightParam.position.z
+        );
+
+        // Enable shadows for the light
+        pointLight.castShadow = true;
+        pointLight.shadow.mapSize.width = 512;
+        pointLight.shadow.mapSize.height = 512;
+        pointLight.shadow.camera.near = 5.0;
+        pointLight.shadow.camera.far = 15.0;
+
+        // Add the point light to the scene and store it
+        this.object.add(pointLight);
+        this.pointLights.push(pointLight);
+      }
+    }
+
+    // Create the spot light
+    this.object.spotLight = new THREE.SpotLight(
+      this.spotLight.color,
+      this.spotLight.intensity,
+      this.spotLight.distance,
+      this.spotLight.angle,
+      this.spotLight.penumbra
+    );
+    this.object.spotLight.position.set(
+      this.spotLight.position.x,
+      this.spotLight.position.y,
+      this.spotLight.position.z
+    );
+    this.object.spotLight.target.position.set(
+      this.spotLight.direction.x,
+      this.spotLight.direction.y,
+      this.spotLight.direction.z
+    );
+
+    // Enable shadows for the spot light
+    this.object.spotLight.castShadow = true;
+    this.object.spotLight.shadow.mapSize.width = 512;
+    this.object.spotLight.shadow.mapSize.height = 512;
+    this.object.spotLight.shadow.camera.near = 5.0;
+    this.object.spotLight.shadow.camera.far = 15.0;
+
+    this.object.add(this.object.spotLight);
+    this.object.add(this.object.spotLight.target);
+  }
 }

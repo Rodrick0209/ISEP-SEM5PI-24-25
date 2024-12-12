@@ -14,6 +14,7 @@ import {
   doctorData,
   bedWithPatientData,
   tablesSurgeryData,
+  waitingChairData
 } from "./default_data.js";
 import { merge } from "./merge.js";
 import Maze from "./maze_template.js";
@@ -29,6 +30,7 @@ import Bed from "./bed.js";
 import Doctor from "./doctor.js";
 import BedWithPatient from "./bedWithPatient.js";
 import SurgeryTable from "./surgeryTable.js";
+import WaitingChair from "./waitingChair.js";
 import { tangentGeometry } from "three/webgpu";
 
 let rooms = null;
@@ -51,6 +53,7 @@ export default class ThumbRaiser {
     doctorParameters,
     bedWithPatientParameters,
     tablesSurgeryDataParameters,
+    waitingChairDataParameters,
     date,
     time
   ) {
@@ -119,6 +122,12 @@ export default class ThumbRaiser {
         tablesSurgeryData,
         tablesSurgeryDataParameters
       );
+
+      this.waitingChairData = merge(
+        {},
+        waitingChairData,
+        waitingChairDataParameters
+      );
       // Create a 2D scene (the viewports frames)
       //this.scene2D = new THREE.Scene();
 
@@ -176,6 +185,36 @@ export default class ThumbRaiser {
       this.surgeryTables = [];
       this.surgeryTablesPositionList = [];
       this.surgeryTablesDirectionList = [];
+
+      this.waitingChairs = [];
+      this.waitingChairPositionList = [];
+      this.waitingChairDirectionList = [];
+
+      for (const chairData of description.waitingChair) {
+        const waitingChair = new WaitingChair(this.waitingChairData);
+        this.waitingChairs.push(waitingChair);
+        const chairPosition = this.cellToCartesian(chairData.position);
+        this.waitingChairPositionList.push(chairPosition);
+        const chairDirection = chairData.direction;
+
+        switch (chairDirection) {
+          case "west":
+            this.waitingChairDirectionList.push(90);
+            break;
+          case "north":
+            this.waitingChairDirectionList.push(0);
+            break;
+          case "south":
+            this.waitingChairDirectionList.push(180);
+            break;
+          case "east":
+            this.waitingChairDirectionList.push(270);
+            break;
+          default:
+            console.log("Direction not handled:", chairDirection);
+        }
+      }
+      
 
       for (const room of description.rooms) {
         const table = new SurgeryTable(this.tablesSurgeryDataParameters);
@@ -1235,6 +1274,20 @@ export default class ThumbRaiser {
             this.doctors[i].position.z - 2.5
           );
           this.doctors[i].object.rotation.y = this.doctors[i].direction;
+        }
+
+        for (let i = 0; i < this.waitingChairs.length; i++) {
+          this.waitingChairs[i].position = this.waitingChairPositionList[i].clone();
+          this.waitingChairs[i].direction = THREE.MathUtils.degToRad(
+            this.waitingChairDirectionList[i]
+          );
+          this.scene3D.add(this.waitingChairs[i].object);
+          this.waitingChairs[i].object.position.set(
+            this.waitingChairs[i].position.x - 0.5,
+            this.waitingChairs[i].position.y,
+            this.waitingChairs[i].position.z
+          );
+          this.waitingChairs[i].object.rotation.y = this.waitingChairs[i].direction;
         }
 
         for (let i = 0; i < this.surgeryTables.length; i++) {

@@ -72,6 +72,13 @@ export const tablesSurgeryData = {
 }
 
 
+export const waitingChairData = {
+    url: "./assets/models/gltf/waitingChair/waitingChair.glb",
+    scale: new THREE.Vector3(0.01, 0.01, 0.01),
+    waitingChairDirection: 0.0, // Expressed in degrees
+}
+
+
 
 
 export const cameraData = {
