@@ -29,6 +29,7 @@ import Bed from "./bed.js";
 import Doctor from "./doctor.js";
 import BedWithPatient from "./bedWithPatient.js";
 import SurgeryTable from "./surgeryTable.js";
+import { tangentGeometry } from "three/webgpu";
 
 let rooms = null;
 
@@ -756,9 +757,10 @@ export default class ThumbRaiser {
 
   highlightSurgeryTable(event) {
     // Calculate mouse position in normalized device coordinates (-1 to +1) for both components
+    const rect = this.renderer.domElement.getBoundingClientRect();
     const mouse = new THREE.Vector2(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      -(event.clientY / window.innerHeight) * 2 + 1
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      -((event.clientY - rect.top) / rect.height) * 2 + 1
     );
 
     // Create a raycaster
@@ -767,6 +769,15 @@ export default class ThumbRaiser {
 
     // Check for intersections with surgical tables
     const intersects = raycaster.intersectObjects(this.surgeryTables.map(table => table.object), true);
+
+    // Reset all tables to their original color
+    this.surgeryTables.forEach(table => {
+      table.object.traverse((child) => {
+        if (child.isMesh) {
+          child.material.color.set(0xffffff); // Assuming the original color is white
+        }
+      });
+    });
 
     if (intersects.length > 0) {
       // Find the corresponding surgery table
@@ -778,20 +789,13 @@ export default class ThumbRaiser {
               child.material.color.set(0xff0000);
             }
           });
-          // Set a timeout to revert the color back to the original after a short delay
-          setTimeout(() => {
-            table.object.traverse((child) => {
-              if (child.isMesh) {
-                child.material.color.set(0xffffff); // Assuming the original color is white
-              }
-            });
-          }, 1000); // Change the delay as needed
           break;
         }
       }
     }
   }
 
+  
   mouseDown(event) {
     if (event.buttons == 1 || event.buttons == 2) {
       // Primary or secondary button down
@@ -901,9 +905,10 @@ export default class ThumbRaiser {
 
   selectRoom(event) {
     // Calculate mouse position in normalized device coordinates (-1 to +1) for both components
+    const rect = this.renderer.domElement.getBoundingClientRect();
     const mouse = new THREE.Vector2(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      -(event.clientY / window.innerHeight) * 2 + 1
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      -((event.clientY - rect.top) / rect.height) * 2 + 1
     );
 
     // Create a raycaster
@@ -921,12 +926,12 @@ export default class ThumbRaiser {
           const target = new THREE.Vector3(roomCenter.x, roomCenter.y, roomCenter.z);
           GSAP.gsap.to(this.activeViewCamera.object.position, {
             duration: 1,
-            x: target.x - 5,
+            x: target.x,
             z: target.z,
             ease: "power2.inOut",
             onUpdate: () => {
               this.activeViewCamera.object.lookAt(target);
-            },
+            }
           });
           break;
         }
