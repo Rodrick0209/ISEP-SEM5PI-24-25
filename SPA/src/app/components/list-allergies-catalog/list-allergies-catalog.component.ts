@@ -42,4 +42,8 @@ export class ListAllergiesCatalogComponent {
     addAllergy() {
       this.router.navigate(['/allergiesCatalog/add']);
     }
+
+    editAllergy(allergy: AllergyCatalogItem) {
+      this.router.navigate(['/allergiesCatalog/edit', allergy.name]);
+    }
 }

@@ -19,6 +19,21 @@ export default class AllergyCatalogController extends BaseController implements 
         super();
     }
 
+    public async getAllergyCatalogItem(req: Request, res: Response, next: NextFunction) {
+        try {
+            const allergyOrError = await this.allergyServiceInstance.getAllergyCatalogItem(req.params.name) as Result<IAllergyCathalogItemDTO>;
+
+            if (allergyOrError.isFailure) {
+                return res.status(404).send();
+            }
+
+            const allergyDTO = allergyOrError.getValue();
+            return res.json( allergyDTO ).status(200);
+        } catch (e) {
+            return next(e);
+        }
+    }
+
     public async updateAllergyCatalogItem(req: Request, res: Response, next: NextFunction) {
         try {
             const allergyOrError = await this.allergyServiceInstance.updateAllergyCatalogItem(req.params.name, req.body.nameToEdit as string) as Result<IAllergyCathalogItemDTO>;

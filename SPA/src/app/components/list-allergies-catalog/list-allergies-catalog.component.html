@@ -1,5 +1,4 @@
 <div class="allergies-catalog-container">
-  <h2 id="allergiesCatalogTitle">Allergies Catalog</h2>
 
   <!-- Indicador de Carregamento -->
   <div *ngIf="isLoading" class="loading-indicator" aria-live="polite">
@@ -18,17 +17,22 @@
   </div>
 
   <!-- Lista de Alergias -->
-  <div *ngIf="!isLoading && allergiesCatalogItem.length > 0" class="allergies-list" role="list" aria-labelledby="allergiesCatalogTitle">
+  <div *ngIf="!isLoading && allergiesCatalogItem.length > 0" class="allergies-list" role="list"
+    aria-labelledby="allergiesCatalogTitle">
     <div class="table-wrapper">
       <table class="allergies-table">
         <thead>
           <tr>
             <th>Name</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let allergy of allergiesCatalogItem">
             <td>{{ allergy.name }}</td>
+            <td>
+              <button (click)="editAllergy(allergy)">Edit</button>
+            </td>
           </tr>
         </tbody>
       </table>

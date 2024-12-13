@@ -11,7 +11,9 @@ import { AllergyCatalogMapper } from '../mappers/allergyCatalogMapper';
 export class AllergyCatalogService {
   private baseUrl = '/api2/allergiesCatalog';
   private getAllergiesUrl = '/getAll';
+  private getAllergyUrl = '/get';
   private createUrl = '/create';
+  private updateUrl = '/update';
 
   //private baseUrl = 'http://localhost:4000/api2/allergiesCatalog';
 
@@ -31,5 +33,20 @@ export class AllergyCatalogService {
       map((data: AllergyCatalogItem) => AllergyCatalogMapper.mapToAllergyCatalogItem(data))
     );
   }
-  
+
+  getAllergyCatalogItem(name: string): Observable<AllergyCatalogItem> {
+    const url = `${this.baseUrl}${this.getAllergyUrl}/${name}`;
+    return this.http.get<AllergyCatalogItem>(url).pipe(
+      map((data: AllergyCatalogItem) => AllergyCatalogMapper.mapToAllergyCatalogItem(data))
+    );
+  }
+
+  updateAllergyCatalogItem(name: string, nameToEdit: string): Observable<AllergyCatalogItem> {
+    const url = `${this.baseUrl}${this.updateUrl}/${name}`;
+    const body = { nameToEdit: nameToEdit };
+    return this.http.put<AllergyCatalogItem>(url, body).pipe(
+      map((data: AllergyCatalogItem) => AllergyCatalogMapper.mapToAllergyCatalogItem(data))
+    );
+  }
+ 
 }
