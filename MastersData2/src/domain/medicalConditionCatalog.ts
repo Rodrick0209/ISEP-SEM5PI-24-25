@@ -24,6 +24,10 @@ export class MedicalConditionCatalog extends AggregateRoot<MedicalConditionCatal
         return this.props.name;
     }
 
+    set name (name: string) {
+        this.props.name = name;
+    }
+
     private constructor (props: MedicalConditionCatalogProps, id?: UniqueEntityID) {
         super(props, id);
     }
