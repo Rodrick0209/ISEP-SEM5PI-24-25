@@ -87,6 +87,7 @@ export class ThreeViewComponent implements AfterViewInit, OnInit {
   }
 
   search(): void {
-    this.initializeGame(this.currentDate, this.currentTime);
+    //this.initializeGame(this.currentDate, this.currentTime);
+    this.thumbRaiser?.reloadBeds(this.currentDate, this.currentTime);
   }
 }
