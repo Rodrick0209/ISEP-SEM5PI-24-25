@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { UserSettingsComponent } from './user-settings.component';
 import { of } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('UserSettingsComponent', () => {
   let component: UserSettingsComponent;
@@ -19,7 +20,7 @@ describe('UserSettingsComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
         { provide: ActivatedRoute, useValue: mockActivatedRoute }
       ]

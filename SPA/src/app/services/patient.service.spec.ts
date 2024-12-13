@@ -59,9 +59,6 @@ describe('PatientService', () => {
         email: 'jane.doe@example.com',
         phoneNumber: '0987654321'
       },
-      medicalHistory: {
-        medicalConditions: 'None'
-      },
       id: '',
       medicalRecord:
         {
@@ -103,7 +100,7 @@ describe('PatientService', () => {
   });
 
   it('should edit an existing patient via PATCH', () => {
-    const updatedPatient = { medicalRecordNumber: '12345', name: 'John Doe', email: 'john.doe@example.com', phoneNumber: '1234567890', street: '123 Main St', postalCode: '12345', city: 'Anytown', country: 'USA', medicalConditions: 'None' };
+    const updatedPatient = { medicalRecordNumber: '12345', name: 'John Doe', email: 'john.doe@example.com', phoneNumber: '1234567890', street: '123 Main St', postalCode: '12345', city: 'Anytown', country: 'USA'};
 
     service.editPatient(
       updatedPatient.medicalRecordNumber, updatedPatient.name, updatedPatient.email, updatedPatient.phoneNumber, updatedPatient.street, updatedPatient.postalCode, updatedPatient.city, updatedPatient.country).subscribe(response => {

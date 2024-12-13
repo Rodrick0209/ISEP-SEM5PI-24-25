@@ -8,7 +8,6 @@ export interface Patient {
     gender: string;
     address: Address;
     emergencyContact: EmergencyContact;
-    medicalHistory: MedicalHistory;
     medicalRecord: MedicalRecord;
   }
 
@@ -42,11 +41,6 @@ export interface Patient {
     name: string;
     email: string;
     phoneNumber: string
-  }
-  
-  export interface MedicalHistory {
-    medicalConditions: string;
-    // appointments: Appointment[];
   }
   
   export interface PatientsView {

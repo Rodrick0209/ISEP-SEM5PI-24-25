@@ -4,6 +4,7 @@ import { PatientService } from '../../services/patient.service';
 import { MessageService } from '../../services/message.service';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonModule } from '@angular/common';
 import { FilterPatientsComponent } from '../filter-patients/filter-patients.component';
 
@@ -22,7 +23,7 @@ describe('ListPatientsComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [ListPatientsComponent, CommonModule, FilterPatientsComponent],
+      imports: [ListPatientsComponent, CommonModule, FilterPatientsComponent, HttpClientTestingModule],
       providers: [
         { provide: PatientService, useValue: patientServiceSpy },
         { provide: MessageService, useValue: messageServiceSpy },

@@ -61,7 +61,7 @@ describe('DeleteConfirmationComponent', () => {
 
     expect(userService.confirmDelete).toHaveBeenCalledWith('test-token', 'test@example.com');
     expect(router.navigate).toHaveBeenCalledWith(['/confirmation-success'], {
-      queryParams: { message: 'Your account and all associated data has been deleted succesfully.' }
+      queryParams: { message: 'Your account has been deleted successfully.' }
     });
   });
 
