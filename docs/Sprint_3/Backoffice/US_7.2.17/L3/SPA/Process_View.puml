@@ -1,0 +1,29 @@
+```plantuml
+@startuml Process_View
+participant View as View <<Component>>
+participant Component as Component <<Component>>
+participant Model as Model <<Component>>
+participant Service as Service <<Component>>
+participant HTTPDriver as HTTPDriver <<Component>>
+participant MastersData2 as BE <<Container (C4)>>
+activate View
+View -> Component: submit the form
+activate Component
+Component -> Model**: get the data in form
+Component -> Service: update medical condition
+activate Service
+Service -> HTTPDriver: PUT
+activate HTTPDriver
+HTTPDriver -> BE: PUT (/api/medicalConditions/:name)
+activate BE
+BE -> BE: receive request body info,\nupdate medical condition
+return response
+return response
+Service -> Model: transforms response data
+activate Model
+return medical condition
+return medical condition
+return success/fail message
+
+@enduml
+```

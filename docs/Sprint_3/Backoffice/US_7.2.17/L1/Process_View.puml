@@ -6,11 +6,11 @@ participant SARM as System <<System (C4)>>
 
 activate Doctor
 
-Doctor -> System: Make a request to update a allergy
+Doctor -> System: Make a request to update a medical condition
 activate System
-System --> Doctor: Displays all allergies
-Doctor -> System: Select a allergy
-System --> Doctor : Requests the information to update the allergy
+System --> Doctor: Displays all medical conditions
+Doctor -> System: Select a medical condition
+System --> Doctor : Requests the information to update\nthe medical condition
 Doctor -> System: Writes the information
 System --> Doctor: Success/Error message
 deactivate System
