@@ -979,13 +979,13 @@ export default class ThumbRaiser {
 
     // Check for intersections with beds
     const intersects = raycaster.intersectObjects(
-      this.beds.map((bed) => bed.object),
+      [...this.beds.map((bed) => bed.object), ...this.bedWithPatients.map((bed) => bed.object)],
       true
     );
 
     if (intersects.length > 0) {
       // Find the corresponding bed
-      for (const bed of this.beds) {
+      for (const bed of [...this.beds, ...this.bedWithPatients]) {
         if (bed.object.getObjectById(intersects[0].object.id)) {
           const roomCenter = bed.position;
           const target = new THREE.Vector3(
