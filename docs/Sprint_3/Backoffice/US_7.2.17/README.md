@@ -15,3 +15,10 @@ N/A
 ### 2.2. User Story Dependencies
 
 **7.2.4** The medical condition must be added on the system.
+
+## 3. Analysis
+
+The admin can edit the following fields from the medical condition:
+- Name/Designation
+
+The medical condition should still in the catalog but when edited, a new object will be created.
