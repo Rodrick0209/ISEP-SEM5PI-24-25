@@ -46,31 +46,25 @@ export class EditAllergyComponent {
     this.showConfirmation = false;
   }
 
-  onSubmit(patientForm: any): void {
+  onSubmit(allergyForm: any): void {
     this.showConfirmation = false;
-    if (patientForm.valid) {
-      const patientData = {
-        ...this.submitForm,
-      };
-
-      if (this.allergyName) {
-        this.allergyService.updateAllergyCatalogItem(
-          this.allergyName,
-          this.submitForm.name
-        ).subscribe(
-          (response) => {
-            console.log("Allergy edited successfully", response);
-            this.messageService.setMessage(`Allergy ${this.allergyName} successfully edited!`);
-            this.router.navigate(['/allergiesCatalog']);
-          },
-          (error) => {
-            this.errorMessage = error.error.message;
-            console.error("Failed to edit patient", error);
-          }
-        );
-      } else {
-        this.errorMessage = 'Medical record number is missing.';
-      }
+    if (this.allergyName) {
+      this.allergyService.updateAllergyCatalogItem(
+        this.allergyName,
+        this.submitForm.name
+      ).subscribe(
+        (response) => {
+          console.log("Allergy edited successfully", response);
+          this.messageService.setMessage(`Allergy ${this.allergyName} successfully edited!`);
+          this.router.navigate(['/allergiesCatalog']);
+        },
+        (error) => {
+          this.errorMessage = error.error.message;
+          console.error("Failed to edit allergy", error);
+        }
+      );
+    } else {
+      this.errorMessage = 'Allergy name is missing.';
     }
   }
 

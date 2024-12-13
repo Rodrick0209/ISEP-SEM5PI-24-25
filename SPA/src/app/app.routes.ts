@@ -51,6 +51,7 @@ import { EditAppointmentComponent } from './components/edit-appointment/edit-app
 import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { EditMedicalRecordComponent } from './components/edit-medical-record/edit-medical-record.component';
 import { EditAllergyComponent } from './components/edit-allergy/edit-allergy.component';
+import { EditMedicalConditionComponent } from './components/edit-medical-condition/edit-medical-condition.component';
 
 
 export const routes: Routes = [
@@ -300,8 +301,14 @@ export const routes: Routes = [
         data: {role: 'doctor'}
     },
     {
-        path: 'allergiesCatalog/edit/:name',
+        path: 'allergiesCatalog/edit/:allergyName',
         component: EditAllergyComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'admin'}
+    },
+    {
+        path: 'medicalConditions/edit/:medicalConditionName',
+        component: EditMedicalConditionComponent,
         canActivate: [AuthGuard],
         data: {role: 'admin'}
     }
