@@ -13,6 +13,21 @@ export default class AllergyCatalogService implements IAllergyCatalogService {
         @Inject(config.repos.allergyCatalog.name) private allergyRepo : IAllergyCatalogRepo
     ) {}
 
+    public async getAllergyCatalogItem(name: string): Promise<Result<IAllergyCathalogItemDTO>> {
+        try {
+            const allergy = await this.allergyRepo.findByAllergyName(name);
+
+            if (allergy === null) {
+                return Result.fail<IAllergyCathalogItemDTO>("Allergy not found");
+            }
+
+            const allergyDTOResult = AllergyCatalogMap.toDTO(allergy) as IAllergyCathalogItemDTO;
+            return Result.ok<IAllergyCathalogItemDTO>(allergyDTOResult);
+        } catch (e) {
+            throw e;
+        }
+    }
+
     public async updateAllergyCatalogItem(name: string, nameToEdit: string): Promise<Result<IAllergyCathalogItemDTO>> {
         try {
             const allergy = await this.allergyRepo.findByAllergyName(name);
