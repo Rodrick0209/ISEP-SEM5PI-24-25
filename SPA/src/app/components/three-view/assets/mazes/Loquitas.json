@@ -43,6 +43,26 @@
         "direction": "south"
       }
   ],
+  "vendingMachine": [
+    {
+      "position": [3.8, 10],
+      "direction": "north"
+    },
+    {
+      "position": [13.2, 8.5],
+      "direction": "south"
+    }
+  ],
+  "boards": [
+    {
+      "position": [3.55, 4],
+      "direction": "north"
+    },
+    {
+      "position": [11.45, 4],
+      "direction": "south"
+    }
+  ],
 
   "rooms": [
     {

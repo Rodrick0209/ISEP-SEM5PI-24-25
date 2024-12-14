@@ -15,6 +15,8 @@ import {
   bedWithPatientData,
   tablesSurgeryData,
   waitingChairData,
+  vendingMachineData,
+  boardData,
 } from "./default_data.js";
 import { merge } from "./merge.js";
 import Maze from "./maze_template.js";
@@ -31,8 +33,8 @@ import Doctor from "./doctor.js";
 import BedWithPatient from "./bedWithPatient.js";
 import SurgeryTable from "./surgeryTable.js";
 import WaitingChair from "./waitingChair.js";
-import { tangentGeometry } from "three/webgpu";
-import { forEach } from "lodash";
+import VendingMachine from "./vending_machine.js";
+import Board from "./board.js";
 
 let rooms = null;
 
@@ -129,6 +131,10 @@ export default class ThumbRaiser {
         waitingChairData,
         waitingChairDataParameters
       );
+
+      this.vendingMachineData = merge({}, vendingMachineData);
+
+      this.boardData = merge({}, boardData);
       // Create a 2D scene (the viewports frames)
       //this.scene2D = new THREE.Scene();
 
@@ -190,6 +196,64 @@ export default class ThumbRaiser {
       this.waitingChairs = [];
       this.waitingChairPositionList = [];
       this.waitingChairDirectionList = [];
+
+      this.vendingMachines = [];
+      this.vendingMachinePositionList = [];
+      this.vendingMachineDirectionList = [];
+
+      this.boards = [];
+      this.boardPositionList = [];
+      this.boardDirectionList = [];
+
+      for (const machine of description.vendingMachine) {
+        const vendingMachine = new VendingMachine(this.vendingMachineData);
+        this.vendingMachines.push(vendingMachine);
+        const vendingPosition = this.cellToCartesian(machine.position);
+        this.vendingMachinePositionList.push(vendingPosition);
+        const chairDirection = machine.direction;
+
+        switch (chairDirection) {
+          case "west":
+            this.vendingMachineDirectionList.push(90);
+            break;
+          case "north":
+            this.vendingMachineDirectionList.push(0);
+            break;
+          case "south":
+            this.vendingMachineDirectionList.push(180);
+            break;
+          case "east":
+            this.vendingMachineDirectionList.push(270);
+            break;
+          default:
+            console.log("Direction not handled:", chairDirection);
+        }
+      }
+
+      for (const boardData of description.boards) {
+        const board = new Board(this.boardData);
+        this.boards.push(board);
+        const boardPosition = this.cellToCartesian(boardData.position);
+        this.boardPositionList.push(boardPosition);
+        const boardDirection = boardData.direction;
+
+        switch (boardDirection) {
+          case "west":
+            this.boardDirectionList.push(90);
+            break;
+          case "north":
+            this.boardDirectionList.push(0);
+            break;
+          case "south":
+            this.boardDirectionList.push(180);
+            break;
+          case "east":
+            this.boardDirectionList.push(270);
+            break;
+          default:
+            console.log("Direction not handled:", boardDirection);
+        }
+      }
 
       for (const chairData of description.waitingChair) {
         const waitingChair = new WaitingChair(this.waitingChairData);
@@ -979,7 +1043,10 @@ export default class ThumbRaiser {
 
     // Check for intersections with beds
     const intersects = raycaster.intersectObjects(
-      [...this.beds.map((bed) => bed.object), ...this.bedWithPatients.map((bed) => bed.object)],
+      [
+        ...this.beds.map((bed) => bed.object),
+        ...this.bedWithPatients.map((bed) => bed.object),
+      ],
       true
     );
 
@@ -1288,6 +1355,36 @@ export default class ThumbRaiser {
           );
           this.waitingChairs[i].object.rotation.y =
             this.waitingChairs[i].direction;
+        }
+
+        for (let i = 0; i < this.boards.length; i++) {
+          this.boards[i].position = this.boardPositionList[i].clone();
+          this.boards[i].direction = THREE.MathUtils.degToRad(
+            this.boardDirectionList[i]
+          );
+          this.scene3D.add(this.boards[i].object);
+          this.boards[i].object.position.set(
+            this.boards[i].position.x - 0.5,
+            this.boards[i].position.y + 0.4,
+            this.boards[i].position.z
+          );
+          this.boards[i].object.rotation.y = this.boards[i].direction;
+        }
+
+        for (let i = 0; i < this.vendingMachines.length; i++) {
+          this.vendingMachines[i].position =
+            this.vendingMachinePositionList[i].clone();
+          this.vendingMachines[i].direction = THREE.MathUtils.degToRad(
+            this.vendingMachineDirectionList[i]
+          );
+          this.scene3D.add(this.vendingMachines[i].object);
+          this.vendingMachines[i].object.position.set(
+            this.vendingMachines[i].position.x - 0.5,
+            this.vendingMachines[i].position.y,
+            this.vendingMachines[i].position.z
+          );
+          this.vendingMachines[i].object.rotation.y =
+            this.vendingMachines[i].direction;
         }
 
         for (let i = 0; i < this.surgeryTables.length; i++) {
