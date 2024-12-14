@@ -5,6 +5,7 @@ import { DeleteUserComponent } from './delete-user.component';
 import { UserService } from '../../services/user.service';
 import { MarkXComponent } from '../template/mark-x/mark-x.component';
 import { CommonModule } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DeleteUserComponent', () => {
   let component: DeleteUserComponent;
@@ -16,8 +17,8 @@ describe('DeleteUserComponent', () => {
     userServiceSpy = jasmine.createSpyObj('UserService', ['delete']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
-    await TestBed.configureTestingModule({
-      imports: [DeleteUserComponent, CommonModule, MarkXComponent],
+    TestBed.configureTestingModule({
+      imports: [DeleteUserComponent, CommonModule, MarkXComponent, HttpClientTestingModule],
       providers: [
         { provide: UserService, useValue: userServiceSpy },
         { provide: Router, useValue: routerSpy },
