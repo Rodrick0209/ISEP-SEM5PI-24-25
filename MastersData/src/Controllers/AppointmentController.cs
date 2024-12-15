@@ -131,9 +131,12 @@ namespace DDDSample1.Controllers
             return await _service.GetAllForUIAsync();
         }
 
-
-
-
+        [HttpGet("medicalRecordNumber/{medicalRecordNumber}")]
+        [Authorize(Roles = "patient")]
+        public async Task<ActionResult<IEnumerable<AppointmentDtoInTable>>> GetByMedicalRecordNumberAsync(string medicalRecordNumber)
+        {
+            return await _service.GetByMedicalRecordNumberAsync(medicalRecordNumber);
+        }
     }
 }
 

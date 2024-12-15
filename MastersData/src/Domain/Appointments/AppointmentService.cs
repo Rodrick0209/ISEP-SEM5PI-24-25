@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Appointments;
@@ -10,6 +11,8 @@ using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Domain.Utils;
+using DDDSample1.Infrastructure.StaffMembers;
+using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.OpenApi.Models;
 using Org.BouncyCastle.Crypto.Prng;
 
@@ -26,7 +29,7 @@ namespace DDDSample1.Domain.Appointments
         private readonly IPatientRepository _patientRepository;
         private readonly IStaffRepository _staffRepository;
 
-        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentRepository appointmentRepository, IOperationRoomRepository operationRoomRepository, IOperationRequestRepository operationRequestRepository, IPatientRepository patientRepository, IAvailabilitySlotsRepository availabilitySlotsRepository)
+        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentRepository appointmentRepository, IOperationRoomRepository operationRoomRepository, IOperationRequestRepository operationRequestRepository, IPatientRepository patientRepository, IAvailabilitySlotsRepository availabilitySlotsRepository, IStaffRepository staffRepository)
         {
             this._unitOfWork = unitOfWork;
             this._appointmentRepository = appointmentRepository;
@@ -34,6 +37,7 @@ namespace DDDSample1.Domain.Appointments
             this._operationRequestRepository = operationRequestRepository;
             this._patientRepository = patientRepository;
             this._availabilitySlotsRepository = availabilitySlotsRepository;
+            this._staffRepository = staffRepository;
         }
 
 
@@ -358,9 +362,51 @@ namespace DDDSample1.Domain.Appointments
             return appointmentDtos;
         }
 
+        public async Task<List<AppointmentDtoInTable>> GetByMedicalRecordNumberAsync(string medicalRecordNumber)
+        {
+            // Get all appointments
+            List<Appointment> appointments = await this._appointmentRepository.GetAllAsync();
+            List<AppointmentDtoInTable> appointmentDtos = new List<AppointmentDtoInTable>();
+            var patient = await _patientRepository.GetByMedicalRecordNumberAsync(medicalRecordNumber);
 
+            if (patient == null)
+            {
+                throw new BusinessRuleValidationException("Patient not found");
+            }
 
+            var patientId = patient.Id;
 
+            foreach (var app in appointments)
+            {
+                DateOnly? appointmentDate = app?.AppointmentTimeSlot?.Date;
+                int? appointmentTimeSlotStart = app?.AppointmentTimeSlot?.TimeSlot.StartMinute;
+                int? appointmentTimeSlotEnd = app?.AppointmentTimeSlot?.TimeSlot.EndMinute;
+
+                var opRequest = await _operationRequestRepository.GetByIdAsync(app.OperationRequestId);
+
+                if (opRequest != null)
+                {
+                    if (opRequest.patientId == patientId.AsString())
+                    {
+                        string opRequestPriotity = opRequest.priority?.priority;
+                        string opRequestDoctorId = opRequest.doctorThatWillPerformId;
+
+                        var doctor = await _staffRepository.GetByIdAsync(new StaffId(opRequestDoctorId));
+                        string doctorName = doctor?.FullName?.fullName;
+
+                        var opRoom = await _operationRoomRepository.GetByIdAsync(app.OperationRoomId);
+                        string opRoomNumber = opRoom?.RoomNumber?.roomNumber;
+
+                        if (opRequestPriotity != null && opRoomNumber != null && appointmentDate != null && appointmentTimeSlotStart != null && appointmentTimeSlotEnd != null)
+                        {
+                            appointmentDtos.Add(new AppointmentDtoInTable(opRequestPriotity, doctorName, appointmentDate, appointmentTimeSlotStart, appointmentTimeSlotEnd, opRoomNumber));
+                        }
+                    }
+                }
+            }
+
+            return appointmentDtos;
+        }
 
     }
 }

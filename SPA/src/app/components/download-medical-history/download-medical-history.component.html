@@ -1,0 +1,16 @@
+<div class="download-medical-history">
+    <h3>Download Medical History</h3>
+
+    <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+    </div>
+
+    <input type="password" [(ngModel)]="password" placeholder="Enter your password to verify..." class="password-input" />
+
+    <button (click)="onDownload()" class="download-button">
+        Download
+    </button>
+    <button (click)="onCancel()" class="cancel-button">
+        Cancel
+    </button>
+</div>

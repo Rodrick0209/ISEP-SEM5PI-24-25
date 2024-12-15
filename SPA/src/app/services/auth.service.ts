@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, firstValueFrom } from 'rxjs';
 
 interface LoginResponse {
   token: string;
@@ -82,6 +82,25 @@ export class AuthService {
     } catch (e) {
       console.error('Invalid token format', e);
       return null;
+    }
+  }
+
+  async validatePassword(email: string, password: string): Promise<boolean> {
+    try {
+      const response = await firstValueFrom(this.login(email, password));
+ 
+      console.log('API Response:', response);
+  
+      if (response && response.token) {
+        return true; // Validation successful
+      } else {
+        console.error('Validation failed: Token not found in response');
+        return false; // Token missing
+      }
+    } catch (error) {
+      // Enhanced error handling
+      console.error('Error validating password:', error || error);
+      return false; // API call failed
     }
   }
 }

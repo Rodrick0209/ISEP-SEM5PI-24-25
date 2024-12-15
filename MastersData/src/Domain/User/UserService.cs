@@ -418,8 +418,6 @@ namespace DDDSample1.Domain.User
             patient.DisassociateUser();
             _repo.Remove(user);
 
-            sendEmailToDPODeleteRequest(dto.Email, patient.MedicalRecordNumber._medicalRecordNumber);
-
             await _unitOfWork.CommitAsync();
         }
 

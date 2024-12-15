@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core'
 import { Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
-import { Appointment, AppointmentEdit, AppointmentsView } from '../models/appointment';
+import { Appointment, AppointmentEdit, AppointmentsView, AppointmentTable } from '../models/appointment';
 import { OperationRequest } from './operationRequestService';
 import { OperationRoom } from '../models/operationRoom';
 import { Staff } from '../models/staff';
@@ -19,6 +19,7 @@ export class AppointmentService {
   private getAllOpRquestsAvailable = '/api/OperationRequest/GetAllAvailableForUi';
   private getAllOpRooms = '/api/OperationRoom/GetAll';
   private getAllStaff = '/api/Staff/GetAllForUi';
+  private getByMedicalRecordNumber = '/api/Appointment/medicalRecordNumber'; // Update with your API URL
   constructor(private http: HttpClient) { }
 
 
@@ -92,6 +93,8 @@ export class AppointmentService {
     return this.http.put(`${this.url}/${id}`, body);
   }
 
-
+  getAppointmentByMedicalRecordNumber(medicalRecordNumber: string): Observable<AppointmentTable[]> {
+    return this.http.get<AppointmentTable[]>(`${this.getByMedicalRecordNumber}/${medicalRecordNumber}`);
+  }
 
 }

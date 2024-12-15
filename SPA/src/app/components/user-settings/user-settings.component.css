@@ -117,40 +117,43 @@
     margin-top: 30px;
 }
 
-.user-settings .edit-user button {
+.edit-user, .delete-user {
+    display: inline-block; /* Ensure both buttons are treated as inline blocks */
+    margin: 0 10px; /* Add spacing between the buttons */
+    vertical-align: middle; /* Align buttons vertically */
+}
+
+.edit-user button, .delete-user button {
     padding: 12px 24px;
     font-size: 1.1rem;
-    background-color: #4caf50;
+    background-color: #4caf50; /* Edit button default color */
     color: #ffffff;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: transform 0.2s, background-color 0.3s;
-    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); /* Box shadow for edit button */
 }
 
-.user-settings button:hover {
-    background-color: #388e3c;
+.edit-user button:hover {
+    background-color: #388e3c; /* Hover effect for edit button */
     transform: translateY(-2px);
 }
 
-.user-settings 
-
-.error-message {
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 15px;
-    border-radius: 8px;
-    background-color: #ffdddd;
-    color: #d8000c;
-    border: 1px solid #d8000c;
-    font-family: 'Roboto', sans-serif;
-    box-shadow: 0 4px 10px rgba(216, 0, 12, 0.1);
-    text-align: center;
+.delete-user button {
+    background-color: #f44336; /* Delete button default color */
+    box-shadow: 0 4px 10px rgba(244, 67, 54, 0.3); /* Box shadow for delete button */
 }
 
-.error-message p {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 500;
+.delete-user button:hover {
+    background-color: #d32f2f; /* Hover effect for delete button */
+    transform: translateY(-2px);
+}
+
+/* Container for buttons */
+.user-actions {
+    display: flex; /* Align buttons in a row */
+    justify-content: center; /* Center the buttons */
+    align-items: center; /* Vertically align buttons */
+    margin-top: 20px;
 }
