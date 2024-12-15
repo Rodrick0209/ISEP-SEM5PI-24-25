@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
   const authService = inject(AuthService);
-  const router = inject(Router);
 
   const token = authService.getToken();
   if (token) {
@@ -16,13 +15,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
       }
     });
   }
-  return next(req).pipe(
-    catchError((err: HttpErrorResponse) => {
-      if (err.status === 401) {
-        authService.clearToken(); // Logout user if token is invalid
-        router.navigate(['/login']); // Navigate to login page if user is not authenticated/authorized
-      }
-      return throwError(() => err);
-    })
-  );
+
+  return next(req);
 };

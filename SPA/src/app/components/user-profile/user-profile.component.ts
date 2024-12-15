@@ -41,18 +41,6 @@ export class UserProfileComponent implements OnInit {
     this.router.navigate(['/settings', this.email]);
   }
 
-  viewPatientProfile(): void {
-    this.patientService.getPatientByEmail(this.email).subscribe({
-      next: (data) => {
-        this.medicalRecordNumber = data.medicalRecordNumber;
-        this.router.navigate(['/patient/details', this.medicalRecordNumber]);
-      },
-      error: (err) => {
-        console.error('Error loading patient', err);
-      }
-    });
-  }
-
   getUserByEmail(email: string): void {
     this.userService.getUserByEmail(email).subscribe({
       next: (data: User) => this.user = data,

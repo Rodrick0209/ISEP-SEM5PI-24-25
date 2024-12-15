@@ -5,7 +5,7 @@ import { PatientService } from '../../services/patient.service';
 import { AppointmentService } from '../../services/appointment.service';
 import { Allergy, MedicalCondition, MedicalRecord, Patient } from '../../models/patient';
 import { Appointment, AppointmentsView, AppointmentTable } from '../../models/appointment';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EditConfirmationComponent } from '../edit-confirmation/edit-confirmation.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -28,10 +28,14 @@ export class DownloadMedicalHistoryComponent implements OnInit {
   appointments: AppointmentTable[] = []; // Appointments data
   isDownloading: boolean = false;
 
-  constructor(private patientService: PatientService, private appointmentService: AppointmentService, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(private patientService: PatientService, private appointmentService: AppointmentService, private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.email = this.route.snapshot.paramMap.get('email') || '';
+    var emailVerified = this.authService.extractEmailFromToken();
+    if (emailVerified != this.email) {
+      this.router.navigate(['/home']);
+    }
   }
 
   onMarkMedicalRecordClick(): void {
@@ -44,20 +48,20 @@ export class DownloadMedicalHistoryComponent implements OnInit {
 
   async onDownload(): Promise<void> {
     if (!this.password) {
-        this.errorMessage = 'Password is required to download the medical history.';
-        this.isDownloading = false;
-        return;
+      this.errorMessage = 'Password is required to download the medical history.';
+      this.isDownloading = false;
+      return;
     }
 
     const isValidPassword = await this.authService.validatePassword(this.email, this.password);
     if (!isValidPassword) {
-        this.errorMessage = 'Invalid password. Please try again.';
-        this.isDownloading = false;
-        return;
+      this.errorMessage = 'Invalid password. Please try again.';
+      this.isDownloading = false;
+      return;
     }
 
     if (this.isDownloading) {
-        return;
+      return;
     }
 
     this.isDownloading = true;
@@ -72,32 +76,32 @@ export class DownloadMedicalHistoryComponent implements OnInit {
     const medicalHistory = {
       medicalHistory: {
         patientInformation: {
-            medicalRecordNumber: this.patient?.medicalRecordNumber,
-            name: this.patient?.name,
-            dateOfBirth: this.patient?.dateOfBirth,
-            gender: this.patient?.gender,
-            email: this.patient?.email,
-            phoneNumber: this.patient?.phoneNumber,
-            address: this.patient?.address,
-            emergencyContact: this.patient?.emergencyContact
+          medicalRecordNumber: this.patient?.medicalRecordNumber,
+          name: this.patient?.name,
+          dateOfBirth: this.patient?.dateOfBirth,
+          gender: this.patient?.gender,
+          email: this.patient?.email,
+          phoneNumber: this.patient?.phoneNumber,
+          address: this.patient?.address,
+          emergencyContact: this.patient?.emergencyContact
         },
         medicalRecord: {
-            conditions: this.medicalRecord?.medicalConditions.map(condition => ({
-                name: condition.name,
-                date: condition.date ? new Date(condition.date).toISOString().split('T')[0] : 'N/A'
-            })),
-            allergies: this.medicalRecord?.allergies.map(allergy => ({
-                name: allergy.name,
-                description: allergy.description || 'N/A'
-            }))
+          conditions: this.medicalRecord?.medicalConditions.map(condition => ({
+            name: condition.name,
+            date: condition.date ? new Date(condition.date).toISOString().split('T')[0] : 'N/A'
+          })),
+          allergies: this.medicalRecord?.allergies.map(allergy => ({
+            name: allergy.name,
+            description: allergy.description || 'N/A'
+          }))
         },
         appointments: this.appointments.map(appointment => ({
-            priority: appointment.priority,
-            date: appointment.appointmentTimeSlot.date,
-            doctor: appointment.doctor,
-            startTime: this.formatTime(Number(appointment.appointmentTimeSlot.timeSlot.startTime)),
-            endTime: this.formatTime(Number(appointment.appointmentTimeSlot.timeSlot.endTime)),
-            roomNumber: appointment.roomNumber
+          priority: appointment.priority,
+          date: appointment.appointmentTimeSlot.date,
+          doctor: appointment.doctor,
+          startTime: this.formatTime(Number(appointment.appointmentTimeSlot.timeSlot.startTime)),
+          endTime: this.formatTime(Number(appointment.appointmentTimeSlot.timeSlot.endTime)),
+          roomNumber: appointment.roomNumber
         }))
       }
     };
@@ -108,15 +112,15 @@ export class DownloadMedicalHistoryComponent implements OnInit {
     // Download the JSON file
     await this.downloadMedicalHistory(fileContent, `${this.patient.medicalRecordNumber}.json`);
     this.isDownloading = false;
-}
+  }
 
-// Helper method to format time
-private formatTime(minutes: number): string {
-  if (!minutes) return 'N/A';
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-  return `${hours}:${mins.toString().padStart(2, '0')}`;
-}
+  // Helper method to format time
+  private formatTime(minutes: number): string {
+    if (!minutes) return 'N/A';
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}:${mins.toString().padStart(2, '0')}`;
+  }
 
   onCancel(): void {
     this.errorMessage = null;

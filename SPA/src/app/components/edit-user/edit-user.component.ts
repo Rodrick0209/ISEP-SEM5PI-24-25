@@ -76,6 +76,6 @@ export class EditUserComponent implements OnInit {
 
   onCancel(): void {
     this.showConfirmation = false;
-    this.router.navigate(['/profile', this.email]);
+    history.back();
   }
 }

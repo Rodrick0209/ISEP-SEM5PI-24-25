@@ -1,0 +1,135 @@
+.request-delete-patient-data {
+    text-align: center;
+    padding: 40px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* Slightly sharper rounded corners */
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Softer shadow for a more modern feel */
+    font-family: 'Inter', Arial, sans-serif; /* Modern font family */
+    transition: box-shadow 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+.request-delete-patient-data:hover {
+    transform: translateY(-4px); /* Slight lift on hover */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Elevated shadow on hover */
+}
+
+h3 {
+    margin-bottom: 20px; /* Reduced space for a more compact feel */
+    font-size: 26px; /* Larger, more prominent heading */
+    font-weight: 600; /* Slightly bolder font for emphasis */
+    color: #333; /* Slightly darker color for better readability */
+}
+
+p {
+    margin-bottom: 20px;
+    font-size: 17px; /* Improved readability */
+    color: #666;
+}
+
+.delete-button,
+.cancel-button {
+    padding: 14px 24px; /* Larger buttons for better touch interaction */
+    border: none;
+    border-radius: 8px; /* More modern rounded corners */
+    font-size: 17px;
+    font-weight: 600; /* Bolder font for buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin: 0 12px;
+    text-transform: uppercase; /* Uppercase for a more modern feel */
+    min-width: 150px; /* Ensure buttons have consistent size */
+}
+
+.delete-button {
+    background-color: #ff4747;
+    color: #ffffff;
+}
+
+.delete-button:disabled {
+    background-color: #e0e0e0;
+    color: #b0b0b0;
+    cursor: not-allowed;
+}
+
+.delete-button:not(:disabled):hover {
+    background-color: #e63946; /* Slightly deeper red */
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow on hover */
+}
+
+.cancel-button {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.cancel-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.password-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 1.5rem; /* Space below the input */
+    margin-top: 10px; /* Space above the input */
+    margin-left: 15px; /* Space on the left */
+    margin-right: 15px; /* Space on the right */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.password-input:focus {
+    border-color: #3f51b5;
+    outline: none;
+    box-shadow: 0 0 6px rgba(63, 81, 181, 0.3);
+}
+
+.square {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    margin-right: 12px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.square:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.mark-x {
+    font-size: 24px;
+    color: #d9534f;
+    transition: transform 0.2s ease;
+}
+
+.square.active .mark-x {
+    transform: scale(1.3);
+}
+
+.error-message {
+    text-align: center;
+    color: #d9534f;
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.success-message {
+    text-align: center;
+    color: #28a745;
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-size: 16px;
+}

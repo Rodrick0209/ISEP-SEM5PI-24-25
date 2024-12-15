@@ -53,6 +53,7 @@ import { EditMedicalRecordComponent } from './components/edit-medical-record/edi
 import { EditAllergyComponent } from './components/edit-allergy/edit-allergy.component';
 import { EditMedicalConditionComponent } from './components/edit-medical-condition/edit-medical-condition.component';
 import { DownloadMedicalHistoryComponent } from './components/download-medical-history/download-medical-history.component';
+import { RequestDeletePatientDataComponent } from './components/request-delete-patient-data/request-delete-patient-data.component';
 
 
 export const routes: Routes = [
@@ -316,6 +317,12 @@ export const routes: Routes = [
     {
         path: 'download-medical-history/:email',
         component: DownloadMedicalHistoryComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'patient'}
+    },
+    {
+        path: 'request-delete/:email',
+        component: RequestDeletePatientDataComponent,
         canActivate: [AuthGuard],
         data: {role: 'patient'}
     }
