@@ -269,10 +269,10 @@ public static class DataSeeder
    
     var appointment = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,12), new TimeSlot(20, 110)), operationRoom.Id, operationRequest.Id);
     var appointment2 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,12), new TimeSlot(720, 840)), operationRoom.Id, operationRequest2.Id);
-    var appointment3 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,13), new TimeSlot(720, 840)), operationRoom.Id, operationRequest3.Id);
-    var appointment4 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,14), new TimeSlot(720, 840)), operationRoom.Id, operationRequest4.Id);
-    var appointment5 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,15), new TimeSlot(720, 840)), operationRoom.Id, operationRequest5.Id);
-    var appointment6 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,16), new TimeSlot(720, 840)), operationRoom.Id, operationRequest6.Id);
+    var appointment3 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,13), new TimeSlot(845, 900)), operationRoom.Id, operationRequest3.Id);
+    var appointment4 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,14), new TimeSlot(915, 1000)), operationRoom.Id, operationRequest4.Id);
+    var appointment5 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,15), new TimeSlot(1000, 1100)), operationRoom.Id, operationRequest5.Id);
+    var appointment6 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,16), new TimeSlot(1110, 1220)), operationRoom.Id, operationRequest6.Id);
     SeedAppointments(context, appointment);
     context.SaveChanges();
   }
