@@ -16,8 +16,8 @@ namespace DDDSample1.Domain.Appointments
         Task<AppointmentDto> AddAsync(CreatingAppointmentDto appointmentDto);
         Task<AppointmentDtoUI> GetByIdAsync(AppointmentId id);
         Task<AppointmentDto> UpdateAsync(EditingAppointmentDto appointmentDto);
-        
         Task<List<AppointmentDtoUI>> GetAllForUIAsync();
+        Task<List<AppointmentDtoInTable>> GetByMedicalRecordNumberAsync(string medicalRecordNumber);
        
         
 

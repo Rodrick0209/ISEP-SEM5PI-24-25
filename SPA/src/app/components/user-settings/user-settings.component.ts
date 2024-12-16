@@ -36,8 +36,8 @@ export class UserSettingsComponent implements OnInit {
     this.router.navigate(['/delete', this.email]);
   }
 
-  viewPatientProfile(): void {
-    console.log('View patient profile clicked: ' + this.email);
-    this.router.navigate(['/patient', this.email]);
+  requestDeletePatientData(): void {
+    console.log('Request delete patient data clicked: ' + this.email);
+    this.router.navigate(['/request-delete', this.email]);
   }
 }

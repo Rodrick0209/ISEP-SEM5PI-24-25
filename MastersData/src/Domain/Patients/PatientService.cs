@@ -19,13 +19,15 @@ namespace DDDSample1.Domain.Patients
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPatientRepository _patientRepository;
         private readonly IPatientLoggerRepository _patientLoggerRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IEmailSender _emailSender;
 
-        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, IPatientLoggerRepository patientLoggerRepository, IEmailSender emailSender)
+        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, IPatientLoggerRepository patientLoggerRepository, IEmailSender emailSender, IUserRepository userRepository)
         {
             _unitOfWork = unitOfWork;
             _patientRepository = patientRepository;
             _patientLoggerRepository = patientLoggerRepository;
+            _userRepository = userRepository;
             _emailSender = emailSender;
         }
 
@@ -164,6 +166,14 @@ namespace DDDSample1.Domain.Patients
             }
 
             LogChanges(patient, "delete");
+
+            var user = patient.User;
+
+            if(user != null)
+            {
+                patient.DisassociateUser();
+                _userRepository.Remove(user);
+            }
 
             _patientRepository.Remove(patient);
 

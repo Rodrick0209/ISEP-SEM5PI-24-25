@@ -20,6 +20,7 @@ export class UserService {
   private editUrlConfirm = '/api/users/patients/edit/confirm'
   private deleteUrl = '/api/users/patients/delete'
   private deleteUrlConfirm =  '/api/users/patients/delete/confirm'
+  private requestDeleteDataUrl = '/api/users/patients/request-delete-data'
 
   constructor(private http: HttpClient) { }
 
@@ -80,6 +81,8 @@ export class UserService {
     return this.http.delete(url);
   }
 
-
+  requestDeletePatientData(email: string): Observable<any> {
+    return this.http.delete(`${this.requestDeleteDataUrl}/${email}`);
+  }
 
 }
