@@ -45,7 +45,8 @@ export class ListMedicalConditionsComponent {
       this.router.navigate(['/medicalConditions/add']);
     }
 
-
-
+    editMedicalCondition(medicalCondition: MedicalCondition) {
+      this.router.navigate(['/medicalConditions/edit', medicalCondition.name]);
+    }
 
 }

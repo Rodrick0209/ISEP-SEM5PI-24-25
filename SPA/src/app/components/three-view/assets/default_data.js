@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import Orientation from "./orientation.js";
 
+
 export const generalData = {
     setDevicePixelRatio: false
 }
@@ -78,6 +79,17 @@ export const waitingChairData = {
     waitingChairDirection: 0.0, // Expressed in degrees
 }
 
+export const vendingMachineData={
+    url: "./assets/models/gltf/vending_machine/scene.gltf",
+    scale: new THREE.Vector3(0.004, 0.004, 0.004),
+    vendingMachineDirection: 0.0, // Expressed in degrees
+}
+
+export const boardData={
+    url: "./assets/models/gltf/board/safety_notice_board.glb",
+    scale: new THREE.Vector3(0.005, 0.005, 0.005),
+    vendingMachineDirection: 0.0, // Expressed in degrees
+}
 
 
 

@@ -29,4 +29,19 @@ export class MedicalCondtionService {
             map((data: MedicalCondition) => data)
         );
     }
+
+    getMedicalConditionCatalogItem(name: string): Observable<MedicalCondition> {
+        const url = `${this.baseUrl}/get/${name}`;
+        return this.http.get<MedicalCondition>(url).pipe(
+            map((data: MedicalCondition) => data)
+        );
+    }
+
+    updateMedicalConditionCatalogItem(name: string, nameToEdit: string): Observable<MedicalCondition> {
+        const url = `${this.baseUrl}/update/${name}`;
+        const body = { nameToEdit: nameToEdit };
+        return this.http.put<MedicalCondition>(url, body).pipe(
+            map((data: MedicalCondition) => data)
+        );
+    }
 }

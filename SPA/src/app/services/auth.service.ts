@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, firstValueFrom } from 'rxjs';
 
 interface LoginResponse {
   token: string;
@@ -20,12 +20,18 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(this.isLoggedIn()); // Inicializa com o estado atual de login
   isLoggedIn$ = this.loggedIn.asObservable();
   private googleVerifyUrl = '/api/Login/google-response'; // Add your backend endpoint here
+  private bypassInterceptorFlag = false;
 
 
+  constructor(private http: HttpClient) { }
 
+  setBypassInterceptor(bypass: boolean): void {
+    this.bypassInterceptorFlag = bypass;
+  }
 
-  constructor(private http: HttpClient) {}
-
+  getBypassInterceptor(): boolean {
+    return this.bypassInterceptorFlag;
+  }
 
   login(email: string, password: string): Observable<LoginResponse> {
     const body = { email, password };
@@ -35,7 +41,7 @@ export class AuthService {
   verifyGoogleToken(): Observable<GoogleResponse> {
     return this.http.get<GoogleResponse>(this.googleVerifyUrl);
   }
-  
+
   saveToken(token: string): void {
     console.log('Saving login token', token);
     localStorage.setItem('token', token);
@@ -45,7 +51,7 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('token');
   }
-  
+
   isLoggedIn(): boolean {
     return this.getToken() !== null;
   }
@@ -82,6 +88,24 @@ export class AuthService {
     } catch (e) {
       console.error('Invalid token format', e);
       return null;
+    }
+  }
+
+  async validatePassword(email: string, password: string): Promise<boolean> {
+    try {
+      const response = await firstValueFrom(this.login(email, password));
+
+      console.log('API Response:', response);
+
+      if (response && response.token) {
+        return true; // Validation successful
+      } else {
+        console.error('Validation failed: Token not found in response');
+        return false; // Validation failed
+      }
+    } catch (error) {
+      console.error('Error validating password:', error || error);
+      return false; // API call failed
     }
   }
 }

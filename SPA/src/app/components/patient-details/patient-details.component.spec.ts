@@ -4,6 +4,8 @@ import { of, throwError } from 'rxjs';
 import { PatientDetailsComponent } from './patient-details.component';
 import { PatientService } from '../../services/patient.service';
 import { CommonModule } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MedicalConditionsComponent } from '../medical-conditions/medical-conditions.component';
 
 
 describe('PatientDetailsComponent', () => {
@@ -17,7 +19,7 @@ describe('PatientDetailsComponent', () => {
     route = { snapshot: { paramMap: { get: () => '2024100000001' } } } as any;
 
     TestBed.configureTestingModule({
-      imports: [CommonModule, PatientDetailsComponent],
+      imports: [CommonModule, HttpClientTestingModule],
       providers: [
         { provide: PatientService, useValue: patientServiceSpy },
         { provide: ActivatedRoute, useValue: route }
@@ -34,6 +36,7 @@ describe('PatientDetailsComponent', () => {
 
   it('should fetch patient details on init', () => {
     const patientData = {
+      id: 'test',
       name: 'John Doe',
       medicalRecordNumber: '202410000001',
       dateOfBirth: new Date('1990-01-01'),
@@ -46,13 +49,16 @@ describe('PatientDetailsComponent', () => {
         city: 'Springfield',
         country: 'USA'
       },
-      medicalHistory: {
-        medicalConditions: 'Asthma'
-      },
       emergencyContact: {
         name: 'Jane Doe',
         email: 'jane.doe@example.com',
         phoneNumber: '987-654-3210'
+      },
+      medicalRecord: {
+        id: 'test',
+        patientId: 'test',
+        allergies: [],
+        medicalConditions: [],
       }
     };
     patientService.getPatientByMedicalRecordNumber.and.returnValue(of(patientData));
@@ -71,7 +77,6 @@ describe('PatientDetailsComponent', () => {
     expect(component.patient?.address?.postalCode).toBe('12345');
     expect(component.patient?.address?.city).toBe('Springfield');
     expect(component.patient?.address?.country).toBe('USA');
-    expect(component.patient?.medicalHistory?.medicalConditions).toBe('Asthma');
     expect(component.patient?.emergencyContact?.name).toBe('Jane Doe');
     expect(component.patient?.emergencyContact?.email).toBe('jane.doe@example.com');
     expect(component.patient?.emergencyContact?.phoneNumber).toBe('987-654-3210');

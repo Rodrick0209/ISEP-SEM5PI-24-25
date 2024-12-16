@@ -6,5 +6,5 @@ export default interface IAllergyCatalogService {
     createAllergyCatalogItem(allergyDTO: IAllergyCatalogItemDTO): Promise<Result<IAllergyCatalogItemDTO>>;
     listAllergiesCatalogItems(): Promise<Result<IAllergyCatalogItemDTO[]>>;
     updateAllergyCatalogItem(name: string, nameToEdit: string): Promise<Result<IAllergyCatalogItemDTO>>;
-
+    getAllergyCatalogItem(name: string): Promise<Result<IAllergyCatalogItemDTO>>;
 }

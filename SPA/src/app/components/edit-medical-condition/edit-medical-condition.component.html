@@ -1,0 +1,32 @@
+<div class="edit-medical-condition-container">
+    <h2>Edit Medical Condition</h2>
+    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <form (ngSubmit)="confirmSubmission()" #medicalConditionForm="ngForm">
+      <div class="medical-condition-information">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" [(ngModel)]="submitForm.name" />
+        </div>
+  
+        <div class="form-actions">
+          <button type="submit" class="btn-submit">Save Changes</button>
+          <button type="button" class="btn-cancel" (click)="onCancel()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  
+    <div class="modal" *ngIf="showConfirmation">
+      <div class="modal-content">
+        <h3>Confirm Submission</h3>
+        <p>Are you sure you want to save the changes?</p>
+        <div class="modal-actions">
+          <button (click)="onSubmit(medicalConditionForm)" class="btn-confirm">Yes</button>
+          <button (click)="closeConfirmationModal()" class="btn-cancel">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

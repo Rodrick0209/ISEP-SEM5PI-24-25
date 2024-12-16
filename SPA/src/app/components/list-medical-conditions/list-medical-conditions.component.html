@@ -1,5 +1,4 @@
 <div class="medicalConditions-container">
-    <h2 id="medicalConditionsTitle">Medical Conditions</h2>
   
     <!-- Indicador de Carregamento -->
     <div *ngIf="isLoading" class="loading-indicator" aria-live="polite">
@@ -24,11 +23,16 @@
           <thead>
             <tr>
               <th>Name</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let medicalCondition of medicalConditions">
               <td>{{ medicalCondition.name }}</td>
+              <td>
+                <button class="edit-btn" (click)="editMedicalCondition(medicalCondition)" aria-label="Edit medical condition">
+                  Edit
+                </button>
             </tr>
           </tbody>
         </table>

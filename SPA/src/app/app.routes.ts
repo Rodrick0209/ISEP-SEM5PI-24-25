@@ -50,6 +50,10 @@ import { CreateAppointmentComponent } from './components/create-appointment/crea
 import { EditAppointmentComponent } from './components/edit-appointment/edit-appointment.component';
 import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { EditMedicalRecordComponent } from './components/edit-medical-record/edit-medical-record.component';
+import { EditAllergyComponent } from './components/edit-allergy/edit-allergy.component';
+import { EditMedicalConditionComponent } from './components/edit-medical-condition/edit-medical-condition.component';
+import { DownloadMedicalHistoryComponent } from './components/download-medical-history/download-medical-history.component';
+import { RequestDeletePatientDataComponent } from './components/request-delete-patient-data/request-delete-patient-data.component';
 
 
 export const routes: Routes = [
@@ -297,6 +301,30 @@ export const routes: Routes = [
         component: AppointmentsComponent,
         canActivate: [AuthGuard],
         data: {role: 'doctor'}
+    },
+    {
+        path: 'allergiesCatalog/edit/:allergyName',
+        component: EditAllergyComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'admin'}
+    },
+    {
+        path: 'medicalConditions/edit/:medicalConditionName',
+        component: EditMedicalConditionComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'admin'}
+    },
+    {
+        path: 'download-medical-history/:email',
+        component: DownloadMedicalHistoryComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'patient'}
+    },
+    {
+        path: 'request-delete/:email',
+        component: RequestDeletePatientDataComponent,
+        canActivate: [AuthGuard],
+        data: {role: 'patient'}
     }
 
 ];

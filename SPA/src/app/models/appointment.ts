@@ -49,6 +49,13 @@ export interface Appointment {
     operationRoomNumber : string;
 
   }
+
+  export interface AppointmentTable {
+    priority: string,
+    doctor: string,
+    appointmentTimeSlot: AppointmentTimeSlot,
+    roomNumber: string,
+  }
   
   
   

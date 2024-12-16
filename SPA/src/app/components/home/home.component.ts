@@ -86,7 +86,8 @@ export class HomeComponent implements OnInit {
   }
 
   downloadPatientRecord(){
-    // Not implemented yet
+    const email = this.extractEmail();
+    this.router.navigate(['/download-medical-history', `${email}`])
   }
 
   login(){

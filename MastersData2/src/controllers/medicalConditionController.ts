@@ -15,6 +15,37 @@ export default class MedicalConditionController implements IMedicalConditionCont
       @Inject(config.services.medicalCondition.name) private medicalConditionServiceInstance : IMedicalConditionService
   ) {}
 
+  public async getMedicalCondition(req: Request, res: Response, next: NextFunction) {
+    try {
+      const medicalConditionOrError = await this.medicalConditionServiceInstance.getMedicalCondition(req.params.name) as Result<IMedicalConditionDTO>;
+
+      if (medicalConditionOrError.isFailure) {
+        return res.status(404).send();
+      }
+
+      const medicalConditionDTO = medicalConditionOrError.getValue();
+      return res.json( medicalConditionDTO ).status(200);
+    }
+    catch (e) {
+      return next(e);
+    }
+  }
+
+  public async updateMedicalCondition(req: Request, res: Response, next: NextFunction) {
+    try {
+      const medicalConditionOrError = await this.medicalConditionServiceInstance.updateMedicalCondition(req.params.name, req.body.nameToEdit) as Result<IMedicalConditionDTO>;
+
+      if (medicalConditionOrError.isFailure) {
+        return res.status(400).send();
+      }
+
+      const medicalConditionDTO = medicalConditionOrError.getValue();
+      return res.json( medicalConditionDTO ).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
   public async createMedicalCondition(req: Request, res: Response, next: NextFunction) {
     try {
       const medicalConditionOrError = await this.medicalConditionServiceInstance.createMedicalCondition(req.body as IMedicalConditionDTO) as Result<IMedicalConditionDTO>;
@@ -40,7 +71,7 @@ export default class MedicalConditionController implements IMedicalConditionCont
       }
 
       const medicalConditionsDTO = medicalConditionsOrError.getValue();
-      return res.status(201).json( medicalConditionsDTO );
+      return res.status(200).json( medicalConditionsDTO );
     }
     catch (e) {
       return next(e);

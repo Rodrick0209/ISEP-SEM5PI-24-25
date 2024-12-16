@@ -14,7 +14,9 @@ import {
   doctorData,
   bedWithPatientData,
   tablesSurgeryData,
-  waitingChairData
+  waitingChairData,
+  vendingMachineData,
+  boardData,
 } from "./default_data.js";
 import { merge } from "./merge.js";
 import Maze from "./maze_template.js";
@@ -31,7 +33,8 @@ import Doctor from "./doctor.js";
 import BedWithPatient from "./bedWithPatient.js";
 import SurgeryTable from "./surgeryTable.js";
 import WaitingChair from "./waitingChair.js";
-import { tangentGeometry } from "three/webgpu";
+import VendingMachine from "./vending_machine.js";
+import Board from "./board.js";
 
 let rooms = null;
 
@@ -128,6 +131,10 @@ export default class ThumbRaiser {
         waitingChairData,
         waitingChairDataParameters
       );
+
+      this.vendingMachineData = merge({}, vendingMachineData);
+
+      this.boardData = merge({}, boardData);
       // Create a 2D scene (the viewports frames)
       //this.scene2D = new THREE.Scene();
 
@@ -190,6 +197,64 @@ export default class ThumbRaiser {
       this.waitingChairPositionList = [];
       this.waitingChairDirectionList = [];
 
+      this.vendingMachines = [];
+      this.vendingMachinePositionList = [];
+      this.vendingMachineDirectionList = [];
+
+      this.boards = [];
+      this.boardPositionList = [];
+      this.boardDirectionList = [];
+
+      for (const machine of description.vendingMachine) {
+        const vendingMachine = new VendingMachine(this.vendingMachineData);
+        this.vendingMachines.push(vendingMachine);
+        const vendingPosition = this.cellToCartesian(machine.position);
+        this.vendingMachinePositionList.push(vendingPosition);
+        const chairDirection = machine.direction;
+
+        switch (chairDirection) {
+          case "west":
+            this.vendingMachineDirectionList.push(90);
+            break;
+          case "north":
+            this.vendingMachineDirectionList.push(0);
+            break;
+          case "south":
+            this.vendingMachineDirectionList.push(180);
+            break;
+          case "east":
+            this.vendingMachineDirectionList.push(270);
+            break;
+          default:
+            console.log("Direction not handled:", chairDirection);
+        }
+      }
+
+      for (const boardData of description.boards) {
+        const board = new Board(this.boardData);
+        this.boards.push(board);
+        const boardPosition = this.cellToCartesian(boardData.position);
+        this.boardPositionList.push(boardPosition);
+        const boardDirection = boardData.direction;
+
+        switch (boardDirection) {
+          case "west":
+            this.boardDirectionList.push(90);
+            break;
+          case "north":
+            this.boardDirectionList.push(0);
+            break;
+          case "south":
+            this.boardDirectionList.push(180);
+            break;
+          case "east":
+            this.boardDirectionList.push(270);
+            break;
+          default:
+            console.log("Direction not handled:", boardDirection);
+        }
+      }
+
       for (const chairData of description.waitingChair) {
         const waitingChair = new WaitingChair(this.waitingChairData);
         this.waitingChairs.push(waitingChair);
@@ -214,7 +279,6 @@ export default class ThumbRaiser {
             console.log("Direction not handled:", chairDirection);
         }
       }
-      
 
       for (const room of description.rooms) {
         const table = new SurgeryTable(this.tablesSurgeryDataParameters);
@@ -797,7 +861,6 @@ export default class ThumbRaiser {
   }
 
   highlightSurgeryTable(event) {
-    
     if (event.type === "click") {
       // Calculate mouse position in normalized device coordinates (-1 to +1) for both components
       const rect = this.renderer.domElement.getBoundingClientRect();
@@ -805,7 +868,6 @@ export default class ThumbRaiser {
         ((event.clientX - rect.left) / rect.width) * 2 - 1,
         -((event.clientY - rect.top) / rect.height) * 2 + 1
       );
-      
 
       // Create a raycaster
       const raycaster = new THREE.Raycaster();
@@ -817,7 +879,7 @@ export default class ThumbRaiser {
         .filter((object) => object !== undefined && object !== null);
 
       const intersects = raycaster.intersectObjects(validObjects, true);
-      
+
       if (intersects.length > 0) {
         const target = intersects[0].point;
         if (this.isZoomedIn) {
@@ -981,13 +1043,16 @@ export default class ThumbRaiser {
 
     // Check for intersections with beds
     const intersects = raycaster.intersectObjects(
-      this.beds.map((bed) => bed.object),
+      [
+        ...this.beds.map((bed) => bed.object),
+        ...this.bedWithPatients.map((bed) => bed.object),
+      ],
       true
     );
 
     if (intersects.length > 0) {
       // Find the corresponding bed
-      for (const bed of this.beds) {
+      for (const bed of [...this.beds, ...this.bedWithPatients]) {
         if (bed.object.getObjectById(intersects[0].object.id)) {
           const roomCenter = bed.position;
           const target = new THREE.Vector3(
@@ -1277,7 +1342,8 @@ export default class ThumbRaiser {
         }
 
         for (let i = 0; i < this.waitingChairs.length; i++) {
-          this.waitingChairs[i].position = this.waitingChairPositionList[i].clone();
+          this.waitingChairs[i].position =
+            this.waitingChairPositionList[i].clone();
           this.waitingChairs[i].direction = THREE.MathUtils.degToRad(
             this.waitingChairDirectionList[i]
           );
@@ -1287,7 +1353,38 @@ export default class ThumbRaiser {
             this.waitingChairs[i].position.y,
             this.waitingChairs[i].position.z
           );
-          this.waitingChairs[i].object.rotation.y = this.waitingChairs[i].direction;
+          this.waitingChairs[i].object.rotation.y =
+            this.waitingChairs[i].direction;
+        }
+
+        for (let i = 0; i < this.boards.length; i++) {
+          this.boards[i].position = this.boardPositionList[i].clone();
+          this.boards[i].direction = THREE.MathUtils.degToRad(
+            this.boardDirectionList[i]
+          );
+          this.scene3D.add(this.boards[i].object);
+          this.boards[i].object.position.set(
+            this.boards[i].position.x - 0.5,
+            this.boards[i].position.y + 0.4,
+            this.boards[i].position.z
+          );
+          this.boards[i].object.rotation.y = this.boards[i].direction;
+        }
+
+        for (let i = 0; i < this.vendingMachines.length; i++) {
+          this.vendingMachines[i].position =
+            this.vendingMachinePositionList[i].clone();
+          this.vendingMachines[i].direction = THREE.MathUtils.degToRad(
+            this.vendingMachineDirectionList[i]
+          );
+          this.scene3D.add(this.vendingMachines[i].object);
+          this.vendingMachines[i].object.position.set(
+            this.vendingMachines[i].position.x - 0.5,
+            this.vendingMachines[i].position.y,
+            this.vendingMachines[i].position.z
+          );
+          this.vendingMachines[i].object.rotation.y =
+            this.vendingMachines[i].direction;
         }
 
         for (let i = 0; i < this.surgeryTables.length; i++) {
@@ -1451,5 +1548,130 @@ export default class ThumbRaiser {
         //this.renderer.clearDepth();
       }
     }
+  }
+
+  async reloadBeds(date, time) {
+    const apiUrl = "https://localhost:5001/api/OperationRoom/OccupiedRooms";
+    const urlWithParams = `${apiUrl}?date=${date}&time=${time}`;
+
+    console.log("Starting reloadBeds...");
+    console.log(`Requesting data from: ${urlWithParams}`);
+
+    try {
+      const response = await fetch(urlWithParams);
+      if (!response.ok) {
+        throw new Error(
+          `Network response error: ${response.status} ${response.statusText}`
+        );
+      }
+
+      const occupiedRooms = await response.json();
+
+      this.clearBeds();
+
+      for (const room of rooms) {
+        if (this.isOccupied(room, occupiedRooms)) {
+          let bed2 = new BedWithPatient(this.bedWithPatientParameters);
+          this.bedWithPatients.push(bed2);
+          const bedWithPatientPosition = this.cellToCartesian(
+            room.beds.position
+          );
+          const bedWithPatientDirection = room.beds.direction;
+          this.bedWithPatientPositionList.push(bedWithPatientPosition);
+
+          switch (bedWithPatientDirection) {
+            case "west":
+              this.bedWithPatientDirectionList.push(90);
+              break;
+            case "north":
+              this.bedWithPatientDirectionList.push(0);
+              break;
+            case "south":
+              this.bedWithPatientDirectionList.push(180);
+              break;
+            case "east":
+              this.bedWithPatientDirectionList.push(270);
+              break;
+            default:
+              console.log("Direction not handled:", bedWithPatientDirection);
+          }
+          await bed2.getObject();
+        } else {
+          let bed1 = new Bed(this.bedParameters);
+          this.beds.push(bed1);
+          const bedPosition = this.cellToCartesian(room.beds.position);
+          const bedDirection = room.beds.direction;
+          this.bedPositionList.push(bedPosition);
+          switch (bedDirection) {
+            case "west":
+              this.bedDirectionList.push(90);
+              break;
+            case "north":
+              this.bedDirectionList.push(0);
+              break;
+            case "south":
+              this.bedDirectionList.push(180);
+              break;
+            case "east":
+              this.bedDirectionList.push(270);
+              break;
+
+            default:
+              console.log("Direction not handled:", bedDirection);
+          }
+          await bed1.getObject();
+        }
+      }
+    } catch (error) {
+      console.error("Error reloading beds:", error);
+    }
+
+    for (let i = 0; i < this.beds.length; i++) {
+      this.beds[i].position = this.bedPositionList[i].clone();
+      this.beds[i].direction = THREE.MathUtils.degToRad(
+        this.bedDirectionList[i]
+      );
+      this.scene3D.add(this.beds[i].object);
+      this.beds[i].object.position.set(
+        this.beds[i].position.x - 0.5,
+        this.beds[i].position.y + 0.291,
+        this.beds[i].position.z
+      );
+      this.beds[i].object.rotation.y = this.beds[i].direction;
+    }
+
+    for (let i = 0; i < this.bedWithPatients.length; i++) {
+      this.bedWithPatients[i].position =
+        this.bedWithPatientPositionList[i].clone();
+      this.bedWithPatients[i].direction = THREE.MathUtils.degToRad(
+        this.bedWithPatientDirectionList[i]
+      );
+      this.scene3D.add(this.bedWithPatients[i].object);
+      this.bedWithPatients[i].object.position.set(
+        this.bedWithPatients[i].position.x - 0.55,
+        this.bedWithPatients[i].position.y + 0.344,
+        this.bedWithPatients[i].position.z
+      );
+      this.bedWithPatients[i].object.rotation.y =
+        this.bedWithPatients[i].direction;
+    }
+  }
+
+  clearBeds() {
+    this.beds.forEach((bed) => this.scene3D.remove(bed.object));
+    this.bedWithPatients.forEach((bed) => this.scene3D.remove(bed.object));
+
+    this.beds = [];
+    this.bedWithPatients = [];
+    this.bedPositionList = [];
+    this.bedDirectionList = [];
+    this.bedWithPatientPositionList = [];
+    this.bedWithPatientDirectionList = [];
+  }
+
+  isOccupied(room, occupiedRooms) {
+    return (
+      occupiedRooms.some((oRoom) => room.name === oRoom.roomNumber) || false
+    );
   }
 }

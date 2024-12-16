@@ -35,13 +35,13 @@ export class DeleteUserComponent implements OnInit {
   }
 
   // Method triggered on delete confirmation
-  onDelete(): void {
+  onRequestDelete(): void {
     if (this.isConfirmed) {
       if (this.email) {
         this.userService.delete(this.email).subscribe({
           next: (response: any) => {
             console.log('Sucessfull sent an email confirmation', response);
-            this.successMessage = "An email confirmation was sent to your inbox. Please confirm the deletion of your account and profile by clicking in the link.";
+            this.successMessage = "An email confirmation will be sent to you. You can close this window or click on the back button.";
           },
           error: (err: any) => {
             console.error('Failed to delete patient', err);
@@ -55,6 +55,6 @@ export class DeleteUserComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/profile', this.email]);
+    history.back();
   }
 }

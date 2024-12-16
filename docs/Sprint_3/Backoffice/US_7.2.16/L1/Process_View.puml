@@ -2,7 +2,7 @@
 ```plantuml
 @startuml Process_View
 actor Doctor
-participant Doctor <<Doctor (C4)>>
+participant SARM as System <<System (C4)>>
 
 activate Doctor
 

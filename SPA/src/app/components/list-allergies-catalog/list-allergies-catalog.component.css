@@ -145,3 +145,23 @@ button.add-btn:hover {
 .allergies-list td {
   text-transform: lowercase; /* Transforma o texto em maiúsculas */
 }
+
+button {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  color: #fff;
+  background-color: #007bff; /* Button background color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 0.5rem; /* Space between buttons */
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker background on hover */
+}
+
+button:disabled {
+  background-color: #ccc; /* Style for disabled buttons */
+  cursor: not-allowed; /* Not-allowed cursor for disabled buttons */
+}

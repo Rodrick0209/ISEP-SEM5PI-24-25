@@ -14,6 +14,7 @@ body {
     border-radius: 12px; /* Softer rounded corners */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     transition: box-shadow 0.3s ease, transform 0.3s ease;
+    text-align: center; /* Center content within the profile */
 }
 
 .user-profile:hover {
@@ -68,8 +69,9 @@ body {
 
 .user-settings,
 .view-patient-profile {
-    margin-top: 20px;
-    text-align: center;
+    display: inline-block;
+    margin: 20px 10px 0; /* Add spacing and align properly */
+    vertical-align: top;
 }
 
 .user-settings button,
@@ -84,6 +86,7 @@ body {
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.2s ease;
     text-decoration: none;
+    margin: 0 auto; /* Center align buttons */
 }
 
 .user-settings button:hover,
