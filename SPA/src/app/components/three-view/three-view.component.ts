@@ -36,6 +36,7 @@ export class ThreeViewComponent implements AfterViewInit, OnInit {
       // If the time has changed, call the search method
       if (newTime !== this.previousTime) {
         this.previousTime = newTime;
+        this.currentTime=newTime;
         this.search();
       }
     }, 2000); // Check every second
