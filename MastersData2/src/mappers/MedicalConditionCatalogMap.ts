@@ -3,20 +3,23 @@ import { Document, Model } from 'mongoose';
 import { IMedicalConditionPersistence } from "../dataschema/IMedicalConditionPersistence";
 import IMedicalConditionDTO from '../dto/IMedicalConditionCatalogDTO';
 import { MedicalConditionCatalog } from "../domain/medicalConditionCatalog";
+import IMedicalConditionCatalogDTO from "../dto/IMedicalConditionCatalogDTO";
+import { IMedicalConditionCatalogPersistence } from "../dataschema/IMedicalConditionCatalogPersistence";
 
-import { UniqueEntityID } from "../core/domain/UniqueEntityID";
-import { MedicalCondition } from "../domain/medicalCondition";
 
 export class MedicalConditionCatalogMap extends Mapper<MedicalConditionCatalog> {
 
-  public static toDTO(medicalCondition: MedicalConditionCatalog): IMedicalConditionDTO {
+  public static toDTO(medicalCondition: MedicalConditionCatalog): IMedicalConditionCatalogDTO {
     return {
       id: medicalCondition.id.toString(),
-      name: medicalCondition.name,
-    } as IMedicalConditionDTO;
+      code: medicalCondition.code,
+      designation: medicalCondition.designation,
+      description: medicalCondition.description ?? null,
+      commonSymptoms: medicalCondition.commonSymptoms ?? null
+    } as IMedicalConditionCatalogDTO
   }
 
-  public static toDomain(medicalCondition: any | Model<IMedicalConditionPersistence & Document>): MedicalConditionCatalog {
+  public static toDomain(medicalCondition: any | Model<IMedicalConditionCatalogPersistence & Document>): MedicalConditionCatalog {
     const medicalConditionOrError = MedicalConditionCatalog.create(
       medicalCondition,
       medicalCondition.domainId
@@ -29,7 +32,10 @@ export class MedicalConditionCatalogMap extends Mapper<MedicalConditionCatalog> 
   public static toPersistence(medicalCondition: MedicalConditionCatalog): any {
     return {
       domainId: medicalCondition.id.toString(),
-      name: medicalCondition.name
+      code: medicalCondition.code,
+      designation: medicalCondition.designation,
+      description: medicalCondition.description ?? null,
+      commonSymptoms: medicalCondition.commonSymptoms
     }
   }
 }

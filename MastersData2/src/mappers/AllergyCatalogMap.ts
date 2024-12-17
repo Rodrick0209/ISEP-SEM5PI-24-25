@@ -15,7 +15,9 @@ export class AllergyCatalogMap extends Mapper<AllergyCatalogItem> {
     public static toDTO(allergy: AllergyCatalogItem): IAllergyCathalogItemDTO {
         return {
             id: allergy.id.toString(),
-            name: allergy.name
+            code: allergy.code,
+            designation: allergy.designation,
+            description: allergy.description ?? null
         } as IAllergyCathalogItemDTO;
     }
 
@@ -33,7 +35,9 @@ export class AllergyCatalogMap extends Mapper<AllergyCatalogItem> {
     public static toPersistence(allergy: AllergyCatalogItem): any {
         return {
             domainId: allergy.id.toString(),
-            name: allergy.name
+            code: allergy.code,
+            designation: allergy.designation,
+            description: allergy.description ?? null
         };
     }
 

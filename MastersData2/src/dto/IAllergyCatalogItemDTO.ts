@@ -1,5 +1,7 @@
 
 export default interface IAllergyCathalogItemDTO {
     id: string;
-    name: string
+    code: string;
+    designation: string;
+    description?: string;
 }

@@ -19,10 +19,14 @@ export class Allergy extends AggregateRoot<AllergyProps> {
         return this.id;
     }
 
-    get name (): string {
-        return this.props.allergyCatalogItem.name;
+    get code (): string {
+        return this.props.allergyCatalogItem.code;
     }
 
+    get designation (): string {
+        return this.props.allergyCatalogItem.designation;
+    }
+    
     get description (): string {
         return this.props.description;
     }

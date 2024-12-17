@@ -11,7 +11,7 @@ activate System
 System --> Doctor: Displays all patients
 Doctor -> System: Select a patient
 System --> Doctor : Displays the tables for medical condition and allergies
-Doctor -> System: Writes the medical condition or selects the allergyw
+Doctor -> System: Writes the medical condition or selects the allergy
 System --> Doctor: Success/Error message
 deactivate System
 deactivate Doctor

@@ -6,6 +6,8 @@ import IMedicalConditionService from './IServices/IMedicalConditionService';
 import { Result } from "../core/logic/Result";
 import { MedicalConditionCatalog } from "../domain/medicalConditionCatalog";
 import { MedicalConditionCatalogMap } from '../mappers/MedicalConditionCatalogMap';
+import IMedicalConditionCatalogDTO from '../dto/IMedicalConditionCatalogDTO';
+import { MedicalConditionCatalogId } from '../domain/medicalConditionCatalogId';
 
 @Service()
 export default class MedicalConditionService implements IMedicalConditionService {
@@ -13,31 +15,31 @@ export default class MedicalConditionService implements IMedicalConditionService
         @Inject(config.repos.medicalCondition.name) private medicalConditionRepo : IMedicalConditionRepo
     ) {}
 
-
-    public async getMedicalCondition(name: string): Promise<Result<IMedicalConditionDTO>> {
+    public async getMedicalCondition(code: string): Promise<Result<IMedicalConditionCatalogDTO>> {
         try {
-            const medicalCondition = await this.medicalConditionRepo.findByMedicalConditionName(name);
+            const medicalCondition = await this.medicalConditionRepo.findByCode(code);
 
             if (medicalCondition === null) {
                 return Result.fail<IMedicalConditionDTO>("No medical condition found");
             }
 
-            const medicalConditionDTO = MedicalConditionCatalogMap.toDTO(medicalCondition) as IMedicalConditionDTO;
-            return Result.ok<IMedicalConditionDTO>(medicalConditionDTO);
+            const medicalConditionDTO = MedicalConditionCatalogMap.toDTO(medicalCondition) as IMedicalConditionCatalogDTO;
+            return Result.ok<IMedicalConditionCatalogDTO>(medicalConditionDTO);
         } catch (e) {
             throw e;
         }
     }
     
-    public async updateMedicalCondition(name: string, nameToEdit: string): Promise<Result<IMedicalConditionDTO>> {
+    public async updateMedicalCondition(code: string, medicalConditionCatalog: IMedicalConditionCatalogDTO): Promise<Result<IMedicalConditionCatalogDTO>> {
         try {
-            const medicalCondition = await this.medicalConditionRepo.findByMedicalConditionName(name);
+            const medicalCondition = await this.medicalConditionRepo.findByCode(code);
 
             if (medicalCondition === null) {
                 return Result.fail<IMedicalConditionDTO>("No medical condition found");
             }
 
-            medicalCondition.name = nameToEdit;
+            medicalCondition.designation = medicalConditionCatalog.designation;
+            medicalCondition.description = medicalConditionCatalog.description;
 
             await this.medicalConditionRepo.save(medicalCondition);
 
@@ -48,7 +50,7 @@ export default class MedicalConditionService implements IMedicalConditionService
         }
     }
 
-    public async createMedicalCondition(medicalConditionDTO: IMedicalConditionDTO): Promise<Result<IMedicalConditionDTO>> {
+    public async createMedicalCondition(medicalConditionDTO: IMedicalConditionCatalogDTO): Promise<Result<IMedicalConditionCatalogDTO>> {
         try { 
             const medicalConditionOrError = await MedicalConditionCatalog.create(medicalConditionDTO);
             
@@ -67,7 +69,7 @@ export default class MedicalConditionService implements IMedicalConditionService
         }
     }
 
-    public async listMedicalConditions(): Promise<Result<IMedicalConditionDTO[]>> { 
+    public async listMedicalConditions(): Promise<Result<IMedicalConditionCatalogDTO[]>> { 
         try {
             const allMedicalConditions = await this.medicalConditionRepo.findAll();
 

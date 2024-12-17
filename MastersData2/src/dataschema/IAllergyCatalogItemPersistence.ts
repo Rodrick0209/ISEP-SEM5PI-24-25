@@ -1,5 +1,7 @@
 export interface IAllergyCatalogItemPersistence {
     _id: string;
-    name: string
+    code: string;
+    designation: string;
+    description?: string;
 }
 

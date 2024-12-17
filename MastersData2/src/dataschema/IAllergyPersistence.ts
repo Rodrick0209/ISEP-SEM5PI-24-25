@@ -1,4 +1,3 @@
-import AllergyCatalogController from "../controllers/allergyCatalogController";
 import { AllergyCatalogItem } from "../domain/allergyCatalogItem";
 
 export interface IAllergyPersistence {

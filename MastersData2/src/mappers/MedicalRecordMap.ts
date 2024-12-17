@@ -24,7 +24,8 @@ export class MedicalRecordMap extends Mapper<MedicalRecord> {
 
             return {
                 id: allergy.id.toString(),  // Certificando-se de que o id está sendo convertido corretamente
-                name: allergy.name, 
+                code: allergy.code,
+                designation: allergy.designation,
                 description: allergy.description
             };
         }),
@@ -32,7 +33,8 @@ export class MedicalRecordMap extends Mapper<MedicalRecord> {
 
             return {
                 id: med.id.toString(),  // Certificando-se de que o id está sendo convertido corretamente
-                name: med.name,
+                code: med.code,
+                designation: med.designation,
                 date: med.date 
             };
         })
@@ -45,14 +47,14 @@ public static async toDomain(medicalRecord: any): Promise<MedicalRecord> {
   
     const allergies = await Promise.all(
       medicalRecord.allergies.map(async (allergy: any) => {
-        const allergyCatalogItem = await repoAllergiesCatalogRepo.findByAllergyName(allergy.name);
+        const allergyCatalogItem = await repoAllergiesCatalogRepo.findByCode(allergy.code);
         return Allergy.create(allergyCatalogItem, allergy.description, allergy.id); // Passando o catálogo ao invés do id
       })
     );
   
     const medicalConditions = await Promise.all(
       medicalRecord.medicalConditions.map(async (condition: any) => {
-        const medicalConditionCatalog = await medicalConditionsCatalogRepo.findByMedicalConditionName(condition.name);
+        const medicalConditionCatalog = await medicalConditionsCatalogRepo.findByCode(condition.name);
         return MedicalCondition.create(medicalConditionCatalog, new Date(condition.date), condition.id); // Passando o catálogo e a data
       })
     );
@@ -85,12 +87,14 @@ public static async toDomain(medicalRecord: any): Promise<MedicalRecord> {
         patientId: medicalRecord.patientId.toString(),
         allergies: medicalRecord.allergies.map(allergy => ({
             id: allergy.id.toString(),
-            name: allergy.name,
+            code: allergy.code,
+            designation: allergy.designation,
             description: allergy.description
         })),
         medicalConditions: medicalRecord.medicalConditions.map(condition => ({
             id: condition.id.toString(),
-            name: condition.name,
+            code: condition.code,
+            designation: condition.designation,
             date: condition.date // Certifique-se de que date seja uma string ou Date válida
         }))
     };

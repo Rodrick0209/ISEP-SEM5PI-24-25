@@ -3,6 +3,8 @@ import { MedicalConditionCatalog } from "../domain/medicalConditionCatalog";
 import IMedicalConditionCatalogDTO from "./IMedicalConditionCatalogDTO";
 
 export interface IMedicalConditionDTO {
-    name: string;
+    id: string;
+    code: string,
+    designation: string;
     date: Date;
 }

@@ -5,6 +5,7 @@ import { Container } from 'typedi';
 import IMedicalConditionController from '../../controllers/IControllers/IMedicalConditionController';
 
 import config from "../../../config";
+import common from 'mocha/lib/interfaces/common';
 
 const route = Router();
 
@@ -16,7 +17,10 @@ export default (app: Router) => {
     route.post('/create',
         celebrate({
             body: Joi.object({
-                name: Joi.string().required()
+                code: Joi.string().required(),
+                designation: Joi.string().required(),
+                description: Joi.string().optional(),
+                commonSymptoms: Joi.array().items(Joi.string()).optional()
             })
         }),
         (req, res, next) => ctrl.createMedicalCondition(req, res, next));
@@ -32,13 +36,14 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.getMedicalCondition(req, res, next));
 
-    route.put('/update/:name',
+    route.put('/update/:code',
         celebrate({
             body: Joi.object({
-                nameToEdit: Joi.string().required()
+                designation: Joi.string().optional(),
+                description: Joi.string().optional()
             }),
             params: Joi.object({
-                name: Joi.string().required()
+                code: Joi.string().required()
             })
         }),
         (req, res, next) => ctrl.updateMedicalCondition(req, res, next));

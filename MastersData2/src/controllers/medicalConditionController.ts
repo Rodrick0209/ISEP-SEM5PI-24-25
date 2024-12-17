@@ -7,6 +7,7 @@ import IMedicalConditionService from '../services/IServices/IMedicalConditionSer
 import IMedicalConditionDTO from '../dto/IMedicalConditionCatalogDTO';
 
 import { Result } from "../core/logic/Result";
+import IMedicalConditionCatalogDTO from '../dto/IMedicalConditionCatalogDTO';
 
 
 @Service()
@@ -17,7 +18,7 @@ export default class MedicalConditionController implements IMedicalConditionCont
 
   public async getMedicalCondition(req: Request, res: Response, next: NextFunction) {
     try {
-      const medicalConditionOrError = await this.medicalConditionServiceInstance.getMedicalCondition(req.params.name) as Result<IMedicalConditionDTO>;
+      const medicalConditionOrError = await this.medicalConditionServiceInstance.getMedicalCondition(req.params.code) as Result<IMedicalConditionCatalogDTO>;
 
       if (medicalConditionOrError.isFailure) {
         return res.status(404).send();
@@ -33,7 +34,7 @@ export default class MedicalConditionController implements IMedicalConditionCont
 
   public async updateMedicalCondition(req: Request, res: Response, next: NextFunction) {
     try {
-      const medicalConditionOrError = await this.medicalConditionServiceInstance.updateMedicalCondition(req.params.name, req.body.nameToEdit) as Result<IMedicalConditionDTO>;
+      const medicalConditionOrError = await this.medicalConditionServiceInstance.updateMedicalCondition(req.params.code, req.body as IMedicalConditionCatalogDTO) as Result<IMedicalConditionCatalogDTO>;
 
       if (medicalConditionOrError.isFailure) {
         return res.status(400).send();
@@ -48,10 +49,10 @@ export default class MedicalConditionController implements IMedicalConditionCont
 
   public async createMedicalCondition(req: Request, res: Response, next: NextFunction) {
     try {
-      const medicalConditionOrError = await this.medicalConditionServiceInstance.createMedicalCondition(req.body as IMedicalConditionDTO) as Result<IMedicalConditionDTO>;
+      const medicalConditionOrError = await this.medicalConditionServiceInstance.createMedicalCondition(req.body as IMedicalConditionCatalogDTO) as Result<IMedicalConditionCatalogDTO>;
         
       if (medicalConditionOrError.isFailure) {
-        return res.status(402).send();
+        return res.status(400).send();
       }
 
       const medicalConditionDTO = medicalConditionOrError.getValue();
@@ -64,7 +65,7 @@ export default class MedicalConditionController implements IMedicalConditionCont
 
   public async getAllMedicalConditions(req: Request, res: Response, next: NextFunction) {
     try {
-      const medicalConditionsOrError = await this.medicalConditionServiceInstance.listMedicalConditions() as Result<IMedicalConditionDTO[]>;
+      const medicalConditionsOrError = await this.medicalConditionServiceInstance.listMedicalConditions() as Result<IMedicalConditionCatalogDTO[]>;
 
       if (medicalConditionsOrError.isFailure) {
         return res.status(404).send();

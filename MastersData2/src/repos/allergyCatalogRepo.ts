@@ -45,7 +45,9 @@ export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
 
                 return AllergyCatalogMap.toDomain(allergyCreated);
             } else {
-                allergyDocument.name = allergy.name;
+                allergyDocument.code = allergy.code;
+                allergyDocument.designation = allergy.designation;
+                allergyDocument.description = allergy.description;
                 await allergyDocument.save();
 
                 return allergy;
@@ -56,8 +58,8 @@ export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
     }
 
 
-    public async findByAllergyName(name: string): Promise<AllergyCatalogItem> {
-        const query = { name: name };
+    public async findByCode(code: string): Promise<AllergyCatalogItem> {
+        const query = { code: code };
         const allergyDocument = await this.allergySchema.findOne(query as FilterQuery<IAllergyCatalogItemPersistence & Document>);
         if (allergyDocument != null) {
             return AllergyCatalogMap.toDomain(allergyDocument);

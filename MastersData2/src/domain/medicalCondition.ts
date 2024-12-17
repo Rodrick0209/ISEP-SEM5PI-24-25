@@ -20,8 +20,12 @@ export class MedicalCondition extends AggregateRoot<MedicalConditionProps> {
         return this.id;
     }
 
-    get name (): string {
-        return this.props.medicalConditionCatalog.name;
+    get code (): string {
+        return this.props.medicalConditionCatalog.code;
+    }
+
+    get designation (): string {
+        return this.props.medicalConditionCatalog.designation;
     }
 
     get date (): Date {

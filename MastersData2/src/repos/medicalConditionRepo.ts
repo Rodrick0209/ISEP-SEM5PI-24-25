@@ -7,17 +7,19 @@ import { MedicalConditionCatalogMap } from '../mappers/MedicalConditionCatalogMa
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IMedicalConditionPersistence } from '../dataschema/IMedicalConditionPersistence';
 import IMedicalConditionRepo from '../services/IRepos/IMedicalConditionRepo';
+import { IMedicalConditionCatalogPersistence } from '../dataschema/IMedicalConditionCatalogPersistence';
+import { MedicalCondition } from '../domain/medicalCondition';
 
 @Service()
 export default class MedicalConditionRepo implements IMedicalConditionRepo {
     private models: any;
 
     constructor(
-        @Inject('medicalConditionSchema') private medicalConditionSchema : Model<IMedicalConditionPersistence & Document>,
+        @Inject('medicalConditionSchema') private medicalConditionSchema : Model<IMedicalConditionCatalogPersistence & Document>,
     ) {}
 
-    public async findByMedicalConditionName(medicalConditionName: string): Promise<MedicalConditionCatalog> {
-        const query = { name: medicalConditionName };
+    public async findByCode(code: string): Promise<MedicalConditionCatalog> {
+        const query = { code: code };
         
         const medicalConditionDocument = await this.medicalConditionSchema.findOne(query as FilterQuery<IMedicalConditionPersistence & Document>);
 
@@ -46,7 +48,7 @@ export default class MedicalConditionRepo implements IMedicalConditionRepo {
     public async save (medicalCondition: MedicalConditionCatalog): Promise<MedicalConditionCatalog> {
         const query = { domainId: medicalCondition.id.toString()}; 
 
-        const medicalConditionDocument = await this.medicalConditionSchema.findOne( query );
+        const medicalConditionDocument = await this.medicalConditionSchema.findOne( query as FilterQuery<IMedicalConditionCatalogPersistence & Document>);
 
         try {
             if (medicalConditionDocument === null ) {
@@ -56,7 +58,10 @@ export default class MedicalConditionRepo implements IMedicalConditionRepo {
 
                 return MedicalConditionCatalogMap.toDomain(medicalConditionCreated);
             } else {
-                medicalConditionDocument.name = medicalCondition.name;
+                medicalConditionDocument.code = medicalCondition.code;
+                medicalConditionDocument.designation = medicalCondition.designation;
+                medicalConditionDocument.description = medicalCondition.description;
+                medicalConditionDocument.commonSymptoms = medicalCondition.commonSymptoms;
                 await medicalConditionDocument.save();
 
                 return medicalCondition;
@@ -66,7 +71,7 @@ export default class MedicalConditionRepo implements IMedicalConditionRepo {
         }
     }
 
-    public async findByDomainId (medicalConditionId:  string | MedicalConditionCatalog): Promise<MedicalConditionCatalog> {
+    public async findByDomainId(medicalConditionId: MedicalConditionCatalogId | string | MedicalCondition): Promise<MedicalConditionCatalog> {
         const query = { domainId: medicalConditionId };
         const medicalConditionRecord = await this.medicalConditionSchema.findOne(query as FilterQuery<IMedicalConditionPersistence & Document>);
         if (medicalConditionRecord != null) {
@@ -74,12 +79,6 @@ export default class MedicalConditionRepo implements IMedicalConditionRepo {
         } else {
             return null;
         }
-    }
-
-    public async findByName(medicalConditionName: string): Promise<MedicalConditionCatalog[]> {
-        const query = { name: medicalConditionName };
-        const medicalConditionRecord = await this.medicalConditionSchema.find(query as FilterQuery<IMedicalConditionPersistence & Document>);
-        return medicalConditionRecord.map((medicalConditionRecord) => MedicalConditionCatalogMap.toDomain(medicalConditionRecord));
     }
 
     public async findAll(): Promise<MedicalConditionCatalog[]> {

@@ -1,4 +1,7 @@
+import { MedicalConditionCatalog } from "../domain/medicalConditionCatalog";
+
 export interface IMedicalConditionPersistence {
     _id: string;
-    name: string;
+    medicalConditionCatalog: MedicalConditionCatalog;
+    date: Date
 }

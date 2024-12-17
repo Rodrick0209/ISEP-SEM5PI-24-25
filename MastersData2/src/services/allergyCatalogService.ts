@@ -13,13 +13,18 @@ export default class AllergyCatalogService implements IAllergyCatalogService {
         @Inject(config.repos.allergyCatalog.name) private allergyRepo : IAllergyCatalogRepo
     ) {}
 
-    public async getAllergyCatalogItem(name: string): Promise<Result<IAllergyCathalogItemDTO>> {
+    public async updateAllergyCatalogItem(code: string, allergyDTO: IAllergyCathalogItemDTO): Promise<Result<IAllergyCathalogItemDTO>> {
         try {
-            const allergy = await this.allergyRepo.findByAllergyName(name);
+            const allergy = await this.allergyRepo.findByCode(code);
 
             if (allergy === null) {
                 return Result.fail<IAllergyCathalogItemDTO>("Allergy not found");
             }
+
+            allergy.designation = allergyDTO.designation;
+            allergy.description = allergyDTO.description;
+
+            await this.allergyRepo.save(allergy);
 
             const allergyDTOResult = AllergyCatalogMap.toDTO(allergy) as IAllergyCathalogItemDTO;
             return Result.ok<IAllergyCathalogItemDTO>(allergyDTOResult);
@@ -28,17 +33,13 @@ export default class AllergyCatalogService implements IAllergyCatalogService {
         }
     }
 
-    public async updateAllergyCatalogItem(name: string, nameToEdit: string): Promise<Result<IAllergyCathalogItemDTO>> {
+    public async getAllergyCatalogItem(code: string): Promise<Result<IAllergyCathalogItemDTO>> {
         try {
-            const allergy = await this.allergyRepo.findByAllergyName(name);
+            const allergy = await this.allergyRepo.findByCode(code);
 
             if (allergy === null) {
                 return Result.fail<IAllergyCathalogItemDTO>("Allergy not found");
             }
-
-            allergy.name = nameToEdit;
-
-            await this.allergyRepo.save(allergy);
 
             const allergyDTOResult = AllergyCatalogMap.toDTO(allergy) as IAllergyCathalogItemDTO;
             return Result.ok<IAllergyCathalogItemDTO>(allergyDTOResult);
@@ -65,7 +66,6 @@ export default class AllergyCatalogService implements IAllergyCatalogService {
             throw e;
         }
     }
-
 
     public async listAllergiesCatalogItems(): Promise<Result<IAllergyCathalogItemDTO[]>> {
         try {
