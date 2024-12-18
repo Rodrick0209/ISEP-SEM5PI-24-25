@@ -1,6 +1,4 @@
 <div id="parent">
-  
-
   <div id="subwindows-panel">
     <table class="views">
       <tr>
@@ -13,8 +11,8 @@
           <input type="time" id="time" [(ngModel)]="currentTime" required />
         </td>
         <td>
-            <span style="visibility: hidden;">-</span>
-          <input type="button" id="search" value="Search" (click)="search()"/>
+          <span style="visibility: hidden;">-</span>
+          <input type="button" id="search" value="Search" (click)="search()" />
         </td>
       </tr>
     </table>
@@ -22,6 +20,13 @@
 
   <div id="game-container">
     <canvas id="three-canvas"></canvas>
+    <!-- Description for info -->
+    <div id="info-description" style="display: none;">Press 'I' for info</div>
+  </div>
+
+  <!-- Room information overlay -->
+  <div id="room-info-overlay">
+    <!-- Room information will be inserted here -->
   </div>
 
   <div id="config-panel">

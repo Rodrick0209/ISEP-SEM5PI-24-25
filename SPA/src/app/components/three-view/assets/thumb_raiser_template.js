@@ -593,6 +593,13 @@ export default class ThumbRaiser {
 
       this.activeElement = document.activeElement;
     };
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "i") {
+        this.toggleRoomInfo();
+      }
+    });
+
     console.log("Create scene");
     this.onProgress = function (url, xhr) {
       /*console.log(
@@ -1036,11 +1043,11 @@ export default class ThumbRaiser {
       ((event.clientX - rect.left) / rect.width) * 2 - 1,
       -((event.clientY - rect.top) / rect.height) * 2 + 1
     );
-
+  
     // Create a raycaster
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(mouse, this.activeViewCamera.object);
-
+  
     // Check for intersections with beds
     const intersects = raycaster.intersectObjects(
       [
@@ -1049,7 +1056,7 @@ export default class ThumbRaiser {
       ],
       true
     );
-
+  
     if (intersects.length > 0) {
       // Find the corresponding bed
       for (const bed of [...this.beds, ...this.bedWithPatients]) {
@@ -1069,6 +1076,18 @@ export default class ThumbRaiser {
               this.activeViewCamera.object.lookAt(target);
             },
           });
+          this.selectedRoom = bed; // Store the selected bed
+  
+          // Close the room info overlay if it is open
+          const overlay = document.getElementById("room-info-overlay");
+          if (overlay.style.display === "block") {
+            overlay.style.display = "none";
+          }
+  
+          // Show the info description
+          const infoDescription = document.getElementById("info-description");
+          infoDescription.style.display = "block";
+  
           break;
         }
       }
@@ -1138,12 +1157,28 @@ export default class ThumbRaiser {
     switch (event.target.id) {
       case "reset":
         this.activeViewCamera.initialize();
+        this.selectedRoom = null; // Reset the selected room
+        const overlay = document.getElementById("room-info-overlay");
+        if (overlay.style.display === "block") {
+          overlay.style.display = "none";
+        }
+        // Hide the info description
+        const infoDescription = document.getElementById("info-description");
+        infoDescription.style.display = "none";
         break;
       case "reset-all":
         this.fixedViewCamera.initialize();
         //this.firstPersonViewCamera.initialize();
         //this.thirdPersonViewCamera.initialize();
         this.topViewCamera.initialize();
+        this.selectedRoom = null; // Reset the selected room
+        const overlayAll = document.getElementById("room-info-overlay");
+        if (overlayAll.style.display === "block") {
+          overlayAll.style.display = "none";
+        }
+        // Hide the info description
+        const infoDescriptionAll = document.getElementById("info-description");
+        infoDescriptionAll.style.display = "none";
         break;
     }
     this.displayPanel();
@@ -1673,5 +1708,29 @@ export default class ThumbRaiser {
     return (
       occupiedRooms.some((oRoom) => room.name === oRoom.roomNumber) || false
     );
+  }
+
+  toggleRoomInfo() {
+    if (this.selectedRoom) {
+      const roomIndex = this.beds.indexOf(this.selectedRoom) !== -1 ? this.beds.indexOf(this.selectedRoom) : this.bedWithPatients.indexOf(this.selectedRoom);
+      const roomInfo = rooms[roomIndex]; // Assuming rooms array is in the same order as beds array
+  
+      const overlay = document.getElementById("room-info-overlay");
+      if (overlay.style.display === "none" || !overlay.style.display) {
+        overlay.style.display = "block";
+        overlay.innerHTML = `
+          <h2>Room Information</h2>
+          <p>Room Number: ${roomInfo.roomNumber}</p>
+          <p>Status: ${roomInfo.isOccupied ? "Occupied" : "Free"}</p>
+          <p>Capacity: ${roomInfo.roomCapacity}</p>
+          <p>Room Type: ${roomInfo.roomType}</p>
+          
+        `;
+      } else {
+        overlay.style.display = "none";
+      }
+    } else {
+      console.warn("No room selected.");
+    }
   }
 }

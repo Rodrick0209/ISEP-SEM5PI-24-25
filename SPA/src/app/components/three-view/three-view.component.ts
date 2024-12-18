@@ -25,6 +25,7 @@ export class ThreeViewComponent implements AfterViewInit, OnInit {
     this.currentDate = now.toISOString().split('T')[0];
     this.currentTime = now.toTimeString().split(' ')[0].substring(0, 5);
     this.previousTime = this.currentTime;
+
   }
 
   ngOnInit(): void {
