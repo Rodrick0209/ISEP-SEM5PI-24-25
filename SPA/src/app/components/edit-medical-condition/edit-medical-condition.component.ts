@@ -14,7 +14,8 @@ import { MessageService } from '../../services/message.service';
 })
 export class EditMedicalConditionComponent {
   submitForm = {
-    name: '',
+    designation: '',
+    description: '',
   }
 
   medicalConditionName: string | null = null;
@@ -31,7 +32,8 @@ export class EditMedicalConditionComponent {
       medicalCondition = this.medicalConditionService.getMedicalConditionCatalogItem(this.medicalConditionName);
       medicalCondition.subscribe({
         next: (data) => {
-          this.submitForm.name = data.name;
+          this.submitForm.designation = data.designation;
+          this.submitForm.description = data.description;
         },
         error: (err) => console.error('Error loading medical condition', err)
       });
@@ -51,7 +53,8 @@ export class EditMedicalConditionComponent {
     if (this.medicalConditionName) {
       this.medicalConditionService.updateMedicalConditionCatalogItem(
         this.medicalConditionName,
-        this.submitForm.name
+        this.submitForm.designation,
+        this.submitForm.description,
       ).subscribe(
         (response) => {
           console.log("Allergy edited successfully", response);

@@ -1,50 +1,59 @@
-<div class="create-medicalCondition-container">
-    <h2>Create New Medical Condition</h2>
+<div class="add-medical-oondition-container">
+  <h2>Add New Medical Condition</h2>
+  <p class="required-note"><span class="required">*</span> Required</p>
+  <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
   
-    <!-- Formulário para criar um novo item de catálogo de alergias -->
-    <form (ngSubmit)="confirmSubmission()" #medicalConditionForm="ngForm">
+  <form (ngSubmit)="confirmSubmission()" #medicalConditionForm="ngForm">
+    <div class="medical-condition">
       <div class="form-group">
-        <label for="name">Medical Condition:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          [(ngModel)]="medicalConditionToCreate"
-          #medicalConditionNameField="ngModel"
-          required
-          placeholder="Enter medical condition name"
-        />
-        <div *ngIf="medicalConditionNameField.invalid && medicalConditionNameField.touched" class="error">
-          Medical Condition is required.
+        <label for="code">Code <span class="required">*</span></label>
+        <input type="text" id="code" name="code" [(ngModel)]="submitForm.code" required />
+      </div>
+      <div class="form-group">
+        <label for="designation">Designation <span class="required">*</span></label>
+        <input type="text" id="designation" name="designation" [(ngModel)]="submitForm.designation" required />
+      </div>
+      <div class="form-group">
+        <label for="description">Description </label>
+        <textarea id="description" name="description" [(ngModel)]="submitForm.description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="commonSymptoms">Common Symptoms </label>
+        <table class="table-container" *ngIf="commonSymptoms.length != 0">
+          <thead>
+            <tr>
+              <th>Symptom</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let symptom of commonSymptoms">
+              <td>{{ symptom }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="add-symptom-container">
+          <input type="text" id="newSymptom" name="newSymptom" [(ngModel)]="newSymptom" />
+          <button type="button" (click)="addSymptom()">Add</button>
         </div>
       </div>
-  
-      <!-- Botões -->
-      <div class="button-group">
-        <button type="submit" [disabled]="medicalConditionForm.invalid">Submit</button>
-        <button type="button" (click)="onCancel()">Cancel</button>
-      </div>
-    </form>
-  
-    <!-- Mensagem de erro -->
-    <div *ngIf="message" class="error-message">
-      {{ message }}
-    </div>
-  
-    <!-- Indicador de Carregamento -->
-  <div *ngIf="isLoading" class="loading-indicator">
-      <div class="spinner"></div>
-    </div>
-  
-    <!-- Modal de confirmação -->
-    <div *ngIf="showConfirmation" class="modal">
-      <div class="modal-content">
-        <h3>Confirm Submission</h3>
-        <p>Are you sure you want to create this allergy?</p>
-        <div class="modal-buttons">
-          <button (click)="onSubmit(medicalConditionForm)">Yes</button>
-          <button (click)="closeConfirmationModal()">No</button>
-        </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="!medicalConditionForm.form.valid" class="btn-submit">Add Medical Condition</button>
+        <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
       </div>
     </div>
-  
+  </form>
+
+  <div class="modal" *ngIf="showConfirmation">
+    <div class="modal-content">
+      <h3>Confirm Submission</h3>
+      <p>Are you sure you want to add a new medical condition?</p>
+      <div class="modal-actions">
+        <button (click)="onSubmit(medicalConditionForm)" class="btn-confirm">Yes</button>
+        <button (click)="closeConfirmationModal()" class="btn-cancel">No</button>
+      </div>
+    </div>
+  </div>
+</div>

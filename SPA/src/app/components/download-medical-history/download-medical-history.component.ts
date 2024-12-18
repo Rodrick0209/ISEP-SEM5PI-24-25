@@ -87,7 +87,7 @@ export class DownloadMedicalHistoryComponent implements OnInit {
         },
         medicalRecord: {
           conditions: this.medicalRecord?.medicalConditions.map(condition => ({
-            name: condition.name,
+            designation: condition.designation,
             date: condition.date ? new Date(condition.date).toISOString().split('T')[0] : 'N/A'
           })),
           allergies: this.medicalRecord?.allergies.map(allergy => ({

@@ -66,7 +66,7 @@ export class EditMedicalRecordComponent {
   }
 
   addMedicalCondition(): void {
-    const newCondition: MedicalCondition = { id: '', name: '', date: new Date() };
+    const newCondition: MedicalCondition = { id: '', code: '', designation: '', date: new Date() };
     if (this.medicalRecord) {
       this.medicalRecord.medicalConditions.push(newCondition);
     }
@@ -104,9 +104,9 @@ export class EditMedicalRecordComponent {
     }
   }
 
-  deleteCondition(condition: { name: string, date: Date }): void {
+  deleteCondition(condition: { code: string, designation: string, date: Date }): void {
     if (this.medicalRecord) {
-      const index = this.medicalRecord.medicalConditions.findIndex(a => a.name === condition.name && a.date === condition.date);
+      const index = this.medicalRecord.medicalConditions.findIndex(a => a.code === condition.code && a.designation === condition.designation && a.date === condition.date);
       if (index > -1) {
         this.medicalRecord.medicalConditions.splice(index, 1);
       }

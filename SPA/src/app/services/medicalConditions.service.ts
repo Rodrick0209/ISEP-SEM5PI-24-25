@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MedicalCondition } from '../models/medicalCondition';
+import { MedicalConditionCatalog } from '../models/medicalConditionCatalog';
 
 @Injectable({
   providedIn: 'root'
@@ -15,33 +16,47 @@ export class MedicalCondtionService {
 
     constructor(private http: HttpClient) {}
 
-    getMedicalConditions(): Observable<MedicalCondition[]> {
+    getMedicalConditions(): Observable<MedicalConditionCatalog[]> {
         const url = `${this.baseUrl}${this.getAllergiesUrl}`;
-        return this.http.get<MedicalCondition[]>(url).pipe(
-            map((data: MedicalCondition[]) => data)
+        return this.http.get<MedicalConditionCatalog[]>(url).pipe(
+            map((data: MedicalConditionCatalog[]) => data)
         );
     }
 
-
-    createMedicalCondition(name: string): Observable<MedicalCondition> {
+    createMedicalCondition(code: string, designation: string, description: string, commonSymptoms: string[]): Observable<MedicalConditionCatalog> {
         const url = `${this.baseUrl}${this.createUrl}`;
-        return this.http.post<MedicalCondition>(url, { name }).pipe(
-            map((data: MedicalCondition) => data)
+        const body: any = {};
+        body.code = code;
+        body.designation = designation;
+        if(description) {
+            body.description = description;
+        }
+        if(commonSymptoms) {
+            body.commonSymptoms = commonSymptoms;
+        }
+        return this.http.post<MedicalConditionCatalog>(url, body).pipe(
+            map((data: MedicalConditionCatalog) => data)
         );
     }
 
-    getMedicalConditionCatalogItem(name: string): Observable<MedicalCondition> {
-        const url = `${this.baseUrl}/get/${name}`;
-        return this.http.get<MedicalCondition>(url).pipe(
-            map((data: MedicalCondition) => data)
+    getMedicalConditionCatalogItem(code: string): Observable<MedicalConditionCatalog> {
+        const url = `${this.baseUrl}/get/${code}`;
+        return this.http.get<MedicalConditionCatalog>(url).pipe(
+            map((data: MedicalConditionCatalog) => data)
         );
     }
 
-    updateMedicalConditionCatalogItem(name: string, nameToEdit: string): Observable<MedicalCondition> {
-        const url = `${this.baseUrl}/update/${name}`;
-        const body = { nameToEdit: nameToEdit };
-        return this.http.put<MedicalCondition>(url, body).pipe(
-            map((data: MedicalCondition) => data)
+    updateMedicalConditionCatalogItem(code: string, designation: string, description: string): Observable<MedicalConditionCatalog> {
+        const url = `${this.baseUrl}/update/${code}`;
+        const body: any = {};
+        if(designation) {
+            body.designation = designation;
+        }
+        if(description) {
+            body.description = description
+        }
+        return this.http.put<MedicalConditionCatalog>(url, body).pipe(
+            map((data: MedicalConditionCatalog) => data)
         );
     }
 }

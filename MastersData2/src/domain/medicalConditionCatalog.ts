@@ -62,14 +62,6 @@ export class MedicalConditionCatalog extends AggregateRoot<MedicalConditionCatal
             return Result.fail<MedicalConditionCatalog>('Invalid code for the medical condition')
         }
 
-        if (designation == null || designation.trim().length === 0) {
-            return Result.fail<MedicalConditionCatalog>('Designation is required')
-        }
-
-        if (designation.trim().length > 100) {
-            return Result.fail<MedicalConditionCatalog>('Designation cannot exceed 100 characters')
-        }
-
         if (description != null && description.trim().length > 2048) {
             return Result.fail<MedicalConditionCatalog>('Description cannot exceed 2048 characters')
         }

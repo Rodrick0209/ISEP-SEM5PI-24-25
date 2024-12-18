@@ -15,7 +15,7 @@ export default class MedicalConditionRepo implements IMedicalConditionRepo {
     private models: any;
 
     constructor(
-        @Inject('medicalConditionSchema') private medicalConditionSchema : Model<IMedicalConditionCatalogPersistence & Document>,
+        @Inject('medicalConditionCatalogSchema') private medicalConditionSchema : Model<IMedicalConditionCatalogPersistence & Document>,
     ) {}
 
     public async findByCode(code: string): Promise<MedicalConditionCatalog> {

@@ -5,7 +5,6 @@ import { Container } from 'typedi';
 import IMedicalConditionController from '../../controllers/IControllers/IMedicalConditionController';
 
 import config from "../../../config";
-import common from 'mocha/lib/interfaces/common';
 
 const route = Router();
 

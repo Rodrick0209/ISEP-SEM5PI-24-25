@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MedicalCondition } from '../../models/medicalCondition';
 import { MedicalCondtionService } from '../../services/medicalConditions.service';
+import { MedicalConditionCatalog } from '../../models/medicalConditionCatalog';
 
 
 
@@ -15,7 +16,7 @@ import { MedicalCondtionService } from '../../services/medicalConditions.service
   styleUrl: './list-medical-conditions.component.css'
 })
 export class ListMedicalConditionsComponent {
-    medicalConditions: MedicalCondition[] = [];
+    medicalConditions: MedicalConditionCatalog[] = [];
     isLoading = false;
     message: string = '';
 
@@ -25,7 +26,7 @@ export class ListMedicalConditionsComponent {
       this.message = '';
       this.isLoading = true;
       this.medicalConditionsService.getMedicalConditions().subscribe({
-        next: (data: MedicalCondition[]) => {
+        next: (data: MedicalConditionCatalog[]) => {
           this.isLoading = false;
           this.medicalConditions = data;
         },
@@ -45,8 +46,8 @@ export class ListMedicalConditionsComponent {
       this.router.navigate(['/medicalConditions/add']);
     }
 
-    editMedicalCondition(medicalCondition: MedicalCondition) {
-      this.router.navigate(['/medicalConditions/edit', medicalCondition.name]);
+    editMedicalCondition(medicalCondition: MedicalConditionCatalog) {
+      this.router.navigate(['/medicalConditions/edit', medicalCondition.code]);
     }
 
 }

@@ -26,8 +26,9 @@ export interface Patient {
 
   export interface MedicalCondition{
     id: string;
-    name: string;
-    date: Date;
+    code: string,
+    designation: string,
+    date: Date
   }
   
   export interface Address {
@@ -51,10 +52,10 @@ export interface Patient {
   }
 
   export interface AllergiesView {
-    name: string;
-    
+    name: string
   }
 
   export interface MedicalConditionView {
-    name: string;
+    code: string;
+    designation: string;
   }

@@ -1,167 +1,184 @@
 /* Container Styles */
 .medicalConditions-container {
-    max-width: 600px; /* Largura da caixa */
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    height: 100%; /* Para permitir rolagem na página */
-    overflow: auto;
-  }
-  
-  /* Header */
-  .medicalConditions-container h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #007BFF;
-  }
-  
-  /* Loading Indicator */
-  .loading-indicator {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-left-color: #007BFF;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-  
-  /* Error Message */
-  .error-message {
-    font-size: 16px;
-    color: red;
-    margin-top: 20px;
-  }
-  
-  /* Lista de Condições Médicas (aplicando rolagem) */
-  .medicalConditions-list {
-    margin-top: 20px;
-    overflow: hidden; /* Oculta as barras de rolagem externas */
-    position: relative;
-  }
-  
-  /* Estilos para a tabela */
-  .table-wrapper {
-    max-height: 300px; /* Altura fixa para a área rolável */
-    overflow-y: auto; /* Somente rolagem vertical */
-    margin: 0 auto; /* Para centralizar */
-    width: 100%;
-    border: 1px solid #ddd;
-  }
-  
-  /* Estilos para a tabela */
-  .medicalConditions-table {
-    width: 100%;
-    table-layout: fixed; /* Garante que a tabela tenha largura fixa */
-    border-collapse: collapse;
-    text-align: center;
-  }
-  
-  .medicalConditions-table th,
-  .medicalConditions-table td {
-    padding: 12px;
-    text-align: center;
-    border: 1px solid #ddd;
-    word-wrap: break-word; /* Quebra palavras longas */
-  }
-  
-  .medicalConditions-table th {
-    background-color: #007BFF;
-    color: white;
-    position: sticky; /* Fixar cabeçalho no topo */
-    top: 0; /* Fixa o cabeçalho no topo */
-    z-index: 1; /* Garantir que o cabeçalho fique sobre as linhas */
-  }
-  
-  .medicalConditions-table tr:nth-child(even) {
-    background-color: #f5f5f5;
-  }
-  
-  .medicalConditions-table tr:hover {
-    background-color: #f0f8ff;
-  }
-  
-  /* Scrollbar personalizada para a tabela */
-  .table-wrapper::-webkit-scrollbar {
-    width: 8px;   /* Barra de rolagem vertical */
-  }
-  
-  .table-wrapper::-webkit-scrollbar-track {
-    background: #f5f5f5;
-  }
-  
-  .table-wrapper::-webkit-scrollbar-thumb {
-    background-color: #007BFF;
-    border-radius: 8px;
-    border: 2px solid #f5f5f5;
-  }
-  
-  .table-wrapper::-webkit-scrollbar-thumb:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Button Container */
-  .button-container {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  /* Button Styles */
-  button.add-btn {
-    padding: 10px 60px;
-    font-size: 16px;
-    font-weight: 600;
-    color: white;
-    background-color: #28a745;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-  }
-  
-  button.add-btn:hover {
-    background-color: #218838;
-    transform: scale(1.05);
-  }
-  
-  .medicalConditions-table td {
-    text-transform: lowercase; /* Transforma o texto em maiúsculas */
-  }
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  overflow: auto;
+}
 
-  button {
-    padding: 0.3rem 0.5rem;
-    font-size: 0.8rem;
-    color: #fff;
-    background-color: #007bff; /* Button background color */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 0.5rem; /* Space between buttons */
+/* Header */
+.medicalConditions-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #007BFF;
+}
+
+/* Loading Indicator */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #007BFF;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+      transform: rotate(0deg);
   }
-  
-  button:hover {
-    background-color: #0056b3; /* Darker background on hover */
+  100% {
+      transform: rotate(360deg);
   }
-  
-  button:disabled {
-    background-color: #ccc; /* Style for disabled buttons */
-    cursor: not-allowed; /* Not-allowed cursor for disabled buttons */
-  }
+}
+
+/* Error Message */
+.error-message {
+  font-size: 16px;
+  color: red;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+/* Medical Conditions List */
+.medicalConditions-list {
+  margin-top: 20px;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+  margin: 0 auto;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+/* Table Styles */
+.medicalConditions-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.medicalConditions-table th,
+.medicalConditions-table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+  word-wrap: break-word;
+}
+
+.medicalConditions-table th {
+  background-color: #007BFF;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.medicalConditions-table tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+.medicalConditions-table tr:hover {
+  background-color: #f0f8ff;
+}
+
+/* Scrollbar for Table */
+.table-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #007BFF;
+  border-radius: 8px;
+  border: 2px solid #f5f5f5;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #0056b3;
+}
+
+/* Button Container */
+.button-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Add Button */
+button.add-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background-color: #28a745;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button.add-btn:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+/* Action Buttons */
+button {
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Table Cells for Common Symptoms */
+.medicalConditions-table ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.medicalConditions-table li {
+  padding: 4px 0;
+  text-align: left;
+  font-size: 14px;
+}
+
+.medicalConditions-table td {
+  vertical-align: top;
+}
+
+/* Adjustments for Accessibility */
+[aria-label] {
+  outline: none;
+}

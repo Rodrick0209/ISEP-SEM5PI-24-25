@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MedicalCondtionService } from '../../services/medicalConditions.service';
 import { Router } from '@angular/router';
+import { MessageService } from '../../services/message.service';
+import { MedicalConditionCatalog } from '../../models/medicalConditionCatalog';
 
 @Component({
   selector: 'app-create-medical-conditions',
@@ -12,13 +14,29 @@ import { Router } from '@angular/router';
   styleUrl: './create-medical-conditions.component.css'
 })
 export class CreateMedicalConditionsComponent {
-    medicalConditionToCreate: string = '';
-    isLoading = false;
-    message: string = '';
-    showConfirmation: boolean = false;
+  submitForm = {
+    code: '',
+    designation: '',
+    description: '',
+  };
 
+  commonSymptoms: string[] = [];
+  newSymptom: string = '';
 
-    constructor(private router:Router, private medicalConditionService:MedicalCondtionService) { }
+  errorMessage: string = '';
+  successMessage: string = '';
+  showConfirmation: boolean = false;
+
+  constructor(private router:Router, private medicalConditionService:MedicalCondtionService, private messageService:MessageService) { }
+
+  addSymptom(): void {
+    if (this.newSymptom.trim()) {
+      this.commonSymptoms.push(this.newSymptom.trim());
+      this.newSymptom = ''; // Clear input after adding
+    } else {
+      this.errorMessage = 'Symptom cannot be empty';
+    }
+  }
 
     confirmSubmission(): void {
       this.showConfirmation = true;
@@ -28,27 +46,22 @@ export class CreateMedicalConditionsComponent {
       this.showConfirmation = false;
     }
 
-    onSubmit(medicalConditionToCreate: any): void {
-      this.isLoading = true;
+    onSubmit(form: any): void {
       this.showConfirmation = false;
 
-      if (medicalConditionToCreate.valid) {
-
-        const name = this.capitalizeFirstLetter(medicalConditionToCreate.value.name);
-
-        this.medicalConditionService.createMedicalCondition(name).subscribe({
-          next: (data: any) => {
-            this.isLoading = false;
+      if (form.valid) {
+        this.medicalConditionService.createMedicalCondition(this.submitForm.code, this.submitForm.designation, this.submitForm.description, this.commonSymptoms).subscribe({
+          next: (data: MedicalConditionCatalog) => {
+            this.messageService.setMessage(`Medical Condition ${data.designation} successfully created!`);
             this.router.navigate(['/medicalConditions']);
           },
           error: (err: any) => {
-            this.isLoading = false;
-            this.message = "Failed to create medical condition";
+            console.error('Failed to create medical condition', err);
+            this.errorMessage = 'An error occurred while creating the medical condition: ' + err.error.message;
           }
         });
       }
 
-    
     }
 
     private capitalizeFirstLetter(input: string): string {

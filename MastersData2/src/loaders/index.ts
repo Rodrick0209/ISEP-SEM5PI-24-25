@@ -21,9 +21,9 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/allergyCatalogSchema',
   };
 
-  const medicalConditionSchema = {
-    name: 'medicalConditionSchema',
-    schema: '../persistence/schemas/medicalConditionSchema',
+  const medicalConditionCatalogSchema = {
+    name: 'medicalConditionCatalogSchema',
+    schema: '../persistence/schemas/medicalConditionCatalogSchema',
   };
   
   const medicalRecordSchema= {
@@ -112,7 +112,7 @@ export default async ({ expressApp }) => {
       userSchema,
       roleSchema,
       allergyCatalogSchema,
-      medicalConditionSchema,
+      medicalConditionCatalogSchema,
       medicalRecordSchema
     ],
     controllers: [

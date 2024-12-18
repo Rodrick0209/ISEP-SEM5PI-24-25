@@ -126,7 +126,8 @@ export class PatientService {
         description: allergy.description,
       })),
       medicalConditions: medicalConditions.map(condition => ({
-        name: condition.name,
+        code: condition.code,
+        designation: condition.designation,
         date: condition.date
       }))
     };

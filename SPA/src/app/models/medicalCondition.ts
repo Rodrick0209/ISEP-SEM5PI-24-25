@@ -1,5 +1,6 @@
 export interface MedicalCondition {
     id: string;
-    name: string;
+    code: string;
+    designation: string;
     date: Date;
 }

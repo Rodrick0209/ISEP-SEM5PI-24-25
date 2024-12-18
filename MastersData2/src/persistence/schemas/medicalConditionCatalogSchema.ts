@@ -7,7 +7,7 @@ const MedicalConditionCatalogSchema = new mongoose.Schema(
         code: { type: String, unique: true },
         designation: { type: String },
         description: { type: String, default: null },
-        commonSymptoms: { type: String, default: null }
+        commonSymptoms: { type: Array, default: null }
     },
     {
         timestamps: true

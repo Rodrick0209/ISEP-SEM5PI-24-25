@@ -38,8 +38,13 @@ export default class MedicalConditionService implements IMedicalConditionService
                 return Result.fail<IMedicalConditionDTO>("No medical condition found");
             }
 
-            medicalCondition.designation = medicalConditionCatalog.designation;
-            medicalCondition.description = medicalConditionCatalog.description;
+            if(medicalConditionCatalog.description != null){
+                medicalCondition.designation = medicalConditionCatalog.designation;
+            }
+
+            if(medicalConditionCatalog.designation != null){
+                medicalCondition.description = medicalConditionCatalog.description;
+            }
 
             await this.medicalConditionRepo.save(medicalCondition);
 
@@ -74,12 +79,12 @@ export default class MedicalConditionService implements IMedicalConditionService
             const allMedicalConditions = await this.medicalConditionRepo.findAll();
 
             if (allMedicalConditions === null || allMedicalConditions.length === 0) {
-                return Result.fail<IMedicalConditionDTO[]>("No medical conditions found");
+                return Result.fail<IMedicalConditionCatalogDTO[]>("No medical conditions found");
             }
 
-            const medicalConditionsDTO =  allMedicalConditions.map(medicalCondition => MedicalConditionCatalogMap.toDTO(medicalCondition) as IMedicalConditionDTO);
+            const medicalConditionsDTO =  allMedicalConditions.map(medicalCondition => MedicalConditionCatalogMap.toDTO(medicalCondition) as IMedicalConditionCatalogDTO);
             
-            return Result.ok<IMedicalConditionDTO[]>(medicalConditionsDTO);
+            return Result.ok<IMedicalConditionCatalogDTO[]>(medicalConditionsDTO);
         } catch (e) {
             throw e;
         }

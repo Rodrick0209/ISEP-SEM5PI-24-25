@@ -61,13 +61,13 @@
             <td>
               <select
                 class="form-control form-control-lg custom-select"
-                [(ngModel)]="condition.name"
+                [(ngModel)]="condition.designation"
               >
                 <option
                   *ngFor="let existingCondition of existingMedicalConditions"
-                  [value]="existingCondition.name"
+                  [value]="existingCondition.designation"
                 >
-                  {{ existingCondition.name }}
+                  {{ existingCondition.designation }}
                 </option>
               </select>
             </td>

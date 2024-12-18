@@ -20,7 +20,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
+                <th>Code</th>
+                <th>Designation</th>
                 <th>Types</th>
                 <th></th>
             </tr>
@@ -28,11 +29,13 @@
         <tbody>
             <tr *ngFor="let allergy of medicalRecord?.allergies">
                 <td>{{ allergy.name }}</td>
+                <td>Teste</td>
                 <td>Allergy</td>
                 <td>{{ allergy.description }}</td>
             </tr>
             <tr *ngFor="let condition of medicalRecord?.medicalConditions">
-                <td>{{ condition.name }}</td>
+                <td>{{ condition.code }}</td>
+                <td>{{ condition.designation }}</td>
                 <td>Medical Condition</td>
                 <td>Diagnosticated at {{ condition.date | date : "dd-MM-yyyy" }}</td>
             </tr>
