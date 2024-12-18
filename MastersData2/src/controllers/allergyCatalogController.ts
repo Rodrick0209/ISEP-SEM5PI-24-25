@@ -21,7 +21,7 @@ export default class AllergyCatalogController extends BaseController implements 
 
     public async getAllergyCatalogItem(req: Request, res: Response, next: NextFunction) {
         try {
-            const allergyOrError = await this.allergyServiceInstance.getAllergyCatalogItem(req.params.name) as Result<IAllergyCathalogItemDTO>;
+            const allergyOrError = await this.allergyServiceInstance.getAllergyCatalogItem(req.params.code) as Result<IAllergyCathalogItemDTO>;
 
             if (allergyOrError.isFailure) {
                 return res.status(404).send();
@@ -36,7 +36,7 @@ export default class AllergyCatalogController extends BaseController implements 
 
     public async updateAllergyCatalogItem(req: Request, res: Response, next: NextFunction) {
         try {
-            const allergyOrError = await this.allergyServiceInstance.updateAllergyCatalogItem(req.params.name, req.body as IAllergyCathalogItemDTO) as Result<IAllergyCathalogItemDTO>;
+            const allergyOrError = await this.allergyServiceInstance.updateAllergyCatalogItem(req.params.code, req.body as IAllergyCathalogItemDTO) as Result<IAllergyCathalogItemDTO>;
 
             if (allergyOrError.isFailure) {
                 return res.status(400).send();

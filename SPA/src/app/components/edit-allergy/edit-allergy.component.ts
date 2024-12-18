@@ -62,7 +62,6 @@ export class EditAllergyComponent {
           this.router.navigate(['/allergiesCatalog']);
         },
         (error) => {
-          this.errorMessage = error.error.message;
           console.error("Failed to edit allergy", error);
         }
       );

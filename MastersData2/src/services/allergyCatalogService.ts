@@ -21,8 +21,12 @@ export default class AllergyCatalogService implements IAllergyCatalogService {
                 return Result.fail<IAllergyCathalogItemDTO>("Allergy not found");
             }
 
-            allergy.designation = allergyDTO.designation;
-            allergy.description = allergyDTO.description;
+            if(allergyDTO.designation != null){
+                allergy.designation = allergyDTO.designation;
+            }
+            if(allergyDTO.description != null){
+                allergy.description = allergyDTO.description;
+            }
 
             await this.allergyRepo.save(allergy);
 
