@@ -21,7 +21,7 @@ export default class MedicalConditionRepo implements IMedicalConditionRepo {
     public async findByCode(code: string): Promise<MedicalConditionCatalog> {
         const query = { code: code };
         
-        const medicalConditionDocument = await this.medicalConditionSchema.findOne(query as FilterQuery<IMedicalConditionPersistence & Document>);
+        const medicalConditionDocument = await this.medicalConditionSchema.findOne(query as FilterQuery<IMedicalConditionCatalogPersistence & Document>);
 
         if (medicalConditionDocument != null) {
             return MedicalConditionCatalogMap.toDomain(medicalConditionDocument);
@@ -40,7 +40,7 @@ export default class MedicalConditionRepo implements IMedicalConditionRepo {
         const idX = medicalCondition.id instanceof MedicalConditionCatalogId ? (<MedicalConditionCatalogId>medicalCondition.id).toValue() : medicalCondition.id;
 
         const query = { domainId: idX}; 
-        const medicalConditionDocument = await this.medicalConditionSchema.findOne( query as FilterQuery<IMedicalConditionPersistence & Document>);
+        const medicalConditionDocument = await this.medicalConditionSchema.findOne( query as FilterQuery<IMedicalConditionCatalogPersistence & Document>);
 
         return !!medicalConditionDocument === true;
     }
@@ -73,7 +73,7 @@ export default class MedicalConditionRepo implements IMedicalConditionRepo {
 
     public async findByDomainId(medicalConditionId: MedicalConditionCatalogId | string | MedicalCondition): Promise<MedicalConditionCatalog> {
         const query = { domainId: medicalConditionId };
-        const medicalConditionRecord = await this.medicalConditionSchema.findOne(query as FilterQuery<IMedicalConditionPersistence & Document>);
+        const medicalConditionRecord = await this.medicalConditionSchema.findOne(query as FilterQuery<IMedicalConditionCatalogPersistence & Document>);
         if (medicalConditionRecord != null) {
             return MedicalConditionCatalogMap.toDomain(medicalConditionRecord);
         } else {

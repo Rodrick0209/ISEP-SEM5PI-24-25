@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AllergyCatalogItem } from '../models/allergyCatalog';
 import { AllergyCatalogMapper } from '../mappers/allergyCatalogMapper';
+import { code } from 'three/webgpu';
 
 @Injectable({
   providedIn: 'root'
@@ -27,23 +28,35 @@ export class AllergyCatalogService {
     );
   }
 
-  createAllergyCatalogItem(name: string): Observable<AllergyCatalogItem> {
+  createAllergyCatalogItem(code: string, designation: string, description: string): Observable<AllergyCatalogItem> {
     const url = `${this.baseUrl}${this.createUrl}`;
-    return this.http.post<AllergyCatalogItem>(url, { name }).pipe(
+    const body: any = {};
+    body.code = code;
+    body.designation = designation;
+    if(description) {
+      body.description = description;
+    }
+    return this.http.post<AllergyCatalogItem>(url, body).pipe(
       map((data: AllergyCatalogItem) => AllergyCatalogMapper.mapToAllergyCatalogItem(data))
     );
   }
 
-  getAllergyCatalogItem(name: string): Observable<AllergyCatalogItem> {
-    const url = `${this.baseUrl}${this.getAllergyUrl}/${name}`;
+  getAllergyCatalogItem(code: string): Observable<AllergyCatalogItem> {
+    const url = `${this.baseUrl}${this.getAllergyUrl}/${code}`;
     return this.http.get<AllergyCatalogItem>(url).pipe(
       map((data: AllergyCatalogItem) => AllergyCatalogMapper.mapToAllergyCatalogItem(data))
     );
   }
 
-  updateAllergyCatalogItem(name: string, nameToEdit: string): Observable<AllergyCatalogItem> {
-    const url = `${this.baseUrl}${this.updateUrl}/${name}`;
-    const body = { nameToEdit: nameToEdit };
+  updateAllergyCatalogItem(code: string, designation: string, description: string): Observable<AllergyCatalogItem> {
+    const url = `${this.baseUrl}${this.updateUrl}/${code}`;
+    const body: any = {};
+    if(designation) {
+      body.designation = designation;
+    }
+    if(description) {
+      body.description = description;
+    }
     return this.http.put<AllergyCatalogItem>(url, body).pipe(
       map((data: AllergyCatalogItem) => AllergyCatalogMapper.mapToAllergyCatalogItem(data))
     );

@@ -11,6 +11,10 @@
     </button>
   </div>
 
+  <div *ngIf="sucessMessage" class="success-message" role="alert">
+    {{ sucessMessage }}
+  </div>
+
   <!-- Mensagem de Erro -->
   <div *ngIf="message" class="error-message" role="alert">
     {{ message }}
@@ -27,6 +31,7 @@
             <th>Designation</th>
             <th>Description</th>
             <th>Common Symptoms</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

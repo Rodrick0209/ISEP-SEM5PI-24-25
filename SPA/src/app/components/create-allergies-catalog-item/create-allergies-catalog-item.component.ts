@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AllergyCatalogService } from '../../services/allergiesCatalog.service';
 import { Router } from '@angular/router';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-create-allergies-catalog-item',
@@ -12,13 +13,17 @@ import { Router } from '@angular/router';
   styleUrl: './create-allergies-catalog-item.component.css'
 })
 export class CreateAllergiesCatalogItemComponent {
-    allergyToCreate: string = '';
-    isLoading = false;
+    submitForm = {
+      code: '',
+      designation: '',
+      description: ''
+    };
+
     errorMessage: string = '';
-    showConfirmation: boolean = false;
+    successMessage: string = '';
+    showConfirmation: boolean = false;  
 
-    constructor(private router:Router,private allergiesCatalogService: AllergyCatalogService) { }
-
+    constructor(private router:Router,private allergiesCatalogService: AllergyCatalogService, private messageService: MessageService) { }
 
     confirmSubmission(): void {
       this.showConfirmation = true;
@@ -28,40 +33,25 @@ export class CreateAllergiesCatalogItemComponent {
       this.showConfirmation = false;
     }
 
-    onSubmit(allergyToCreate: any): void {
-      this.isLoading = true;
+    onSubmit(form: any): void {
       this.showConfirmation = false;
     
-      if (allergyToCreate.valid) {
-
-        const name = this.capitalizeFirstLetter(allergyToCreate.value.name);
-    
-        this.allergiesCatalogService.createAllergyCatalogItem(name).subscribe({
+      if (form.valid) {    
+        this.allergiesCatalogService.createAllergyCatalogItem(this.submitForm.code, this.submitForm.designation, this.submitForm.description).subscribe({
           next: (data: any) => {
-            this.isLoading = false;
+            this.messageService.setMessage("Allergy " + data.designation + " successfully created!");
             this.router.navigate(['/allergiesCatalog']);
           },
           error: (err: any) => {
-            this.isLoading = false;
-            this.errorMessage = "Failed to create allergy";
+            this.errorMessage = "Failed to create allergy: " + err.error.message;
           }
         });
       }
     }
-
-    // Função para capitalizar a primeira letra
-  private capitalizeFirstLetter(input: string): string {
-    if (!input) return input; // Retorna vazio se a entrada for inválida
-    return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
-  }
-
-
+  
   onCancel(): void {
     this.showConfirmation = false;
     this.router.navigate(['/allergiesCatalog']);
   }
-
-
-
-
+  
 }

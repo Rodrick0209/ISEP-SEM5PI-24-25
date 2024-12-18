@@ -11,6 +11,10 @@
     </button>
   </div>
 
+  <div *ngIf="successMessage" class="success-message" role="alert">
+    {{ successMessage }}
+  </div>
+
   <!-- Mensagem de Erro -->
   <div *ngIf="message" class="error-message" role="alert">
     {{ message }}
@@ -23,13 +27,20 @@
       <table class="allergies-table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Actions</th>
+            <th>Code</th>
+            <th>Designation</th>
+            <th>Description</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let allergy of allergiesCatalogItem">
-            <td>{{ allergy.name }}</td>
+            <td>{{ allergy.code }}</td>
+            <td>{{ allergy.designation }}</td>
+            <td>
+              <span *ngIf="allergy.description; else noDescription">{{ allergy.description }}</span>
+              <ng-template #noDescription>N/A</ng-template>
+            </td>
             <td>
               <button (click)="editAllergy(allergy)">Edit</button>
             </td>

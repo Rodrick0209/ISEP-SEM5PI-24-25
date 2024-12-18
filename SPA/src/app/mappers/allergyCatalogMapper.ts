@@ -7,7 +7,9 @@ export class AllergyCatalogMapper {
     static mapToAllergyCatalogItem(data: any): AllergyCatalogItem {
         return {
             id: data.id,
-            name: data.name
+            code: data.code,
+            designation: data.designation,
+            description: data.description
         };
     }
 

@@ -14,7 +14,8 @@ import { MessageService } from '../../services/message.service';
 })
 export class EditAllergyComponent {
   submitForm = {
-    name: '',
+    designation: '',
+    description: ''
   }
 
   allergyName: string | null = null;
@@ -31,7 +32,8 @@ export class EditAllergyComponent {
       allergy = this.allergyService.getAllergyCatalogItem(this.allergyName);
       allergy.subscribe({
         next: (data) => {
-          this.submitForm.name = data.name;
+          this.submitForm.designation = data.designation;
+          this.submitForm.description = data.description;
         },
         error: (err) => console.error('Error loading allergy', err)
       });
@@ -51,7 +53,8 @@ export class EditAllergyComponent {
     if (this.allergyName) {
       this.allergyService.updateAllergyCatalogItem(
         this.allergyName,
-        this.submitForm.name
+        this.submitForm.designation,
+        this.submitForm.description
       ).subscribe(
         (response) => {
           console.log("Allergy edited successfully", response);

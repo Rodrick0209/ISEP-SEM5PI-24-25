@@ -51,22 +51,6 @@ export class AllergyCatalogItem extends AggregateRoot<AllergyCatalogItemProps> {
         const designation = allergyCatalogDTO.designation;
         const description = allergyCatalogDTO.description ?? null;
 
-        if (!AllergyCatalogItem.isValidCode(code)) {
-            return Result.fail<AllergyCatalogItem>('Invalid code for the allergy')
-        }
-
-        if( designation == null || designation.trim().length === 0) {
-            return Result.fail<AllergyCatalogItem>('Designation is required')
-        }
-
-        if(designation.trim().length > 100) {
-            return Result.fail<AllergyCatalogItem>('Designation cannot exceed 100 characters')
-        }
-
-        if(description != null && description.trim().length > 2048) {
-            return Result.fail<AllergyCatalogItem>('Description cannot exceed 2048 characters')
-        }
-
         const allergyCatalogItem = new AllergyCatalogItem({ 
             code: code, 
             designation: designation, 

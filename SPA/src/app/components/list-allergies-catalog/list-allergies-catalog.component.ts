@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AllergyCatalogItem } from '../../models/allergyCatalog';
 import { AllergyCatalogService } from '../../services/allergiesCatalog.service';
 import { Router } from '@angular/router';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-list-allergies-catalog',
@@ -17,10 +18,12 @@ export class ListAllergiesCatalogComponent {
     allergiesCatalogItem: AllergyCatalogItem[] = [];
     isLoading = false;  
     message: string = '';
+    successMessage: string = '';
 
-    constructor(private allergyCatalogService: AllergyCatalogService, private router: Router) { }
+    constructor(private allergyCatalogService: AllergyCatalogService, private router: Router, private messageService: MessageService) { }
 
     ngOnInit(): void {
+      this.successMessage = this.messageService.getMessage() ?? '';
       this.message = '';
       this.isLoading = true;
       this.allergyCatalogService.getAllergiesFromCatalog().subscribe({
@@ -44,6 +47,6 @@ export class ListAllergiesCatalogComponent {
     }
 
     editAllergy(allergy: AllergyCatalogItem) {
-      this.router.navigate(['/allergiesCatalog/edit', allergy.name]);
+      this.router.navigate(['/allergiesCatalog/edit', allergy.code]);
     }
 }

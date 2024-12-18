@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MedicalCondition } from '../../models/medicalCondition';
 import { MedicalCondtionService } from '../../services/medicalConditions.service';
 import { MedicalConditionCatalog } from '../../models/medicalConditionCatalog';
+import { MessageService } from '../../services/message.service';
 
 
 
@@ -18,11 +19,13 @@ import { MedicalConditionCatalog } from '../../models/medicalConditionCatalog';
 export class ListMedicalConditionsComponent {
     medicalConditions: MedicalConditionCatalog[] = [];
     isLoading = false;
+    sucessMessage: string = '';
     message: string = '';
 
-    constructor(private router: Router, private medicalConditionsService: MedicalCondtionService) { }
+    constructor(private router: Router, private medicalConditionsService: MedicalCondtionService, private messageService: MessageService) { }
 
     ngOnInit(): void {
+      this.sucessMessage = this.messageService.getMessage() ?? '';
       this.message = '';
       this.isLoading = true;
       this.medicalConditionsService.getMedicalConditions().subscribe({

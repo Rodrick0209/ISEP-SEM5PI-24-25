@@ -27,10 +27,10 @@ export default (app: Router) => {
     route.get('/getAll',
         (req, res, next) => ctrl.getAllMedicalConditions(req, res, next));
 
-    route.get('/get/:name',
+    route.get('/get/:code',
         celebrate({
             params: Joi.object({
-                name: Joi.string().required()
+                code: Joi.string().required()
             })
         }),
         (req, res, next) => ctrl.getMedicalCondition(req, res, next));

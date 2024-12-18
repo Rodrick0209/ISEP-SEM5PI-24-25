@@ -20,7 +20,7 @@ export default class MedicalConditionService implements IMedicalConditionService
             const medicalCondition = await this.medicalConditionRepo.findByCode(code);
 
             if (medicalCondition === null) {
-                return Result.fail<IMedicalConditionDTO>("No medical condition found");
+                return Result.fail<IMedicalConditionCatalogDTO>("No medical condition found");
             }
 
             const medicalConditionDTO = MedicalConditionCatalogMap.toDTO(medicalCondition) as IMedicalConditionCatalogDTO;
