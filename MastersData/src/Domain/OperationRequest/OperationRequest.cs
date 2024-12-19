@@ -41,6 +41,19 @@ namespace DDDSample1.Domain.OperationRequest
             this.staffAssignedSurgery = new StaffAssignedSurgery(new List<StaffId>(), new List<StaffId>());
         }
 
+        public void AssignStaffToAnesthesyPhase(List<StaffId> staffId)
+        {
+            this.staffAssignedSurgery.staffAnesthesyPhase.Clear();
+            this.staffAssignedSurgery.staffAnesthesyPhase.AddRange(staffId);
+        }
+
+        public void AssignStaffToSurgeryPhase(List<StaffId> staffId)
+        {
+            this.staffAssignedSurgery.staffSurgeryPhase.Clear();
+            this.staffAssignedSurgery.staffSurgeryPhase.AddRange(staffId);
+        }
+
+
         public List<StaffId> getStaffAnesthesyPhase()
         {
             return this.staffAssignedSurgery.staffAnesthesyPhase;

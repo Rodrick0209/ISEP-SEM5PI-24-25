@@ -37,7 +37,9 @@ namespace DDDSample1.Infrastructure.AvailabilitySlots
         public async Task<AvailabilitySlot> GetByStaffIdAsync(string staffId)
         {
             return await this.context.Set<AvailabilitySlot>()
-                                 .FirstOrDefaultAsync(slot => slot.StaffId == staffId);
+                                 .Include(slot => slot.Availability)
+                                 .FirstOrDefaultAsync(slot => slot.StaffId == staffId)
+                                 ;
         }
 
 

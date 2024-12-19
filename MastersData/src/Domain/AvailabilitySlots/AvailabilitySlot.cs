@@ -51,13 +51,20 @@ namespace DDDSample1.Domain.AvailabilitySlots
             }
         }
 
+
         public bool IsAvailable(DateOnly date, int startMinute, int endMinute)
         {
-            // Validações básicas para os parâmetros
-            if (startMinute < 0 || endMinute > 1440 || startMinute >= endMinute)
-                throw new ArgumentException("Intervalo de tempo inválido.");
+            // Inicializa as listas se forem nulas
+            if (startMinute < 0 || endMinute > 1440)
+            {
+                return false;
+            }
 
-            // Procura pela disponibilidade para a data fornecida
+            Console.WriteLine("Verificando disponibilidade para a data: " + date);
+            if (Availability == null)
+                return false;
+
+
             var dailyAvailability = this.Availability.FirstOrDefault(avail => avail.Date == date);
 
             if (dailyAvailability == null)
@@ -66,11 +73,29 @@ namespace DDDSample1.Domain.AvailabilitySlots
                 return false;
             }
 
-            // Verifica se o intervalo solicitado está dentro de algum dos TimeSlots disponíveis
-            return dailyAvailability.TimeSlots.Any(slot =>
-                slot.StartMinute <= startMinute && slot.EndMinute >= endMinute);
+
+            // Verifica conflitos com agendamentos existentes
+            foreach (var slot in dailyAvailability.TimeSlots)
+            {
+                var slotStart = slot.StartMinute;
+                Console.WriteLine("slotStart: " + slotStart);
+                var slotEnd = slot.EndMinute;
+                Console.WriteLine("slotEnd: " + slotEnd);
+
+                // Casos de sobreposição:
+                if ((startMinute >= slotStart && startMinute < slotEnd) ||
+                    (endMinute >= slotStart && endMinute <= slotEnd) ||
+                    (startMinute <= slotStart && endMinute >= slotEnd))
+                {
+                    return false;
+                }
+            }
+
+            // Nenhum conflito encontrado
+            return true;
         }
-
-
     }
+
+
 }
+

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Specializations;
@@ -81,6 +82,9 @@ namespace DDDSample1.Domain.OperationTypes
         {
             return this.status ? "Active" : "Inactive";
         }
+
+        
+
     }
 
 
