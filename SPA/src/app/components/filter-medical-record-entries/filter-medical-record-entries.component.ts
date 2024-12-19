@@ -11,10 +11,10 @@ import { FormsModule } from '@angular/forms';
 })
 export class FilterMedicalRecordEntriesComponent {
   filter = {
-    name: '',
+    designation: ''
   };
 
-  @Output() filterChanged = new EventEmitter<{ name: string }>();
+  @Output() filterChanged = new EventEmitter<{ designation: string }>();
 
   applyFilter(): void {
     this.filterChanged.emit(this.filter);

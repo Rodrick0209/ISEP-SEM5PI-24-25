@@ -80,7 +80,7 @@ export default class MedicalRecordService implements IMedicalRecordService {
             const allMedicalRecords = await this.MedicalRecordRepo.findAll();
 
             if (allMedicalRecords === null || allMedicalRecords.length === 0) {
-                return Result.fail<IMedicalRecordDTO[]>('No medical conditions found');
+                return Result.fail<IMedicalRecordDTO[]>('No medical records found');
             }
 
             const MedicalRecordsDTO = allMedicalRecords.map(rec => MedicalRecordMap.toDTO(rec) as IMedicalRecordDTO);
@@ -96,11 +96,14 @@ export default class MedicalRecordService implements IMedicalRecordService {
         id: string,
     ): Promise<Result<IMedicalRecordDTO>> {
         try {
-            const medicalRecord = await this.MedicalRecordRepo.findByPatientId(id.toString());
+            console.log("1OLA");
 
-            if (!medicalRecord) {
+            const medicalRecord = await this.MedicalRecordRepo.findByPatientId(id.toString());
+            
+            if (medicalRecord === null) {
                 return Result.fail<IMedicalRecordDTO>('Medical record not found');
             }
+            console.log("OLA1");
 
             const allergyIds = [];
             for (const allergyName of MedicalRecordDTO.allergies) {
@@ -113,14 +116,17 @@ export default class MedicalRecordService implements IMedicalRecordService {
                     }
                 }
             }
+            console.log("OLA");
 
             const medicalConditionIds = [];
             for (const conditionName of MedicalRecordDTO.medicalConditions) {
                 const condition = await this.MedicalConditionRepo.findByCode(conditionName.code);
-                const conditionResult = MedicalCondition.create(condition, conditionName.date, condition.id);
+                if (condition) {
+                    const conditionResult = MedicalCondition.create(condition, conditionName.date, condition.id);
 
-                if (conditionResult.isSuccess) {
-                    medicalConditionIds.push(conditionResult.getValue());
+                    if (conditionResult.isSuccess) {
+                        medicalConditionIds.push(conditionResult.getValue());
+                    }
                 }
             }
 

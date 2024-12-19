@@ -30,10 +30,10 @@ export class ListMedicalRecordEntriesComponent implements OnInit {
     this.getMedicalRecord();
   }
 
-  onFilterChanged(filter: { name: string }): void {
+  onFilterChanged(filter: { designation: string }): void {
     
     if (this.medicalRecordNumber) {
-      this.patientService.filterMedicalRecordEntries(this.medicalRecordNumber, filter.name).subscribe({
+      this.patientService.filterMedicalRecordEntries(this.medicalRecordNumber, filter.designation).subscribe({
         next: (value: MedicalRecord) => {
           console.log(value);
           this.medicalRecord = value;

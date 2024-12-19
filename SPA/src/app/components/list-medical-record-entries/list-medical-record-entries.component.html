@@ -28,8 +28,8 @@
         </thead>
         <tbody>
             <tr *ngFor="let allergy of medicalRecord?.allergies">
-                <td>{{ allergy.name }}</td>
-                <td>Teste</td>
+                <td>{{ allergy.code }}</td>
+                <td>{{ allergy.designation }}</td>
                 <td>Allergy</td>
                 <td>{{ allergy.description }}</td>
             </tr>

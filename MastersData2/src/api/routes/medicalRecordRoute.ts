@@ -55,13 +55,14 @@ export default (app: Router) => {
     route.put('/update/:id',
         celebrate({
             body: Joi.object({
-                //patientId: Joi.string().guid({ version: 'uuidv4' }).required(),
                 allergies: Joi.array().items(Joi.object({
-                    name: Joi.string().required(),
+                    code: Joi.string().required(),
+                    designation: Joi.string().required(),
                     description: Joi.string().allow('').required()
                 })),
                 medicalConditions: Joi.array().items(Joi.object({
-                    name: Joi.string().required(),
+                    code: Joi.string().required(),
+                    designation: Joi.string().required(),
                     date: Joi.date().iso().allow('').required()
                 }))
             }),

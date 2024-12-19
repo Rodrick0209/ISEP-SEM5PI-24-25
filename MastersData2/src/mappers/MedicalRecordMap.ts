@@ -54,7 +54,7 @@ public static async toDomain(medicalRecord: any): Promise<MedicalRecord> {
   
     const medicalConditions = await Promise.all(
       medicalRecord.medicalConditions.map(async (condition: any) => {
-        const medicalConditionCatalog = await medicalConditionsCatalogRepo.findByCode(condition.name);
+        const medicalConditionCatalog = await medicalConditionsCatalogRepo.findByCode(condition.code);
         return MedicalCondition.create(medicalConditionCatalog, new Date(condition.date), condition.id); // Passando o catálogo e a data
       })
     );

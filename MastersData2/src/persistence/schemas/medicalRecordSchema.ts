@@ -6,7 +6,7 @@ import allergySchema from "./allergySchema";
 const MedicalRecordSchema = new mongoose.Schema(
     {
         id: { type: String, unique: true },
-        patientId: { type: String },
+        patientId: { type: String, unique: true },
         allergies: [
             {
                 id: { type: String },

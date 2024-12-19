@@ -33,11 +33,11 @@ export class PatientService {
     return this.http.get<MedicalConditionView[]>(this.getAllMedicalCondsUrl);
   }
 
-  filterMedicalRecordEntries(selectedMedicalRecordNumber: string, name: string | null): Observable<MedicalRecord> {
-      if (!name) {
+  filterMedicalRecordEntries(selectedMedicalRecordNumber: string, designation: string | null): Observable<MedicalRecord> {
+      if (!designation) {
         return this.getMedicalRecordForPatientId(selectedMedicalRecordNumber);
       }
-      return this.http.get<MedicalRecord>(`${this.recordUrl}${selectedMedicalRecordNumber}/${name}`);
+      return this.http.get<MedicalRecord>(`${this.recordUrl}${selectedMedicalRecordNumber}/${designation}`);
     }
 
 
@@ -122,8 +122,9 @@ export class PatientService {
   updateMedicalRecord(medicalRecordNumber: string, allergies: Allergy[], medicalConditions: MedicalCondition[]): Observable<any> {
     const body = {
       allergies: allergies.map(allergy => ({
-        name: allergy.name,
-        description: allergy.description,
+        code: allergy.code,
+        designation: allergy.designation,
+        description: allergy.description
       })),
       medicalConditions: medicalConditions.map(condition => ({
         code: condition.code,

@@ -1,5 +1,6 @@
 export interface Allergy {
     id: string;
-    name: string;
-    description: string;
+    code: string;
+    designation: string;
+    description: string
 }

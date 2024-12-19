@@ -36,7 +36,7 @@ export default class MedicalRecordController implements IMedicalRecordController
       const medicalRecordOrError = await this.medicalRecordServiceInstance.listMedicalRecords() as Result<IMedicalRecordDTO[]>;
 
       if (medicalRecordOrError.isFailure) {
-        return res.status(200).send(medicalRecordOrError.error);
+        return res.status(404).json(medicalRecordOrError.error);
       }
 
       const medicalRecordDTO = medicalRecordOrError.getValue();
@@ -50,9 +50,7 @@ export default class MedicalRecordController implements IMedicalRecordController
 
   public async updateMedicalRecord(req: Request, res: Response, next: NextFunction) {
     try {
-
       const medicalConditionOrError = await this.medicalRecordServiceInstance.updateMedicalRecord(req.body as IMedicalRecordDTO, req.params.id) as Result<IMedicalRecordDTO>;
-
 
       if (medicalConditionOrError.isFailure) {
         return res.status(400).send(medicalConditionOrError.error);

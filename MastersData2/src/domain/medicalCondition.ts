@@ -41,7 +41,7 @@ export class MedicalCondition extends AggregateRoot<MedicalConditionProps> {
         const date = dat;
 
         if ( medicalConditionCatalog === null || date === null) {
-            return Result.fail<MedicalCondition>('Must provide a valid allergy and date for the allergy')
+            return Result.fail<MedicalCondition>('Must provide a valid medical condition and date for the medical condition')
         } else {
             const allergy = new MedicalCondition({ medicalConditionCatalog: medicalConditionCatalog, date: date }, id);
             return Result.ok<MedicalCondition>( allergy )

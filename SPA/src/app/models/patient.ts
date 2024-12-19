@@ -20,8 +20,9 @@ export interface Patient {
 
   export interface Allergy{
     id: string;
-    name: string;
-    description:string;
+    code: string,
+    designation: string,
+    description: string,
   }
 
   export interface MedicalCondition{
@@ -52,10 +53,11 @@ export interface Patient {
   }
 
   export interface AllergiesView {
-    name: string
+    code: string;
+    designation: string
   }
 
   export interface MedicalConditionView {
     code: string;
-    designation: string;
+    designation: string
   }
