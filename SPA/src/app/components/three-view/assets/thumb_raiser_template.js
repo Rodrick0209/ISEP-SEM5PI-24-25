@@ -37,6 +37,9 @@ import VendingMachine from "./vending_machine.js";
 import Board from "./board.js";
 
 let rooms = null;
+const getAllRoomsInfo = "https://localhost:5001/api/OperationRoom/GetAll";
+const apiUrl = "https://localhost:5001/api/OperationRoom/OccupiedRooms";
+let zoomIn = false;
 
 export default class ThumbRaiser {
   constructor(
@@ -62,7 +65,6 @@ export default class ThumbRaiser {
   ) {
     this.onLoad = async function (description) {
       rooms = description.rooms;
-      const apiUrl = "https://localhost:5001/api/OperationRoom/OccupiedRooms";
 
       // Construct the URL with date and time as query parameters
       const urlWithParams = `${apiUrl}?date=${date.date}&time=${time.time}`;
@@ -517,18 +519,21 @@ export default class ThumbRaiser {
       );
 
       // Register the event handler to be called on mouse down
-      this.renderer.domElement.addEventListener("mousedown", (event) =>
-        this.mouseDown(event)
+      this.renderer.domElement.addEventListener(
+        "mousedown",
+        (event) => this.mouseDown(event)
       );
 
       // Register the event handler to be called on mouse move
-      this.renderer.domElement.addEventListener("mousemove", (event) =>
-        this.mouseMove(event)
+      this.renderer.domElement.addEventListener(
+        "mousemove",
+        (event) => this.mouseMove(event)
       );
 
       // Register the event handler to be called on mouse up
-      this.renderer.domElement.addEventListener("mouseup", (event) =>
-        this.mouseUp(event)
+      this.renderer.domElement.addEventListener(
+        "mouseup",
+        (event) => this.mouseUp(event)
       );
 
       // Register the event handler to be called on mouse wheel
@@ -595,7 +600,7 @@ export default class ThumbRaiser {
     };
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "i") {
+      if (event.key === "i" && this.zoomIn === true) {
         this.toggleRoomInfo();
       }
     });
@@ -949,6 +954,15 @@ export default class ThumbRaiser {
         }
       }
     }
+    this.zoomIn = false;
+    this.selectedRoom = null; // Reset the selected room
+        const overlayAll = document.getElementById("room-info-overlay");
+        if (overlayAll.style.display === "block") {
+          overlayAll.style.display = "none";
+        }
+        // Hide the info description
+        const infoDescriptionAll = document.getElementById("info-description");
+        infoDescriptionAll.style.display = "none";
   }
 
   mouseMove(event) {
@@ -1004,6 +1018,7 @@ export default class ThumbRaiser {
     this.dragMiniMap = false;
     this.changeCameraDistance = false;
     this.changeCameraOrientation = false;
+    this.zoomIn = false;
   }
 
   mouseWheel(event) {
@@ -1043,11 +1058,11 @@ export default class ThumbRaiser {
       ((event.clientX - rect.left) / rect.width) * 2 - 1,
       -((event.clientY - rect.top) / rect.height) * 2 + 1
     );
-  
+
     // Create a raycaster
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(mouse, this.activeViewCamera.object);
-  
+
     // Check for intersections with beds
     const intersects = raycaster.intersectObjects(
       [
@@ -1056,7 +1071,7 @@ export default class ThumbRaiser {
       ],
       true
     );
-  
+
     if (intersects.length > 0) {
       // Find the corresponding bed
       for (const bed of [...this.beds, ...this.bedWithPatients]) {
@@ -1077,17 +1092,17 @@ export default class ThumbRaiser {
             },
           });
           this.selectedRoom = bed; // Store the selected bed
-  
+          this.zoomIn = true;
           // Close the room info overlay if it is open
           const overlay = document.getElementById("room-info-overlay");
           if (overlay.style.display === "block") {
             overlay.style.display = "none";
           }
-  
+
           // Show the info description
           const infoDescription = document.getElementById("info-description");
           infoDescription.style.display = "block";
-  
+
           break;
         }
       }
@@ -1102,6 +1117,7 @@ export default class ThumbRaiser {
   elementChange(event) {
     switch (event.target.id) {
       case "view":
+        
         this.setActiveViewCamera(
           [
             this.fixedViewCamera,
@@ -1251,6 +1267,30 @@ export default class ThumbRaiser {
       }
     } catch (error) {
       console.error("Error fetching room occupancy data:", error);
+    }
+  }
+  async updateRoomStatus(getAllRoomsInfoUrl) {
+    const response = await fetch(getAllRoomsInfoUrl);
+
+    const data = await response.json();
+
+    try {
+      // Check if no occupancy data is provided
+      if (data && data.length > 0) {
+        // Update room occupancy based on the provided data
+        rooms.forEach((room) => {
+          // Search for a matching room in the occupancy data
+          const matchingRoom = data.find(
+            (dataRoom) => dataRoom.roomNumber === room.name
+          );
+
+          if (matchingRoom) {
+            room.roomCapacity = matchingRoom.roomCapacity;
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Error updating room status:", error);
     }
   }
 
@@ -1710,17 +1750,40 @@ export default class ThumbRaiser {
     );
   }
 
-  toggleRoomInfo() {
+  async toggleRoomInfo() {
+    await this.updateRoomStatus(getAllRoomsInfo);
+    const beds = [];
+
+    for (const room of rooms) {
+      if (room.isOccupied) {
+        const bedWithPatient = this.bedWithPatients.find((bed) =>
+          bed.position.equals(this.cellToCartesian(room.beds.position))
+        );
+        if (bedWithPatient) {
+          beds.push({ ...room, objectId: bedWithPatient.object.id });
+        }
+      } else {
+        const bed = this.beds.find((bed) =>
+          bed.position.equals(this.cellToCartesian(room.beds.position))
+        );
+        if (bed) {
+          beds.push({ ...room, objectId: bed.object.id });
+        }
+      }
+    }
+
     if (this.selectedRoom) {
-      const roomIndex = this.beds.indexOf(this.selectedRoom) !== -1 ? this.beds.indexOf(this.selectedRoom) : this.bedWithPatients.indexOf(this.selectedRoom);
+      const roomIndex = beds.findIndex(
+        (bed) => bed.objectId === this.selectedRoom.object.id
+      );
       const roomInfo = rooms[roomIndex]; // Assuming rooms array is in the same order as beds array
-  
+
       const overlay = document.getElementById("room-info-overlay");
       if (overlay.style.display === "none" || !overlay.style.display) {
         overlay.style.display = "block";
         overlay.innerHTML = `
           <h2>Room Information</h2>
-          <p>Room Number: ${roomInfo.roomNumber}</p>
+          <p>Room Number: ${roomInfo.name}</p>
           <p>Status: ${roomInfo.isOccupied ? "Occupied" : "Free"}</p>
           <p>Capacity: ${roomInfo.roomCapacity}</p>
           <p>Room Type: ${roomInfo.roomType}</p>

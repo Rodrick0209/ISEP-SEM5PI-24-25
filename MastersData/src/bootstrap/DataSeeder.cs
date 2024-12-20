@@ -241,18 +241,19 @@ public static class DataSeeder
     var roomType = new RoomType("R12-2354", "RoomType1", "RoomType1", true);
     context.RoomTypes.Add(roomType);
 
-    var operationRoom = new OperationRoom("or1", roomType, "10");
+    var operationRoom = new OperationRoom("or3", roomType, "10");
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 720, 840);
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1080, 1200);
     operationRoom.AddMaintenance(new DateOnly(2025, 01, 01), 1200, 1300);
     SeedOperationRoom(context, operationRoom);
+
 
     OperationRoom teste = new OperationRoom("or8", roomType, "10");
 
     var rooms = new List<OperationRoom>
     {
       new OperationRoom("or2", roomType, "10"),
-      new OperationRoom("or3", roomType, "10"),
+      new OperationRoom("or1", roomType, "10"),
       new OperationRoom("or4", roomType, "10"),
       new OperationRoom("or5", roomType, "10"),
       new OperationRoom("or6", roomType, "10"),

@@ -84,7 +84,9 @@
       "tableSurgery": {
         "position": [1.2, 3],
         "direction": "south"
-      }
+      },
+      "roomCapacity": 5,
+      "roomType": "surgery"
     },
     {
       "name": "or2",
@@ -105,7 +107,9 @@
       "tableSurgery": {
         "position": [1.2, 6],
         "direction": "south"
-      }
+      },
+      "roomCapacity": 5,
+      "roomType": "surgery"
     },
     {
       "name": "or3",
@@ -126,7 +130,9 @@
       "tableSurgery": {
         "position": [1.2, 9],
         "direction": "south"
-      }
+      },
+      "roomCapacity": 5,
+      "roomType": "surgery"
     },
     {
       "name": "or4",
@@ -147,7 +153,9 @@
       "tableSurgery": {
         "position": [1.2, 12],
         "direction": "south"
-      }
+      },
+      "roomCapacity": 5,
+      "roomType": "surgery"
     },
     {
       "name": "or5",
@@ -168,7 +176,9 @@
       "tableSurgery": {
         "position": [7.2, 3],
         "direction": "south"
-      }
+      },
+      "roomCapacity": 5,
+      "roomType": "surgery"
     },
     {
       "name": "or6",
@@ -189,7 +199,9 @@
       "tableSurgery": {
         "position": [7.2, 6],
         "direction": "south"
-      }
+      },
+      "roomCapacity": 5,
+      "roomType": "surgery"
     },
     {
       "name": "or7",
@@ -210,7 +222,9 @@
       "tableSurgery": {
         "position": [12.8, 6],
         "direction": "south"
-      }
+      },
+      "roomCapacity": 5,
+      "roomType": "surgery"
     },
     {
       "name": "or8",
@@ -231,7 +245,9 @@
       "tableSurgery": {
         "position": [12.8, 3],
         "direction": "south"
-      }
+      },
+      "roomCapacity": 5,
+      "roomType": "surgery"
     },
     {
       "name": "or9",
@@ -252,7 +268,9 @@
       "tableSurgery": {
         "position": [10.8, 12.3],
         "direction": "east"
-      }
+      },
+      "roomCapacity": 5,
+      "roomType": "surgery"
     },
     {
       "name": "or10",
@@ -273,7 +291,9 @@
       "tableSurgery": {
         "position": [7.4, 12.3],
         "direction": "east"
-      }
+      },
+      "roomCapacity": 5,
+      "roomType": "surgery"
     }
   ]
 }
