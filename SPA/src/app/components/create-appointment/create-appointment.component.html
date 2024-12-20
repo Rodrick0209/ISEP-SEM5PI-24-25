@@ -1,120 +1,135 @@
-<div class="create-appointment-container">
-    <h2>Create New Appointment</h2>
-    <p class="required-note"><span class="required">*</span> Required</p>
-    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
-    <form (ngSubmit)="confirmSubmission()" #appointmentForm="ngForm">
-        <h3>Appointment Information</h3>
-        <div class="appointment-information">
-            <!-- Date -->
-            <div class="form-group">
-                <label for="appointmentDate">Appointment Date <span class="required">*</span></label>
-                <input
-                    type="date"
-                    id="appointmentDate"
-                    name="appointmentDate"
-                    [(ngModel)]="submitForm.appointmentTimeSlotDate"
-                    required
-                />
-            </div>
-            <!-- Start Time -->
-            <div class="form-group">
-                <label for="startTime">Start Time (Minutes from Midnight) <span class="required">*</span></label>
-                <input
-                    type="number"
-                    id="startTime"
-                    name="startTime"
-                    [(ngModel)]="submitForm.appointmentTimeSlotStartMinute"
-                    required
-                    min="0"
-                    max="1439"
-                />
-            </div>
-            <!-- End Time -->
-            <div class="form-group">
-                <label for="endTime">End Time (Minutes from Midnight) <span class="required">*</span></label>
-                <input
-                    type="number"
-                    id="endTime"
-                    name="endTime"
-                    [(ngModel)]="submitForm.appointmentTimeSlotEndMinute"
-                    required
-                    min="0"
-                    max="1439"
-                />
-            </div>
-            <!-- Operation Room -->
-            <div class="form-group">
-                <label for="operationRoom">Operation Room <span class="required">*</span></label>
-                <select
-                    id="operationRoom"
-                    name="operationRoom"
-                    [(ngModel)]="submitForm.operationRoomId"
-                    required
-                >
-                    <option value="" disabled selected>Select Operation Room</option>
-                    <option *ngFor="let room of operationRooms" [value]="room.id">
-                        {{ room.roomNumber }}
-                    </option>
-                </select>
-            </div>
-            <!-- Operation Request -->
-            <div class="form-group">
-                <label for="operationRequest">Operation Request <span class="required">*</span></label>
-                <select
-                    id="operationRequest"
-                    name="operationRequest"
-                    [(ngModel)]="submitForm.operationRequestId"
-                    required
-                >
-                    <option value="" disabled selected>Select Operation Request</option>
-                    <option *ngFor="let request of operationRequests" [value]="request.id">
-                        {{ request.id }}
-                    </option>
-                </select>
-            </div>
-            <!-- Appointment Status -->
-            <div class="form-group">
-                <label for="appointmentStatus">Appointment Status <span class="required">*</span></label>
-                <select
-                    id="appointmentStatus"
-                    name="appointmentStatus"
-                    [(ngModel)]="submitForm.appointmentStatus"
-                    required
-                >
-                    <option value="" disabled selected>Select Status</option>
-                    <option *ngFor="let status of statusOptions" [value]="status">
-                        {{ status }}
-                    </option>
-                </select>
-            </div>
-        </div>
-        <div class="form-actions">
-            <button
-                type="submit"
-                [disabled]="!appointmentForm.form.valid"
-                class="btn-submit"
-            >
-                Create Appointment
-            </button>
-            <button type="button" class="btn-cancel" (click)="onCancel()">
-                Cancel
-            </button>
-        </div>
-    </form>
+<div class="appointment-container">
+    <h2>Create Appointment</h2>
+  
+    <!-- Formulário para criar a consulta -->
+    <form #appointmentForm="ngForm" (ngSubmit)="onSubmit(appointmentForm)">
+      <!-- Data e Hora -->
+      <div class="form-group">
+        <label for="appointmentTimeSlotDate">Appointment Date</label>
+        <input type="date" id="appointmentTimeSlotDate" name="appointmentTimeSlotDate" [(ngModel)]="submitForm.appointmentTimeSlotDate" required (ngModelChange)="loadMedicalTeamToShow()">
+      </div>
+  
+      <div class="form-group">
+        <label for="appointmentTimeSlotStartMinute">Start Time (Minutes)</label>
+        <input type="number" id="appointmentTimeSlotStartMinute" name="appointmentTimeSlotStartMinute" [(ngModel)]="submitForm.appointmentTimeSlotStartMinute" required (ngModelChange)="loadMedicalTeamToShow()">
+      </div>
+  
+      <!-- Escolha de operação -->
+      <div class="form-group">
+        <label for="operationRequestId">Operation Request</label>
+        <select id="operationRequestId" name="operationRequestId" [(ngModel)]="submitForm.operationRequestId" required (ngModelChange)="loadMedicalTeamToShow()">
+          <option *ngFor="let request of operationRequests" [value]="request.id">
+            {{ request.id }} <!-- Exibindo o ID da solicitação aqui -->
+          </option>
+        </select>
+      </div>
 
-    <!-- Confirmation Modal -->
-    <div class="modal" *ngIf="showConfirmation">
-        <div class="modal-content">
-            <h3>Confirm Submission</h3>
-            <p>Are you sure you want to create this appointment?</p>
-            <div class="modal-actions">
-                <button (click)="onSubmit(appointmentForm)" class="btn-confirm">
-                    Yes
-                </button>
-                <button (click)="closeConfirmationModal()" class="btn-cancel">
-                    No
-                </button>
-            </div>
+      <div class="form-group">
+        <label for="operationRoomId">Operation Room</label>
+        <select id="operationRoomId" name="operationRoomId" [(ngModel)]="submitForm.operationRoomId" required (ngModelChange)="loadMedicalTeamToShow()">
+          <option *ngFor="let room of operationRooms" [value]="room.roomNumber">
+            {{ room.roomNumber }} <!-- Exibindo o número da sala aqui -->
+          </option>
+        </select>
+      </div>
+
+
+  
+      <!-- Mostrar a seleção da medical team somente após os campos obrigatórios serem preenchidos -->
+      <div *ngIf="IsMedicalTeamShowForAppointmentCreate">
+        <h3>Available Medical Team</h3>
+
+        <div class="phase-gap">
+            <!-- Conteúdo da fase de cirurgia -->
         </div>
+        
+        <!-- Fase de Anestesia -->
+        <div *ngIf="medicalTeamToShows.staffAnesthesyPhase.length > 0">
+          <h4>Anesthesia Team</h4>
+          <div *ngFor="let phase of medicalTeamToShows.staffAnesthesyPhase">
+            <strong>Specialization:</strong> {{ getSpecializationName(phase.specializationId) }} |
+            <strong>Nr Needed:</strong> {{ phase.nrNeededStaff }} |
+            <div class="specialization-gap">
+                <!-- Conteúdo da fase de cirurgia -->
+            </div>
+            <!-- Checkboxes para selecionar enfermeiros -->
+            <div *ngIf="phase.staffId && phase.staffId.length > 0">
+              <label *ngFor="let staff of phase.staffId">
+                <input type="checkbox" 
+                (change)="toggleStaffSelection(staff, 'anesthesia', phase.specializationId, phase.nrNeededStaff)"
+                [checked]="isSelected(staff, 'anesthesia', phase.specializationId)" 
+                [disabled]="isMaxSelected('anesthesia', phase.specializationId, phase.nrNeededStaff) && !isSelected(staff, 'anesthesia', phase.specializationId)" />
+                {{ staff }} <!-- Exibindo o ID do staff -->
+              </label>
+            </div>
+          </div>
+        </div>
+  
+        <div class="phase-gap">
+            <!-- Conteúdo da fase de cirurgia -->
+        </div>
+
+        <!-- Fase de Cirurgia -->
+        <div *ngIf="medicalTeamToShows.staffSurgeryPhase.length > 0">
+          <h4>Surgery Team</h4>
+          
+          <div *ngFor="let phase of medicalTeamToShows.staffSurgeryPhase">
+            <strong>Specialization:</strong> {{ getSpecializationName(phase.specializationId) }} |
+            <strong>Nr Needed:</strong> {{ phase.nrNeededStaff }} |
+            <div class="specialization-gap">
+                <!-- Conteúdo da fase de cirurgia -->
+            </div>
+            <!-- Checkboxes para selecionar cirurgiões -->
+            <div *ngIf="phase.staffId && phase.staffId.length > 0">
+              <label *ngFor="let staff of phase.staffId">
+                <input type="checkbox" 
+                (change)="toggleStaffSelection(staff, 'surgery', phase.specializationId, phase.nrNeededStaff)"
+                [checked]="isSelected(staff, 'surgery', phase.specializationId)" 
+                [disabled]="isMaxSelected('surgery', phase.specializationId, phase.nrNeededStaff) && !isSelected(staff, 'surgery', phase.specializationId)" />
+                {{ staff }} <!-- Exibindo o ID do staff -->
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Mensagem de erro - Colocada antes dos botões -->
+      <div *ngIf="errorMessage" class="error-message">
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <!-- Mensagem de aviso para preencher campos obrigatórios -->
+    <div *ngIf="!IsMedicalTeamShowForAppointmentCreate" class="warning-message">
+        <p>{{ "To choose the medical team for this appointment you need to fill the (operation request, start time and date) fields" }}</p>
     </div>
-</div>
+  
+      <!-- Botões de ação -->
+      <div class="form-actions">
+        <button type="button" (click)="confirmSubmission()">Confirm</button>
+        <button type="button" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  
+    <!-- Modal de confirmação -->
+    <div class="confirmation-modal" *ngIf="showConfirmation">
+      <div class="modal-content">
+        <h3>Confirm Appointment</h3>
+        <p>Are you sure you want to create this appointment?</p>
+        <div class="modal-actions">
+          <button (click)="onSubmit(appointmentForm)">Yes</button>
+          <button (click)="closeConfirmationModal()">No</button>
+        </div>
+      </div>
+    </div>
+  
+    
+
+    <!-- Indicador de carregamento -->
+    <div *ngIf="loadingMedicalTeam" class="loading-spinner">
+      <div class="spinner"></div> <!-- O spinner -->
+      <p>Loading medical team...</p>
+    </div>
+  </div>
+  
+
+  

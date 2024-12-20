@@ -35,13 +35,17 @@ namespace DDDSample1.Domain.Appointments
     public class SpecializationAndStaffDto
     {
         public String SpecializationId { get; set; }
+
+        public String nrNeededStaff { get; set; }
         public List<String> StaffId { get; set; }
 
-        public SpecializationAndStaffDto(String specializationId, List<String> staffId)
+        public SpecializationAndStaffDto(String specializationId, List<String> staffId, String nrNeededStaff)
         {
             SpecializationId = specializationId;
             StaffId = staffId;
-        }
+            this.nrNeededStaff = nrNeededStaff;
+        }   
+        
 
         public void AddStaffId(String staffId)
         {

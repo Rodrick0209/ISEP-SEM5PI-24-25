@@ -62,6 +62,13 @@ export class SpecializationService {
     }
 
 
+    getSpecializationById(id: string): Observable<Specialization> {
+      return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(
+        map(data => SpecializationMapper.mapToSpecialization(data))
+      );
+    }
+
+
 
 
 }

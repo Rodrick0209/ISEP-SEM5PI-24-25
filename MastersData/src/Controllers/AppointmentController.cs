@@ -112,23 +112,24 @@ namespace DDDSample1.Controllers
 
 
         [HttpGet("GetStaffAvailableForDoinSurgeryAtCertainTime")]
-
-        public async Task<ActionResult<StaffForSurgeryDto>> GetStaffAvailableForDoinSurgeryAtCertainTime(GetMedicalSurgeryParamsDto dto)
+        public async Task<ActionResult<StaffForSurgeryDto>> GetStaffAvailableForDoinSurgeryAtCertainTime(
+            [FromQuery] GetMedicalSurgeryParamsDto dto)
         {
             try
             {
                 Console.WriteLine("Entrou no controller method");
                 Console.WriteLine(dto.startMinute);
                 Console.WriteLine(dto.date);
-                Console.WriteLine(dto.appointmentId);
+                Console.WriteLine(dto.operationRequestId);
 
-                return await _service.GetStaffAvailableForDoinSurgeryAtCertainTime(dto.startMinute, dto.date, dto.appointmentId);
+                return await _service.GetStaffAvailableForDoinSurgeryAtCertainTime(dto.startMinute, dto.date, dto.operationRequestId);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { Message = ex.Message, ex.StackTrace });
             }
         }
+
 
 
 

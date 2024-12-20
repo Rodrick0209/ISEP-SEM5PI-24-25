@@ -24,7 +24,7 @@ thead {
 
 th, td {
     padding: 12px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #e0e0e0;
     vertical-align: middle; /* Alinha o conteúdo no centro verticalmente */
     word-wrap: break-word; /* Evita que o texto quebre a linha */

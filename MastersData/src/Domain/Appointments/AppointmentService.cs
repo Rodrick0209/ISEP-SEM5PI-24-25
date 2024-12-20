@@ -494,12 +494,10 @@ namespace DDDSample1.Domain.Appointments
 
 
 
-        public async Task<StaffForSurgeryDto> GetStaffAvailableForDoinSurgeryAtCertainTime(string startMinute, string date, string appointmentId)
+        public async Task<StaffForSurgeryDto> GetStaffAvailableForDoinSurgeryAtCertainTime(string startMinute, string date, string operationRequestId)
         {
             Console.WriteLine("Entrou no metodo");  
-            var appointment = await _appointmentRepository.GetByIdAsync(new AppointmentId(appointmentId));
-            Console.WriteLine("Passou apanhar o appointment");
-            var opRequest = await _operationRequestRepository.GetByIdAsync(appointment.OperationRequestId);
+            var opRequest = await _operationRequestRepository.GetByIdAsync(new OperationRequestId(operationRequestId));
             Console.WriteLine("Passou apanhar o opRequest");
             var opType = await _operationTypeRepository.GetByIdAsync(new OperationTypeId(opRequest.operationTypeId));
             Console.WriteLine("Passou apanhar o opType");
@@ -543,9 +541,10 @@ namespace DDDSample1.Domain.Appointments
                 validateIfNumberOfElementsInListIfTheRequestIfNotThrowException(staffAvailableForSurgery, numberStaffWithCertainSpecialization);
 
                 List<String> IdsStaffDisponivel = percorreListDeStaffsAndVerificaDisponibilidadeAsync(staffAvailableForSurgery, date, startMinute, endMinute).Result;
+                Console.WriteLine("Staff needed-->"+numberStaffWithCertainSpecialization);
                 Console.WriteLine("Numero de staff q esta disponivel"+ IdsStaffDisponivel.Count);
-                validateIfNumberOfElementsInListIfTheRequestIfNotThrowException(staffAvailableForSurgery, numberStaffWithCertainSpecialization);
-                SpecializationAndStaffDto staffOfOneSpecializationSurgeryPhase = new SpecializationAndStaffDto(staff.specialization.AsString(), IdsStaffDisponivel);
+                validateIfNumberOfElementsInListIfTheRequestIfNotThrowException(IdsStaffDisponivel, numberStaffWithCertainSpecialization);
+                SpecializationAndStaffDto staffOfOneSpecializationSurgeryPhase = new SpecializationAndStaffDto(staff.specialization.AsString(), IdsStaffDisponivel, numberStaffWithCertainSpecialization.ToString());
                 staffForPhaseToBeShowed.Add(staffOfOneSpecializationSurgeryPhase);
                 Console.WriteLine();
                 Console.WriteLine();
@@ -584,7 +583,7 @@ namespace DDDSample1.Domain.Appointments
         }
 
 
-        private void validateIfNumberOfElementsInListIfTheRequestIfNotThrowException(List<Staff> list, int numberNeeded)
+        private void validateIfNumberOfElementsInListIfTheRequestIfNotThrowException<T>(List<T> list, int numberNeeded)
         {
             if (list.Count < numberNeeded)
             {

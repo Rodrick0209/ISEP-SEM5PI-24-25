@@ -56,6 +56,18 @@ export interface Appointment {
     appointmentTimeSlot: AppointmentTimeSlot,
     roomNumber: string,
   }
+
+
+  export interface StaffPhase {
+    specializationId: string;
+    nrNeededStaff: number;
+    staffId: string[];
+  }
+  
+  export interface MedicalTeamShowForAppointmentCreate {
+    staffAnesthesyPhase: StaffPhase[];
+    staffSurgeryPhase: StaffPhase[];
+  }
   
   
   

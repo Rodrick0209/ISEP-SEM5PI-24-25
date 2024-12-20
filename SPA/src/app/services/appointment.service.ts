@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core'
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
-import { Appointment, AppointmentEdit, AppointmentsView, AppointmentTable } from '../models/appointment';
+import { Appointment, AppointmentEdit, AppointmentsView, AppointmentTable, MedicalTeamShowForAppointmentCreate } from '../models/appointment';
 import { OperationRequest } from './operationRequestService';
 import { OperationRoom } from '../models/operationRoom';
 import { Staff } from '../models/staff';
+import { mapToMedicalTeamShowForAppointmentCreate } from '../mappers/showMedicalTeamForCreateAppointmentMapper';
 
 
 @Injectable({
@@ -21,6 +22,9 @@ export class AppointmentService {
   private getAllStaff = '/api/Staff/GetAllForUi';
   private getByMedicalRecordNumber = '/api/Appointment/medicalRecordNumber'; // Update with your API URL
   constructor(private http: HttpClient) { }
+
+
+
 
 
 
@@ -49,17 +53,40 @@ export class AppointmentService {
   }
 
 
-  createAppointment(appointmentTimeSlotDtoDate: string, appointmentTimeSlotDtoTimeSlotStartMinute: string, appointmentTimeSlotDtoTimeSlotEndMinute: string, operationRoomId: string, operationRequestId: string): Observable<any> {
+  createAppointment(appointmentTimeSlotDtoDate: string, appointmentTimeSlotDtoTimeSlotStartMinute: string, operationRoomId: string, operationRequestId: string): Observable<any> {
     const body = {
       appointmentTimeSlotDtoDate: appointmentTimeSlotDtoDate,
       appointmentTimeSlotDtoTimeSlotStartMinute: appointmentTimeSlotDtoTimeSlotStartMinute,
-      appointmentTimeSlotDtoTimeSlotEndMinute: appointmentTimeSlotDtoTimeSlotEndMinute,
       operationRoomId: operationRoomId,
       operationRequestId: operationRequestId
     }
 
     return this.http.post(this.createUrl, body);
   }
+
+
+  getTeamForAppointmentCreate(
+    operationRequestId: string,
+    appointmentTimeSlotStartMinute: string,
+    appointmentTimeSlotDate: string
+  ): Observable<MedicalTeamShowForAppointmentCreate> {
+    // Usando HttpParams para enviar parâmetros como query string
+    const params = new HttpParams()
+      .set('operationRequestId', operationRequestId)
+      .set('startMinute', appointmentTimeSlotStartMinute)
+      .set('date', appointmentTimeSlotDate);
+
+    // Fazendo a requisição GET para o endpoint
+    return this.http
+      .get<any>('/api/Appointment/GetStaffAvailableForDoinSurgeryAtCertainTime', { params })
+      .pipe(map(data => mapToMedicalTeamShowForAppointmentCreate(data)));
+  }
+
+
+
+
+
+
 
   editAppointment(
     id: string,

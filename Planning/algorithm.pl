@@ -42,6 +42,8 @@ surgery_id(so100003,so4).
 surgery_id(so100004,so5).
 surgery_id(so100005,so2).
 
+surgeries_number(5).
+
 
 % Assignment surgery
 assignment_surgery(so100001,d001,surgeryPhase).
@@ -146,16 +148,15 @@ schedule_surgeries_fromList(Room,Day,LOpCode):-
     findall(_,(agenda_staff(D,Day,Agenda),assertz(agenda_staff1(D,Day,Agenda))),_),
     agenda_operation_room(Or,Date,Agenda),assert(agenda_operation_room1(Or,Date,Agenda)),
     findall(_,(agenda_staff1(D,Date,L),free_agenda0(L,LFA),adapt_timetable(D,Date,LFA,LFA2),assertz(availability(D,Date,LFA2))),_),
-    write('Lista de operacoes a ser marcadas'),write(LOpCode),nl,
     asserta(lastSurgeryTime(0)),
-    availability_all_surgeries3(LOpCode,Room,Day),write('Last surgery time'),lastSurgeryTime(LastSurgeryTime),write(LastSurgeryTime),!.
+    availability_all_surgeries3(LOpCode,Room,Day),!.
 
 
 availability_all_surgeries3([],_,_).
 availability_all_surgeries3([OpCode|LOpCode],Room,Day):-
-    write('Cirurgia com OpCode: '),write(OpCode),nl,
     surgery_id(OpCode,OpType),surgery(OpType,TAnesthesy,TSurgery,TCleaning),
     availability_operation(OpCode,Room,Day,Interval,LDoctorsSurgery,LStaffAnesthesy,LStaffCleaning),
+
     calculate_intervals(Interval,TAnesthesy,TSurgery,TCleaning,MinuteStartAnesthesia,MinuteStartSurgery,MinuteStartCleaning,MinuteEndProcess),
     retract(agenda_operation_room1(Room,Day,Agenda)),
     insert_agenda((MinuteStartAnesthesia,MinuteEndProcess,OpCode),Agenda,Agenda1),

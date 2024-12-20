@@ -215,6 +215,7 @@ public static class DataSeeder
     SeedOperationRequest(context, operationRequest12);
 
     var operationRequest13 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
+    Console.WriteLine("ID do operation Request = "+ operationRequest13.Id.AsString());
     SeedOperationRequest(context, operationRequest13);
 
 
@@ -356,7 +357,6 @@ public static class DataSeeder
     var appointment6 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025, 11, 16), new TimeSlot(720, 840)), operationRoom.Id, operationRequest6.Id);
 
     SeedAppointments(context, appointment);
-    Console.WriteLine("Appointment created WITH id " + appointment.Id.AsString());
     SeedAppointments(context, appointment2);
     SeedAppointments(context, appointment3);
     SeedAppointments(context, appointment4);
