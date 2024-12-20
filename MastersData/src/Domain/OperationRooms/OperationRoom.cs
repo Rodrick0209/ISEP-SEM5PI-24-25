@@ -81,10 +81,9 @@ namespace DDDSample1.Domain.OperationRooms
                 return false;
             }
 
-
-            Console.WriteLine("Ainda nao ha appointments: ");
             if (Appointments == null)
             {
+                Console.WriteLine("Ainda nao ha appointments marcados para esta sala: ");
                 Appointments = new List<Appointment>();
                 if (startMinute >= 0 && endMinute <= 1440)
                     return true;
@@ -93,6 +92,12 @@ namespace DDDSample1.Domain.OperationRooms
 
             List<Appointment> appointmentsToSearch = getAppointmentForDate(date);
             Console.WriteLine("Appointments size to search: " + appointmentsToSearch.Count);
+
+            if (appointmentsToSearch.Count == 0)
+            {
+                return true;
+            }
+
 
             // Verifica conflitos com agendamentos existentes
             foreach (var app in appointmentsToSearch)

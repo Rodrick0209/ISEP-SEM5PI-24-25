@@ -117,11 +117,18 @@ medicalTeamToShows: MedicalTeamShowForAppointmentCreate = {
         ...this.submitForm
       };
 
-      this.appointmentService.createAppointment(
+      const staffAnesthesyPhase = Object.values(this.staffAnestesiaEscolhido).flat();
+      console.log('staffAnestesiaIds', staffAnesthesyPhase);
+      const staffSurgeryPhase = Object.values(this.staffCirurgiaEscolhido).flat();
+      console.log('staffCirurgiaIds', staffSurgeryPhase);
+
+      this.appointmentService.createAppointmentWithMedicalTeam(
         appointmentData.appointmentTimeSlotDate,
         appointmentData.appointmentTimeSlotStartMinute,
         appointmentData.operationRoomId,
-        appointmentData.operationRequestId
+        appointmentData.operationRequestId,
+        staffAnesthesyPhase,
+        staffSurgeryPhase
       ).subscribe({
         next: (data: any) => {
           console.log('Appointment created successfully', data);

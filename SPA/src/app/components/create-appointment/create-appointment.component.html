@@ -27,7 +27,7 @@
       <div class="form-group">
         <label for="operationRoomId">Operation Room</label>
         <select id="operationRoomId" name="operationRoomId" [(ngModel)]="submitForm.operationRoomId" required (ngModelChange)="loadMedicalTeamToShow()">
-          <option *ngFor="let room of operationRooms" [value]="room.roomNumber">
+          <option *ngFor="let room of operationRooms" [value]="room.id">
             {{ room.roomNumber }} <!-- Exibindo o número da sala aqui -->
           </option>
         </select>

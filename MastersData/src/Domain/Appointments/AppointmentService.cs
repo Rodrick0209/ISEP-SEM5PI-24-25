@@ -277,7 +277,7 @@ namespace DDDSample1.Domain.Appointments
         {
             try
             {
-                var spec = await this._operationRoomRepository.GetByNameAsync(appointmentDto.OperationRoomId);
+                var spec = await this._operationRoomRepository.GetByIdAsync(new OperationRoomId(appointmentDto.OperationRoomId));
 
                 if (spec == null)
                 {
@@ -384,13 +384,19 @@ namespace DDDSample1.Domain.Appointments
 
             var requestedDate = DateOnly.Parse(appointmentDto.AppointmentTimeSlotDtoDate); //"yyyy-MM-dd"
             var requestedStart = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotStartMinute);
-            var requestedEnd = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotEndMinute);
 
             // Verifica se a sala está disponível usando o método do domínio
+            var opType = await _operationTypeRepository.GetByIdAsync(new OperationTypeId(opRequest.operationTypeId));
+            
+            int duracaoAnestesia = opType.preparationPhase.duration;
+            int duracaoCirurgia = opType.surgeryPhase.duration;
+
+            int endMinute = requestedStart + duracaoAnestesia + duracaoCirurgia ;
+
             if (!opRoom.IsAvailable(
                 requestedDate,
                 requestedStart,
-                requestedEnd))
+                endMinute))
             {
                 throw new Exception("The operation room is occupied during the requested time.");
             }
@@ -403,7 +409,7 @@ namespace DDDSample1.Domain.Appointments
             foreach (StaffId staff in appointmentDto.StaffAnesthesyPhase.Select(id => new StaffId(id)))
             {
                 var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Value);
-                if (!availabilitySlot.IsAvailable(requestedDate, requestedStart, requestedEnd))
+                if (!availabilitySlot.IsAvailable(requestedDate, requestedStart, endMinute))
                 {
                     throw new Exception("The staff member is not available during the requested time.");
                 }
@@ -412,28 +418,32 @@ namespace DDDSample1.Domain.Appointments
             foreach (StaffId staff in appointmentDto.StaffSurgeryPhase.Select(id => new StaffId(id)))
             {
                 var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Value);
-                if (!availabilitySlot.IsAvailable(requestedDate, requestedStart, requestedEnd))
+                if (!availabilitySlot.IsAvailable(requestedDate, requestedStart, endMinute))
                 {
                     throw new Exception("The staff member is not available during the requested time.");
                 }
             }
-
+            //FALTA ADICIONAR O STAFF AOS RESPECTIVOS PHASES
+            Console.WriteLine("Passou a verificação de disponibilidade");
             // Cria o agendamento
             var appointment = new Appointment(
                 new AppointmentTimeSlot(
                     requestedDate,
-                    new TimeSlot(requestedStart, requestedEnd)),
+                    new TimeSlot(requestedStart, endMinute)),
                 new OperationRoomId(appointmentDto.OperationRoomId),
                 new OperationRequestId(appointmentDto.OperationRequestId)
             );
-
+            Console.WriteLine("Passou a criar o agendamento");  
             opRoom.Appointments.Add(appointment);
             opRequest.Accepted();
+
+            Console.WriteLine("Passou a adicionar o agendamento à sala e a aceitar o pedido de operação");
 
             // Atualiza o estado da sala no repositório
             // Salva o agendamento no repositório
             await _appointmentRepository.AddAsync(appointment);
 
+            Console.WriteLine("Passou a adicionar o agendamento ao repositório");
             // Salva todas as mudanças no banco de dados
             await _unitOfWork.CommitAsync();
 

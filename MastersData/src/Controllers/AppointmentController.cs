@@ -99,6 +99,7 @@ namespace DDDSample1.Controllers
 
             try
             {
+                Console.WriteLine("ID DA SALA" +dto.OperationRoomId);
                 var app = await _service.AddWithMedicalTeamAsync(dto);
 
                 return CreatedAtAction(nameof(GetGetById), new { id = app.AppointmentId }, app);

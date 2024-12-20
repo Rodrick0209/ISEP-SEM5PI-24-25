@@ -21,6 +21,7 @@ export class AppointmentService {
   private getAllOpRooms = '/api/OperationRoom/GetAll';
   private getAllStaff = '/api/Staff/GetAllForUi';
   private getByMedicalRecordNumber = '/api/Appointment/medicalRecordNumber'; // Update with your API URL
+  private createWithMedicalTeamUrl = '/api/Appointment/CreateWithMedicalTeam'; // Update with your create API URL
   constructor(private http: HttpClient) { }
 
 
@@ -62,6 +63,28 @@ export class AppointmentService {
     }
 
     return this.http.post(this.createUrl, body);
+  }
+
+
+
+  createAppointmentWithMedicalTeam(
+    appointmentTimeSlotDtoDate: string,
+    appointmentTimeSlotDtoTimeSlotStartMinute: string,
+    operationRoomId: string,
+    operationRequestId: string,
+    staffAnesthesyPhase: string[],
+    staffSurgeryPhase: string[]
+  ): Observable<any> {
+    const body = {
+      appointmentTimeSlotDtoDate: appointmentTimeSlotDtoDate,
+      appointmentTimeSlotDtoTimeSlotStartMinute: appointmentTimeSlotDtoTimeSlotStartMinute,
+      operationRoomId: operationRoomId,
+      operationRequestId: operationRequestId,
+      staffAnesthesyPhase: staffAnesthesyPhase,
+      staffSurgeryPhase: staffSurgeryPhase
+    }
+
+    return this.http.post(this.createWithMedicalTeamUrl, body);
   }
 
 
