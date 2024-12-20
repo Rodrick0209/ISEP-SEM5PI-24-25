@@ -956,13 +956,13 @@ export default class ThumbRaiser {
     }
     this.zoomIn = false;
     this.selectedRoom = null; // Reset the selected room
-        const overlayAll = document.getElementById("room-info-overlay");
-        if (overlayAll.style.display === "block") {
-          overlayAll.style.display = "none";
-        }
-        // Hide the info description
-        const infoDescriptionAll = document.getElementById("info-description");
-        infoDescriptionAll.style.display = "none";
+    const overlayAll = document.getElementById("room-info-overlay");
+    if (overlayAll.style.display === "block") {
+      overlayAll.style.display = "none";
+    }
+    // Hide the info description
+    const infoDescriptionAll = document.getElementById("info-description");
+    infoDescriptionAll.style.display = "none";
   }
 
   mouseMove(event) {
@@ -1117,7 +1117,7 @@ export default class ThumbRaiser {
   elementChange(event) {
     switch (event.target.id) {
       case "view":
-        
+
         this.setActiveViewCamera(
           [
             this.fixedViewCamera,
@@ -1240,9 +1240,8 @@ export default class ThumbRaiser {
     );
   }
 
-  async updateRoomOccupancy(apiUrl) {
+  async updateRoomOccupancy(data) {
     try {
-      const data = apiUrl;
       console.log(data);
 
       // Check if there are any appointments happening
@@ -1782,13 +1781,12 @@ export default class ThumbRaiser {
       if (overlay.style.display === "none" || !overlay.style.display) {
         overlay.style.display = "block";
         overlay.innerHTML = `
-          <h2>Room Information</h2>
-          <p>Room Number: ${roomInfo.name}</p>
-          <p>Status: ${roomInfo.isOccupied ? "Occupied" : "Free"}</p>
-          <p>Capacity: ${roomInfo.roomCapacity}</p>
-          <p>Room Type: ${roomInfo.roomType}</p>
-          
-        `;
+        <h2>Room Information</h2>
+        <p>Room Number: ${roomInfo.name}</p>
+        <p>Status: ${roomInfo.isOccupied ? "Occupied" : "Free"}</p>
+        <p>Capacity: ${roomInfo.roomCapacity}</p>
+        <p>Room Type: ${roomInfo.roomType}</p>
+      `;
       } else {
         overlay.style.display = "none";
       }
