@@ -7,14 +7,11 @@ using DDDSample1.Domain.Appointments;
 using DDDSample1.Domain.AvailabilitySlots;
 using DDDSample1.Domain.OperationRequest;
 using DDDSample1.Domain.OperationRooms;
+using DDDSample1.Domain.OperationTypes;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.StaffMembers;
 using DDDSample1.Domain.Utils;
-using DDDSample1.Infrastructure.StaffMembers;
-using Microsoft.AspNetCore.Builder.Extensions;
-using Microsoft.OpenApi.Models;
-using Org.BouncyCastle.Crypto.Prng;
 
 namespace DDDSample1.Domain.Appointments
 {
@@ -29,7 +26,9 @@ namespace DDDSample1.Domain.Appointments
         private readonly IPatientRepository _patientRepository;
         private readonly IStaffRepository _staffRepository;
 
-        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentRepository appointmentRepository, IOperationRoomRepository operationRoomRepository, IOperationRequestRepository operationRequestRepository, IPatientRepository patientRepository, IAvailabilitySlotsRepository availabilitySlotsRepository, IStaffRepository staffRepository)
+        private readonly IOperationTypeRepository _operationTypeRepository;
+
+        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentRepository appointmentRepository, IOperationRoomRepository operationRoomRepository, IOperationRequestRepository operationRequestRepository, IPatientRepository patientRepository, IAvailabilitySlotsRepository availabilitySlotsRepository, IStaffRepository staffRepository, IOperationTypeRepository operationTypeRepository)
         {
             this._unitOfWork = unitOfWork;
             this._appointmentRepository = appointmentRepository;
@@ -38,6 +37,7 @@ namespace DDDSample1.Domain.Appointments
             this._patientRepository = patientRepository;
             this._availabilitySlotsRepository = availabilitySlotsRepository;
             this._staffRepository = staffRepository;
+            this._operationTypeRepository = operationTypeRepository;
         }
 
 
@@ -49,8 +49,7 @@ namespace DDDSample1.Domain.Appointments
             var opRequest = await CheckOperationRequestAsync(new OperationRequestId(appointmentDto.OperationRequestId));
 
 
-
-            var requestedDate = DateOnly.Parse(appointmentDto.AppointmentTimeSlotDtoDate); //"yyyy-MM-dd"
+            var requestedDate = DateOnly.Parse(appointmentDto.AppointmentTimeSlotDtoDate);
             var requestedStart = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotStartMinute);
             var requestedEnd = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotEndMinute);
 
@@ -90,10 +89,6 @@ namespace DDDSample1.Domain.Appointments
             }
 
 
-
-
-
-            // Cria o agendamento
             var appointment = new Appointment(
                 new AppointmentTimeSlot(
                     requestedDate,
@@ -105,8 +100,6 @@ namespace DDDSample1.Domain.Appointments
             opRoom.Appointments.Add(appointment);
             opRequest.Accepted();
 
-            // Atualiza o estado da sala no repositório
-            // Salva o agendamento no repositório
             await _appointmentRepository.AddAsync(appointment);
 
             // Salva todas as mudanças no banco de dados
@@ -280,6 +273,28 @@ namespace DDDSample1.Domain.Appointments
         }
 
 
+        public async Task<OperationRoom> checkOperationRoomByRodrigo(CreateAppointmentWithMedicalTeam appointmentDto)
+        {
+            try
+            {
+                var spec = await this._operationRoomRepository.GetByNameAsync(appointmentDto.OperationRoomId);
+
+                if (spec == null)
+                {
+                    throw new BusinessRuleValidationException("Operation Room not found");
+                }
+                return spec;
+            }
+            catch (Exception e)
+            {
+                throw new BusinessRuleValidationException("Operation room not Found");
+
+
+            }
+        }
+
+
+
         public async Task<OperationRoom> checkOperationRoomByNameAsync(string operationRoom, CreatingAppointmentDto appointment)
         {
 
@@ -362,6 +377,75 @@ namespace DDDSample1.Domain.Appointments
             return appointmentDtos;
         }
 
+        public async Task<AppointmentDto> AddWithMedicalTeamAsync(CreateAppointmentWithMedicalTeam appointmentDto)
+        {
+            var opRoom = await checkOperationRoomByRodrigo(appointmentDto);
+            var opRequest = await CheckOperationRequestAsync(new OperationRequestId(appointmentDto.OperationRequestId));
+
+            var requestedDate = DateOnly.Parse(appointmentDto.AppointmentTimeSlotDtoDate); //"yyyy-MM-dd"
+            var requestedStart = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotStartMinute);
+            var requestedEnd = int.Parse(appointmentDto.AppointmentTimeSlotDtoTimeSlotEndMinute);
+
+            // Verifica se a sala está disponível usando o método do domínio
+            if (!opRoom.IsAvailable(
+                requestedDate,
+                requestedStart,
+                requestedEnd))
+            {
+                throw new Exception("The operation room is occupied during the requested time.");
+            }
+
+            if (!opRequest.IsAvailable(opRequest.status))
+            {
+                throw new Exception("The operation request is cancelled or was already accepted.");
+            }
+
+            foreach (StaffId staff in appointmentDto.StaffAnesthesyPhase.Select(id => new StaffId(id)))
+            {
+                var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Value);
+                if (!availabilitySlot.IsAvailable(requestedDate, requestedStart, requestedEnd))
+                {
+                    throw new Exception("The staff member is not available during the requested time.");
+                }
+            }
+
+            foreach (StaffId staff in appointmentDto.StaffSurgeryPhase.Select(id => new StaffId(id)))
+            {
+                var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Value);
+                if (!availabilitySlot.IsAvailable(requestedDate, requestedStart, requestedEnd))
+                {
+                    throw new Exception("The staff member is not available during the requested time.");
+                }
+            }
+
+            // Cria o agendamento
+            var appointment = new Appointment(
+                new AppointmentTimeSlot(
+                    requestedDate,
+                    new TimeSlot(requestedStart, requestedEnd)),
+                new OperationRoomId(appointmentDto.OperationRoomId),
+                new OperationRequestId(appointmentDto.OperationRequestId)
+            );
+
+            opRoom.Appointments.Add(appointment);
+            opRequest.Accepted();
+
+            // Atualiza o estado da sala no repositório
+            // Salva o agendamento no repositório
+            await _appointmentRepository.AddAsync(appointment);
+
+            // Salva todas as mudanças no banco de dados
+            await _unitOfWork.CommitAsync();
+
+            return AppointmentMapper.ToDto(appointment);
+
+        }
+
+
+
+
+
+
         public async Task<List<AppointmentDtoInTable>> GetByMedicalRecordNumberAsync(string medicalRecordNumber)
         {
             // Get all appointments
@@ -408,7 +492,115 @@ namespace DDDSample1.Domain.Appointments
             return appointmentDtos;
         }
 
+
+
+        public async Task<StaffForSurgeryDto> GetStaffAvailableForDoinSurgeryAtCertainTime(string startMinute, string date, string appointmentId)
+        {
+            Console.WriteLine("Entrou no metodo");  
+            var appointment = await _appointmentRepository.GetByIdAsync(new AppointmentId(appointmentId));
+            Console.WriteLine("Passou apanhar o appointment");
+            var opRequest = await _operationRequestRepository.GetByIdAsync(appointment.OperationRequestId);
+            Console.WriteLine("Passou apanhar o opRequest");
+            var opType = await _operationTypeRepository.GetByIdAsync(new OperationTypeId(opRequest.operationTypeId));
+            Console.WriteLine("Passou apanhar o opType");
+            var listOfstaffNeededForAnesthesyPhase = opType.preparationPhase.requiredStaff;
+            Console.WriteLine("Passou apanhar o listOfstaffNeededForAnesthesyPhase");
+            var listOfstaffNeededForSurgeryPhase = opType.surgeryPhase.requiredStaff;
+            Console.WriteLine("Passou apanhar o listOfstaffNeededForSurgeryPhase");           
+            //Pode ser melhorado, ir buscar todos nao era necessario
+            List<Staff> staffAvailable = await _staffRepository.GetAllAsync();
+            Console.WriteLine("Passou apanhar o staffAvailable com tamanho: " + staffAvailable.Count);
+            int duracaoAnestesia = opType.preparationPhase.duration;
+            int duracaoCirurgia = opType.surgeryPhase.duration;
+            Console.WriteLine("Duracao fase de anestesia"+ duracaoAnestesia);
+            int endMinute = int.Parse(startMinute) + duracaoAnestesia + duracaoCirurgia ;
+            int startMinuteSurgery = int.Parse(startMinute) + duracaoAnestesia;
+            List<SpecializationAndStaffDto> staffAnesthesyPhaseToBeShowed = await percorreListDeStaffsParaCadaPhaseAsync(staffAvailable, listOfstaffNeededForAnesthesyPhase, date, int.Parse(startMinute), endMinute);
+            Console.WriteLine("Passou apanhar o staffAnesthesyPhaseToBeShowed");
+            List<SpecializationAndStaffDto> staffSurgeryPhaseToBeShowed = await percorreListDeStaffsParaCadaPhaseAsync(staffAvailable, listOfstaffNeededForSurgeryPhase, date, startMinuteSurgery, endMinute);
+            Console.WriteLine("Passou apanhar o staffSurgeryPhaseToBeShowed");
+            StaffForSurgeryDto staffForSurgeryDto = new StaffForSurgeryDto(staffAnesthesyPhaseToBeShowed, staffSurgeryPhaseToBeShowed);
+            
+            return staffForSurgeryDto;
+        }
+
+
+        private async Task<List<SpecializationAndStaffDto>> percorreListDeStaffsParaCadaPhaseAsync(List<Staff> ALlTheStaff, List<RequiredStaff> StaffPercorrer, String date, int startMinute, int endMinute)
+        {
+            List<SpecializationAndStaffDto> staffForPhaseToBeShowed = new List<SpecializationAndStaffDto>();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Entrou no metodo percorreListDeStaffsParaCadaPhaseAsync");
+
+            foreach (var staff in StaffPercorrer)
+            {
+                var numberStaffWithCertainSpecialization = staff.num;
+                Console.WriteLine("Entrou no foreach");
+                Console.WriteLine("Number necessario-->"+numberStaffWithCertainSpecialization);
+                Console.WriteLine("Id Specialization necessaria-->"+staff.specialization.AsString());
+                var staffAvailableForSurgery = ALlTheStaff.FindAll(x => x.SpecializationId == staff.specialization);
+                Console.WriteLine("Staff existente da especialização-->"+staffAvailableForSurgery.Count);
+                validateIfNumberOfElementsInListIfTheRequestIfNotThrowException(staffAvailableForSurgery, numberStaffWithCertainSpecialization);
+
+                List<String> IdsStaffDisponivel = percorreListDeStaffsAndVerificaDisponibilidadeAsync(staffAvailableForSurgery, date, startMinute, endMinute).Result;
+                Console.WriteLine("Numero de staff q esta disponivel"+ IdsStaffDisponivel.Count);
+                validateIfNumberOfElementsInListIfTheRequestIfNotThrowException(staffAvailableForSurgery, numberStaffWithCertainSpecialization);
+                SpecializationAndStaffDto staffOfOneSpecializationSurgeryPhase = new SpecializationAndStaffDto(staff.specialization.AsString(), IdsStaffDisponivel);
+                staffForPhaseToBeShowed.Add(staffOfOneSpecializationSurgeryPhase);
+                Console.WriteLine();
+                Console.WriteLine();
+            }
+
+            return staffForPhaseToBeShowed;
+        }
+
+
+
+
+
+        private async Task<List<string>> percorreListDeStaffsAndVerificaDisponibilidadeAsync(List<Staff> StaffPercorrer, String date, int startMinute, int endMinute)
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Entrou no metodo percorreListDeStaffsAndVerificaDisponibilidadeAsync");
+            List<String> staffIdsList = new List<String>();
+            foreach (var staff in StaffPercorrer)
+            {
+                Console.WriteLine("Entrou no foreach");
+                var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Id.AsString());
+                Console.WriteLine("Passou apanhar o availabilitySlot do staff"+staff.Id.AsString());
+                Console.WriteLine("AvailabilitySlot-->"+availabilitySlot.Id.AsString()+"StaffId-->"+staff.Id.AsString());
+                Boolean result = availabilitySlot.IsAvailable(DateOnly.Parse(date), startMinute, endMinute);
+                Console.WriteLine("Resultado da disponibilidade para o staff-->"+staff.Id.AsString()+"-->"+result);
+                if (result == true)
+                {
+                    staffIdsList.Add(staff.Id.AsString());
+                }
+            }
+            Console.WriteLine("Numero de staff q esta disponivel"+ staffIdsList.Count);
+            Console.WriteLine();
+            Console.WriteLine();
+            return staffIdsList;
+        }
+
+
+        private void validateIfNumberOfElementsInListIfTheRequestIfNotThrowException(List<Staff> list, int numberNeeded)
+        {
+            if (list.Count < numberNeeded)
+            {
+                throw new BusinessRuleValidationException("There are not enough staff members available for the anesthesy phase");
+            }
+        }
+
     }
 }
+
+
+
+
+
+
+
+
 
 

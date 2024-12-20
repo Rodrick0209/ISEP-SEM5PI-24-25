@@ -93,6 +93,47 @@ namespace DDDSample1.Controllers
         }
 
 
+        [HttpPost("CreateWithMedicalTeam")]
+        public async Task<ActionResult<AppointmentDto>> CreateWithMedicalTeam(CreateAppointmentWithMedicalTeam dto)
+        {
+
+            try
+            {
+                var app = await _service.AddWithMedicalTeamAsync(dto);
+
+                return CreatedAtAction(nameof(GetGetById), new { id = app.AppointmentId }, app);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+
+        }
+
+
+        [HttpGet("GetStaffAvailableForDoinSurgeryAtCertainTime")]
+
+        public async Task<ActionResult<StaffForSurgeryDto>> GetStaffAvailableForDoinSurgeryAtCertainTime(GetMedicalSurgeryParamsDto dto)
+        {
+            try
+            {
+                Console.WriteLine("Entrou no controller method");
+                Console.WriteLine(dto.startMinute);
+                Console.WriteLine(dto.date);
+                Console.WriteLine(dto.appointmentId);
+
+                return await _service.GetStaffAvailableForDoinSurgeryAtCertainTime(dto.startMinute, dto.date, dto.appointmentId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message, ex.StackTrace });
+            }
+        }
+
+
+
+
+
         [HttpPut("{id}")]
         [Authorize(Roles = "doctor")]
         public async Task<ActionResult<AppointmentDto>> Update(EditingAppointmentDto dto, Guid id)

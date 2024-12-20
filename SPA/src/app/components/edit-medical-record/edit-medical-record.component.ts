@@ -23,8 +23,8 @@ export class EditMedicalRecordComponent {
   errorMessage: string | null = null;
   medicalRecord: MedicalRecord | undefined;
   medicalRecordNumber: string = '';
-  existingAllergies: AllergiesView[] | [] = [];
-  existingMedicalConditions: MedicalConditionView[] | [] = [];
+  existingAllergies: AllergiesView[] = [];
+  existingMedicalConditions: MedicalConditionView[] = [];
 
   constructor(private patientService: PatientService, private router: Router, private messageService: MessageService, private route: ActivatedRoute, private datePipe: DatePipe) { }
 
@@ -59,7 +59,7 @@ export class EditMedicalRecordComponent {
 
 
   addAllergy(): void {
-    const newAllergy: Allergy = { id: '', name: '', description: '' };
+    const newAllergy: Allergy = { id: '', code: '', designation: '', description: '' };
     if (this.medicalRecord) {
       this.medicalRecord.allergies.push(newAllergy);
     }
@@ -95,9 +95,9 @@ export class EditMedicalRecordComponent {
     }
   }
 
-  deleteAllergy(allergy: { name: string, description: string }): void {
+  deleteAllergy(allergy: { code: string, designation: string, description: string }): void {
     if (this.medicalRecord) {
-      const index = this.medicalRecord.allergies.findIndex(a => a.name === allergy.name && a.description === allergy.description);
+      const index = this.medicalRecord.allergies.findIndex(a => a.code === allergy.code && a.designation == allergy.designation && a.description == allergy.description);
       if (index > -1) {
         this.medicalRecord.allergies.splice(index, 1);
       }

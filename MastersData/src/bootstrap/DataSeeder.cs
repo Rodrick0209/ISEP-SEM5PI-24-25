@@ -130,8 +130,9 @@ public static class DataSeeder
     var specialization1 = new Specialization("Ortopedia");
     var specialization2 = new Specialization("Oncologia");
     var specialization3 = new Specialization("Obstetricia");
+    var specialization4 = new Specialization("Enfermeiro ambulante");
 
-    var specializations = new List<Specialization> { specialization1, specialization2, specialization3 };
+    var specializations = new List<Specialization> { specialization1, specialization2, specialization3,specialization4 };
 
     context.Specializations.AddRange(specializations);
 
@@ -142,11 +143,10 @@ public static class DataSeeder
 
 
     // Create required staff
-    var requiredStaff1 = new RequiredStaff(10, specialization1.Id);
-    var requiredStaff2 = new RequiredStaff(20, specialization2.Id);
-    var requiredStaffList1 = new List<RequiredStaff> { requiredStaff1, requiredStaff2 };
-    var requiredStaffList2 = new List<RequiredStaff> { new RequiredStaff(20, specialization2.Id) }; // New instance
-    var requiredStaffList3 = new List<RequiredStaff> { new RequiredStaff(2, specialization2.Id) }; // New instance
+
+    var requiredStaffList1 = new List<RequiredStaff> { new RequiredStaff(1, specialization1.Id), new RequiredStaff(2,specialization4.Id) }; // New instance
+    var requiredStaffList2 = new List<RequiredStaff> { new RequiredStaff(1, specialization2.Id) }; // New instance
+    var requiredStaffList3 = new List<RequiredStaff> { new RequiredStaff(1, specialization2.Id) }; // New instance
 
     PasswordHasher hasher = new PasswordHasher();
     string password = hasher.HashPassword("password");
@@ -219,25 +219,99 @@ public static class DataSeeder
 
 
     Staff staff = new Staff(new StaffId("D202512345"), "staff", "12345", specialization1.Id, "email@gmail.com", "+951999999999", "Doctor");
+    Staff staff3 = new Staff(new StaffId("D202512340"), "staff", "12345", specialization1.Id, "email@gmail.com", "+951999999999", "Doctor");
+    Staff staff4 = new Staff(new StaffId("D202512341"), "staff", "12345", specialization1.Id, "email@gmail.com", "+951999999999", "Doctor");
+    Staff staff5 = new Staff(new StaffId("D202512310"), "staff", "12345", specialization2.Id, "email@gmail.com", "+951999999999", "Doctor");
+    Staff staff6 = new Staff(new StaffId("D202512311"), "staff", "12345", specialization2.Id, "email@gmail.com", "+951999999999", "Doctor");
+    Staff staff7 = new Staff(new StaffId("D202512312"), "staff", "12345", specialization2.Id, "email@gmail.com", "+951999999999", "Doctor");
+    Staff staff8 = new Staff(new StaffId("D202512313"), "staff", "12345", specialization2.Id, "email@gmail.com", "+951999999999", "Doctor");
+    Staff staff9 = new Staff(new StaffId("D202512314"), "staff", "12345", specialization4.Id, "email@gmail.com", "+951999999999", "Doctor");
+    Staff staff10 = new Staff(new StaffId("D202512315"), "staff", "12345", specialization4.Id, "email@gmail.com", "+951999999999", "Doctor");
+    Staff staff11 = new Staff(new StaffId("D202512316"), "staff", "12345", specialization4.Id, "email@gmail.com", "+951999999999", "Doctor");
+
+
+
+
+
     SeedStaff(context, staff);
-
-
+    SeedStaff(context, staff3);
+    SeedStaff(context, staff4);
+    SeedStaff(context, staff5);
+    SeedStaff(context, staff6);
+    SeedStaff(context, staff7);
+    SeedStaff(context, staff8);
+    SeedStaff(context, staff9);
+    SeedStaff(context, staff10);
+    SeedStaff(context, staff11);
 
     var availableSlot2 = new AvailabilitySlot(staff.Id.AsString());
-    DailyAvailability dailyAvailability = new DailyAvailability(new DateOnly(2025, 10, 28));
-    dailyAvailability.AddTimeSlot(720, 840);
-    dailyAvailability.AddTimeSlot(1080, 1200);
-    dailyAvailability.AddTimeSlot(1200, 1300);
+    DailyAvailability dailyAvailability = new DailyAvailability(new DateOnly(2026, 12, 30));
     SeedDailyAvailability(context, dailyAvailability);
-
     availableSlot2.Availability.Add(dailyAvailability);
-
-
     SeedAvailabilitySlots(context, availableSlot2);
 
-    Staff staff2 = new Staff(new StaffId("D202512344"), "staffMario", "12346", specialization3.Id, "emaill@gmail.com", "+951999999998", "Doctor");
-    SeedStaff(context, staff2);
 
+    var availableSlot3 = new AvailabilitySlot(staff3.Id.AsString());
+    DailyAvailability dailyAvailability2 = new DailyAvailability(new DateOnly(2026, 12, 30));
+    SeedDailyAvailability(context, dailyAvailability2);
+    availableSlot3.Availability.Add(dailyAvailability2);
+    SeedAvailabilitySlots(context, availableSlot3);
+
+
+    var availableSlot4 = new AvailabilitySlot(staff4.Id.AsString());
+    DailyAvailability dailyAvailability3 = new DailyAvailability(new DateOnly(2026, 12, 30));
+    SeedDailyAvailability(context, dailyAvailability3);
+    availableSlot4.Availability.Add(dailyAvailability3);
+    SeedAvailabilitySlots(context, availableSlot4);
+
+
+    var availableSlot5 = new AvailabilitySlot(staff5.Id.AsString());
+    DailyAvailability dailyAvailability4 = new DailyAvailability(new DateOnly(2026, 12, 30));
+    SeedDailyAvailability(context, dailyAvailability4);
+    availableSlot5.Availability.Add(dailyAvailability4);
+    SeedAvailabilitySlots(context, availableSlot5);
+
+    var availableSlot6 = new AvailabilitySlot(staff6.Id.AsString());
+    DailyAvailability dailyAvailability5 = new DailyAvailability(new DateOnly(2026, 12, 30));
+    SeedDailyAvailability(context, dailyAvailability5);
+    availableSlot6.Availability.Add(dailyAvailability5);
+    SeedAvailabilitySlots(context, availableSlot6);
+
+
+    var availableSlot7 = new AvailabilitySlot(staff7.Id.AsString());
+    DailyAvailability dailyAvailability6 = new DailyAvailability(new DateOnly(2026, 12, 30));
+    SeedDailyAvailability(context, dailyAvailability6);
+    availableSlot7.Availability.Add(dailyAvailability6);
+    SeedAvailabilitySlots(context, availableSlot7);
+
+
+    var availableSlot8 = new AvailabilitySlot(staff8.Id.AsString());
+    DailyAvailability dailyAvailability7 = new DailyAvailability(new DateOnly(2026, 12, 30));
+    SeedDailyAvailability(context, dailyAvailability7);
+    availableSlot8.Availability.Add(dailyAvailability7);
+    SeedAvailabilitySlots(context, availableSlot8);
+
+    var availableSlot9 = new AvailabilitySlot(staff9.Id.AsString());
+    DailyAvailability dailyAvailability8 = new DailyAvailability(new DateOnly(2026, 12, 30));
+    SeedDailyAvailability(context, dailyAvailability8);
+    availableSlot9.Availability.Add(dailyAvailability8);
+    SeedAvailabilitySlots(context, availableSlot9);
+
+    var availableSlot10 = new AvailabilitySlot(staff10.Id.AsString());
+    DailyAvailability dailyAvailability9 = new DailyAvailability(new DateOnly(2026, 12, 30));
+    SeedDailyAvailability(context, dailyAvailability9);
+    availableSlot10.Availability.Add(dailyAvailability9);
+    SeedAvailabilitySlots(context, availableSlot10);
+
+    var availableSlot11= new AvailabilitySlot(staff11.Id.AsString());
+    DailyAvailability dailyAvailability10 = new DailyAvailability(new DateOnly(2026, 12, 30));
+    SeedDailyAvailability(context, dailyAvailability10);
+    availableSlot11.Availability.Add(dailyAvailability10);
+    SeedAvailabilitySlots(context, availableSlot11);
+
+
+
+    
     var roomType = new RoomType("R12-2354", "RoomType1", "RoomType1", true);
     context.RoomTypes.Add(roomType);
 
@@ -274,14 +348,15 @@ public static class DataSeeder
     var appointmentToday = new Appointment(appointmentTimeSlot, operationRoom.Id, operationRequest.Id);
 
 
-    var appointment = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,12), new TimeSlot(20, 110)), operationRoom.Id, operationRequest.Id);
-    var appointment2 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,12), new TimeSlot(720, 840)), operationRoom.Id, operationRequest2.Id);
-    var appointment3 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,13), new TimeSlot(720, 840)), operationRoom.Id, operationRequest3.Id);
-    var appointment4 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,14), new TimeSlot(720, 840)), operationRoom.Id, operationRequest4.Id);
-    var appointment5 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,15), new TimeSlot(720, 840)), operationRoom.Id, operationRequest5.Id);
-    var appointment6 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025,11,16), new TimeSlot(720, 840)), operationRoom.Id, operationRequest6.Id);
+    var appointment = new Appointment(new AppointmentTimeSlot(new DateOnly(2025, 11, 12), new TimeSlot(20, 110)), operationRoom.Id, operationRequest.Id);
+    var appointment2 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025, 11, 12), new TimeSlot(720, 840)), operationRoom.Id, operationRequest2.Id);
+    var appointment3 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025, 11, 13), new TimeSlot(720, 840)), operationRoom.Id, operationRequest3.Id);
+    var appointment4 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025, 11, 14), new TimeSlot(720, 840)), operationRoom.Id, operationRequest4.Id);
+    var appointment5 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025, 11, 15), new TimeSlot(720, 840)), operationRoom.Id, operationRequest5.Id);
+    var appointment6 = new Appointment(new AppointmentTimeSlot(new DateOnly(2025, 11, 16), new TimeSlot(720, 840)), operationRoom.Id, operationRequest6.Id);
 
     SeedAppointments(context, appointment);
+    Console.WriteLine("Appointment created WITH id " + appointment.Id.AsString());
     SeedAppointments(context, appointment2);
     SeedAppointments(context, appointment3);
     SeedAppointments(context, appointment4);
@@ -361,7 +436,6 @@ public static class DataSeeder
 
 
   public static void SeedStaff(DDDSample1DbContext context, Staff staff)
-
   {
     if (!context.Specializations.Any())
     {

@@ -2,9 +2,9 @@
     <form (submit)="onSearch($event)" class="filter-form">
 
         <div class="filter-field">
-            <label for="name">Name:</label>
+            <label for="name">Designation:</label>
             <div class="input-group">
-                <input type="text" id="name" name="name" [(ngModel)]="filter.name" placeholder="Enter name..." />
+                <input type="text" id="name" name="name" [(ngModel)]="filter.designation" placeholder="Enter designation..." />
                 <button type="submit" class="btn-search">Search</button>
             </div>
         </div>

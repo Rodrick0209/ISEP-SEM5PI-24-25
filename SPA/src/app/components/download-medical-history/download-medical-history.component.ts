@@ -91,7 +91,7 @@ export class DownloadMedicalHistoryComponent implements OnInit {
             date: condition.date ? new Date(condition.date).toISOString().split('T')[0] : 'N/A'
           })),
           allergies: this.medicalRecord?.allergies.map(allergy => ({
-            name: allergy.name,
+            designation: allergy.designation,
             description: allergy.description || 'N/A'
           }))
         },

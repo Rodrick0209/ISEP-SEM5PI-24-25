@@ -13,7 +13,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Code - Designation</th>
             <th>Type</th>
             <th></th>
             <th></th>
@@ -25,13 +25,15 @@
             <td>
               <select
                 class="form-control form-control-lg custom-select"
-                [(ngModel)]="allergy.name"
+                [(ngModel)]="allergy.code"
+                [(ngModel)]="allergy.designation"
               >
                 <option
                   *ngFor="let existingAllergy of existingAllergies"
-                  [value]="existingAllergy.name"
+                  [(ngModel)]="existingAllergy.code"
+                  [value]="existingAllergy.designation"
                 >
-                  {{ existingAllergy.name }}
+                  {{ existingAllergy.code }} - {{ existingAllergy.designation }}
                 </option>
               </select>
             </td>
@@ -61,13 +63,15 @@
             <td>
               <select
                 class="form-control form-control-lg custom-select"
+                [(ngModel)]="condition.code"
                 [(ngModel)]="condition.designation"
               >
                 <option
                   *ngFor="let existingCondition of existingMedicalConditions"
+                  [(ngModel)]="existingCondition.code"
                   [value]="existingCondition.designation"
                 >
-                  {{ existingCondition.designation }}
+                  {{ existingCondition.code }} - {{ existingCondition.designation }}
                 </option>
               </select>
             </td>
