@@ -13,6 +13,9 @@ namespace DDDSample1.Domain.Appointments
         public string OperationRoomId { get; set; }
         public string OperationRequestId { get; set; }
 
+        public List<string> StaffAnesthesyPhase { get; set; }
+        public List<string> StaffSurgeryPhase { get; set; }
+
         public AppointmentDto(Guid appointmentId, AppointmentTimeSlotDto appointmentTimeSlot, string appointmentStatus, string operationRoomId, string operationRequestId)
         {
             AppointmentId = appointmentId;

@@ -112,10 +112,18 @@ medicalTeamToShows: MedicalTeamShowForAppointmentCreate = {
   onSubmit(appointmentForm: any): void {
     this.showConfirmation = false;
 
+    
+
+
     if (appointmentForm.valid) {
       const appointmentData = {
         ...this.submitForm
-      };
+      }
+
+      if (!this.validateMedicalTeamCompletion()) {
+        this.errorMessage = 'Please select all the required medical team for each specialization across all phases.';
+        return;
+      }
 
       const staffAnesthesyPhase = Object.values(this.staffAnestesiaEscolhido).flat();
       console.log('staffAnestesiaIds', staffAnesthesyPhase);
@@ -141,7 +149,7 @@ medicalTeamToShows: MedicalTeamShowForAppointmentCreate = {
         }
       });
     } else {
-      console.error('Form is invalid');
+      this.errorMessage = 'Please fill all fields.';
     }
   }
 
@@ -225,5 +233,26 @@ medicalTeamToShows: MedicalTeamShowForAppointmentCreate = {
     return this.specializationNames[specializationId] || 'Unknown';
   }
 
+  validateMedicalTeamCompletion(): boolean {
+    let isValid = true;
+  
+    // Validação para a fase de anestesia
+    this.medicalTeamToShows.staffAnesthesyPhase.forEach(phase => {
+      const selectedStaff = this.staffAnestesiaEscolhido[phase.specializationId] || [];
+      if (selectedStaff.length < phase.nrNeededStaff) {
+        isValid = false;
+      }
+    });
+  
+    // Validação para a fase de cirurgia
+    this.medicalTeamToShows.staffSurgeryPhase.forEach(phase => {
+      const selectedStaff = this.staffCirurgiaEscolhido[phase.specializationId] || [];
+      if (selectedStaff.length < phase.nrNeededStaff) {
+        isValid = false;
+      }
+    });
+  
+    return isValid;
+  }
 
 }

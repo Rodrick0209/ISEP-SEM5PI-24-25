@@ -62,9 +62,6 @@ namespace DDDSample1.Domain.Appointments
                 throw new Exception("The operation room is occupied during the requested time.");
             }
 
-
-
-
             if (!opRequest.IsAvailable(opRequest.status))
             {
                 throw new Exception("The operation request is cancelled or was already accepted.");
@@ -77,6 +74,7 @@ namespace DDDSample1.Domain.Appointments
                 {
                     throw new Exception("The staff member is not available during the requested time.");
                 }
+                opRequest.staffAssignedSurgery.addStaffAnesthesyPhase(staff);
             }
 
             foreach (StaffId staff in opRequest.getStaffSurgeryPhase())
@@ -86,6 +84,7 @@ namespace DDDSample1.Domain.Appointments
                 {
                     throw new Exception("The staff member is not available during the requested time.");
                 }
+                opRequest.staffAssignedSurgery.addStaffSurgeryPhase(staff);
             }
 
 

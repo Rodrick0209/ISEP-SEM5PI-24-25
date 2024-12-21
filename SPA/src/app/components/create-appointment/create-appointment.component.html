@@ -19,7 +19,7 @@
         <label for="operationRequestId">Operation Request</label>
         <select id="operationRequestId" name="operationRequestId" [(ngModel)]="submitForm.operationRequestId" required (ngModelChange)="loadMedicalTeamToShow()">
           <option *ngFor="let request of operationRequests" [value]="request.id">
-            {{ request.id }} <!-- Exibindo o ID da solicitação aqui -->
+            {{ request.priority }} - {{ request.doctorThatWillPerformId}} - {{ request.deadLineDate}} <!-- Exibindo o ID da solicitação aqui -->
           </option>
         </select>
       </div>
