@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { Schedule, OperationSegment } from '../../services/planning.service';
+import { Schedule, OperationSegment, ScheduleGeneticResult } from '../../services/planning.service';
 
 @Component({
   selector: 'app-schedule-results',
@@ -10,7 +10,7 @@ import { Schedule, OperationSegment } from '../../services/planning.service';
   styleUrls: ['./schedule-results.component.css']
 })
 export class ScheduleResultsComponent implements OnInit {
-  schedule: Schedule | null = null;  // Dados de agendamento recebidos
+  schedule: ScheduleGeneticResult | null = null;  // Dados de agendamento recebidos
 
   constructor(private location: Location) {}
 

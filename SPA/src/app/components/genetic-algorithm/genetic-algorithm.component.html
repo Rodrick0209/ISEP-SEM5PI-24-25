@@ -1,0 +1,63 @@
+<div class="genetic-algorithm-container">
+    <h1>Genetic Algorithm Scheduler</h1>
+  
+    <form (ngSubmit)="agendarCirurgias()">
+      <div class="form-group">
+        <label for="populationSize">Population Size</label>
+        <input type="number" id="populationSize" [(ngModel)]="populationSize" name="populationSize" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="generations">Generations</label>
+        <input type="number" id="generations" [(ngModel)]="generations" name="generations" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="mutationRate">Mutation Rate</label>
+        <input type="number" id="mutationRate" [(ngModel)]="mutationRate" name="mutationRate" required min="0" max="100">
+      </div>
+  
+      <div class="form-group">
+        <label for="crossoverRate">Crossover Rate</label>
+        <input type="number" id="crossoverRate" [(ngModel)]="crossoverRate" name="crossoverRate" required min="0" max="100">
+      </div>
+  
+      <div class="form-group">
+        <label for="bestIndividualToBeKeptRate">Best Individual To Be Kept Rate</label>
+        <input type="number" id="bestIndividualToBeKeptRate" [(ngModel)]="bestIndividualToBeKeptRate" name="bestIndividualToBeKeptRate" required min="0" max="100">
+      </div>
+  
+      <div class="form-group">
+        <label for="lowerCostWanted">Lower Cost Wanted</label>
+        <input type="number" id="lowerCostWanted" [(ngModel)]="lowerCostWanted" name="lowerCostWanted" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="timeLimit">Time Limit (minutes)</label>
+        <input type="number" id="timeLimit" [(ngModel)]="timeLimit" name="timeLimit" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" id="date" [(ngModel)]="date" name="date" [min]="today" required>
+      </div>
+  
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+  
+      <button type="submit" [disabled]="isLoading">Schedule Surgeries</button>
+    </form>
+  
+    <div *ngIf="isLoading" class="loading-message">
+      Scheduling surgeries, please wait...
+    </div>
+  
+    <div *ngIf="scheduleResults" class="schedule-results">
+      <h2>Schedule Results</h2>
+      <pre>{{ scheduleResults | json }}</pre>
+      <button (click)="closeScheduleBox()">Close</button>
+    </div>
+  
+    <button (click)="goBack()">Go Back</button>
+  </div>

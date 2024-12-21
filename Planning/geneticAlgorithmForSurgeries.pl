@@ -4,6 +4,7 @@
 :-dynamic prob_mutation/1.
 :-dynamic percentage_individuals/1.
 :-dynamic lowerCostWanted/1.
+:-dynamic dateToSchedule/1.
 
 % task(Id,ProcessTime,DueTime,PenaltyWeight).
 task(t1,2,5,1).
@@ -38,26 +39,30 @@ initialize:-write('Number of new generations: '),read(NG),
     write('Lower cost wanted: '), read(LowerCost),
     (retract(lowerCostWanted(_));true), asserta(lowerCostWanted(LowerCost)),
     write('Time limit (in seconds): '), read(TempoLimite),
-    (retract(time_limit(_));true), asserta(time_limit(TempoLimite)).
+    (retract(time_limit(_));true), asserta(time_limit(TempoLimite)),
+    write('Date to schedule (yyyymmdd): '), read(Data),
+    (retract(dateToSchedule(_));true), asserta(dateToSchedule(Data)).
 
 generate:-
-    initialize,
+    %initialize,
     get_time(StartTime),
     generate_population(Pop),
-    write('Pop='),write(Pop),nl,
+    %write('Pop='),write(Pop),nl,
     evaluate_population(Pop,PopValue),
-    write('PopValue='),write(PopValue),nl,
+    %write('PopValue='),write(PopValue),nl,
     order_population(PopValue,PopOrd),
     lowerCostWanted(LowerCost),
     ( PopOrd = [_*V|_]) ->
     ( V =< LowerCost ->
-        write('Lower cost found!'), nl, !
+        %write('Lower cost found!'), nl,
+         !
         ;
         get_time(CurrentTime),
         time_limit(TimeLimit),
         ElapsedTime is CurrentTime - StartTime,
         ( ElapsedTime > TimeLimit ->
-            write('Tempo limite atingido após '), write(ElapsedTime), write(' segundos.'), nl, !
+            %write('Tempo limite atingido após '), write(ElapsedTime), write(' segundos.'), nl,
+             !
         ;
             generations(NG),
             generate_generation(0, NG, PopOrd, StartTime)
@@ -102,7 +107,9 @@ evaluate_population([Ind|Rest],[Ind*V|Rest1]):-
     evaluate(Ind,V),
     evaluate_population(Rest,Rest1).
 
-evaluate(Seq,V):- schedule_surgeries_fromList(or1,20251130,Seq), lastSurgeryTime(V). 
+evaluate(Seq,V):- 
+    dateToSchedule(Data),
+    schedule_surgeries_fromListForMultipleRooms(Data,Seq), lastSurgeryTime(V). 
 
 
 
@@ -123,16 +130,17 @@ bchange([X*VX,Y*VY|L1],[Y*VY|L2]):-
 
 bchange([X|L1],[X|L2]):-bchange(L1,L2).
     
-generate_generation(G,G,Pop,_):-!,
-	write('Generation '), write(G), write(':'), nl, write(Pop), nl.
+generate_generation(G,G,Pop,_):-!.
+	%write('Generation '), write(G), write(':'), nl, write(Pop), nl.
 generate_generation(N,G,Pop,StartTime):-
-	write('Generation '), write(N), write(':'), nl, write(Pop), nl,
+	%write('Generation '), write(N), write(':'), nl, write(Pop), nl,
 	get_time(CurrentTime),
     time_limit(TimeLimit),
     ElapsedTime is CurrentTime - StartTime,
     
     ( ElapsedTime > TimeLimit ->
-        write('Tempo limite atingido após '), write(ElapsedTime), write(' segundos.'), nl,!
+        %write('Tempo limite atingido após '), write(ElapsedTime), write(' segundos.'), nl,
+        !
     ;
 
     random_permutation(Pop, ShuffledPop), % Shuffle the population to avoid the crossover being always between elements in the same position
@@ -150,14 +158,14 @@ generate_generation(N,G,Pop,StartTime):-
     population(PopSize),
     
     NumIndividuosAirBuscarRestoLista is PopSize - NumBest,
-    nl,
-    write('BestIndividuals='),write(BestIndividuals),
-	nl,
+    %nl,
+    %write('BestIndividuals='),write(BestIndividuals),
+	%nl,
     create_and_sort_remaining_individuals(RemainingIndividuals, NumIndividuosAirBuscarRestoLista, NextGenIndividuals), 
-    write('Rest of individuals for the population='),write(NextGenIndividuals),nl,nl,
+    %write('Rest of individuals for the population='),write(NextGenIndividuals),nl,nl,
 	append(BestIndividuals, NextGenIndividuals, NewPopulationNotOrded),
     order_population(NewPopulationNotOrded, NewPopulation),
-    write('NewPopulation='),write(NewPopulation),nl,nl,
+    %write('NewPopulation='),write(NewPopulation),nl,nl,
     N1 is N+1,
 	generate_generation(N1,G,NewPopulation,StartTime)
     ).
@@ -319,8 +327,8 @@ create_and_sort_remaining_individuals(RemainingIndividuals, N, NextGenIndividual
     nl, nl,
     generate_random_products(RemainingIndividuals, RandomizedProducts),
     order_population(RandomizedProducts, SortedProducts),
-    write('Resto da lista SortedProducts='), write(SortedProducts), nl,nl,
-    write('Lista original='), write(RemainingIndividuals), nl,
+    %write('Resto da lista SortedProducts='), write(SortedProducts), nl,nl,
+    %write('Lista original='), write(RemainingIndividuals), nl,
     extract_top_individuals(SortedProducts, N, RemainingIndividuals, NextGenIndividuals).
 
 extract_top_individuals([], _, _, []).
@@ -332,7 +340,7 @@ extract_top_individuals([Ind * _ | RestSorted], N, RemainingIndividuals, [Ind * 
 
 
 parar_execucao :-
-    writeln('Time limit exceeded! Finishing the program...'),
+    %writeln('Time limit exceeded! Finishing the program...'),
     abort.
 
 

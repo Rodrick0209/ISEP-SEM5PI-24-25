@@ -54,6 +54,7 @@ import { EditAllergyComponent } from './components/edit-allergy/edit-allergy.com
 import { EditMedicalConditionComponent } from './components/edit-medical-condition/edit-medical-condition.component';
 import { DownloadMedicalHistoryComponent } from './components/download-medical-history/download-medical-history.component';
 import { RequestDeletePatientDataComponent } from './components/request-delete-patient-data/request-delete-patient-data.component';
+import { GeneticAlgorithmComponent } from './components/genetic-algorithm/genetic-algorithm.component';
 
 
 export const routes: Routes = [
@@ -83,6 +84,12 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         data: { role: 'admin' }
 
+    },
+    {
+        path: 'planning/genetic-algorithm',
+        component: GeneticAlgorithmComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' }
     },
     {
       path: 'specialization/create',

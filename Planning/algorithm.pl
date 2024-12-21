@@ -155,7 +155,7 @@ schedule_surgeries_fromListForMultipleRooms(Day,LOpCode):-
     retractall(availability(_,_,_)),
     findall(_,(agenda_staff(D,Day,Agenda),assertz(agenda_staff1(D,Day,Agenda))),_),
     findall((Or), (agenda_operation_room(Or, Date, Agenda), assert(agenda_operation_room1(Or, Date, Agenda))), Lrooms),
-    write('Lista de rooms = '), write(Lrooms), nl,
+    %write('Lista de rooms = '), write(Lrooms), nl,
     findall(_,(agenda_staff1(D,Date,L),free_agenda0(L,LFA),adapt_timetable(D,Date,LFA,LFA2),assertz(availability(D,Date,LFA2))),_),
     asserta(lastSurgeryTime(0)),
     availability_all_surgeries4(LOpCode,Lrooms,Day),!.
@@ -168,26 +168,26 @@ availability_all_surgeries4([OpCode|LOpCode], [], Day):-
 
 availability_all_surgeries4([OpCode|LOpCode], [Room|LRooms], Day):-
     surgery_id(OpCode, OpType),
-    write('A atribuir a cirurgia'),write(OpCode),write(' à sala '),write(Room),nl,
+    %write('A atribuir a cirurgia'),write(OpCode),write(' à sala '),write(Room),nl,
     surgery(OpType, TAnesthesy, TSurgery, TCleaning),
     availability_operation(OpCode, Room, Day, Interval, LDoctorsSurgery, LStaffAnesthesy, LStaffCleaning),
     calculate_intervals(Interval, TAnesthesy, TSurgery, TCleaning, MinuteStartAnesthesia, MinuteStartSurgery, MinuteStartCleaning, MinuteEndProcess),
-    write('Intervalo calculado: '), write((MinuteStartAnesthesia, MinuteEndProcess)), nl,
+    %write('Intervalo calculado: '), write((MinuteStartAnesthesia, MinuteEndProcess)), nl,
     retract(agenda_operation_room1(Room, Day, Agenda)),
     insert_agenda((MinuteStartAnesthesia, MinuteEndProcess, OpCode), Agenda, Agenda1),
     assertz(agenda_operation_room1(Room, Day, Agenda1)),
-    write('Agenda atualizada da sala'),write(Room),write(' atualizada para -->') ,write(Agenda1), nl,
+    %write('Agenda atualizada da sala'),write(Room),write(' atualizada para -->') ,write(Agenda1), nl,
     insert_agenda_staff((MinuteStartSurgery, MinuteStartCleaning, OpCode), Day, LDoctorsSurgery),
     insert_agenda_staff((MinuteStartAnesthesia, MinuteStartCleaning, OpCode), Day, LStaffAnesthesy),
     insert_agenda_staff((MinuteStartCleaning, MinuteEndProcess, OpCode), Day, LStaffCleaning),
     lastSurgeryTime(LastSurgeryTime),
-    write('Último tempo de cirurgia: '), write(LastSurgeryTime), nl,
+    %write('Último tempo de cirurgia: '), write(LastSurgeryTime), nl,
     % Atualizando LastSurgeryTime apenas se for maior que o valor atual
-    write('Minuto de fim do processo: '), write(MinuteEndProcess), nl,
+    %write('Minuto de fim do processo: '), write(MinuteEndProcess), nl,
     
 
     (LastSurgeryTime < MinuteEndProcess ->
-        write('Atualizando lastSurgeryTime'), nl,
+        %write('Atualizando lastSurgeryTime'), nl,
         retract(lastSurgeryTime(_)),
         assertz(lastSurgeryTime(MinuteEndProcess)),
         !

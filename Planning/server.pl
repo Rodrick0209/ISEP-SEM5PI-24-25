@@ -18,11 +18,13 @@
 :- consult('getInfoFromBd').
 :- consult('saveInfoInBd').
 :- consult('algorithm').
+:- consult('geneticAlgorithmForSurgeries').
 
 % Definição dos handlers
 :- http_handler('/greet', greet_handler, []).
 :- http_handler('/planning/getSchedule', getSchedule, []).
 :- http_handler('/planning/getHeuristicSchedule', getHeuristicSchedule, []).
+:- http_handler('/planning/getGeneticAlgorithmSchedule', getGeneticAlgorithmSchedule, []).
 
 
 % Tratamento para a rota /greet
@@ -163,11 +165,55 @@ getHeuristicSchedule(Request) :-
         )
     ).
 
-% Predicado de teste para depuração
-testPredicate :-
-    obtain_better_sol(or1, 20241130, X, _, Z),
-    convert_tuples_to_json(X, XJson), 
-    write(XJson), nl.
+
+
+getGeneticAlgorithmSchedule(Request) :-
+    set_cors_headers,
+    (   member(method(options), Request) ->
+        format('~n')  % Responds to OPTIONS with CORS headers
+    ;   % Process normal requests
+               % Captura os parâmetros do request
+                http_parameters(Request, 
+                    [ 
+                        populationSize(PopulationSize, [number]),
+                        generations(Generations, [number]),
+                        mutationRate(MutationRate, [number]),
+                        crossoverRate(CrossoverRate, [number]),
+                        date(Date, [number]),
+                        bestIndividualsToBeKeptRate(BestIndividualsToBeKeptRate, [number]),
+                        timeLimit(TimeLimit, [number]),
+                        lowerCostWanted(LowerCostWanted, [number])
+                    ]
+                ),
+
+                % Armazena os parâmetros como fatos dinâmicos
+                asserta(population(PopulationSize)),
+                asserta(generations(Generations)),
+                asserta(prob_crossover(CrossoverRate)),
+                asserta(prob_mutation(MutationRate)),
+                asserta(dateToSchedule(Date)),
+                asserta(percentage_individuals(BestIndividualsToBeKeptRate)),
+                asserta(time_limit(TimeLimit)),
+                asserta(lowerCostWanted(LowerCostWanted)),
+
+                % Chama a lógica heurística de agendamento
+                (   generate ->
+                    agenda_operation_room1(or1, Date, X),
+                    agenda_operation_room1(or2, Date, Y),
+                    agenda_operation_room1(or3, Date, Z),
+                    reply_json(json([
+                        message="CONSEGUIU GERAR O AGENDAMENTO",
+                        schedules=[
+                            json([room="or1", schedule=X]),
+                            json([room="or2", schedule=Y]),
+                            json([room="or3", schedule=Z])
+                        ]
+                    ]), [status(200)])
+                ;   reply_json(json([
+                        error="Solution not found, try scheduling with another parameters"
+                    ]), [status(404)])
+                )
+    ).
 
 
 % Servidor HTTP

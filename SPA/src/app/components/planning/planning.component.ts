@@ -123,4 +123,9 @@ export class PlanningComponent implements OnInit {
   }
 
 
+  geneticAlgorithmSolution() {
+    this.router.navigate(['/planning/genetic-algorithm']);
+  }
+
+
 }
