@@ -1,50 +1,128 @@
-/*import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
-import { FormsModule } from '@angular/forms';
-import { AppointmentComponent } from './appointment.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CreateAppointmentComponent } from './create-appointment.component';
 import { AppointmentService } from '../../services/appointment.service';
 import { MessageService } from '../../services/message.service';
+import { SpecializationService } from '../../services/specialization.service';
+import { Router } from '@angular/router';
+import { of, throwError } from 'rxjs';
+import { RoomStatus } from '../../models/operationRoom';
 
-describe('AppointmentComponent', () => {
-  let component: AppointmentComponent;
-  let fixture: ComponentFixture<AppointmentComponent>;
-  let mockRouter: jasmine.SpyObj<Router>;
-  let mockAppointmentService: jasmine.SpyObj<AppointmentService>;
-  let mockMessageService: jasmine.SpyObj<MessageService>;
+describe('CreateAppointmentComponent', () => {
+  let component: CreateAppointmentComponent;
+  let fixture: ComponentFixture<CreateAppointmentComponent>;
+  let appointmentService: jasmine.SpyObj<AppointmentService>;
+  let messageService: jasmine.SpyObj<MessageService>;
+  let specializationService: jasmine.SpyObj<SpecializationService>;
+  let router: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-    mockAppointmentService = jasmine.createSpyObj('AppointmentService', ['createAppointment']);
-    mockMessageService = jasmine.createSpyObj('MessageService', ['setMessage']);
+    const appointmentServiceSpy = jasmine.createSpyObj('AppointmentService', ['getOperationRooms', 'getOperationRequestsAvailable', 'getTeamForAppointmentCreate', 'createAppointmentWithMedicalTeam']);
+    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['setMessage']);
+    const specializationServiceSpy = jasmine.createSpyObj('SpecializationService', ['getSpecializationById']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [AppointmentComponent],
       providers: [
-        { provide: Router, useValue: mockRouter },
-        { provide: AppointmentService, useValue: mockAppointmentService },
-        { provide: MessageService, useValue: mockMessageService },
-      ],
+        { provide: AppointmentService, useValue: appointmentServiceSpy },
+        { provide: MessageService, useValue: messageServiceSpy },
+        { provide: SpecializationService, useValue: specializationServiceSpy },
+        { provide: Router, useValue: routerSpy }
+      ]
     }).compileComponents();
-  });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AppointmentComponent);
+    fixture = TestBed.createComponent(CreateAppointmentComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    appointmentService = TestBed.inject(AppointmentService) as jasmine.SpyObj<AppointmentService>;
+    messageService = TestBed.inject(MessageService) as jasmine.SpyObj<MessageService>;
+    specializationService = TestBed.inject(SpecializationService) as jasmine.SpyObj<SpecializationService>;
+    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
+    appointmentService.createAppointmentWithMedicalTeam.and.returnValue(of({}));
+    specializationService.getSpecializationById.and.returnValue(of({ id: '1', name: 'Anesthesiologist' }));
+    appointmentService.getOperationRequestsAvailable.and.returnValue(of([]));
+    appointmentService.getOperationRooms.and.returnValue(of([]));
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to appointments list on cancel', () => {
-    component.onCancel();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/appointments']);
+  it('should load operation rooms on init', () => {
+    const mockRooms = [{ id: 1, name: 'Room 1', roomNumber: '101', capacity: '2', roomStatus: RoomStatus.Available }];
+
+    appointmentService.getOperationRooms.and.returnValue(of(mockRooms));
+
+    component.ngOnInit();
+
+    expect(appointmentService.getOperationRooms).toHaveBeenCalled();
+    expect(component.operationRooms).toEqual(mockRooms);
   });
 
-  it('should show confirmation modal', () => {
+  it('should handle error when loading operation rooms', () => {
+    const error = new Error('Failed to load operation rooms');
+    appointmentService.getOperationRooms.and.returnValue(throwError(error));
+
+    component.ngOnInit();
+
+    expect(appointmentService.getOperationRooms).toHaveBeenCalled();
+    expect(component.operationRooms).toEqual([]);
+  });
+
+  it('should load operation requests on init', () => {
+    const mockRequests = [{ id: '1',  patientId: '1', operationTypeId: '1', operationDate: '2023-10-10', operationTime: '10:30', operationRoomId: '1', doctorThatWillPerformId: 'Dr. Smith', deadLineDate: new Date(), priority: 'Pending' }];
+    appointmentService.getOperationRequestsAvailable.and.returnValue(of(mockRequests));
+
+    component.ngOnInit();
+
+    expect(appointmentService.getOperationRequestsAvailable).toHaveBeenCalled();
+    expect(component.operationRequests).toEqual(mockRequests);
+  });
+
+  it('should handle error when loading operation requests', () => {
+    const error = new Error('Failed to load operation requests');
+    appointmentService.getOperationRequestsAvailable.and.returnValue(throwError(error));
+
+    component.ngOnInit();
+
+    expect(appointmentService.getOperationRequestsAvailable).toHaveBeenCalled();
+    expect(component.operationRequests).toEqual([]);
+  });
+
+  it('should load medical team to show', () => {
+    const mockMedicalTeam = {
+      staffAnesthesyPhase: [{ specializationId: '1', nrNeededStaff: 2, staffId: ['1', '2'] }],
+      staffSurgeryPhase: [{ specializationId: '2', nrNeededStaff: 3, staffId: ['1', '2', '3'] }]
+    };
+    component.submitForm = {
+      appointmentTimeSlotDate: '2023-10-10',
+      appointmentTimeSlotStartMinute: '30',
+      operationRoomId: '1',
+      operationRequestId: '1'
+    };
+    appointmentService.getTeamForAppointmentCreate.and.returnValue(of(mockMedicalTeam));
+
+    component.loadMedicalTeamToShow();
+
+    expect(appointmentService.getTeamForAppointmentCreate).toHaveBeenCalled();
+    expect(component.medicalTeamToShows).toEqual(mockMedicalTeam);
+  });
+
+  it('should handle error when loading medical team to show', () => {
+    const error = new Error('Failed to load medical team');
+    component.submitForm = {
+      appointmentTimeSlotDate: '2023-10-10',
+      appointmentTimeSlotStartMinute: '30',
+      operationRoomId: '1',
+      operationRequestId: '1'
+    };
+    appointmentService.getTeamForAppointmentCreate.and.returnValue(throwError(error));
+
+    component.loadMedicalTeamToShow();
+
+    expect(appointmentService.getTeamForAppointmentCreate).toHaveBeenCalled();
+    expect(component.errorMessage).toBe('Please choose another date or start time, there is no medical team available for the selected date and time.');
+  });
+
+  it('should confirm submission', () => {
     component.confirmSubmission();
     expect(component.showConfirmation).toBeTrue();
   });
@@ -54,66 +132,34 @@ describe('AppointmentComponent', () => {
     expect(component.showConfirmation).toBeFalse();
   });
 
-  it('should submit form successfully', () => {
-    const appointmentForm = { valid: true };
-    const appointmentData = {
-      appointmentTimeSlotDate: '2024-12-01',
-      appointmentTimeSlotStartMinute: 600, // Example value in minutes (e.g., 10:00 AM)
-      appointmentTimeSlotEndMinute: 660, // Example value in minutes (e.g., 11:00 AM)
-      operationRoomId: 101,
-      operationRequestId: 2024,
-    };
-    component.submitForm = appointmentData;
-    mockAppointmentService.createAppointment.and.returnValue(of({}));
-
-    component.onSubmit(appointmentForm);
-
-    expect(mockAppointmentService.createAppointment).toHaveBeenCalledWith(
-      appointmentData.appointmentTimeSlotDate,
-      appointmentData.appointmentTimeSlotStartMinute,
-      appointmentData.appointmentTimeSlotEndMinute,
-      appointmentData.operationRoomId,
-      appointmentData.operationRequestId
-    );
-    expect(mockMessageService.setMessage).toHaveBeenCalledWith(
-      'Appointment successfully scheduled!'
-    );
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/appointments']);
+  it('should navigate to appointments on cancel', () => {
+    component.onCancel();
+    expect(router.navigate).toHaveBeenCalledWith(['/appointments']);
   });
 
-  it('should handle form submission error', () => {
-    const appointmentForm = { valid: true };
-    const appointmentData = {
-      appointmentTimeSlotDate: '2024-12-01',
-      appointmentTimeSlotStartMinute: 600,
-      appointmentTimeSlotEndMinute: 660,
-      operationRoomId: 101,
-      operationRequestId: 2024,
+  it('should validate medical team completion', () => {
+    component.medicalTeamToShows = {
+      staffAnesthesyPhase: [{ specializationId: '1', nrNeededStaff: 2, staffId: ['1', '2'] }],
+      staffSurgeryPhase: [{ specializationId: '2', nrNeededStaff: 3, staffId: ['1', '2', '3'] }]
     };
-    component.submitForm = appointmentData;
-    mockAppointmentService.createAppointment.and.returnValue(
-      throwError({ error: { message: 'Error' } })
-    );
+    component.staffAnestesiaEscolhido = { '1': ['staff1', 'staff2'] };
+    component.staffCirurgiaEscolhido = { '2': ['staff3', 'staff4', 'staff5'] };
 
-    component.onSubmit(appointmentForm);
+    const isValid = component.validateMedicalTeamCompletion();
 
-    expect(mockAppointmentService.createAppointment).toHaveBeenCalledWith(
-      appointmentData.appointmentTimeSlotDate,
-      appointmentData.appointmentTimeSlotStartMinute,
-      appointmentData.appointmentTimeSlotEndMinute,
-      appointmentData.operationRoomId,
-      appointmentData.operationRequestId
-    );
-    expect(component.errorMessage).toBe('Failed to schedule appointment: Error');
+    expect(isValid).toBeTrue();
   });
 
-  it('should log invalid form', () => {
-    spyOn(console, 'log');
-    const appointmentForm = { valid: false };
+  it('should invalidate medical team completion', () => {
+    component.medicalTeamToShows = {
+      staffAnesthesyPhase: [{ specializationId: '1', nrNeededStaff: 2, staffId: ['1', '2'] }],
+      staffSurgeryPhase: [{ specializationId: '2', nrNeededStaff: 3, staffId: ['1', '2', '3'] }]
+    };
+    component.staffAnestesiaEscolhido = { '1': ['staff1'] };
+    component.staffCirurgiaEscolhido = { '2': ['staff3', 'staff4'] };
 
-    component.onSubmit(appointmentForm);
+    const isValid = component.validateMedicalTeamCompletion();
 
-    expect(console.log).toHaveBeenCalledWith('Form is invalid');
+    expect(isValid).toBeFalse();
   });
 });
-*/

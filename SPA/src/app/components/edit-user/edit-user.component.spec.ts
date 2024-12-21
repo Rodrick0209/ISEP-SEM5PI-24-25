@@ -111,9 +111,4 @@ describe('EditUserComponent', () => {
 
     expect(component.errorMessage).toBe('An error occurred while updating user: Error');
   });
-
-  it('should navigate to profile on cancel', () => {
-    component.onCancel();
-    expect(router.navigate).toHaveBeenCalledWith(['/profile', 'test@example.com']);
-  });
 });

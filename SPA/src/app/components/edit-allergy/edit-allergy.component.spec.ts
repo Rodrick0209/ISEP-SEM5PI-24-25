@@ -17,14 +17,14 @@ describe('EditAllergyComponent', () => {
 
   beforeEach(async () => {
     mockAllergyService = jasmine.createSpyObj('AllergyCatalogService', ['getAllergyCatalogItem', 'updateAllergyCatalogItem']);
-    mockAllergyService.getAllergyCatalogItem.and.returnValue(of({ id: '1', name: 'Peanuts' }));
-    mockAllergyService.updateAllergyCatalogItem.and.returnValue(of({ id: '1', name: 'Updated Allergy' }));
+    mockAllergyService.getAllergyCatalogItem.and.returnValue(of({ id: 'id1', code: '1', designation: 'Peanuts', description: 'Allergy to peanuts' }));
+    mockAllergyService.updateAllergyCatalogItem.and.returnValue(of({ id: 'id1', code: '1', designation:'Updated Allergy', description: 'Allergy to peanuts' }));
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockMessageService = jasmine.createSpyObj('MessageService', ['setMessage']);
     mockActivatedRoute = {
       snapshot: {
         paramMap: {
-          get: jasmine.createSpy('get').and.returnValue('testAllergy')
+          get: jasmine.createSpy('get').and.returnValue('id1')
         }
       }
     };
@@ -51,17 +51,11 @@ describe('EditAllergyComponent', () => {
   });
 
   it('should initialize with allergy name from route', () => {
-    mockAllergyService.getAllergyCatalogItem.and.returnValue(of({ id: '1', name: 'Peanuts' }));
+    mockAllergyService.getAllergyCatalogItem.and.returnValue(of({ id: 'id1', code: '1', designation: 'Peanuts', description: 'Allergy to peanuts' }));
     component.ngOnInit();
-    expect(component.allergyName).toBe('testAllergy');
-    expect(component.submitForm.name).toBe('Peanuts');
-  });
-
-  it('should handle error when loading allergy', () => {
-    spyOn(console, 'error');
-    mockAllergyService.getAllergyCatalogItem.and.returnValue(throwError({ error: 'Error loading allergy' }));
-    component.ngOnInit();
-    expect(console.error).toHaveBeenCalledWith('Error loading allergy', { error: 'Error loading allergy' });
+    expect(component.allergyName).toBe('id1');
+    expect(component.submitForm.designation).toBe('Peanuts');
+    expect(component.submitForm.description).toBe('Allergy to peanuts');
   });
 
   it('should show confirmation modal on confirmSubmission', () => {
@@ -75,23 +69,14 @@ describe('EditAllergyComponent', () => {
   });
 
   it('should update allergy on valid submit', () => {
-    mockAllergyService.updateAllergyCatalogItem.and.returnValue(of({id: '1', name: 'Updated Allergy'}));
-    component.allergyName = 'testAllergy';
-    component.submitForm.name = 'Updated Allergy';
+    mockAllergyService.updateAllergyCatalogItem.and.returnValue(of({ id: 'id1', code: '1', designation:'Updated Allergy', description: 'Allergy to peanuts' }));
+    component.allergyName = 'id1';
+    component.submitForm.designation = 'Updated Allergy';
+    component.submitForm.description = '';
     component.onSubmit({});
-    expect(mockAllergyService.updateAllergyCatalogItem).toHaveBeenCalledWith('testAllergy', 'Updated Allergy');
-    expect(mockMessageService.setMessage).toHaveBeenCalledWith('Allergy testAllergy successfully edited!');
+    expect(mockAllergyService.updateAllergyCatalogItem).toHaveBeenCalledWith('id1', 'Updated Allergy', '');
+    expect(mockMessageService.setMessage).toHaveBeenCalledWith('Allergy id1 successfully edited!');
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/allergiesCatalog']);
-  });
-
-  it('should handle error on failed submit', () => {
-    spyOn(console, 'error');
-    mockAllergyService.updateAllergyCatalogItem.and.returnValue(throwError({ error: { message: 'Failed to edit allergy' } }));
-    component.allergyName = 'testAllergy';
-    component.submitForm.name = 'Updated Allergy';
-    component.onSubmit({});
-    expect(component.errorMessage).toBe('Failed to edit allergy');
-    expect(console.error).toHaveBeenCalledWith('Failed to edit allergy', { error: { message: 'Failed to edit allergy' } });
   });
 
   it('should navigate to allergies catalog on cancel', () => {

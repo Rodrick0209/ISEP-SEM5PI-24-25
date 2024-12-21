@@ -59,28 +59,28 @@ describe('DeleteUserComponent', () => {
   });
 
   it('should set errorMessage if delete is called without confirmation', () => {
-    component.onDelete();
+    component.onRequestDelete();
     expect(component.errorMessage).toBe('Please confirm by clicking in the mark.');
   });
 
   it('should call userService.delete and set successMessage on successful delete', () => {
     component.isConfirmed = true;
     userServiceSpy.delete.and.returnValue(of({}));
-    component.onDelete();
+    component.onRequestDelete();
     expect(userServiceSpy.delete).toHaveBeenCalledWith('test@example.com');
-    expect(component.successMessage).toBe('An email confirmation was sent to your inbox. Please confirm the deletion of your account and profile by clicking in the link.');
+    expect(component.successMessage).toBe('An email confirmation will be sent to you. You can close this window or click on the back button.');
   });
 
   it('should set errorMessage on delete failure', () => {
     component.isConfirmed = true;
     userServiceSpy.delete.and.returnValue(of({ error: 'Failed to delete your account.' }));
-    component.onDelete();
+    component.onRequestDelete();
     expect(userServiceSpy.delete).toHaveBeenCalledWith('test@example.com');
     expect(component.errorMessage).toBe('');
   });
 
   it('should navigate to profile on cancel', () => {
     component.onCancel();
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/profile', 'test@example.com']);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/home']);
   });
 });
