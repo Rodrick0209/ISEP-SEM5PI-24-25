@@ -102,7 +102,7 @@ evaluate_population([Ind|Rest],[Ind*V|Rest1]):-
     evaluate(Ind,V),
     evaluate_population(Rest,Rest1).
 
-evaluate(Seq,V):- schedule_surgeries_fromList(or1,20241130,Seq), lastSurgeryTime(V). 
+evaluate(Seq,V):- schedule_surgeries_fromList(or1,20251130,Seq), lastSurgeryTime(V). 
 
 
 
