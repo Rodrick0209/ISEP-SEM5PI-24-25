@@ -5,6 +5,7 @@
 :-dynamic percentage_individuals/1.
 :-dynamic lowerCostWanted/1.
 :-dynamic dateToSchedule/1.
+:-dynamic time_limit/1.
 
 % task(Id,ProcessTime,DueTime,PenaltyWeight).
 task(t1,2,5,1).

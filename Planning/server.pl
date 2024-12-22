@@ -26,7 +26,6 @@
 :- http_handler('/planning/getHeuristicSchedule', getHeuristicSchedule, []).
 :- http_handler('/planning/getGeneticAlgorithmSchedule', getGeneticAlgorithmSchedule, []).
 
-
 % Tratamento para a rota /greet
 greet_handler(Request) :-
     % Define os cabeçalhos CORS
@@ -170,52 +169,37 @@ getHeuristicSchedule(Request) :-
 getGeneticAlgorithmSchedule(Request) :-
     set_cors_headers,
     (   member(method(options), Request) ->
-        format('~n')  % Responds to OPTIONS with CORS headers
-    ;   % Process normal requests
-               % Captura os parâmetros do request
-                http_parameters(Request, 
-                    [ 
-                        populationSize(PopulationSize, [number]),
-                        generations(Generations, [number]),
-                        mutationRate(MutationRate, [number]),
-                        crossoverRate(CrossoverRate, [number]),
-                        date(Date, [number]),
-                        bestIndividualsToBeKeptRate(BestIndividualsToBeKeptRate, [number]),
-                        timeLimit(TimeLimit, [number]),
-                        lowerCostWanted(LowerCostWanted, [number])
-                    ]
-                ),
-
-                % Armazena os parâmetros como fatos dinâmicos
-                asserta(population(PopulationSize)),
-                asserta(generations(Generations)),
-                asserta(prob_crossover(CrossoverRate)),
-                asserta(prob_mutation(MutationRate)),
-                asserta(dateToSchedule(Date)),
-                asserta(percentage_individuals(BestIndividualsToBeKeptRate)),
-                asserta(time_limit(TimeLimit)),
-                asserta(lowerCostWanted(LowerCostWanted)),
-
-                % Chama a lógica heurística de agendamento
-                (   generate ->
-                    agenda_operation_room1(or1, Date, X),
-                    agenda_operation_room1(or2, Date, Y),
-                    agenda_operation_room1(or3, Date, Z),
-                    reply_json(json([
-                        message="CONSEGUIU GERAR O AGENDAMENTO",
-                        schedules=[
-                            json([room="or1", schedule=X]),
-                            json([room="or2", schedule=Y]),
-                            json([room="or3", schedule=Z])
-                        ]
-                    ]), [status(200)])
-                ;   reply_json(json([
-                        error="Solution not found, try scheduling with another parameters"
-                    ]), [status(404)])
-                )
+        format('~n')
+    ;   http_parameters(Request, 
+            [ 
+                populationSize(PopulationSize, [number]),
+                generations(Generations, [number]),
+                crossoverRate(CrossoverRate, [number]),
+                date(Date, [number]),
+                bestIndividualsToBeKeptRate(BestIndividualsToBeKeptRate, [number]),
+                timeLimit(TimeLimit, [number]),
+                lowerCostWanted(LowerCostWanted, [number]),
+                mutationRate(MutationRate, [number])
+            ]
+        ),
+        
+        reply_json(json([message="Parameters processed successfully"]), [status(200)])
     ).
 
 
+
 % Servidor HTTP
-server(Port) :-						
+server(Port) :-
     http_server(http_dispatch, [port(Port)]).
+
+
+
+valid_parameters(PopulationSize, Generations, CrossoverRate, Date, BestIndividualsToBeKeptRate, TimeLimit, LowerCostWanted, MutationRate) :-
+    integer(PopulationSize), PopulationSize > 0,
+    integer(Generations), Generations > 0,
+    integer(CrossoverRate), CrossoverRate >= 0, CrossoverRate =< 100,
+    integer(Date), Date > 0,
+    integer(BestIndividualsToBeKeptRate), BestIndividualsToBeKeptRate >= 0, BestIndividualsToBeKeptRate =< 100,
+    integer(TimeLimit), TimeLimit > 0,
+    integer(LowerCostWanted), LowerCostWanted >= 0,
+    integer(MutationRate), MutationRate >= 0, MutationRate =< 100.
