@@ -182,8 +182,38 @@ getGeneticAlgorithmSchedule(Request) :-
                 mutationRate(MutationRate, [number])
             ]
         ),
-        
-        reply_json(json([message="Parameters processed successfully"]), [status(200)])
+        			
+    (retract(generations(_));true), asserta(generations(Generations)),
+	(retract(population(_));true), asserta(population(PopulationSize)),
+	PC is CrossoverRate/100, 
+	(retract(prob_crossover(_));true), 	asserta(prob_crossover(PC)),
+	PM is MutationRate/100, 
+	(retract(prob_mutation(_));true), asserta(prob_mutation(PM)),
+    PI is BestIndividualsToBeKeptRate/100,
+    (retract(percentage_individuals(_));true), asserta(percentage_individuals(PI)),
+    (retract(lowerCostWanted(_));true), asserta(lowerCostWanted(LowerCostWanted)),
+    (retract(time_limit(_));true), asserta(time_limit(TimeLimit)),
+    (retract(dateToSchedule(_));true), asserta(dateToSchedule(Date)),
+
+        (   generate ->
+            agenda_operation_room1(or1, Date, XRaw),
+            agenda_operation_room1(or2, Date, YRaw),
+            agenda_operation_room1(or3, Date, ZRaw),
+            convert_tuples_to_json(XRaw, X),
+            convert_tuples_to_json(YRaw, Y),
+            convert_tuples_to_json(ZRaw, Z),
+
+            reply_json(json([
+                        schedules=[
+                            json([room="or1", schedule=X]),
+                            json([room="or2", schedule=Y]),
+                            json([room="or3", schedule=Z])
+                        ],
+                        date=Date                        
+                            ]), [status(200)])
+        ;   reply_json(json([message="Genetic Algorithm failed to execute"]), [status(400)])
+        )
+    
     ).
 
 
@@ -194,12 +224,3 @@ server(Port) :-
 
 
 
-valid_parameters(PopulationSize, Generations, CrossoverRate, Date, BestIndividualsToBeKeptRate, TimeLimit, LowerCostWanted, MutationRate) :-
-    integer(PopulationSize), PopulationSize > 0,
-    integer(Generations), Generations > 0,
-    integer(CrossoverRate), CrossoverRate >= 0, CrossoverRate =< 100,
-    integer(Date), Date > 0,
-    integer(BestIndividualsToBeKeptRate), BestIndividualsToBeKeptRate >= 0, BestIndividualsToBeKeptRate =< 100,
-    integer(TimeLimit), TimeLimit > 0,
-    integer(LowerCostWanted), LowerCostWanted >= 0,
-    integer(MutationRate), MutationRate >= 0, MutationRate =< 100.

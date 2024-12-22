@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PlanningService, ScheduleGeneticResult } from '../../services/planning.service';
+import { PlanningService, ScheduleData } from '../../services/planning.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,7 +22,7 @@ export class GeneticAlgorithmComponent {
     errorMessage: string = '';
     isLoading: boolean = false;
     today: string = '';
-    scheduleResults : ScheduleGeneticResult | null = null;
+    scheduleResults : ScheduleData | null = null;
 
     constructor(private planningService: PlanningService,private router: Router ) {
      }
@@ -46,9 +46,10 @@ export class GeneticAlgorithmComponent {
             console.log('Schedule received from the Planning:', data);
             this.isLoading = false;
             this.scheduleResults = data;
-            this.router.navigate(['/schedule-results'], { state: { schedule: data } });
+            this.router.navigate(['/planningResults'], { state: { schedule: data } });
           },
           error: (error) => {
+            console.error('Error while trying to schedule the surgeries:', error);
             this.errorMessage = 'It wasnt possible to schedule the surgeries. Please try again with other parameters or contact the admin.';
             this.isLoading = false;
           } 

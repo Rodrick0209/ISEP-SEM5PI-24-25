@@ -1,35 +1,31 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 
 export interface SurgeryRoom {
   roomNumber: string;
 }
 
 // Representa uma tupla no agOpRoomBetter
-export interface OperationSegment {
-  start: number;
-  end: number;
-  operationId: string;
-}
 
 
 
-// Interface principal do Schedule
 export interface Schedule {
-  day: string;
-  room: string;
-  agOpRoomBetter: OperationSegment[]; // Lista de intervalos de operação
+  end: number; // Tempo de término
+  operationId: string; // ID da operação
+  start: number; // Tempo de início
 }
 
-export interface ScheduleRoom {
-  room: string;
-  agOpRoomBetter: OperationSegment[]; // Lista de intervalos de operação
+// Interface para a sala e seus schedules
+export interface RoomSchedule {
+  room: string; // Nome da sala
+  schedule: Schedule[]; // Lista de schedules
 }
 
-export interface ScheduleGeneticResult {
-  day: string;
-  schedules: ScheduleRoom[];
+// Interface para o objeto principal
+export interface ScheduleData {
+  schedules: RoomSchedule[]; // Lista de RoomSchedule
+  date: number; // Data (YYYYMMDD)
 }
 
 
@@ -53,19 +49,53 @@ export class PlanningService {
   }
 
 
-  geneticAlgorithm(populationSize: number, generations: number, mutationRate: number, crossoverRate: number, bestIndividualToBeKeptRate: number, lowerCostWanted: number, timeLimit: number, date: string) {
+  geneticAlgorithm(
+    populationSize: number, 
+    generations: number, 
+    mutationRate: number, 
+    crossoverRate: number, 
+    bestIndividualToBeKeptRate: number, 
+    lowerCostWanted: number, 
+    timeLimit: number, 
+    date: string
+  ) {
     let params = new HttpParams();
-    params = params.append('populationSize', populationSize.toString());
-    params = params.append('generations', generations.toString());
-    params = params.append('mutationRate', mutationRate.toString());
-    params = params.append('crossoverRate', crossoverRate.toString());
-    params = params.append('bestIndividualToBeKeptRate', bestIndividualToBeKeptRate.toString());
-    params = params.append('lowerCostWanted', lowerCostWanted.toString());
-    params = params.append('timeLimit', timeLimit.toString());
-    params = params.append('date', date);
-
-    return this.http.get<ScheduleGeneticResult>(`${this.planningUrl}/getGeneticAlgorithmSchedule`, { params} );
+  
+  
+    const formattedDate = date.replace(/-/g, '');
+  
+    params = params
+      .append('populationSize', populationSize.toString())
+      .append('generations', generations.toString())
+      .append('mutationRate', mutationRate.toString())
+      .append('crossoverRate', crossoverRate.toString())
+      .append('bestIndividualsToBeKeptRate', bestIndividualToBeKeptRate.toString())
+      .append('lowerCostWanted', lowerCostWanted.toString())
+      .append('timeLimit', timeLimit.toString())
+      .append('date', formattedDate);
+  
+    // Interceptando e limpando a resposta
+    return this.http.get(`${this.planningUrl}/getGeneticAlgorithmSchedule`, { responseType: 'text', params })
+      .pipe(
+        map((response: string) => {
+          // Remover metadados da resposta e parsear como JSON
+          const jsonStartIndex = response.indexOf('{');
+          const jsonEndIndex = response.lastIndexOf('}');
+          if (jsonStartIndex === -1 || jsonEndIndex === -1) {
+            throw new Error('Invalid JSON response from server.');
+          }
+  
+          const cleanJson = response.substring(jsonStartIndex, jsonEndIndex + 1);
+          console.log('Clean JSON:', cleanJson);
+  
+          return JSON.parse(cleanJson) as ScheduleData;
+        }),
+        tap((parsedResponse) => {
+          console.log('Parsed Response:', parsedResponse);
+        })
+      );
   }
+  
 
   getSurgeryRooms(): Observable<SurgeryRoom[]> {
     return this.http.get<SurgeryRoom[]>('/api/OperationRoom/GetAll');

@@ -3,7 +3,7 @@
 
   <div *ngIf="schedule; else noData">
     <div class="schedule-details">
-      <h2>Scheduled Surgeries for: {{ schedule.day }}</h2>
+      <h2>Scheduled Surgeries for: {{ formatDate(schedule.date) }}</h2>
 
       <div *ngFor="let roomSchedule of schedule.schedules" class="operation-segments">
         <h3>Room: {{ roomSchedule.room }}</h3>
@@ -16,7 +16,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let segment of roomSchedule.agOpRoomBetter">
+            <tr *ngFor="let segment of roomSchedule.schedule">
               <td>{{ formatTime(segment.start) }}</td>
               <td>{{ formatTime(segment.end) }}</td>
               <td>{{ segment.operationId }}</td>
