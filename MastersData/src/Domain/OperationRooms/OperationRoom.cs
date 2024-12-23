@@ -103,9 +103,7 @@ namespace DDDSample1.Domain.OperationRooms
             foreach (var app in appointmentsToSearch)
             {
                 var appStart = app.AppointmentTimeSlot.TimeSlot.StartMinute;
-                Console.WriteLine("appStart: " + appStart);
                 var appEnd = app.AppointmentTimeSlot.TimeSlot.EndMinute;
-                Console.WriteLine("appEnd: " + appEnd);
 
                 // Casos de sobreposição:
                 if ((startMinute >= appStart && startMinute < appEnd) ||

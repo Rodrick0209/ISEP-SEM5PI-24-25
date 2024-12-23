@@ -31,11 +31,12 @@ export interface Appointment {
   export interface AppointmentEdit {
     id: string;
     appointmentTimeSlot: AppointmentTimeSlot;
-    appointmentStatus: AppointmentStatus;
+    AppointmentStatus: AppointmentStatus;
     operationRoomId: string;
     operationRequestId: string;
-    operationRequestTeamForAnesthesy : string[];
-    operationRequestTeamForSurgery : string[];
+    anesthesiaStaff : string[];
+    surgeryStaff : string[];
+    operationRequestTeamForCleaning : string[];
   }
 
 
@@ -46,7 +47,7 @@ export interface Appointment {
     operationRequestPatientId : string;
     appointmentTimeSlot: AppointmentTimeSlot; 
     appointmentStatus: AppointmentStatus;
-    operationRoomNumber : string;
+    operationRoomId : string;
 
   }
 

@@ -51,13 +51,23 @@ namespace DDDSample1.Infrastructure.StaffMembers
 
         public async Task<Staff> GetByIdsAsync(string id)
         {
-            return await this.context.StaffMembers.FirstOrDefaultAsync(s => s.Id.AsString() == id);
-
-
-            ;
+            return await this.context.StaffMembers.FirstOrDefaultAsync(s => s.Id.Value == id);
         }
 
+       
+        public async Task<List<string>> GetAllStaffIdsAndLicenseNumbersAsync()
+        {
+            var staffList = await this.context.StaffMembers
+            .Select(s => new { s.Id, s.LicenseNumber.licenseNumber })
+            .ToListAsync();
 
+            foreach (var staff in staffList)
+            {
+            Console.WriteLine($"ID: {staff.Id.Value}, License Number: {staff.licenseNumber}");
+            }
+
+            return staffList.Select(s => $"ID: {s.Id.Value}, License Number: {s.licenseNumber}").ToList();
+        }
 
 
 

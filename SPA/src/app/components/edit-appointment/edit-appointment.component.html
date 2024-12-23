@@ -4,70 +4,122 @@
 
   <form (ngSubmit)="confirmSubmission()" #appointmentForm="ngForm">
     <h3>Appointment Information</h3>
-    
+
     <div class="appointment-information">
       <div class="form-group">
         <label for="appointmentTimeSlotDtoDate">Appointment Date</label>
-        <input type="date" id="appointmentTimeSlotDtoDate" name="appointmentTimeSlotDtoDate" [(ngModel)]="submitForm.appointmentTimeSlotDtoDate" required />
+        <input
+          type="date"
+          id="appointmentTimeSlotDtoDate"
+          name="appointmentTimeSlotDtoDate"
+          [(ngModel)]="submitForm.appointmentTimeSlotDtoDate"
+          required
+        />
       </div>
-      
+
       <div class="form-group">
-        <label for="appointmentTimeSlotDtoTimeSlotStartMinute">Start Time (minutes)</label>
-        <input type="number" id="appointmentTimeSlotDtoTimeSlotStartMinute" name="appointmentTimeSlotDtoTimeSlotStartMinute" [(ngModel)]="submitForm.appointmentTimeSlotDtoTimeSlotStartMinute" required />
+        <label for="appointmentTimeSlotDtoTimeSlotStartMinute"
+          >Start Time</label
+        >
+        <input
+          type="time"
+          id="appointmentTimeSlotDtoTimeSlotStartMinute"
+          name="appointmentTimeSlotDtoTimeSlotStartMinute"
+          [(ngModel)]="appointmentTimeSlotStart"
+          required
+        />
       </div>
-      
+
       <div class="form-group">
-        <label for="appointmentTimeSlotDtoTimeSlotEndMinute">End Time (minutes)</label>
-        <input type="number" id="appointmentTimeSlotDtoTimeSlotEndMinute" name="appointmentTimeSlotDtoTimeSlotEndMinute" [(ngModel)]="submitForm.appointmentTimeSlotDtoTimeSlotEndMinute" required />
+        <label for="appointmentTimeSlotDtoTimeSlotEndMinute">End Time</label>
+        <input
+          type="time"
+          id="appointmentTimeSlotDtoTimeSlotEndMinute"
+          name="appointmentTimeSlotDtoTimeSlotEndMinute"
+          [(ngModel)]="appointmentTimeSlotEnd"
+          required
+        />
       </div>
-      
+
       <!-- Atualização: Select para Operation Room -->
       <div class="form-group">
-        <label for="operationRoomId">Operation Room</label>
-        <select id="operationRoomId" name="operationRoomId" [(ngModel)]="submitForm.operationRoomId" required>
-          <option *ngFor="let room of operationRooms" [value]="room.id">
+        <label for="OperationRoomId">Operation Room</label>
+        <select id="OperationRoomId" name="OperationRoomId" [(ngModel)]="submitForm.operationRoomId" required >
+          <option
+            *ngFor="let room of operationRooms"
+            [value]="room.roomNumber"
+          >
             {{ room.roomNumber }}
           </option>
         </select>
       </div>
-      
-      <!-- Atualização: Select para Operation Requests -->
+
       <div class="form-group">
-        <label for="operationRequestId">Operation Request</label>
-        <select id="operationRequestId" name="operationRequestId" [(ngModel)]="submitForm.operationRequestId" required>
-          <option *ngFor="let request of operationRequests" [value]="request.id">
-            {{ request.id }}
+        <label for="currentAnesthesiaTeam">Current Anesthesia Team</label>
+        <ul id="currentAnesthesiaTeam">
+          <li *ngFor="let staff of submitForm.operationRequestTeamForAnesthesy">
+            {{ staff }}
+            <button
+              type="button"
+              (click)="removeAnesthetist(staff)"
+              class="btn btn-danger btn-sm"
+            >
+              Remove
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="form-group">
+        <label for="addAnesthetist">Add Anesthesia Team Member</label>
+        <select
+          id="addAnesthetist"
+          name="addAnesthetist"
+          [(ngModel)]="selectedAnesthetist"
+          (change)="addAnesthetist()"
+        >
+          <option *ngFor="let staff of availableStaff" [value]="staff.id">
+            {{ staff.id }}
           </option>
         </select>
       </div>
-      
+
       <div class="form-group">
-        <label for="appointmentStatus">Appointment Status</label>
-        <select id="appointmentStatus" name="appointmentStatus" [(ngModel)]="submitForm.appointmentStatus" required>
-          <option value="Scheduled">Scheduled</option>
-          <option value="Completed">Completed</option>
-          <option value="Cancelled">Cancelled</option>
-        </select>
+        <label for="currentSurgeryTeam">Current Surgery Team</label>
+        <ul id="currentSurgeryTeam">
+          <li *ngFor="let staff of submitForm.operationRequestTeamForSurgery">
+            {{ staff }}
+            <button
+              type="button"
+              (click)="removeSurgeon(staff)"
+              class="btn btn-danger btn-sm"
+            >
+              Remove
+            </button>
+          </li>
+        </ul>
       </div>
-      
+
       <div class="form-group">
-        <label for="operationRequestTeamForAnesthesy">Anesthesia Team</label>
-        <select id="operationRequestTeamForAnesthesy" name="operationRequestTeamForAnesthesy" [(ngModel)]="submitForm.operationRequestTeamForAnesthesy" multiple>
-          <option *ngFor="let staff of availableStaff" [value]="staff.id">{{ staff.fullName }}</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label for="operationRequestTeamForSurgery">Surgery Team</label>
-        <select id="operationRequestTeamForSurgery" name="operationRequestTeamForSurgery" [(ngModel)]="submitForm.operationRequestTeamForSurgery" multiple>
-          <option *ngFor="let staff of availableStaff" [value]="staff.id">{{ staff.fullName }}</option>
+        <label for="addSurgeon">Add Surgery Team Member</label>
+        <select
+          id="addSurgeon"
+          name="addSurgeon"
+          [(ngModel)]="selectedSurgeon"
+          (change)="addSurgeon()"
+        >
+          <option *ngFor="let staff of availableStaff" [value]="staff.id">
+            {{ staff.id }}
+          </option>
         </select>
       </div>
     </div>
 
     <div class="form-actions">
       <button type="submit" class="btn-submit">Save Changes</button>
-      <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">
+        Cancel
+      </button>
     </div>
   </form>
 
@@ -76,8 +128,12 @@
       <h3>Confirm Submission</h3>
       <p>Are you sure you want to save the changes to this appointment?</p>
       <div class="modal-actions">
-        <button (click)="onSubmit(appointmentForm)" class="btn-confirm">Yes</button>
-        <button (click)="closeConfirmationModal()" class="btn-cancel">No</button>
+        <button (click)="onSubmit(appointmentForm)" class="btn-confirm">
+          Yes
+        </button>
+        <button (click)="closeConfirmationModal()" class="btn-cancel">
+          No
+        </button>
       </div>
     </div>
   </div>

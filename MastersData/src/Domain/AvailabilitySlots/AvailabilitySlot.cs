@@ -62,7 +62,7 @@ namespace DDDSample1.Domain.AvailabilitySlots
 
             Console.WriteLine("Verificando disponibilidade para a data: " + date);
             if (Availability == null)
-                return false;
+                return true;
 
 
             var dailyAvailability = this.Availability.FirstOrDefault(avail => avail.Date == date);
@@ -70,7 +70,7 @@ namespace DDDSample1.Domain.AvailabilitySlots
             if (dailyAvailability == null)
             {
                 // Se não houver disponibilidade registrada para a data, retorna falso
-                return false;
+                return true;
             }
 
 

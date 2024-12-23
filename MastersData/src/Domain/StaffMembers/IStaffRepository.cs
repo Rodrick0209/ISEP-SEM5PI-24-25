@@ -13,6 +13,7 @@ namespace DDDSample1.Domain.StaffMembers
         Task<Staff> GetByLicenseNumberAsync(string licenseNumber);
         Task<Staff> GetByNameAsync(string name);
         Task<Staff> GetByIdsAsync(string id);
+        Task<List<string>> GetAllStaffIdsAndLicenseNumbersAsync();
 
         Task<List<Staff>> GetByFiltersAsync(string name, string licenseNumber, string phoneNumber, string email, string specialization);
 

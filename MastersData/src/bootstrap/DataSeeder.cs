@@ -132,7 +132,7 @@ public static class DataSeeder
     var specialization3 = new Specialization("Obstetricia");
     var specialization4 = new Specialization("Enfermeiro ambulante");
 
-    var specializations = new List<Specialization> { specialization1, specialization2, specialization3,specialization4 };
+    var specializations = new List<Specialization> { specialization1, specialization2, specialization3, specialization4 };
 
     context.Specializations.AddRange(specializations);
 
@@ -144,7 +144,7 @@ public static class DataSeeder
 
     // Create required staff
 
-    var requiredStaffList1 = new List<RequiredStaff> { new RequiredStaff(1, specialization1.Id), new RequiredStaff(2,specialization4.Id) }; // New instance
+    var requiredStaffList1 = new List<RequiredStaff> { new RequiredStaff(1, specialization1.Id), new RequiredStaff(2, specialization4.Id) }; // New instance
     var requiredStaffList2 = new List<RequiredStaff> { new RequiredStaff(1, specialization2.Id) }; // New instance
     var requiredStaffList3 = new List<RequiredStaff> { new RequiredStaff(1, specialization2.Id) }; // New instance
 
@@ -215,11 +215,13 @@ public static class DataSeeder
     SeedOperationRequest(context, operationRequest12);
 
     var operationRequest13 = new OperationRequest("2025-02-26", "emergency", johnCena.Id.AsString(), operationType2.Id.AsString(), new StaffId("D202512345").AsString(), new StaffId("D202512345").AsString());
-    Console.WriteLine("ID do operation Request = "+ operationRequest13.Id.AsString());
+    Console.WriteLine("ID do operation Request = " + operationRequest13.Id.AsString());
     SeedOperationRequest(context, operationRequest13);
 
 
     Staff staff = new Staff(new StaffId("D202512345"), "staff", "12345", specialization1.Id, "email@gmail.com", "+951999999999", "Doctor");
+    Staff staff1 = new Staff(new StaffId("D202512346"), "staff", "12345", specialization1.Id, "email@gmail.com", "+951999999999", "Doctor");
+    Staff staff2 = new Staff(new StaffId("D202512344"), "staff", "12345", specialization1.Id, "email@gmail.com", "+951999999999", "Doctor");
     Staff staff3 = new Staff(new StaffId("D202512340"), "staff", "12345", specialization1.Id, "email@gmail.com", "+951999999999", "Doctor");
     Staff staff4 = new Staff(new StaffId("D202512341"), "staff", "12345", specialization1.Id, "email@gmail.com", "+951999999999", "Doctor");
     Staff staff5 = new Staff(new StaffId("D202512310"), "staff", "12345", specialization2.Id, "email@gmail.com", "+951999999999", "Doctor");
@@ -235,6 +237,8 @@ public static class DataSeeder
 
 
     SeedStaff(context, staff);
+    SeedStaff(context, staff1);
+    SeedStaff(context, staff2);
     SeedStaff(context, staff3);
     SeedStaff(context, staff4);
     SeedStaff(context, staff5);
@@ -304,7 +308,7 @@ public static class DataSeeder
     availableSlot10.Availability.Add(dailyAvailability9);
     SeedAvailabilitySlots(context, availableSlot10);
 
-    var availableSlot11= new AvailabilitySlot(staff11.Id.AsString());
+    var availableSlot11 = new AvailabilitySlot(staff11.Id.AsString());
     DailyAvailability dailyAvailability10 = new DailyAvailability(new DateOnly(2026, 12, 30));
     SeedDailyAvailability(context, dailyAvailability10);
     availableSlot11.Availability.Add(dailyAvailability10);
@@ -312,7 +316,7 @@ public static class DataSeeder
 
 
 
-    
+
     var roomType = new RoomType("R12-2354", "RoomType1", "RoomType1", true);
     context.RoomTypes.Add(roomType);
 

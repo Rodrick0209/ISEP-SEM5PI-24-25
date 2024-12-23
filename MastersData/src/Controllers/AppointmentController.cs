@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using DDDSample1.Domain.OperationRooms;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using DDDSample1.Domain.OperationRequest;
 
 namespace DDDSample1.Controllers
 {
@@ -15,6 +16,7 @@ namespace DDDSample1.Controllers
         private readonly IAppointmentService _service;
 
         private readonly IOperationRoomService _op_service;
+        private readonly IOperationRequestService or_service;
 
         public AppointmentController(AppointmentService service, OperationRoomService op_Service)
         {
@@ -99,7 +101,7 @@ namespace DDDSample1.Controllers
 
             try
             {
-                Console.WriteLine("ID DA SALA" +dto.OperationRoomId);
+                Console.WriteLine("ID DA SALA" + dto.OperationRoomId);
                 var app = await _service.AddWithMedicalTeamAsync(dto);
 
                 return CreatedAtAction(nameof(GetGetById), new { id = app.AppointmentId }, app);
@@ -180,7 +182,14 @@ namespace DDDSample1.Controllers
         {
             return await _service.GetByMedicalRecordNumberAsync(medicalRecordNumber);
         }
+
+
+
+      
     }
+
+
+
 }
 
 

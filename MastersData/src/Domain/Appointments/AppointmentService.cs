@@ -108,7 +108,7 @@ namespace DDDSample1.Domain.Appointments
         }
 
 
-        public async Task<AppointmentDto> UpdateAsync(EditingAppointmentDto dto)
+        public async Task<EditingAppointmentDto> UpdateAsync(EditingAppointmentDto dto)
         {
             var app = await _appointmentRepository.GetByIdAsync(new AppointmentId(dto.Id));
 
@@ -118,15 +118,11 @@ namespace DDDSample1.Domain.Appointments
             }
 
 
-
-
-
-
-
             if (!string.IsNullOrWhiteSpace(dto.OperationRoomId))
             {
                 var opRoom = await checkOperationRoomByNameForEditingAsync(dto.OperationRoomId, dto);
-                if (!app.OperationRoomId.Value.Equals(dto.OperationRoomId))
+
+                if (!app.OperationRoomId.Value.Equals(opRoom.Id.Value))
                 {
                     if (opRoom.IsAvailable(app.AppointmentTimeSlot.Date, app.AppointmentTimeSlot.TimeSlot.StartMinute, app.AppointmentTimeSlot.TimeSlot.EndMinute))
                     {
@@ -136,77 +132,60 @@ namespace DDDSample1.Domain.Appointments
                     {
                         throw new BusinessRuleValidationException("Operation Room is not available");
                     }
-
                 }
             }
 
-            if (dto.OperationRequestTeamForAnesthesy != null && dto.OperationRequestTeamForAnesthesy.Count > 0)
+
+            var anesthesiaStaffIds = new List<string>();
+            if (dto.anesthesiaStaff != null && dto.anesthesiaStaff.Count > 0)
             {
                 var opRequest = await CheckOperationRequestAsync(app.OperationRequestId);
 
-                var staffIds = dto.OperationRequestTeamForAnesthesy.Select(id => new StaffId(id)).ToList();
-
-                foreach (var staffId in staffIds)
+                foreach (var staffId in dto.anesthesiaStaff)
                 {
                     // Verificar se o staff existe na base de dados
-                    var staffExists = await _staffRepository.GetByIdAsync(staffId);
-                    if (staffExists == null)
-                    {
-                        throw new BusinessRuleValidationException($"Staff member with ID {staffId.Value} does not exist.");
-                    }
+                    var staffExists = await _staffRepository.GetByIdsAsync(staffId);
 
                     // Adicionar o staff à equipe de anestesia
-                    opRequest.staffAssignedSurgery.addStaffAnesthesyPhase(staffId);
+                    opRequest.staffAssignedSurgery.addStaffAnesthesyPhase(staffExists.Id);
+                    anesthesiaStaffIds.Add(staffId);
                 }
             }
 
-            if (dto.OperationRequestTeamForSurgery != null && dto.OperationRequestTeamForSurgery.Count > 0)
+
+            var surgeryStaffIds = new List<string>();
+            if (dto.surgeryStaff != null && dto.surgeryStaff.Count > 0)
             {
                 var opRequest = await CheckOperationRequestAsync(app.OperationRequestId);
 
-                var staffIds = dto.OperationRequestTeamForSurgery.Select(id => new StaffId(id)).ToList();
 
-                foreach (var staffId in staffIds)
+                foreach (var staffId in dto.surgeryStaff)
                 {
+
                     // Verificar se o staff existe na base de dados
-                    var staffExists = await _staffRepository.GetByIdAsync(staffId);
-                    if (staffExists == null)
-                    {
-                        throw new BusinessRuleValidationException($"Staff member with ID {staffId.Value} does not exist.");
-                    }
+                    var staffExists = await _staffRepository.GetByIdsAsync(staffId);
 
-                    // Adicionar o staff à equipe de cirurgia
-                    opRequest.staffAssignedSurgery.addStaffSurgeryPhase(staffId);
+                    // Adicionar o staff à equipe de anestesia
+                    opRequest.staffAssignedSurgery.addStaffSurgeryPhase(staffExists.Id);
+                    surgeryStaffIds.Add(staffId);
+
                 }
             }
 
 
-
-            if (!string.IsNullOrWhiteSpace(dto.AppointmentStatus) && !app.AppointmentStatus.Equals(dto.AppointmentStatus))
-            {
-                if (dto.AppointmentStatus.Equals("Completed"))
-                {
-                    app.Completed();
-                }
-                else
-                {
-                    app.Cancelled();
-                }
-
-            }
-
-
-            var newDate = !string.IsNullOrWhiteSpace(dto.AppointmentTimeSlotDtoDate)
-                ? DateOnly.Parse(dto.AppointmentTimeSlotDtoDate)
+            var newDate = !string.IsNullOrWhiteSpace(dto.appointmentTimeSlot.date)
+                ? DateOnly.Parse(dto.appointmentTimeSlot.date)
                 : app.AppointmentTimeSlot.Date; // Usa o valor atual como fallback
 
-            var newStartMinute = !string.IsNullOrWhiteSpace(dto.AppointmentTimeSlotDtoTimeSlotStartMinute)
-                ? int.Parse(dto.AppointmentTimeSlotDtoTimeSlotStartMinute)
+            var newStartMinute = !string.IsNullOrWhiteSpace(dto.appointmentTimeSlot.timeSlot.StartTime)
+                ? int.Parse(dto.appointmentTimeSlot.timeSlot.StartTime)
                 : app.AppointmentTimeSlot.TimeSlot.StartMinute; // Usa o valor atual como fallback
 
-            var newEndMinute = !string.IsNullOrWhiteSpace(dto.AppointmentTimeSlotDtoTimeSlotEndMinute)
-                ? int.Parse(dto.AppointmentTimeSlotDtoTimeSlotEndMinute)
+            var newEndMinute = !string.IsNullOrWhiteSpace(dto.appointmentTimeSlot.timeSlot.EndTime)
+                ? int.Parse(dto.appointmentTimeSlot.timeSlot.EndTime)
                 : app.AppointmentTimeSlot.TimeSlot.EndMinute; // Usa o valor atual como fallback
+
+
 
             // Verifica se é necessário atualizar
             if (!app.AppointmentTimeSlot.Date.Equals(newDate) ||
@@ -227,19 +206,32 @@ namespace DDDSample1.Domain.Appointments
                 // Valida a disponibilidade de cada membro do staff
                 foreach (StaffId staff in opRequest.getStaffAnesthesyPhase())
                 {
+
                     var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Value);
-                    if (!availabilitySlot.IsAvailable(newDate, newStartMinute, newEndMinute))
+
+                    if (availabilitySlot != null)
                     {
-                        throw new Exception("The staff member is not available during the requested time, please update it.");
+                        if (!availabilitySlot.IsAvailable(newDate, newStartMinute, newEndMinute))
+                        {
+                            throw new Exception("1The staff member is not available during the requested time, please update it.");
+                        }
                     }
                 }
+
 
                 foreach (StaffId staff in opRequest.getStaffSurgeryPhase())
                 {
                     var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Value);
-                    if (!availabilitySlot.IsAvailable(newDate, newStartMinute, newEndMinute))
+
+                    
+                    Console.WriteLine($"newDate: {newDate}, newStartMinute: {newStartMinute}, newEndMinute: {newEndMinute}");
+
+                    if (availabilitySlot != null)
                     {
-                        throw new Exception("The staff member is not available during the requested time, please update it.");
+                        if (!availabilitySlot.IsAvailable(newDate, newStartMinute, newEndMinute))
+                        {
+                            throw new Exception("2The staff member is not available during the requested time, please update it.");
+                        }
                     }
                 }
 
@@ -259,8 +251,9 @@ namespace DDDSample1.Domain.Appointments
 
             await _unitOfWork.CommitAsync();
 
+            
 
-            return AppointmentMapper.ToDto(app);
+            return AppointmentMapper.ToEditingDto(app,surgeryStaffIds,anesthesiaStaffIds);
 
         }
 
@@ -355,8 +348,9 @@ namespace DDDSample1.Domain.Appointments
             var opRequest = _operationRequestRepository.GetByIdAsync(app.OperationRequestId).Result;
             var patientMedicalRecordNumber = _patientRepository.GetByIdAsync(new PatientId(opRequest.patientId)).Result.MedicalRecordNumber._medicalRecordNumber;
             var priority = opRequest.priority.priority;
+            var surgery = opRequest.staffAssignedSurgery;
 
-            return app == null ? null : AppointmentMapper.ToDtoUI(app, priority, patientMedicalRecordNumber, opRoomNumber);
+            return app == null ? null : AppointmentMapper.ToDtoUI(app, priority, patientMedicalRecordNumber, opRoomNumber, surgery.staffSurgeryPhase.Select(s => s.Value).ToList(), surgery.staffAnesthesyPhase.Select(s => s.Value).ToList());
 
         }
 
@@ -371,7 +365,7 @@ namespace DDDSample1.Domain.Appointments
                 var opRequest = _operationRequestRepository.GetByIdAsync(app.OperationRequestId).Result;
                 var patientMedicalRecordNumber = _patientRepository.GetByIdAsync(new PatientId(opRequest.patientId)).Result.MedicalRecordNumber._medicalRecordNumber;
                 var priority = opRequest.priority.priority;
-                appointmentDtos.Add(AppointmentMapper.ToDtoUI(app, priority, patientMedicalRecordNumber, opRoomNumber));
+                appointmentDtos.Add(AppointmentMapper.ToDtoUI(app, priority, patientMedicalRecordNumber, opRoomNumber, [], []));
             }
             return appointmentDtos;
         }
@@ -386,11 +380,11 @@ namespace DDDSample1.Domain.Appointments
 
             // Verifica se a sala está disponível usando o método do domínio
             var opType = await _operationTypeRepository.GetByIdAsync(new OperationTypeId(opRequest.operationTypeId));
-            
+
             int duracaoAnestesia = opType.preparationPhase.duration;
             int duracaoCirurgia = opType.surgeryPhase.duration;
 
-            int endMinute = requestedStart + duracaoAnestesia + duracaoCirurgia ;
+            int endMinute = requestedStart + duracaoAnestesia + duracaoCirurgia;
 
             if (!opRoom.IsAvailable(
                 requestedDate,
@@ -432,7 +426,7 @@ namespace DDDSample1.Domain.Appointments
                 new OperationRoomId(appointmentDto.OperationRoomId),
                 new OperationRequestId(appointmentDto.OperationRequestId)
             );
-            Console.WriteLine("Passou a criar o agendamento");  
+            Console.WriteLine("Passou a criar o agendamento");
             opRoom.Appointments.Add(appointment);
             opRequest.Accepted();
 
@@ -505,7 +499,7 @@ namespace DDDSample1.Domain.Appointments
 
         public async Task<StaffForSurgeryDto> GetStaffAvailableForDoinSurgeryAtCertainTime(string startMinute, string date, string operationRequestId)
         {
-            Console.WriteLine("Entrou no metodo");  
+            Console.WriteLine("Entrou no metodo");
             var opRequest = await _operationRequestRepository.GetByIdAsync(new OperationRequestId(operationRequestId));
             Console.WriteLine("Passou apanhar o opRequest");
             var opType = await _operationTypeRepository.GetByIdAsync(new OperationTypeId(opRequest.operationTypeId));
@@ -513,21 +507,21 @@ namespace DDDSample1.Domain.Appointments
             var listOfstaffNeededForAnesthesyPhase = opType.preparationPhase.requiredStaff;
             Console.WriteLine("Passou apanhar o listOfstaffNeededForAnesthesyPhase");
             var listOfstaffNeededForSurgeryPhase = opType.surgeryPhase.requiredStaff;
-            Console.WriteLine("Passou apanhar o listOfstaffNeededForSurgeryPhase");           
+            Console.WriteLine("Passou apanhar o listOfstaffNeededForSurgeryPhase");
             //Pode ser melhorado, ir buscar todos nao era necessario
             List<Staff> staffAvailable = await _staffRepository.GetAllAsync();
             Console.WriteLine("Passou apanhar o staffAvailable com tamanho: " + staffAvailable.Count);
             int duracaoAnestesia = opType.preparationPhase.duration;
             int duracaoCirurgia = opType.surgeryPhase.duration;
-            Console.WriteLine("Duracao fase de anestesia"+ duracaoAnestesia);
-            int endMinute = int.Parse(startMinute) + duracaoAnestesia + duracaoCirurgia ;
+            Console.WriteLine("Duracao fase de anestesia" + duracaoAnestesia);
+            int endMinute = int.Parse(startMinute) + duracaoAnestesia + duracaoCirurgia;
             int startMinuteSurgery = int.Parse(startMinute) + duracaoAnestesia;
             List<SpecializationAndStaffDto> staffAnesthesyPhaseToBeShowed = await percorreListDeStaffsParaCadaPhaseAsync(staffAvailable, listOfstaffNeededForAnesthesyPhase, date, int.Parse(startMinute), endMinute);
             Console.WriteLine("Passou apanhar o staffAnesthesyPhaseToBeShowed");
             List<SpecializationAndStaffDto> staffSurgeryPhaseToBeShowed = await percorreListDeStaffsParaCadaPhaseAsync(staffAvailable, listOfstaffNeededForSurgeryPhase, date, startMinuteSurgery, endMinute);
             Console.WriteLine("Passou apanhar o staffSurgeryPhaseToBeShowed");
             StaffForSurgeryDto staffForSurgeryDto = new StaffForSurgeryDto(staffAnesthesyPhaseToBeShowed, staffSurgeryPhaseToBeShowed);
-            
+
             return staffForSurgeryDto;
         }
 
@@ -543,15 +537,15 @@ namespace DDDSample1.Domain.Appointments
             {
                 var numberStaffWithCertainSpecialization = staff.num;
                 Console.WriteLine("Entrou no foreach");
-                Console.WriteLine("Number necessario-->"+numberStaffWithCertainSpecialization);
-                Console.WriteLine("Id Specialization necessaria-->"+staff.specialization.AsString());
+                Console.WriteLine("Number necessario-->" + numberStaffWithCertainSpecialization);
+                Console.WriteLine("Id Specialization necessaria-->" + staff.specialization.AsString());
                 var staffAvailableForSurgery = ALlTheStaff.FindAll(x => x.SpecializationId == staff.specialization);
-                Console.WriteLine("Staff existente da especialização-->"+staffAvailableForSurgery.Count);
+                Console.WriteLine("Staff existente da especialização-->" + staffAvailableForSurgery.Count);
                 validateIfNumberOfElementsInListIfTheRequestIfNotThrowException(staffAvailableForSurgery, numberStaffWithCertainSpecialization);
 
                 List<String> IdsStaffDisponivel = percorreListDeStaffsAndVerificaDisponibilidadeAsync(staffAvailableForSurgery, date, startMinute, endMinute).Result;
-                Console.WriteLine("Staff needed-->"+numberStaffWithCertainSpecialization);
-                Console.WriteLine("Numero de staff q esta disponivel"+ IdsStaffDisponivel.Count);
+                Console.WriteLine("Staff needed-->" + numberStaffWithCertainSpecialization);
+                Console.WriteLine("Numero de staff q esta disponivel" + IdsStaffDisponivel.Count);
                 validateIfNumberOfElementsInListIfTheRequestIfNotThrowException(IdsStaffDisponivel, numberStaffWithCertainSpecialization);
                 SpecializationAndStaffDto staffOfOneSpecializationSurgeryPhase = new SpecializationAndStaffDto(staff.specialization.AsString(), IdsStaffDisponivel, numberStaffWithCertainSpecialization.ToString());
                 staffForPhaseToBeShowed.Add(staffOfOneSpecializationSurgeryPhase);
@@ -576,16 +570,16 @@ namespace DDDSample1.Domain.Appointments
             {
                 Console.WriteLine("Entrou no foreach");
                 var availabilitySlot = await _availabilitySlotsRepository.GetByStaffIdAsync(staff.Id.AsString());
-                Console.WriteLine("Passou apanhar o availabilitySlot do staff"+staff.Id.AsString());
-                Console.WriteLine("AvailabilitySlot-->"+availabilitySlot.Id.AsString()+"StaffId-->"+staff.Id.AsString());
+                Console.WriteLine("Passou apanhar o availabilitySlot do staff" + staff.Id.AsString());
+                Console.WriteLine("AvailabilitySlot-->" + availabilitySlot.Id.AsString() + "StaffId-->" + staff.Id.AsString());
                 Boolean result = availabilitySlot.IsAvailable(DateOnly.Parse(date), startMinute, endMinute);
-                Console.WriteLine("Resultado da disponibilidade para o staff-->"+staff.Id.AsString()+"-->"+result);
+                Console.WriteLine("Resultado da disponibilidade para o staff-->" + staff.Id.AsString() + "-->" + result);
                 if (result == true)
                 {
                     staffIdsList.Add(staff.Id.AsString());
                 }
             }
-            Console.WriteLine("Numero de staff q esta disponivel"+ staffIdsList.Count);
+            Console.WriteLine("Numero de staff q esta disponivel" + staffIdsList.Count);
             Console.WriteLine();
             Console.WriteLine();
             return staffIdsList;

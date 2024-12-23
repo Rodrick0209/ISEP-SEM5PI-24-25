@@ -18,13 +18,14 @@ import { OperationRequest } from '../../services/operationRequestService';
 export class EditAppointmentComponent implements OnInit {
   submitForm = {
     appointmentTimeSlotDtoDate: '',
-    appointmentTimeSlotDtoTimeSlotStartMinute: '',
-    appointmentTimeSlotDtoTimeSlotEndMinute: '',
+    startTime: '',
+    endTime: '',
     operationRoomId: '',
     operationRequestId: '',
-    appointmentStatus: '',
+    AppointmentStatus: '',
     operationRequestTeamForAnesthesy: [] as string[],
-    operationRequestTeamForSurgery: [] as string[]
+    operationRequestTeamForSurgery: [] as string[],
+    operationRequestTeamForCleaning: [] as string[]
   };
 
   id: string | null = null;
@@ -39,31 +40,37 @@ export class EditAppointmentComponent implements OnInit {
     private appointmentService: AppointmentService,
     private route: ActivatedRoute,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
-  
+
     if (this.id) {
       // Obtém os detalhes do agendamento a editar
       this.appointmentService.getAppointmentByIdEdit(this.id).subscribe(
         (appointment) => {
+          
           this.submitForm = {
             appointmentTimeSlotDtoDate: appointment.appointmentTimeSlot.date,
-            appointmentTimeSlotDtoTimeSlotStartMinute: appointment.appointmentTimeSlot.timeSlot.startTime,
-            appointmentTimeSlotDtoTimeSlotEndMinute: appointment.appointmentTimeSlot.timeSlot.endTime,
+            startTime: appointment.appointmentTimeSlot.timeSlot.startTime,
+            endTime: appointment.appointmentTimeSlot.timeSlot.endTime,
             operationRoomId: appointment.operationRoomId,
-            operationRequestId: appointment.operationRequestId,
-            appointmentStatus: appointment.appointmentStatus,
-            operationRequestTeamForAnesthesy: appointment.operationRequestTeamForAnesthesy || [],
-            operationRequestTeamForSurgery: appointment.operationRequestTeamForSurgery || []
+            operationRequestId: appointment.id,
+            AppointmentStatus: appointment.AppointmentStatus,
+            operationRequestTeamForAnesthesy: appointment.anesthesiaStaff || [],
+            operationRequestTeamForSurgery: appointment.surgeryStaff || [],
+            operationRequestTeamForCleaning: appointment.operationRequestTeamForCleaning || []
           };
+          
         },
         (error) => {
           this.errorMessage = 'Failed to fetch appointment details.';
           console.error(error);
         }
+        
       );
+      
+
     }
 
     this.appointmentService.getOperationRooms().subscribe(
@@ -74,7 +81,7 @@ export class EditAppointmentComponent implements OnInit {
         console.error('Failed to fetch operation rooms', error);
       }
     );
-  
+
     // Carrega a lista de equipes
     this.appointmentService.getStaff().subscribe(
       (staffList) => {
@@ -85,7 +92,7 @@ export class EditAppointmentComponent implements OnInit {
         console.error('Failed to fetch staff list', error);
       }
     );
-  
+
     // **Carrega a lista de Operation Requests**
     this.appointmentService.getOperationRequestsAvailable().subscribe(
       (requestsList) => {
@@ -97,8 +104,9 @@ export class EditAppointmentComponent implements OnInit {
         this.errorMessage = 'Failed to load operation requests.';
       }
     );
+
   }
-  
+
 
   confirmSubmission(): void {
     this.showConfirmation = true;
@@ -119,12 +127,10 @@ export class EditAppointmentComponent implements OnInit {
         this.appointmentService
           .editAppointment(
             this.id,
-            appointmentData.operationRequestId,
             appointmentData.operationRoomId,
             appointmentData.appointmentTimeSlotDtoDate,
-            appointmentData.appointmentTimeSlotDtoTimeSlotStartMinute,
-            appointmentData.appointmentTimeSlotDtoTimeSlotEndMinute,
-            appointmentData.appointmentStatus,
+            appointmentData.startTime,
+            appointmentData.endTime,
             appointmentData.operationRequestTeamForAnesthesy,
             appointmentData.operationRequestTeamForSurgery
           )
@@ -149,4 +155,102 @@ export class EditAppointmentComponent implements OnInit {
     this.showConfirmation = false;
     this.router.navigate(['/appointments']);
   }
+
+  get appointmentTimeSlotStart(): string {
+    // Convert the stored minute value to a time format (HH:mm)
+    return this.convertMinutesToTime(this.submitForm.startTime);
+  }
+
+  get appointmentTimeSlotEnd(): string {
+    // Convert the stored minute value to a time format (HH:mm)
+    return this.convertMinutesToTime(this.submitForm.endTime);
+  }
+
+  set appointmentTimeSlotStart(value: string) {
+    // Convert the time format (HH:mm) back to minutes
+    this.submitForm.startTime = this.convertTimeToMinutes(value);
+  }
+
+  set appointmentTimeSlotEnd(value: string) {
+    // Convert the time format (HH:mm) back to minutes
+    this.submitForm.endTime = this.convertTimeToMinutes(value);
+  }
+
+  convertMinutesToTime(totalMinutes: string): string {
+    const time = parseInt(totalMinutes, 10);
+    const hours = Math.floor(time / 60);
+    const minutes = time % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
+
+  convertTimeToMinutes(time: string): string {
+    const [hours, minutes] = time.split(':').map(Number);
+    return (hours * 60 + minutes).toString();
+  }
+
+  selectedAnesthetist: string = '';
+
+  // Add the selected anesthetist to the team
+  addAnesthetist(): void {
+    if (
+      this.selectedAnesthetist &&
+      !this.submitForm.operationRequestTeamForAnesthesy.includes(
+        this.selectedAnesthetist
+      )
+    ) {
+      this.submitForm.operationRequestTeamForAnesthesy.push(
+        this.selectedAnesthetist
+      );
+      // Optionally remove them from the available list
+      this.availableStaff = this.availableStaff.filter(
+        (staff) => staff.d !== this.selectedAnesthetist
+      );
+      this.selectedAnesthetist = ''; // Reset selection
+    }
+  }
+
+  // Remove an anesthetist from the team
+  removeAnesthetist(staff: string): void {
+    this.submitForm.operationRequestTeamForAnesthesy = this.submitForm.operationRequestTeamForAnesthesy.filter(
+      (member) => member !== staff
+    );
+    // Optionally add them back to the available list
+    if (!this.availableStaff.includes(staff)) {
+      this.availableStaff.push(staff);
+    }
+  }
+
+
+  selectedSurgeon: string = '';
+
+  // Add the selected surgeon to the team
+  addSurgeon(): void {
+    if (
+      this.selectedSurgeon &&
+      !this.submitForm.operationRequestTeamForSurgery.includes(
+        this.selectedSurgeon
+      )
+    ) {
+      this.submitForm.operationRequestTeamForSurgery.push(
+        this.selectedSurgeon
+      );
+      // Optionally remove them from the available list
+      this.availableStaff = this.availableStaff.filter(
+        (staff) => staff.d !== this.selectedSurgeon
+      );
+      this.selectedSurgeon = ''; // Reset selection
+    }
+  }
+
+  // Remove a surgeon from the team
+  removeSurgeon(staff: string): void {
+    this.submitForm.operationRequestTeamForSurgery = this.submitForm.operationRequestTeamForSurgery.filter(
+      (member) => member !== staff
+    );
+    // Optionally add them back to the available list
+    if (!this.availableStaff.includes(staff)) {
+      this.availableStaff.push(staff);
+    }
+  }
+
 }

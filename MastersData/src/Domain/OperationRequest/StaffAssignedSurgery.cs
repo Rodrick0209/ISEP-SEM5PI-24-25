@@ -26,12 +26,18 @@ namespace DDDSample1.Domain.OperationRequest
         
         public void addStaffAnesthesyPhase(StaffId staffId)
         {
+            if (!this.staffAnesthesyPhase.Contains(staffId))
+            {
             this.staffAnesthesyPhase.Add(staffId);
+            }
         }
 
         public void addStaffSurgeryPhase(StaffId staffId)
         {
+            if (!this.staffSurgeryPhase.Contains(staffId))
+            {
             this.staffSurgeryPhase.Add(staffId);
+            }
         }
 
 

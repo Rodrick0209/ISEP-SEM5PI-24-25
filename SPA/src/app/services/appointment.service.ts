@@ -107,39 +107,30 @@ export class AppointmentService {
 
 
 
-
-
-
-
   editAppointment(
     id: string,
-    operationRequestId: string,
     operationRoomId: string,
     appointmentTimeSlotDtoDate: string,
-    appointmentTimeSlotDtoTimeSlotStartMinute: string,
-    appointmentTimeSlotDtoTimeSlotEndMinute: string,
-    appointmentStatus: string,
-    operationRequestTeamForAnesthesy?: string[], // Novo parâmetro para a equipe de anestesia
-    operationRequestTeamForSurgery?: string[]   // Novo parâmetro para a equipe de cirurgia
+    startTime: string,
+    endTime: string,
+    anesthesiaStaff?: string[], // Novo parâmetro para a equipe de anestesia
+    surgeryStaff?: string[]   // Novo parâmetro para a equipe de cirurgia
   ): Observable<any> {
-    const body: any = {};
-    body.id = id;
+    const body: any = {
+      id: id,
+      operationRoomId: operationRoomId,
+      appointmentTimeSlot: {
+        date: appointmentTimeSlotDtoDate,
+        timeSlot: {
+          startTime: parseInt(startTime, 10),
+          endTime: parseInt(endTime, 10)
+        }
+      },
+      surgeryStaff: surgeryStaff || [],
+      anesthesiaStaff: anesthesiaStaff || []
+    };
 
-    if (operationRequestId) body.operationRequestId = operationRequestId;
-    if (operationRoomId) body.operationRoomId = operationRoomId;
-    if (appointmentTimeSlotDtoDate) body.appointmentTimeSlotDtoDate = appointmentTimeSlotDtoDate;
-    if (appointmentTimeSlotDtoTimeSlotStartMinute) body.appointmentTimeSlotDtoTimeSlotStartMinute = appointmentTimeSlotDtoTimeSlotStartMinute;
-    if (appointmentTimeSlotDtoTimeSlotEndMinute) body.appointmentTimeSlotDtoTimeSlotEndMinute = appointmentTimeSlotDtoTimeSlotEndMinute;
-    if (appointmentStatus) body.appointmentStatus = appointmentStatus;
-
-    // Adicionando as novas listas, se existirem
-    if (operationRequestTeamForAnesthesy && operationRequestTeamForAnesthesy.length > 0) {
-      body.operationRequestTeamForAnesthesy = operationRequestTeamForAnesthesy;
-    }
-    if (operationRequestTeamForSurgery && operationRequestTeamForSurgery.length > 0) {
-      body.operationRequestTeamForSurgery = operationRequestTeamForSurgery;
-    }
-
+    // Return the PUT request with the properly structured payload
     return this.http.put(`${this.url}/${id}`, body);
   }
 
