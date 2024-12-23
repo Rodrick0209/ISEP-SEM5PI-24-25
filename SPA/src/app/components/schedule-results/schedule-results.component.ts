@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { Schedule, OperationSegment, ScheduleGeneticResult } from '../../services/planning.service';
+import { Schedule, ScheduleData } from '../../services/planning.service';
 
 @Component({
   selector: 'app-schedule-results',
@@ -10,7 +10,7 @@ import { Schedule, OperationSegment, ScheduleGeneticResult } from '../../service
   styleUrls: ['./schedule-results.component.css']
 })
 export class ScheduleResultsComponent implements OnInit {
-  schedule: ScheduleGeneticResult | null = null;  // Dados de agendamento recebidos
+  schedule: ScheduleData | null = null;  // Dados de agendamento recebidos
 
   constructor(private location: Location) {}
 
@@ -31,5 +31,11 @@ export class ScheduleResultsComponent implements OnInit {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
     return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+  }
+  
+  formatDate(date: number): string {
+    // Convert date from yyyymmdd to yyyy-mm-dd
+    const dateString = date.toString();
+    return `${dateString.substring(0, 4)}-${dateString.substring(4, 6)}-${dateString.substring(6, 8)}`;
   }
 }
