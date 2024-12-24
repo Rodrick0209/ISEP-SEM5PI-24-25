@@ -8,7 +8,7 @@ const PROXY_CONFIG = [
   },
   {
     context: ["/api"],
-    target: "https://localhost:5001",
+    target: "http://10.9.22.72:2226",
     secure: false,
     logLevel: "debug",
     changeOrigin: true
