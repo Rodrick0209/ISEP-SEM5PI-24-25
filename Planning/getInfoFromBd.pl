@@ -67,7 +67,7 @@ saveSurgeryTypes([Surgery | Rest]) :-
     saveSurgeryTypes(Rest).
 
 getSurgeryById(SurgeryId, SurgeryName) :-
-    format(atom(URL), 'https://10.9.10.55:5001/api/OperationType/~w', [SurgeryId]),
+    format(atom(URL), 'http://10.9.22.72:2226/api/OperationType/~w', [SurgeryId]),
     http_open(URL, Reply, [cert_verify_hook(cert_accept_any)]),
     json_read_dict(Reply, Surgery),
     Surgery = _{
@@ -147,7 +147,7 @@ format_time_slots(Stream, [(Start, End) | Rest]) :-
 
 doctorSchedules() :-
     clear_agenda_staff,
-    http_open('https://10.9.10.55:5001/api/AvailabilitySlots/GetAll', Reply,
+    http_open('http://10.9.22.72:2226/api/AvailabilitySlots/GetAll', Reply,
                [cert_verify_hook(cert_accept_any)]),
     json_read_dict(Reply, Data),
     writeln(Data),
@@ -155,7 +155,7 @@ doctorSchedules() :-
 
 surgeryTypes() :-
     clear_surgery,
-    http_open('https://10.9.10.55:5001/api/OperationType/GetAll', Reply,
+    http_open('http://10.9.22.72:2226/api/OperationType/GetAll', Reply,
                [cert_verify_hook(cert_accept_any)]),
     json_read_dict(Reply, Data),
     writeln(Data),
@@ -163,7 +163,7 @@ surgeryTypes() :-
 
 surgeries() :-
     clear_surgery_id,
-    http_open('https://10.9.10.55:5001/api/OperationRequest/GetAll', Reply,
+    http_open('http://10.9.22.72:2226/api/OperationRequest/GetAll', Reply,
                [cert_verify_hook(cert_accept_any)]),
     json_read_dict(Reply, Data),
     writeln(Data),
@@ -171,7 +171,7 @@ surgeries() :-
 
 operationRooms() :-
     clear_agenda_operation_room,
-    http_open('https://10.9.10.55:5001/api/OperationRoom/GetAll', Reply,
+    http_open('http://10.9.22.72:2226/api/OperationRoom/GetAll', Reply,
                [cert_verify_hook(cert_accept_any)]),
     json_read_dict(Reply, Data),
     writeln(Data),

@@ -30,7 +30,7 @@ saveAppointment(Room, DayRaw, [(StartMinutes, EndMinutes, OperationRequestId) | 
     EndMinute is EndMinutes mod 60,
     format(atom(End), '~|~`0t~d~2+:~|~`0t~d~2+', [EndHour, EndMinute]),
     
-    URL = 'https://10.9.10.55:5001/api/Appointment',
+    URL = 'http://10.9.22.72:2226/api/Appointment',
     
     Body = _{
         appointmentTimeSlotDto: _{
