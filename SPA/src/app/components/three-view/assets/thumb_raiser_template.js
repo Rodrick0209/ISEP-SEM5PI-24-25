@@ -37,8 +37,8 @@ import VendingMachine from "./vending_machine.js";
 import Board from "./board.js";
 
 let rooms = null;
-const getAllRoomsInfo = "https://localhost:5001/api/OperationRoom/GetAll";
-const apiUrl = "https://localhost:5001/api/OperationRoom/OccupiedRooms";
+const getAllRoomsInfo = "http://10.9.22.72:2226/api/OperationRoom/GetAll";
+const apiUrl = "http://10.9.22.72:2226/api/OperationRoom/OccupiedRooms";
 let zoomIn = false;
 
 export default class ThumbRaiser {
@@ -1625,7 +1625,7 @@ export default class ThumbRaiser {
   }
 
   async reloadBeds(date, time) {
-    const apiUrl = "https://localhost:5001/api/OperationRoom/OccupiedRooms";
+    const apiUrl = "https://10.9.22.72:2226/api/OperationRoom/OccupiedRooms";
     const urlWithParams = `${apiUrl}?date=${date}&time=${time}`;
 
     console.log("Starting reloadBeds...");
