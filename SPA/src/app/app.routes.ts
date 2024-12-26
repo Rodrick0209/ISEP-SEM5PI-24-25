@@ -55,6 +55,7 @@ import { EditMedicalConditionComponent } from './components/edit-medical-conditi
 import { DownloadMedicalHistoryComponent } from './components/download-medical-history/download-medical-history.component';
 import { RequestDeletePatientDataComponent } from './components/request-delete-patient-data/request-delete-patient-data.component';
 import { GeneticAlgorithmComponent } from './components/genetic-algorithm/genetic-algorithm.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 
 
 export const routes: Routes = [
@@ -62,6 +63,7 @@ export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'about', component: AboutComponent },
     { path: 'contact', component: ContactComponent },
+    { path: 'privacy-policy', component: PrivacyPolicyComponent },
     {   path: 'view',
         component: ThreeViewComponent,
         canActivate: [AuthGuard],
