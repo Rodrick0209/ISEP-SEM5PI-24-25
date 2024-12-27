@@ -42,6 +42,8 @@ const apiUrl = "http://10.9.22.72:2226/api/OperationRoom/OccupiedRooms";
 const patientUrl =
   "http://10.9.22.72:2226/api/OperationRoom/GetPatientDataForAppointment";
 let zoomIn = false;
+let time = null;
+let date = null;
 
 export default class ThumbRaiser {
   constructor(
@@ -64,9 +66,11 @@ export default class ThumbRaiser {
     waitingChairDataParameters,
     date,
     time
-  ) {
+    ) {
     this.onLoad = async function (description) {
       rooms = description.rooms;
+      this.time=time.time;
+      this.date=date.date;
 
       // Construct the URL with date and time as query parameters
       const urlWithParams = `${apiUrl}?date=${date.date}&time=${time.time}`;
@@ -1623,6 +1627,8 @@ export default class ThumbRaiser {
   }
 
   async reloadBeds(date, time) {
+    this.time=time;
+    this.data=date;
     const urlWithParams1 = `${apiUrl}?date=${date}&time=${time}`;
     const response = await fetch(urlWithParams1);
     const data = await response.json();
@@ -1752,7 +1758,7 @@ export default class ThumbRaiser {
     );
   }
 
-  async toggleRoomInfo(time, date) {
+  async toggleRoomInfo() {
     await this.updateRoomStatus(getAllRoomsInfo);
     const beds = [];
 
@@ -1793,7 +1799,7 @@ export default class ThumbRaiser {
         <p>Room Type: ${roomInfo.roomType}</p>
       `;
         if (roomInfo.isOccupied) {
-          const urlWithParams = `${patientUrl}?date=2024-12-27&time=20:30&roomName=${roomInfo.name}`;
+          const urlWithParams = `${patientUrl}?date=${this.date}&time=${this.time}&roomName=${roomInfo.name}`;
 
           const response = await fetch(urlWithParams);
           if (!response.ok) {
@@ -1808,7 +1814,7 @@ export default class ThumbRaiser {
           overlay.innerHTML += `
           <br>
           <h3>Patient Info</h3>
-          <p>Operation Type: ${roomInfo.operationType}</p>
+          <p>Operation Type: ${patient.operationType}</p>
           <p>Patient Name: ${patient.patient.name}</p>
           <p>Patient Birth: ${patient.patient.dateOfBirth}</p>
           <p>Patient Gender: ${patient.patient.gender}</p>
