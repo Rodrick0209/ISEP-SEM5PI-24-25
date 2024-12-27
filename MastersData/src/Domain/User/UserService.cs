@@ -179,7 +179,7 @@ namespace DDDSample1.Domain.User
             string token = GenerateResetPasswordToken(user);
             user.SetResetPasswordToken(token, DateTime.UtcNow.AddMinutes(5));
 
-            string url = $"http://localhost:4200/reset-password?token={token}&email={email}";
+            string url = $"http://10.9.22.72:2226/reset-password?token={token}&email={email}";
             string subject = "Reset Your Password";
             string body = $"Dear User,<br><br>" +
                           $"We received a request to reset your password. If you initiated this request, please reset your password by clicking the link below:<br>" +
@@ -447,7 +447,7 @@ namespace DDDSample1.Domain.User
 
         private void SendEmailWithUrlConfirmationRegisterPatient(string email, string token)
         {
-            string callbackUrl = $"http://localhost:4200/register/confirm?token={token}&email={email}";
+            string callbackUrl = $"http://10.9.22.72:2226/register/confirm?token={token}&email={email}";
             string subject = "Confirm Your Account Registration";
             string body = $"Dear User,<br><br>" +
                           $"Thank you for registering an account with us! To complete your registration, please confirm your email address by clicking the link below:<br>" +
@@ -460,7 +460,7 @@ namespace DDDSample1.Domain.User
 
         private void SendEmailWithUrlConfirmationEdtPatient(string email, string token, string emailToEdit, string phoneNumberToEdit)
         {
-            string callbackUrl = $"http://localhost:4200/edit/confirm?token={token}&email={email}&emailToEdit={emailToEdit}&phoneNumberToEdit={phoneNumberToEdit}";
+            string callbackUrl = $"http://10.9.22.72:2226/edit/confirm?token={token}&email={email}&emailToEdit={emailToEdit}&phoneNumberToEdit={phoneNumberToEdit}";
             string subject = "Confirm Changes to Your Account";
             string body = $"Dear User,<br><br>" +
                           $"We have received a request to update your account details. The changes requested are as follows:<br>" +
@@ -476,7 +476,7 @@ namespace DDDSample1.Domain.User
 
         private void SendEmailWithUrlConfirmationDeletePatient(string email, string token)
         {
-            string callbackUrl = $"http://localhost:4200/delete/confirm?token={token}&email={email}";
+            string callbackUrl = $"http://10.9.22.72:2226/delete/confirm?token={token}&email={email}";
             string subject = "Confirm Account Deletion Request";
             string body = $"Dear User,<br><br>" +
                           $"We have received a request to delete your account. If you wish to proceed, please confirm your request by clicking the link below:<br>" +
