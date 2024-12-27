@@ -8,6 +8,7 @@ using DDDSample1.Domain.Patients;
 using Org.BouncyCastle.Asn1.Icao;
 using System.Linq;
 using DDDSample1.Domain.OperationRequest;
+using DDDSample1.Domain.OperationTypes;
 
 namespace DDDSample1.Controllers
 {
@@ -20,14 +21,16 @@ namespace DDDSample1.Controllers
         private readonly IAppointmentService _app_service;
         private readonly IOperationRequestService _or_service;
         private readonly IPatientService _pt_service;
+        private readonly IOperationTypeService _ot_service;
 
 
-        public OperationRoomController(OperationRoomService service, AppointmentService appointmentService, OperationRequestService orService, IPatientService pt)
+        public OperationRoomController(OperationRoomService service, AppointmentService appointmentService, OperationRequestService orService, IPatientService pt, IOperationTypeService op_Ser)
         {
             _service = service;
             _app_service= appointmentService;
             _or_service= orService;
             _pt_service=pt;
+            _ot_service=op_Ser;
         }
 
 
@@ -71,7 +74,7 @@ namespace DDDSample1.Controllers
         }
 
         [HttpGet("GetPatientDataForAppointment")]
-        public async Task<ActionResult<PatientDto>> GetPatientDataForAppointment(
+        public async Task<ActionResult<PatientAndTypeDto>> GetPatientDataForAppointment(
     [FromQuery] DateOnly date,
     [FromQuery] TimeOnly time,
     [FromQuery] string roomName)
@@ -129,8 +132,15 @@ namespace DDDSample1.Controllers
 
             var request = await _or_service.GetByIdAsync(patientData.OperationRequestId);
             var patient = _pt_service.GetByIdAsync(new PatientId(request.patientId));
-
-            return Ok(patient);
+            
+            var type= await _ot_service.GetByIdAsync(new OperationTypeId(request.operationTypeId));
+            
+            var patientDto = new PatientAndTypeDto(
+                patient.Result,
+                type.name
+            );
+            
+            return Ok(patientDto);
         }
     }
 }

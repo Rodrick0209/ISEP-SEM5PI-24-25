@@ -1752,7 +1752,7 @@ export default class ThumbRaiser {
     );
   }
 
-  async toggleRoomInfo() {
+  async toggleRoomInfo(time, date) {
     await this.updateRoomStatus(getAllRoomsInfo);
     const beds = [];
 
@@ -1793,7 +1793,7 @@ export default class ThumbRaiser {
         <p>Room Type: ${roomInfo.roomType}</p>
       `;
         if (roomInfo.isOccupied) {
-          const urlWithParams = `${patientUrl}?date=${date}&time=${time}&roomName=${roomInfo.name}`;
+          const urlWithParams = `${patientUrl}?date=2024-12-27&time=20:30&roomName=${roomInfo.name}`;
 
           const response = await fetch(urlWithParams);
           if (!response.ok) {
@@ -1808,10 +1808,10 @@ export default class ThumbRaiser {
           overlay.innerHTML += `
           <br>
           <h3>Patient Info</h3>
-          <p>Operation Type: ${roomInfo.roomType}</p>
-          <p>Patient Name: ${roomInfo.roomType}</p>
-          <p>Patient Birth: ${roomInfo.roomType}</p>
-          <p>Patient Gender: ${roomInfo.roomType}</p>
+          <p>Operation Type: ${roomInfo.operationType}</p>
+          <p>Patient Name: ${patient.patient.name}</p>
+          <p>Patient Birth: ${patient.patient.dateOfBirth}</p>
+          <p>Patient Gender: ${patient.patient.gender}</p>
           `;
         }
       } else {
