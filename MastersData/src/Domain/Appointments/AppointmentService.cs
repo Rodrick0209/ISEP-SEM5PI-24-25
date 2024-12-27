@@ -355,6 +355,13 @@ namespace DDDSample1.Domain.Appointments
         }
 
 
+        public async Task<Appointment> GetByIdStringAsync(string id)
+        {
+            var appointmentId = new AppointmentId(id);
+            return await _appointmentRepository.GetByIdAsync(appointmentId);
+        }
+
+
         public async Task<List<AppointmentDtoUI>> GetAllForUIAsync()
         {
             List<Appointment> appointments = await this._appointmentRepository.GetAllAsync();

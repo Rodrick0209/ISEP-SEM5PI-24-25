@@ -31,9 +31,9 @@ export default class BedWithPatient {
           const size = new THREE.Vector3();
           box.getSize(size);
 
-          size.x = 3.0;
-          size.y = 4.4;
-          size.z = 2.6;
+          size.x = 1.0;
+          size.y = 1.1;
+          size.z = 1.6;
 
           this.radius = size.x / 2.0 * parameters.scale.x;
           this.eyeHeight = size.y * parameters.scale.y;

@@ -519,21 +519,18 @@ export default class ThumbRaiser {
       );
 
       // Register the event handler to be called on mouse down
-      this.renderer.domElement.addEventListener(
-        "mousedown",
-        (event) => this.mouseDown(event)
+      this.renderer.domElement.addEventListener("mousedown", (event) =>
+        this.mouseDown(event)
       );
 
       // Register the event handler to be called on mouse move
-      this.renderer.domElement.addEventListener(
-        "mousemove",
-        (event) => this.mouseMove(event)
+      this.renderer.domElement.addEventListener("mousemove", (event) =>
+        this.mouseMove(event)
       );
 
       // Register the event handler to be called on mouse up
-      this.renderer.domElement.addEventListener(
-        "mouseup",
-        (event) => this.mouseUp(event)
+      this.renderer.domElement.addEventListener("mouseup", (event) =>
+        this.mouseUp(event)
       );
 
       // Register the event handler to be called on mouse wheel
@@ -626,7 +623,7 @@ export default class ThumbRaiser {
     }
     this.loaded = false;
 
-    // The cache must be enabled; additional information available at https://threejs.org/docs/api/en/loaders/FileLoader.html
+    // The cache must be enabled; additional information available at http://threejs.org/docs/api/en/loaders/FileLoader.html
     THREE.Cache.enabled = true;
 
     // Create a resource file loader
@@ -1117,7 +1114,6 @@ export default class ThumbRaiser {
   elementChange(event) {
     switch (event.target.id) {
       case "view":
-
         this.setActiveViewCamera(
           [
             this.fixedViewCamera,
@@ -1393,8 +1389,8 @@ export default class ThumbRaiser {
           );
           this.scene3D.add(this.bedWithPatients[i].object);
           this.bedWithPatients[i].object.position.set(
-            this.bedWithPatients[i].position.x - 0.55,
-            this.bedWithPatients[i].position.y + 0.344,
+            this.bedWithPatients[i].position.x - 0.5,
+            this.bedWithPatients[i].position.y + 0.291,
             this.bedWithPatients[i].position.z
           );
           this.bedWithPatients[i].object.rotation.y =
@@ -1625,7 +1621,12 @@ export default class ThumbRaiser {
   }
 
   async reloadBeds(date, time) {
-    const apiUrl = "https://10.9.22.72:2226/api/OperationRoom/OccupiedRooms";
+    const urlWithParams1 = `${apiUrl}?date=${date}&time=${time}`;
+    const response = await fetch(urlWithParams1);
+    const data = await response.json();
+    await this.updateRoomOccupancy(data);
+
+    //const apiUrl = "http://10.9.22.72:2226/api/OperationRoom/OccupiedRooms";
     const urlWithParams = `${apiUrl}?date=${date}&time=${time}`;
 
     console.log("Starting reloadBeds...");
@@ -1722,8 +1723,8 @@ export default class ThumbRaiser {
       );
       this.scene3D.add(this.bedWithPatients[i].object);
       this.bedWithPatients[i].object.position.set(
-        this.bedWithPatients[i].position.x - 0.55,
-        this.bedWithPatients[i].position.y + 0.344,
+        this.bedWithPatients[i].position.x - 0.5,
+        this.bedWithPatients[i].position.y + 0.291,
         this.bedWithPatients[i].position.z
       );
       this.bedWithPatients[i].object.rotation.y =
@@ -1758,6 +1759,8 @@ export default class ThumbRaiser {
         const bedWithPatient = this.bedWithPatients.find((bed) =>
           bed.position.equals(this.cellToCartesian(room.beds.position))
         );
+        console.log(bedWithPatient);
+
         if (bedWithPatient) {
           beds.push({ ...room, objectId: bedWithPatient.object.id });
         }
@@ -1771,6 +1774,8 @@ export default class ThumbRaiser {
       }
     }
 
+    console.log(beds);
+    
     if (this.selectedRoom) {
       const roomIndex = beds.findIndex(
         (bed) => bed.objectId === this.selectedRoom.object.id
@@ -1787,6 +1792,16 @@ export default class ThumbRaiser {
         <p>Capacity: ${roomInfo.roomCapacity}</p>
         <p>Room Type: ${roomInfo.roomType}</p>
       `;
+        if (roomInfo.isOccupied) {
+          overlay.innerHTML += `
+          <br>
+          <h3>Patient Info</h3>
+          <p>Operation Type: ${roomInfo.roomType}</p>
+          <p>Patient Name: ${roomInfo.roomType}</p>
+          <p>Patient Birth: ${roomInfo.roomType}</p>
+          <p>Patient Gender: ${roomInfo.roomType}</p>
+          `;
+        }
       } else {
         overlay.style.display = "none";
       }
