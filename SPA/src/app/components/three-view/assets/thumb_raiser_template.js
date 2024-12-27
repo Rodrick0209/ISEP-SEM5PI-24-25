@@ -39,6 +39,8 @@ import Board from "./board.js";
 let rooms = null;
 const getAllRoomsInfo = "http://10.9.22.72:2226/api/OperationRoom/GetAll";
 const apiUrl = "http://10.9.22.72:2226/api/OperationRoom/OccupiedRooms";
+const patientUrl =
+  "http://10.9.22.72:2226/api/OperationRoom/GetPatientDataForAppointment";
 let zoomIn = false;
 
 export default class ThumbRaiser {
@@ -1774,8 +1776,6 @@ export default class ThumbRaiser {
       }
     }
 
-    console.log(beds);
-    
     if (this.selectedRoom) {
       const roomIndex = beds.findIndex(
         (bed) => bed.objectId === this.selectedRoom.object.id
@@ -1793,6 +1793,18 @@ export default class ThumbRaiser {
         <p>Room Type: ${roomInfo.roomType}</p>
       `;
         if (roomInfo.isOccupied) {
+          const urlWithParams = `${patientUrl}?date=${date}&time=${time}&roomName=${roomInfo.name}`;
+
+          const response = await fetch(urlWithParams);
+          if (!response.ok) {
+            throw new Error(
+              `Network response error: ${response.status} ${response.statusText}`
+            );
+          }
+
+          const patient = await response.json();
+          console.log(patient);
+
           overlay.innerHTML += `
           <br>
           <h3>Patient Info</h3>
