@@ -15,7 +15,7 @@ export default {
   /**
    * Your favorite port : optional change to 4000 by JRT
    */
-  port: parseInt(process.env.PORT, 10) || 2228,
+  port: parseInt(process.env.PORT, 10) || 2226,
 
   /**
    * That long string from mlab
