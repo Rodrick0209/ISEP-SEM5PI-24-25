@@ -43,7 +43,7 @@ namespace DDDSample1.Controllers
 
                     var content = new StringContent(JsonConvert.SerializeObject(medicalRecordDto), Encoding.UTF8, "application/json");
 
-                    var response = await httpClient.PostAsync("http://localhost:4000/api2/medicalRecord/create", content);
+                    var response = await httpClient.PostAsync("http://10.9.21.117:2226/api2/medicalRecord/create", content);
 
                     if (!response.IsSuccessStatusCode)
                     {

@@ -1,7 +1,7 @@
 const PROXY_CONFIG = [
   {
     context: ["/api2"],
-    target: "http://localhost:4000",
+    target: "http://10.9.21.117:2226",
     secure: false,
     logLevel: "debug",
     changeOrigin: true

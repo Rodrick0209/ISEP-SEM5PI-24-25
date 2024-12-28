@@ -461,7 +461,7 @@ public static class DataSeeder
 
       try
       {
-        var response = await httpClient.PostAsync("http://localhost:4000/api2/medicalRecord/create", content);
+        var response = await httpClient.PostAsync("http://10.9.21.117:2226/api2/medicalRecord/create", content);
         response.EnsureSuccessStatusCode();
         Console.WriteLine("Medical record created");
 
