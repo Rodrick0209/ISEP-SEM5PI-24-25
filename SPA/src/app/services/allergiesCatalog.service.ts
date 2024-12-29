@@ -57,7 +57,7 @@ export class AllergyCatalogService {
     if(description) {
       body.description = description;
     }
-    return this.http.put<AllergyCatalogItem>(url, body).pipe(
+    return this.http.patch<AllergyCatalogItem>(url, body).pipe(
       map((data: AllergyCatalogItem) => AllergyCatalogMapper.mapToAllergyCatalogItem(data))
     );
   }

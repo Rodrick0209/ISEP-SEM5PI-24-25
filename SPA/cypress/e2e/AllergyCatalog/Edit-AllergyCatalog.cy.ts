@@ -26,7 +26,7 @@ describe('Edit Allergy Catalog', () => {
     });
 
     it('should submit the form and navigate to allergies catalog', () => {
-        cy.intercept('PUT', '/api2/allergiesCatalog/update/20241812', {
+        cy.intercept('PATCH', '/api2/allergiesCatalog/update/20241812', {
             statusCode: 200,
             body: {
                 code: '20241812',

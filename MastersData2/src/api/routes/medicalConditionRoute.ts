@@ -35,7 +35,7 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.getMedicalCondition(req, res, next));
 
-    route.put('/update/:code',
+    route.patch('/update/:code',
         celebrate({
             body: Joi.object({
                 designation: Joi.string().optional(),

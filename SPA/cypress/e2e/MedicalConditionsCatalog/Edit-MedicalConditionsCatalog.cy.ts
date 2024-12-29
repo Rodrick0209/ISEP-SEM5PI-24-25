@@ -17,7 +17,7 @@ describe('Edit Medical Condition', () => {
     });
 
     it('should submit the form and navigate to medical conditions list on confirmation', () => {
-        cy.intercept('PUT', '/api2/medicalConditions/update/20241812', {
+        cy.intercept('PATCH', '/api2/medicalConditions/update/20241812', {
             statusCode: 200,
             body: {
                 code: '20241812',

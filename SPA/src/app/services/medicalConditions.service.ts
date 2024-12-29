@@ -55,7 +55,7 @@ export class MedicalCondtionService {
         if(description) {
             body.description = description
         }
-        return this.http.put<MedicalConditionCatalog>(url, body).pipe(
+        return this.http.patch<MedicalConditionCatalog>(url, body).pipe(
             map((data: MedicalConditionCatalog) => data)
         );
     }

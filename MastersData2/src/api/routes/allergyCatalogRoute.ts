@@ -26,7 +26,7 @@ export default (app: Router) => {
   route.get('/getAll',
     (req, res, next) => ctrl.getAllAllergiesItemCatalog(req, res, next));
 
-  route.put('/update/:code',
+  route.patch('/update/:code',
     celebrate({
       body: Joi.object({
         designation: Joi.string().optional(),
