@@ -17,7 +17,7 @@ export default (app: Router) => {
         celebrate({
             body: Joi.object({
                 code: Joi.string().required(),
-                designation: Joi.string().required(),
+                designation: Joi.string(),
                 description: Joi.string().optional(),
                 commonSymptoms: Joi.array().items(Joi.string()).optional()
             })

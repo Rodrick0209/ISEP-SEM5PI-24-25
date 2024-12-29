@@ -57,12 +57,12 @@ export default (app: Router) => {
             body: Joi.object({
                 allergies: Joi.array().items(Joi.object({
                     code: Joi.string().required(),
-                    designation: Joi.string().required(),
+                    designation: Joi.string().allow('').required(),
                     description: Joi.string().allow('').required()
                 })),
                 medicalConditions: Joi.array().items(Joi.object({
                     code: Joi.string().required(),
-                    designation: Joi.string().required(),
+                    designation: Joi.string().allow('').required(),
                     date: Joi.date().iso().allow('').required()
                 }))
             }),
