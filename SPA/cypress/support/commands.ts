@@ -72,17 +72,6 @@ Cypress.Commands.add('loginAsAdmin', () => {
     })
 
 Cypress.Commands.add('loginAsDoctor', () => {
-    cy.intercept(
-        {
-            method: 'POST',
-            url: '/api/login/login'
-        },
-        {
-            statusCode: 200,
-            fixture: 'login-doctor.json'
-        }
-    ).as('login');
-
     cy.visit('/login')
         .get('input#email').type('D202512344@gmail.com')
         .get('input#password').type('password')
