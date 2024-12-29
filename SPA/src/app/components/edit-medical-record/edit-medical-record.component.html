@@ -15,8 +15,8 @@
           <tr>
             <th>Code - Designation</th>
             <th>Type</th>
-            <th></th>
-            <th></th>
+            <th>Description/Date</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -26,12 +26,11 @@
               <select
                 class="form-control form-control-lg custom-select"
                 [(ngModel)]="allergy.code"
-                [(ngModel)]="allergy.designation"
+                name="allergyCode"
               >
                 <option
                   *ngFor="let existingAllergy of existingAllergies"
-                  [(ngModel)]="existingAllergy.code"
-                  [value]="existingAllergy.designation"
+                  [value]="existingAllergy.code"
                 >
                   {{ existingAllergy.code }} - {{ existingAllergy.designation }}
                 </option>
@@ -43,7 +42,7 @@
                 type="text"
                 class="form-control form-control-lg"
                 [(ngModel)]="allergy.description"
-                [value]="allergy.description"
+                name="allergyDescription"
                 placeholder="Enter allergy description"
               />
             </td>
@@ -64,12 +63,11 @@
               <select
                 class="form-control form-control-lg custom-select"
                 [(ngModel)]="condition.code"
-                [(ngModel)]="condition.designation"
+                name="conditionCode"
               >
                 <option
                   *ngFor="let existingCondition of existingMedicalConditions"
-                  [(ngModel)]="existingCondition.code"
-                  [value]="existingCondition.designation"
+                  [value]="existingCondition.code"
                 >
                   {{ existingCondition.code }} - {{ existingCondition.designation }}
                 </option>
@@ -80,8 +78,8 @@
               <input
                 type="date"
                 class="form-control form-control-lg"
-                [ngModel]="formatDateForInput(condition.date)"
-                (ngModelChange)="updateConditionDate($event, condition)"
+                [(ngModel)]="condition.date"
+                name="conditionDate"
                 placeholder="Enter condition date"
               />
             </td>
