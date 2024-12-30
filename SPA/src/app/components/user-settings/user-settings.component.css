@@ -71,3 +71,26 @@ button:disabled {
     cursor: not-allowed;
     box-shadow: none;
 }
+
+.data-retention-info {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+}
+
+.data-retention-info h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.data-retention-info a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.data-retention-info a:hover {
+    color: #0056b3;
+}
