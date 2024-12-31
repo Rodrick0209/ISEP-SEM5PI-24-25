@@ -46,7 +46,34 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy to MD2
+      
+      - name: Deploy  MD2
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: vsgate-ssh.dei.isep.ipp.pt
+          port: 10373
+          username: root
+          password: "password"
+          script: |
+            echo "Making the script executable..."
+            chmod +x /root/update_app.sh
+            echo "Executing the deployment script..."
+            /root/update_app.sh
+      
+      - name: Deploy  MD1
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: vsgate-ssh.dei.isep.ipp.pt
+          port: 10584
+          username: root
+          password: "mXef8xNlrclX/QGjNdP5"
+          script: |
+            echo "Making the script executable..."
+            chmod +x /root/update-dotnet.sh
+            echo "Executing the deployment script..."
+            /root/update-dotnet.sh
+
+      - name: Deploy Frontend
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: vsgate-ssh.dei.isep.ipp.pt
@@ -58,3 +85,4 @@ jobs:
             chmod +x /root/run_spa.sh
             echo "Executing the deployment script..."
             /root/run_spa.sh
+
