@@ -29,17 +29,18 @@ jobs:
         with:
           name: MastersData-Build
           path: ./MastersData/output
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build project
+        run: |
+          mkdir build
+          echo "Some build output" > build/output.txt
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
         with:
           name: MastersData2-Build
-          path: ./MastersData/output
+          path: build/output.txt
+
           
 
       - name: Deploy to MD2
