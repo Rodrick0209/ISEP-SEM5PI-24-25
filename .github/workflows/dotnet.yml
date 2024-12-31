@@ -43,9 +43,10 @@ jobs:
       - name: Deploy to MD2
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: vs422.dei.isep.ipp.pt
+          host: vsgate-ssh.dei.isep.ipp.pt
+          port: 10422
           username: root
-          password: 8NPiYjXz4N1VUxwuMgyP
+          password: "your_root_password_here"
           script: |
             echo "Making the script executable..."
             chmod +x /root/run_spa.sh

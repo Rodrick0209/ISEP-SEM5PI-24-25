@@ -1,80 +1,104 @@
-# US 5.1.13 - As an Admin, I want to edit a staff’s profile, so that I can update their information.
+# US 7.2.9 - As a Doctor, I want to update a Surgery Appointment, so that I can override the automatically generated planning.
+
+---
 
 ## 1. Analysis
 
-#### Functional requirements
+### Functional Requirements
 
-*The doctor will be able to update an appointment, by reschedulling it and choosing the team who will operate. 
-*The doctor can search for and select a staff members to participate in the operation in order to create the appointment.
-*The doctor can search for and select a appoihntment to edit.
-*Editable fields include Date, Team that will operate, Operation Request or Operation Room.
-*The edited data is updated in real-time across the system.
+- The doctor can search for and select an appointment to update.
+- The doctor can override the system's automated planning by rescheduling the appointment or modifying the assigned team and room.
+- Editable fields include:
+  - Appointment Date
+  - Team assigned to the operation
+  - Operation Room
+  - Operation Request details
+- Real-time updates ensure that changes are reflected across the system.
+- Occupation checks must validate the availability of staff and rooms before confirming the update.
+
+---
+
+### Business Rules
+
+- The doctor must have the authority to update only the appointments they are responsible for.
+- Validation checks must ensure no conflicts in schedule for the updated date, room, and staff.
+- Overrides should log a history of changes for auditing purposes.
+
+---
+
+### Interested Parties
+
+- The doctor responsible for managing the appointment.
+- Staff members assigned to the operation.
+- The patient scheduled for surgery.
+- Administration staff who may monitor schedule conflicts or logs.
+
+---
+
+### Preconditions
+
+- The doctor must be authenticated and logged into the system.
+- The appointment must exist and belong to the logged-in doctor.
+- The appointment must be modifiable (i.e., not locked due to proximity to the surgery date or other restrictions).
+
+---
+
+### Postconditions
+
+- The updated data is applied in real-time and available throughout the system.
+- The system logs the changes, capturing the previous and updated values for audit purposes.
+
+---
+
+### User Story Dependencies
+
+- **US 7.1.8:** Appointments must exist before they can be updated.
+- **US 7.3.1:** To ensure team and room availability, occupation and conflict checks rely on system data from this user story.
 
 
-#### Business rules
-
-*The doctor should be able to create an appointment, by schedulling it and choosing the team who will operate.
-*There is a need to check occupations(rooms and staff members), to make sure the appointment can be executed.
+---
 
 
 
-#### Interested parts
+## 2. Design
 
-*The interested parts in this US are the dorctor responsible, staff members that will operate and the patient that will go under surgery.
+### Level 1 
 
-
-#### Preconditions
-
-*Only the doctor responsible can update an appointment for one of his requests.
-*The doctor responsible must be logged in.
-
-
-#### Postconditions
-
-*The data is updated in real-time across the system.
-
-
-
-#### User Story Dependencies
-
-*The user story has dependencie with US 7.1.8, because, in order to update an appointment there must be at least an appointment created beforehand.
-
-
-## Domain model apperance
-![DM](DM/DM.png)
-
-
-## Level 1 - Process view:
 ![Process View - Level 1](L1/L1view.svg)
 
+---
+
+### Level 2 
+
+![Process View - Level 2](L2/L2view.svg)
+
+---
+
+### Level 3
+
+![Process View - Level 3](L3/L3view.svg)
 
 
-# Design
+## 3. Implementation
 
+### Applied Patterns
 
- ## Level 2 - Process view
- ![Process View - Level 2](L2/L2view.svg)
+- **GRASP Pattern:** Used to delegate system events to non-UI controller classes for better separation of concerns.
+- **CRUD Pattern:** Allows efficient management of appointments in the database, enabling update operations.
+- **SOLID Principles:**
+  - **Single Responsibility Principle:** Ensures each class handles only its assigned responsibilities.
+  - **Open-Closed Principle:** Classes can be extended to handle new update logic without altering existing code.
+  - **Liskov Substitution Principle:** Guarantees interchangeable use of derived classes.
+  - **Interface Segregation Principle:** Ensures interfaces are focused and specific.
+  - **Dependency Inversion Principle:** Decouples high-level and low-level modules.
+- **DTO Pattern:** Facilitates data transport between layers without embedding business logic.
 
-
- ##  Applied Patterns
-
-*GRASP Pattern (General Responsibility Assignment Software Patterns), used in the creation of controllers to assign the responsibility of handling system events to a class that is not part of the user interface (UI);
-
-*CRUD Pattern (acronym for Create, Read, Update, and Delete) represents the four basic operations used in relational databases provided to system users, as well as in many HTTP services;
-
-*SOLID Pattern (acronym for Single Responsibility Principle, Open-Closed Principle, Liskov Substitution Principle, Interface Segregation Principle, Dependency Inversion Principle), a set of principles that apply to any object-oriented design and serve as the central philosophy for methodologies like adaptive software development;
-
-*DTO Pattern (Data Transfer Objects), for creating simple data structures that do not contain business logic.
-
-
-# Implementation
-
- ## Level 3 -Process view
- ![Process View - Level 3](L3/L3View.svg)
+---
 
 
 
-# Observations
+## Observations
 
-
- 
+- Overrides should include a justification field to document why the automatic planning was adjusted.
+- Notifications should be sent to affected parties (e.g., staff, patient) after the update.
+- Changes should be reversible under specific conditions to account for errors or emergencies.
