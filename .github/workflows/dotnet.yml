@@ -38,7 +38,8 @@ jobs:
       - name: Download Build Artifact
         uses: actions/download-artifact@v3
         with:
-          name: MastersData-Build
+          name: MastersData2
+          
 
       - name: Deploy to MD2
         uses: appleboy/ssh-action@v0.1.6
