@@ -52,7 +52,7 @@ jobs:
           host: vsgate-ssh.dei.isep.ipp.pt
           port: 10422
           username: root
-          password: "your_root_password_here"
+          password: "8NPiYjXz4N1VUxwuMgyP"
           script: |
             echo "Making the script executable..."
             chmod +x /root/run_spa.sh
