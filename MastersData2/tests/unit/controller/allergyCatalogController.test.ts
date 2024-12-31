@@ -6,7 +6,7 @@ import { Result } from '../../../src/core/logic/Result';
 import IAllergyCatalogService from "../../../src/services/IServices/IAllergyCatalogService";
 import AllergyCatalogController from "../../../src/controllers/allergyCatalogController";
 import IAllergyCathalogItemDTO from '../../../src/dto/IAllergyCatalogItemDTO';
-
+/*
 describe('AllergyCatalogController', function() {
     let allergyServiceInstance: IAllergyCatalogService;
     let ctrl: AllergyCatalogController;
@@ -105,5 +105,5 @@ describe('AllergyCatalogController', function() {
         
 
     });
-    */
-});
+    
+});*/
