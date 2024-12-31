@@ -42,7 +42,10 @@ jobs:
           path: build/output.txt
 
           
-
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Deploy to MD2
         uses: appleboy/ssh-action@v0.1.6
         with:
