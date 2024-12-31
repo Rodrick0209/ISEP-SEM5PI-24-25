@@ -23,7 +23,7 @@ export default {
   //  databaseURL: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/test",
   // should save it in a .env file
   databaseURL:
-    'mongodb+srv://rodrigocastro2004:projetolaprsem5@sem5g55isep.gtdw4.mongodb.net/?retryWrites=true&w=majority&appName=sem5g55isep',
+    'mongodb+srv://rodrigocastro2004:projetolaprsem5@sem5g55isep.gtdw4.mongodb.net/productionDatabase?retryWrites=true&w=majority&appName=sem5g55isep',
 
   /**
    * Your secret sauce

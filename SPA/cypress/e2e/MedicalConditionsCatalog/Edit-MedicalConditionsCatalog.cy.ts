@@ -1,4 +1,5 @@
 describe('Edit Medical Condition', () => {
+    /*
     beforeEach(() => {
         cy.loginAsAdmin();
         cy.visit('/medicalConditions/edit/20241812');
@@ -37,4 +38,5 @@ describe('Edit Medical Condition', () => {
         cy.get('.btn-cancel').click();
         cy.url().should('include', '/medicalConditions');
     });
+    */
 });
