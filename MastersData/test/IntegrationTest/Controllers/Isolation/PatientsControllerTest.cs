@@ -4,6 +4,7 @@ using DDDSample1.Domain.PatientLoggers;
 using DDDSample1.Domain.Patients;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
+using DDDSample1.Infrastructure.Users;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -14,6 +15,8 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
     {
         private Mock<IPatientRepository>? _patientRepository;
         private Mock<IPatientLoggerRepository>? _patientLoggerRepository;
+
+        private Mock<IUserRepository>? _userRepository;
         private Mock<IEmailSender>? _emailSender;
         private Mock<IUnitOfWork>? _unitOfWork;
         private PatientService? _patientService;
@@ -69,7 +72,8 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _unitOfWork = new Mock<IUnitOfWork>();
             _patientRepository = new Mock<IPatientRepository>();
             _patientLoggerRepository = new Mock<IPatientLoggerRepository>();
-            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null);
+            _userRepository = new Mock<IUserRepository>();
+            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null, _userRepository.Object);
             _patientsController = new PatientsController(_patientService);
 
             // Arrange
@@ -105,10 +109,12 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
         public async Task UpdateAsync_WithValidDto_ShouldReturnPatientDto()
         {
             _unitOfWork = new Mock<IUnitOfWork>();
+            _userRepository = new Mock<IUserRepository>();
             _patientRepository = new Mock<IPatientRepository>();
             _patientLoggerRepository = new Mock<IPatientLoggerRepository>();
-            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null);
+            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null, _userRepository.Object);
             _patientsController = new PatientsController(_patientService);
+            _userRepository = new Mock<IUserRepository>();
 
             // Arrange
             var dto = new EditingPatientProfileDto
@@ -138,8 +144,9 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
         {
             _unitOfWork = new Mock<IUnitOfWork>();
             _patientRepository = new Mock<IPatientRepository>();
+            _userRepository = new Mock<IUserRepository>();
             _patientLoggerRepository = new Mock<IPatientLoggerRepository>();
-            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null);
+            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null, _userRepository.Object);
             _patientsController = new PatientsController(_patientService);
 
             // Arrange
@@ -163,9 +170,10 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
         public async Task DeleteAsync_WithValidMedicalRecordNumber_ShouldReturnNoContent()
         {
             _unitOfWork = new Mock<IUnitOfWork>();
+            _userRepository = new Mock<IUserRepository>();
             _patientRepository = new Mock<IPatientRepository>();
             _patientLoggerRepository = new Mock<IPatientLoggerRepository>();
-            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null);
+            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null, _userRepository.Object);
             _patientsController = new PatientsController(_patientService);
 
             // Arrange
@@ -191,7 +199,8 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _unitOfWork = new Mock<IUnitOfWork>();
             _patientRepository = new Mock<IPatientRepository>();
             _patientLoggerRepository = new Mock<IPatientLoggerRepository>();
-            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null);
+            _userRepository = new Mock<IUserRepository>();
+            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null, _userRepository.Object);
             _patientsController = new PatientsController(_patientService);
 
             // Arrange
@@ -213,7 +222,8 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             _unitOfWork = new Mock<IUnitOfWork>();
             _patientRepository = new Mock<IPatientRepository>();
             _patientLoggerRepository = new Mock<IPatientLoggerRepository>();
-            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null);
+            _userRepository = new Mock<IUserRepository>();
+            _patientService = new PatientService(_unitOfWork.Object, _patientRepository.Object, _patientLoggerRepository.Object, null, _userRepository.Object);
             _patientsController = new PatientsController(_patientService);
 
             // Arrange

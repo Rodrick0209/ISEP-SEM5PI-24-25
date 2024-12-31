@@ -16,6 +16,7 @@ namespace UnitTest.Domain.Patient
     {
         private Mock<IUnitOfWork>? _unitOfWorkMock;
         private Mock<IPatientRepository>? _patientRepositoryMock;
+        private Mock<IUserRepository>? _userRepositoryMock;
         private Mock<IPatientLoggerRepository>? _patientLoggerRepositoryMock;
         private Mock<IEmailSender>? _emailSenderMock;
         private PatientService? _patientService;
@@ -26,7 +27,8 @@ namespace UnitTest.Domain.Patient
             // Arrange
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             _patientRepositoryMock = new Mock<IPatientRepository>();
-            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, null, null);
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, null, null,_userRepositoryMock.Object);
 
             var dto = new CreatingPatientProfileDto
             {
@@ -63,8 +65,10 @@ namespace UnitTest.Domain.Patient
         public async Task CreateAsync_ShouldThrowException_WhenEmailNotUnique()
         {
             // Arrange
+            _userRepositoryMock = new Mock<IUserRepository>();
             _patientRepositoryMock = new Mock<IPatientRepository>();
-            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null,_userRepositoryMock.Object);
+            
 
             var dto = new CreatingPatientProfileDto
             {
@@ -109,9 +113,10 @@ namespace UnitTest.Domain.Patient
         {
             // Arrange
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _userRepositoryMock = new Mock<IUserRepository>();
             _patientRepositoryMock = new Mock<IPatientRepository>();
             _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
-            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, null);
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, null,_userRepositoryMock.Object);
 
             var dto = new EditingPatientProfileDto
             {
@@ -153,10 +158,11 @@ namespace UnitTest.Domain.Patient
         {
             // Arrange
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _userRepositoryMock = new Mock<IUserRepository>();
             _patientRepositoryMock = new Mock<IPatientRepository>();
             _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
             _emailSenderMock = new Mock<IEmailSender>();
-            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, _emailSenderMock.Object);
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, _emailSenderMock.Object,_userRepositoryMock.Object);
 
             var dto = new EditingPatientProfileDto
             {
@@ -200,9 +206,10 @@ namespace UnitTest.Domain.Patient
             // Arrange
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             _patientRepositoryMock = new Mock<IPatientRepository>();
+            _userRepositoryMock = new Mock<IUserRepository>();
             _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
             _emailSenderMock = new Mock<IEmailSender>();
-            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, _emailSenderMock.Object);
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, _emailSenderMock.Object,_userRepositoryMock.Object);
 
             var dto = new EditingPatientProfileDto
             {
@@ -248,7 +255,8 @@ namespace UnitTest.Domain.Patient
             _patientRepositoryMock = new Mock<IPatientRepository>();
             _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
             _emailSenderMock = new Mock<IEmailSender>();
-            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, _emailSenderMock.Object);
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, _emailSenderMock.Object,_userRepositoryMock.Object);
 
             var dto = new EditingPatientProfileDto
             {
@@ -298,7 +306,8 @@ namespace UnitTest.Domain.Patient
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             _patientRepositoryMock = new Mock<IPatientRepository>();
             _patientLoggerRepositoryMock = new Mock<IPatientLoggerRepository>();
-            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, null);
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _patientService = new PatientService(_unitOfWorkMock.Object, _patientRepositoryMock.Object, _patientLoggerRepositoryMock.Object, null,_userRepositoryMock.Object);
 
             var dto = new DeletingPatientProfileConfirmationDto
             {
@@ -338,8 +347,9 @@ namespace UnitTest.Domain.Patient
         public async Task SeachAsync_ShouldReturnPatients_WhenFiltersAreDisponible()
         {
             // Arrange
+            _userRepositoryMock = new Mock<IUserRepository>();
             _patientRepositoryMock = new Mock<IPatientRepository>();
-            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null,_userRepositoryMock.Object);
 
             var dto = new SearchFiltersDto
             {
@@ -403,7 +413,8 @@ namespace UnitTest.Domain.Patient
         {
             // Arrange
             _patientRepositoryMock = new Mock<IPatientRepository>();
-            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null,_userRepositoryMock.Object);
 
             var dto = new SearchFiltersDto
             {
@@ -486,7 +497,8 @@ namespace UnitTest.Domain.Patient
         {
             // Arrange
             _patientRepositoryMock = new Mock<IPatientRepository>();
-            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null,_userRepositoryMock.Object);
 
             var dto = new SearchFiltersDto
             {
@@ -566,7 +578,8 @@ namespace UnitTest.Domain.Patient
         {
             // Arrange
             _patientRepositoryMock = new Mock<IPatientRepository>();
-            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null,_userRepositoryMock.Object);
 
             var patients = new List<DDDSample1.Domain.Patients.Patient>
             {
@@ -602,7 +615,8 @@ namespace UnitTest.Domain.Patient
         {
             // Arrange
             _patientRepositoryMock = new Mock<IPatientRepository>();
-            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null);
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _patientService = new PatientService(null, _patientRepositoryMock.Object, null, null,_userRepositoryMock.Object);
 
             var patient = new DDDSample1.Domain.Patients.Patient(
                 "John Doe",
