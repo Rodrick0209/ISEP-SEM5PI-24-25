@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 // Set the NODE_ENV to 'development' by default
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+//process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const envFound = dotenv.config();
 if (!envFound) {
@@ -20,7 +20,6 @@ export default {
   /**
    * That long string from mlab
    */
-  //  databaseURL: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/test",
   // should save it in a .env file
   databaseURL:
     'mongodb+srv://rodrigocastro2004:projetolaprsem5@sem5g55isep.gtdw4.mongodb.net/productionDatabase?retryWrites=true&w=majority&appName=sem5g55isep',
