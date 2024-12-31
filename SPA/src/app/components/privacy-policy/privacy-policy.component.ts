@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-privacy-policy',
@@ -8,10 +8,21 @@ import { RouterModule } from '@angular/router';
   templateUrl: './privacy-policy.component.html',
   styleUrl: './privacy-policy.component.css'
 })
-export class PrivacyPolicyComponent {
-  constructor() { }
+export class PrivacyPolicyComponent implements OnInit {
+  constructor(private route: ActivatedRoute) { }
 
+  ngOnInit(): void {
+    this.route.fragment.subscribe((fragment) => {
+      if (fragment) {
+        const element = document.getElementById(fragment);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' }); // Smooth scrolling
+        }
+      }
+    });
+  }
+  
   viewCompletePrivacyPolicy(): void {
-    // View the privacy policy
+    window.open('Privacy_Policy_SARM.pdf', '_blank');
   }
 }
