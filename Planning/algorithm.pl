@@ -148,6 +148,119 @@ min_max(I,I1,I,I1):- I<I1,!.
 min_max(I,I1,I1,I).
 
 
+
+% Predicado principal otimizado
+schedule_surgeries_fromListForMultipleRoomsOptimizedByMario(Day, LOpCode) :-
+    retractall(lastSurgeryTime(_)),
+    retractall(agenda_staff1(_, _, _)),
+    retractall(agenda_operation_room1(_, _, _)),
+    retractall(availability(_, _, _)),
+    findall(_, (agenda_staff(D, Day, Agenda), assertz(agenda_staff1(D, Day, Agenda))), _),
+    findall((Or), (agenda_operation_room(Or, Day, Agenda), assert(agenda_operation_room1(Or, Day, Agenda))), LRooms),
+    findall(_, (agenda_staff1(D, Day, L), free_agenda0(L, LFA), adapt_timetable(D, Day, LFA, LFA2), assertz(availability(D, Day, LFA2))), _),
+    asserta(lastSurgeryTime(0)),
+    LRooms = [FirstRoom | _], % Inicializa com a primeira sala
+    availability_all_surgeries_optimized(LOpCode, FirstRoom, LRooms, Day), !.
+
+
+
+
+% Predicado principal otimizado
+availability_all_surgeries_optimized([], _, _, _) :-
+    write("Todas as cirurgias foram alocadas com sucesso."), nl.
+
+availability_all_surgeries_optimized([OpCode | LOpCode], CurrentRoom, LRooms, Day) :-
+    format("Tentando alocar cirurgia ~w na sala ~w para o dia ~w.~n", [OpCode, CurrentRoom, Day]),
+    (   try_allocate_surgery(OpCode, LRooms, Day)
+    ->  availability_all_surgeries_optimized(LOpCode, CurrentRoom, LRooms, Day)
+    ;   write("Não há mais espaço nas salas. Todas as cirurgias possíveis foram devidamente alocadas."), nl,
+        fail % Este fail interrompe o processo para indicar que houve rejeições.
+    ).
+
+% Predicado auxiliar para tentar alocar a cirurgia em alguma sala
+try_allocate_surgery(_, [], _) :-
+    !, fail.  % Se não houver mais salas, falha.
+
+try_allocate_surgery(OpCode, [Room | RestRooms], Day) :-
+    (   can_fit_in_room(OpCode, Room, Day)
+    ->  format("Cirurgia ~w cabe na sala ~w. Alocando...~n", [OpCode, Room]),
+        allocate_surgery(OpCode, Room, Day)
+    ;   format("Cirurgia ~w não cabe na sala ~w. Tentando próxima sala...~n", [OpCode, Room]),
+        try_allocate_surgery(OpCode, RestRooms, Day)
+    ).
+
+% Verificar se a cirurgia pode ser alocada
+can_fit_in_room(OpCode, Room, Day) :-
+    calculate_room_ratio(OpCode, Room, Day, NewRatio),
+    format("Calculando ratio para cirurgia ~w na sala ~w: ~2f~n", [OpCode, Room, NewRatio]),
+    NewRatio =< 0.8.
+
+% Calcular o novo ratio da sala se a cirurgia for adicionada
+calculate_room_ratio(OpCode, Room, Day, NewRatio) :-
+    surgery_id(OpCode, OpType),
+    surgery(OpType, TAnesthesy, TSurgery, TCleaning),
+    TotalTime is TAnesthesy + TSurgery + TCleaning,
+    room_free_time(Room, Day, FreeTime),
+    room_current_usage(Room, Day, UsedTime),
+    NewRatio is (UsedTime + TotalTime) / FreeTime.
+
+% Alocar a cirurgia à sala atual
+allocate_surgery(OpCode, Room, Day) :-
+    surgery_id(OpCode, OpType),
+    surgery(OpType, TAnesthesy, TSurgery, TCleaning),
+    availability_operation(OpCode, Room, Day, Interval, LDoctorsSurgery, LStaffAnesthesy, LStaffCleaning),
+    calculate_intervals(Interval, TAnesthesy, TSurgery, TCleaning, MinuteStartAnesthesia, MinuteStartSurgery, MinuteStartCleaning, MinuteEndProcess),
+    retract(agenda_operation_room1(Room, Day, Agenda)),
+    insert_agenda((MinuteStartAnesthesia, MinuteEndProcess, OpCode), Agenda, Agenda1),
+    assertz(agenda_operation_room1(Room, Day, Agenda1)),
+    insert_agenda_staff((MinuteStartSurgery, MinuteStartCleaning, OpCode), Day, LDoctorsSurgery),
+    insert_agenda_staff((MinuteStartAnesthesia, MinuteStartCleaning, OpCode), Day, LStaffAnesthesy),
+    insert_agenda_staff((MinuteStartCleaning, MinuteEndProcess, OpCode), Day, LStaffCleaning),
+    lastSurgeryTime(LastSurgeryTime),
+    (LastSurgeryTime < MinuteEndProcess ->
+        retract(lastSurgeryTime(_)),
+        assert(lastSurgeryTime(MinuteEndProcess))
+    ; true).
+
+
+% Calcular o tempo livre da sala com base na agenda
+calculate_free_time([], 1440).  % Se não houver agendamento, o dia inteiro (1440 minutos) está livre
+calculate_free_time([(Start, End, _) | Tail], FreeTime) :-
+    calculate_free_time(Tail, TailFreeTime),
+    FreeTime is TailFreeTime - (End - Start).
+
+% Calcular o tempo utilizado da sala com base na agenda
+calculate_used_time([], 0).  % Se não houver agendamento, nenhum tempo é usado
+calculate_used_time([(Start, End, _) | Tail], UsedTime) :-
+    format("Calculando tempo utilizado: Início ~w, Fim ~w.~n", [Start, End]), % Debug
+    calculate_used_time(Tail, TailUsedTime),
+    UsedTime is TailUsedTime + (End - Start).
+
+
+% Obter tempo livre com debug
+room_free_time(Room, Day, FreeTime) :-
+    format("Obtendo tempo livre para sala ~w no dia ~w.~n", [Room, Day]),
+    agenda_operation_room1(Room, Day, Agenda),
+    format("Agenda da sala ~w no dia ~w: ~w~n", [Room, Day, Agenda]), % Debug
+    calculate_free_time(Agenda, FreeTime).
+
+
+room_current_usage(Room, Day, UsedTime) :-
+    format("Obtendo tempo utilizado para sala ~w no dia ~w.~n", [Room, Day]),
+    agenda_operation_room1(Room, Day, Agenda),
+    calculate_used_time(Agenda, UsedTime).
+
+
+% Lista circular com debug
+next_in_list(Current, [Current | Tail], Next) :-
+    Tail = [Next | _].
+next_in_list(Current, [_ | Tail], Next) :-
+    next_in_list(Current, Tail, Next).
+next_in_list(_, [First | _], First). % Retorna ao início da lista
+
+
+
+
 schedule_surgeries_fromListForMultipleRooms(Day,LOpCode):-
     retractall(lastSurgeryTime(_)),
     retractall(agenda_staff1(_,_,_)),
@@ -195,7 +308,6 @@ availability_all_surgeries4([OpCode|LOpCode], [Room|LRooms], Day):-
         true
     ),
     availability_all_surgeries4(LOpCode, LRooms, Day).
-
 
 
 
