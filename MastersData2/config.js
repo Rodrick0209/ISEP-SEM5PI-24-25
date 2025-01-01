@@ -25,7 +25,6 @@ export default {
   databaseURL:
     'mongodb+srv://rodrigocastro2004:projetolaprsem5@sem5g55isep.gtdw4.mongodb.net/test?retryWrites=true&w=majority&appName=sem5g55isep',
 
-    
   /**
    * Your secret sauce
    */
