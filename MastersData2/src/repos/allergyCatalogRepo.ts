@@ -86,6 +86,13 @@ export default class AllergyCatalogRepo implements IAllergyCatalogRepo {
     }
 
 
+    public async delete(allergyId: AllergyCatalogItemId | string | Allergy): Promise<void> {
+        const idX = allergyId instanceof AllergyCatalogItemId ? (<AllergyCatalogItemId>allergyId).toValue() : allergyId;
+        const query = { domainId: idX };
+        await this.allergySchema.deleteOne(query as FilterQuery<IAllergyCatalogItemPersistence & Document>);
+    }
+
+
 
 
 

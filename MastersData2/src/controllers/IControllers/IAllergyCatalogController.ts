@@ -5,4 +5,5 @@ export default interface IAllergyCatalogController  {
     getAllAllergiesItemCatalog(req: Request, res: Response, next: NextFunction);
     updateAllergyCatalogItem(req: Request, res: Response, next: NextFunction);
     getAllergyCatalogItem(req: Request, res: Response, next: NextFunction);
+    deleteAllergyCatalogItem(req: Request, res: Response, next: NextFunction);
 }

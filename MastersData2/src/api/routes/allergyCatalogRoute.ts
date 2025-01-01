@@ -45,4 +45,13 @@ export default (app: Router) => {
       })
     }),
     (req, res, next) => ctrl.getAllergyCatalogItem(req, res, next) );
+
+
+    route.delete('/delete/:code',
+      celebrate({
+        params: Joi.object({
+          code: Joi.string().required()
+        })
+      }),
+      (req, res, next) => ctrl.deleteAllergyCatalogItem(req, res, next) );
 }

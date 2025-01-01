@@ -52,6 +52,23 @@ export default class AllergyCatalogService implements IAllergyCatalogService {
         }
     }
 
+
+    public async deleteAllergyCatalogItem(code: string): Promise<Result<void>> {
+        try {
+            const allergy = await this.allergyRepo.findByCode(code);
+
+            if (allergy === null) {
+                return Result.fail<void>("Allergy not found");
+            }
+
+            await this.allergyRepo.delete(allergy.id);
+
+            return Result.ok<void>();
+        } catch (e) {
+            throw e;
+        }
+    }
+
     public async createAllergyCatalogItem(allergyDTO: IAllergyCathalogItemDTO): Promise<Result<IAllergyCathalogItemDTO>> {
         try {
             const allergyOrError = await AllergyCatalogItem.create(allergyDTO);

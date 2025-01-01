@@ -9,4 +9,6 @@ export default interface IAllergyCatalogRepo extends Repo<AllergyCatalogItem> {
     findByCode(code: string): Promise<AllergyCatalogItem>;
     findAll(): Promise<AllergyCatalogItem[]>;
     findById (id: string| AllergyCatalogItemId| Allergy): Promise<AllergyCatalogItem>;
+    delete(id: string | AllergyCatalogItemId | Allergy): Promise<void>;
+
 }

@@ -88,6 +88,22 @@ export default class AllergyCatalogController extends BaseController implements 
         }
     };
 
+    public async deleteAllergyCatalogItem(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.allergyServiceInstance.deleteAllergyCatalogItem(req.params.code) as Result<void>;
+
+            if (result.isFailure) {
+                return res.status(404).send();
+            }
+
+            return res.status(204).send();
+        }
+        catch (e) {
+            return next(e);
+        }
+    };
+
+
     protected async executeImpl(): Promise<void> {
         const req = this.req;
         const res = this.res;
@@ -100,6 +116,8 @@ export default class AllergyCatalogController extends BaseController implements 
           res.status(405).send('Method Not Allowed');
         }
     }
+
+    
     
 
 
