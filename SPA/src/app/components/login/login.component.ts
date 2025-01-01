@@ -44,6 +44,7 @@ export class LoginComponent {
 
   handleCredentialResponse(response: any) {
     // Processamento do token recebido
+    console.log("teset "+response);
     this.authService.verifyGoogleToken().subscribe(
       (res) => {
         this.authService.saveToken(res.token.result); // Save the token
