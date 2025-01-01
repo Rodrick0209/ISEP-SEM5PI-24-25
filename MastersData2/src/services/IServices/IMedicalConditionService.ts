@@ -8,4 +8,5 @@ export default interface IMedicalConditionService {
     listMedicalConditions(): Promise<Result<IMedicalConditionCatalogDTO[]>>;
     getMedicalCondition(code: string): Promise<Result<IMedicalConditionCatalogDTO>>;
     updateMedicalCondition(code: string, medicalConditionCatalog: IMedicalConditionCatalogDTO): Promise<Result<IMedicalConditionCatalogDTO>>;  
+    deleteMedicalCondition(code: string): Promise<Result<void>>;
 }

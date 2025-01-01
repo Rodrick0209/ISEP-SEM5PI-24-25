@@ -5,4 +5,5 @@ export default interface IMedicalConditionController {
     getAllMedicalConditions(req: Request, res: Response, next: NextFunction);
     getMedicalCondition(req: Request, res: Response, next: NextFunction);
     updateMedicalCondition(req: Request, res: Response, next: NextFunction);
+    deleteMedicalCondition(req: Request, res: Response, next: NextFunction);
 }

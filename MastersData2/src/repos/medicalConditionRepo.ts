@@ -86,4 +86,8 @@ export default class MedicalConditionRepo implements IMedicalConditionRepo {
         return medicalConditionRecords.map((medicalConditionRecord) => MedicalConditionCatalogMap.toDomain(medicalConditionRecord));
     }
 
+    public async delete(medicalConditionId: MedicalConditionCatalogId | string): Promise<void> {
+        const query = { domainId: medicalConditionId };
+        await this.medicalConditionSchema.deleteOne(query as FilterQuery<IMedicalConditionCatalogPersistence & Document>);
+    }
 }

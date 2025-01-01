@@ -78,4 +78,18 @@ export default class MedicalConditionController implements IMedicalConditionCont
       return next(e);
     }
   };
+
+  public async deleteMedicalCondition(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.medicalConditionServiceInstance.deleteMedicalCondition(req.params.code) as Result<void>;
+
+      if (result.isFailure) {
+        return res.status(404).send();
+      }
+
+      return res.status(204).send();
+    } catch (e) {
+      return next(e);
+    }
+  }
 }

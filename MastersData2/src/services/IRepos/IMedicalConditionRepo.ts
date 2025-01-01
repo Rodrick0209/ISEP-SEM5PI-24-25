@@ -9,6 +9,7 @@ export default interface IMedicalConditionRepo extends Repo<MedicalConditionCata
     findAll(): Promise<MedicalConditionCatalog[]>;
     findByCode(code: string): Promise<MedicalConditionCatalog>;
     findByDomainId (medicalConditionId: MedicalConditionCatalogId | string | MedicalCondition): Promise<MedicalConditionCatalog>;
+    delete(medicalConditionId: MedicalConditionCatalogId | string): Promise<void>;
 
 
 }

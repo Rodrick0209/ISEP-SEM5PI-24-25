@@ -29,6 +29,22 @@ export default class MedicalConditionService implements IMedicalConditionService
             throw e;
         }
     }
+
+    public async deleteMedicalCondition(code: string): Promise<Result<void>> {
+        try {
+            const medicalCondition = await this.medicalConditionRepo.findByCode(code);
+
+            if (medicalCondition === null) {
+                return Result.fail<void>("No medical condition found");
+            }
+
+            await this.medicalConditionRepo.delete(medicalCondition.id);
+
+            return Result.ok<void>();
+        } catch (e) {
+            throw e;
+        }
+    }
     
     public async updateMedicalCondition(code: string, medicalConditionCatalog: IMedicalConditionCatalogDTO): Promise<Result<IMedicalConditionCatalogDTO>> {
         try {
