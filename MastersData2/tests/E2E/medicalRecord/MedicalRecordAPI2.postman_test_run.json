@@ -1,0 +1,175 @@
+{
+	"id": "514de3e8-2e6e-49d2-8439-bf3c68d4ea80",
+	"name": "MedicalRecordAPI2",
+	"timestamp": "2025-01-01T14:48:02.283Z",
+	"collection_id": "39007062-602a847b-2628-4291-bd3c-616acb7df2a5",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 13,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-01-01T14:48:01.368Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "1d9e7303-f479-4b9c-95cb-e4a6ff8ec919",
+			"name": "getAll",
+			"url": "http://localhost:2226/api2/medicalRecord/getAll",
+			"time": 139,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response has the required fields": true,
+				"Allergies and medicalConditions should be arrays": true,
+				"Response has a valid Content-Type header of application/json": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Allergies and medicalConditions should be arrays": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has a valid Content-Type header of application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				139
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response has the required fields": true,
+					"Allergies and medicalConditions should be arrays": true,
+					"Response has a valid Content-Type header of application/json": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "31503e5d-e188-4e1f-ab87-cb61bdbf3c16",
+			"name": "getByPatientId",
+			"url": "http://localhost:2226/api2/medicalRecord/getByPatientId/202410000001",
+			"time": 131,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Response has the required fields": true,
+				"Id and patientId are non-empty strings": true,
+				"Allergies and medicalConditions should be arrays": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Id and patientId are non-empty strings": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Allergies and medicalConditions should be arrays": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				131
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Response has the required fields": true,
+					"Id and patientId are non-empty strings": true,
+					"Allergies and medicalConditions should be arrays": true
+				}
+			]
+		},
+		{
+			"id": "e3b78788-1928-4dc2-acb1-b96a4d970678",
+			"name": "update",
+			"url": "http://localhost:2226/api2/medicalRecord/update/202410000001",
+			"time": 414,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is within an acceptable range": true,
+				"Validate the response schema for id, patientId, allergies, and medicalConditions properties": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the response schema for id, patientId, allergies, and medicalConditions properties": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				414
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is within an acceptable range": true,
+					"Validate the response schema for id, patientId, allergies, and medicalConditions properties": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 684,
+	"collection": {
+		"requests": [
+			{
+				"id": "1d9e7303-f479-4b9c-95cb-e4a6ff8ec919",
+				"method": "GET"
+			},
+			{
+				"id": "31503e5d-e188-4e1f-ab87-cb61bdbf3c16",
+				"method": "GET"
+			},
+			{
+				"id": "e3b78788-1928-4dc2-acb1-b96a4d970678",
+				"method": "PUT"
+			}
+		]
+	}
+}

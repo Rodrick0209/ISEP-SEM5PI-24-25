@@ -1,0 +1,261 @@
+{
+	"id": "551704a5-7aea-4a2c-8f6c-cce9d28a69d3",
+	"name": "MedicalConditionAPI2",
+	"timestamp": "2025-01-01T14:33:55.606Z",
+	"collection_id": "39007062-d7325dd1-4927-4fcf-acde-6070d9313200",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 19,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-01-01T14:33:54.791Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "cdddc33b-bbd2-4e95-9b79-915254aad065",
+			"name": "create",
+			"url": "http://localhost:2226/api2/medicalConditions/create",
+			"time": 148,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is within acceptable range": true,
+				"Response has the required fields - id, code, designation, and description": true,
+				"Code, id, and designation are non-empty strings": true,
+				"Content type is application/json": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within acceptable range": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields - id, code, designation, and description": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Code, id, and designation are non-empty strings": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content type is application/json": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				148
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is within acceptable range": true,
+					"Response has the required fields - id, code, designation, and description": true,
+					"Code, id, and designation are non-empty strings": true,
+					"Content type is application/json": true
+				}
+			]
+		},
+		{
+			"id": "83689145-6d08-42f3-804c-59c581f76019",
+			"name": "getAll",
+			"url": "http://localhost:2226/api2/medicalConditions/getAll",
+			"time": 65,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is within acceptable range": true,
+				"Content-Type header is application/json": true,
+				"Validate the schema for id, code, designation, and description properties": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within acceptable range": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the schema for id, code, designation, and description properties": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				65
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is within acceptable range": true,
+					"Content-Type header is application/json": true,
+					"Validate the schema for id, code, designation, and description properties": true
+				}
+			]
+		},
+		{
+			"id": "40fac1f1-8999-47f4-bfb3-dc56f226e223",
+			"name": "getByCode",
+			"url": "http://localhost:2226/api2/medicalConditions/get/E03",
+			"time": 65,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Content type is application/json": true,
+				"Response time is less than 500ms": true,
+				"Response has the required fields - id, code, designation, and description": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content type is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields - id, code, designation, and description": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				65
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Content type is application/json": true,
+					"Response time is less than 500ms": true,
+					"Response has the required fields - id, code, designation, and description": true
+				}
+			]
+		},
+		{
+			"id": "ae68fda6-eb25-4204-942c-b05bb15bf87e",
+			"name": "update",
+			"url": "http://localhost:2226/api2/medicalConditions/update/E03",
+			"time": 200,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is within an acceptable range": true,
+				"Id, code, designation, and description properties exist in the response": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Id, code, designation, and description properties exist in the response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				200
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is within an acceptable range": true,
+					"Id, code, designation, and description properties exist in the response": true
+				}
+			]
+		},
+		{
+			"id": "20405765-f04c-49c5-8317-fa94dccbc1cf",
+			"name": "delete",
+			"url": "http://localhost:2226/api2/medicalConditions/delete/M99",
+			"time": 133,
+			"responseCode": {
+				"code": 204,
+				"name": "No Content"
+			},
+			"tests": {
+				"Response status code is 204": true,
+				"Response time is less than 300ms": true,
+				"Response body is null": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 204": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 300ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body is null": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				133
+			],
+			"allTests": [
+				{
+					"Response status code is 204": true,
+					"Response time is less than 300ms": true,
+					"Response body is null": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 611,
+	"collection": {
+		"requests": [
+			{
+				"id": "cdddc33b-bbd2-4e95-9b79-915254aad065",
+				"method": "POST"
+			},
+			{
+				"id": "83689145-6d08-42f3-804c-59c581f76019",
+				"method": "GET"
+			},
+			{
+				"id": "40fac1f1-8999-47f4-bfb3-dc56f226e223",
+				"method": "GET"
+			},
+			{
+				"id": "ae68fda6-eb25-4204-942c-b05bb15bf87e",
+				"method": "PATCH"
+			},
+			{
+				"id": "20405765-f04c-49c5-8317-fa94dccbc1cf",
+				"method": "DELETE"
+			}
+		]
+	}
+}

@@ -1,0 +1,249 @@
+{
+	"id": "fb9d1da2-7527-44fb-aeb6-964ac691ebbd",
+	"name": "AllergyAPI2",
+	"timestamp": "2025-01-01T14:33:14.382Z",
+	"collection_id": "39007062-0ae1739c-bf94-4a2c-837e-fea472d4fe74",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 17,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-01-01T14:33:13.523Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "d37684f3-d4cc-4827-941f-a16bca680caa",
+			"name": "create",
+			"url": "http://localhost:2226/api2/allergiesCatalog/create",
+			"time": 146,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is within acceptable range": true,
+				"Content-Type header is application/json": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within acceptable range": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				146
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is within acceptable range": true,
+					"Content-Type header is application/json": true
+				}
+			]
+		},
+		{
+			"id": "9f063635-da09-4af9-b8fe-500860ab79e0",
+			"name": "getAll",
+			"url": "http://localhost:2226/api2/allergiesCatalog/getAll",
+			"time": 70,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is within acceptable range": true,
+				"Content-Type header is application/json": true,
+				"Validate the schema for id, code, designation, and description properties": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within acceptable range": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Validate the schema for id, code, designation, and description properties": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				70
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is within acceptable range": true,
+					"Content-Type header is application/json": true,
+					"Validate the schema for id, code, designation, and description properties": true
+				}
+			]
+		},
+		{
+			"id": "0082b9c6-0421-4da7-95c6-e184cdc04725",
+			"name": "getByCode",
+			"url": "http://localhost:2226/api2/allergiesCatalog/get/A01",
+			"time": 65,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Content type is application/json": true,
+				"Response time is less than 500ms": true,
+				"Response has the required fields - id, code, designation, and description": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content type is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields - id, code, designation, and description": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				65
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Content type is application/json": true,
+					"Response time is less than 500ms": true,
+					"Response has the required fields - id, code, designation, and description": true
+				}
+			]
+		},
+		{
+			"id": "7af3d5b4-a05e-4965-9b3a-67e3993bb520",
+			"name": "update",
+			"url": "http://localhost:2226/api2/allergiesCatalog/update/A99",
+			"time": 197,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is within an acceptable range": true,
+				"Id, code, designation, and description properties exist in the response": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Id, code, designation, and description properties exist in the response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				197
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is within an acceptable range": true,
+					"Id, code, designation, and description properties exist in the response": true
+				}
+			]
+		},
+		{
+			"id": "85cb8af7-3114-4b1f-b182-d8c8229d6ac3",
+			"name": "delete",
+			"url": "http://localhost:2226/api2/allergiesCatalog/delete/A99",
+			"time": 143,
+			"responseCode": {
+				"code": 204,
+				"name": "No Content"
+			},
+			"tests": {
+				"Response status code is 204": true,
+				"Response body is null": true,
+				"Response time is less than 200ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 204": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body is null": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				143
+			],
+			"allTests": [
+				{
+					"Response status code is 204": true,
+					"Response body is null": true,
+					"Response time is less than 200ms": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 621,
+	"collection": {
+		"requests": [
+			{
+				"id": "d37684f3-d4cc-4827-941f-a16bca680caa",
+				"method": "POST"
+			},
+			{
+				"id": "9f063635-da09-4af9-b8fe-500860ab79e0",
+				"method": "GET"
+			},
+			{
+				"id": "0082b9c6-0421-4da7-95c6-e184cdc04725",
+				"method": "GET"
+			},
+			{
+				"id": "7af3d5b4-a05e-4965-9b3a-67e3993bb520",
+				"method": "PATCH"
+			},
+			{
+				"id": "85cb8af7-3114-4b1f-b182-d8c8229d6ac3",
+				"method": "DELETE"
+			}
+		]
+	}
+}
