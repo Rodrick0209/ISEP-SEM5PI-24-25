@@ -82,14 +82,14 @@ public class OperationRequestServiceTests
         // Criar DTO com IDs válidos para o teste
         var dto = new OperationRequestDto
         (
-            "2025-01-01",
+            "2025-12-01",
             "eletric",
             patientId.ToString(),
             operationTypeId.ToString(),
             staffId.ToString()
         );
 
-        OperationRequest operationRequest = new OperationRequest("2025-01-01", "eletric", patientId.ToString(), operationTypeId.ToString(), staffId.ToString(), staffId.ToString());
+        OperationRequest operationRequest = new OperationRequest("2025-12-01", "eletric", patientId.ToString(), operationTypeId.ToString(), staffId.ToString(), staffId.ToString());
 
 
         // Act
@@ -112,7 +112,7 @@ public class OperationRequestServiceTests
         // Arrange
         var operationRequestId = new OperationRequestId(Guid.NewGuid());
         var operationRequest = new OperationRequest(
-            "2025-01-01",
+            "2025-12-01",
             "eletric",
             "patientId",
             "operationTypeId",
@@ -145,7 +145,7 @@ public class OperationRequestServiceTests
         
         var operationRequestId = new OperationRequestId(Guid.NewGuid());
         var operationRequest = new OperationRequest(
-            "2025-01-01",
+            "2025-12-01",
             "eletric",
             "patientId",
             "operationTypeId",
@@ -209,7 +209,7 @@ public class OperationRequestServiceTests
         var patient = new Patient("Jane Doe", "1990-01-01", "female", "jane.doe@example.com", "+351 1234567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202410000001");
         var operationRequests = new List<OperationRequest>
         {
-            new OperationRequest("2025-01-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId")
+            new OperationRequest("2025-12-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId")
         };
 
         _patientRepositoryMock.Setup(repo => repo.GetByMedicalRecordNumberAsync(filters.MedicalRecordNumber))

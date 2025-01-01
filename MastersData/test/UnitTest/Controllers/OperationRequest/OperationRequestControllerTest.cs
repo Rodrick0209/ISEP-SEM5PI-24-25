@@ -53,7 +53,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             var doctorId = new Email(doctorEmail).getFirstPartOfEmail();
 
             var operationRequest = new OperationRequest(
-                "2025-01-01",
+                "2025-12-01",
                 "eletric",
                 patientId.ToString(),
                 operationTypeId.ToString(),
@@ -65,7 +65,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
 
             var operationRequestDto = new OperationRequestDto
             (
-                "2025-01-01",
+                "2025-12-01",
                 "eletric",
                 patientId.ToString(),
                 operationTypeId.ToString(),
@@ -142,7 +142,7 @@ namespace DDDSample1.Tests.UnitTests.Controllers
          {
             // Arrange
             var operationRequest = new OperationRequest(
-                    "2025-01-01",
+                    "2025-12-01",
                     "eletric",
                     "patientId",
                     "operationTypeId",
@@ -172,10 +172,10 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             var filters = new OperationRequestFilterDto { MedicalRecordNumber = "202410000001" };
             var patient = new Patient("Jane Doe", "1990-01-01", "female", "jane.doe@example.com", "+351 1234567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202410000001");
             var patient2 = new Patient("Jane Doe", "1990-01-01", "female", "jane.doe@example.com", "+351 1234567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202310000001");
-            var op1 = new OperationRequest("2025-01-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
-            var op2 = new OperationRequest("2025-01-01", "eletric", patient2.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
+            var op1 = new OperationRequest("2025-12-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
+            var op2 = new OperationRequest("2025-12-01", "eletric", patient2.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
             
-            var op1Dto = new OperationRequestDto("2025-01-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId");
+            var op1Dto = new OperationRequestDto("2025-12-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId");
 
             _mockService.Setup(service => service.GetOperationRequestsWithFilters(filters, It.IsAny<string>()))
                 .ReturnsAsync(new List<OperationRequestDto> { op1Dto });
@@ -196,10 +196,10 @@ namespace DDDSample1.Tests.UnitTests.Controllers
             var filters = new OperationRequestFilterDto { PatientName = "Jane Doe" };
             var patient = new Patient("Jane Doe", "1990-01-01", "female", "jane.doe@example.com", "+351 1234567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202410000001");
             var patient2 = new Patient("Jane Doe2", "1990-01-01", "female", "jane.doe@example.com", "+351 1234567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202310000001");
-            var op1 = new OperationRequest("2025-01-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
-            var op2 = new OperationRequest("2025-01-01", "eletric", patient2.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
+            var op1 = new OperationRequest("2025-12-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
+            var op2 = new OperationRequest("2025-12-01", "eletric", patient2.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
 
-            var op1Dto = new OperationRequestDto("2025-01-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId");
+            var op1Dto = new OperationRequestDto("2025-12-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId");
 
             _mockService.Setup(service => service.GetOperationRequestsWithFilters(It.IsAny<OperationRequestFilterDto>(), It.IsAny<string>()))
                 .ReturnsAsync(new List<OperationRequestDto> { op1Dto });

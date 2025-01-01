@@ -96,7 +96,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
 
 
             var availabilitySlot1 = new AvailabilitySlot(staffId);
-            availabilitySlot1.AddAvailability(DateOnly.Parse("2025-01-01"), 610, 720);
+            availabilitySlot1.AddAvailability(DateOnly.Parse("2025-12-01"), 610, 720);
 
 
             // Configurar mocks para retornar entidades com esses IDs fixos
@@ -114,7 +114,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             // Criar DTO com IDs válidos para o teste
             var dto = new OperationRequestDto
             (
-                "2025-01-01",
+                "2025-12-01",
                 "eletric",
                 patientId.ToString(),
                 operationTypeId.ToString(),
@@ -163,7 +163,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             // Criar DTO com valores inválidos para o teste
             var dto = new OperationRequestDto
             (
-                "2025-01-01",
+                "2025-12-01",
                 "invalid_priority", // Prioridade inválida
                 patientId.ToString(),
                 operationTypeId.ToString(),
@@ -193,7 +193,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
 
 
             var operationRequest = new OperationRequest(
-                "2025-01-01",
+                "2025-12-01",
                 "eletric",
                 "patientId",
                 "operationTypeId",
@@ -211,7 +211,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
                 .ReturnsAsync(operationRequest);
 
             _operationRequestLoggerRepository.Setup(repo => repo.AddAsync(It.IsAny<OperationRequestLogger>()))
-                    .Returns(Task.FromResult(new OperationRequestLogger("2025-01-01", "eletric", "operationTypeId", "doctorThatWillPerformId", "doctorThatRequestedId", operationRequest.Id.ToString(), "Update")));
+                    .Returns(Task.FromResult(new OperationRequestLogger("2025-12-01", "eletric", "operationTypeId", "doctorThatWillPerformId", "doctorThatRequestedId", operationRequest.Id.ToString(), "Update")));
 
             _unitOfWork.Setup(uow => uow.CommitAsync()).ReturnsAsync(1);
 
@@ -239,7 +239,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
 
 
             var operationRequest = new OperationRequest(
-                "2025-01-01",
+                "2025-12-01",
                 "eletric",
                 "patientId",
                 "operationTypeId",
@@ -257,7 +257,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
                 .ReturnsAsync(operationRequest);
 
             _operationRequestLoggerRepository.Setup(repo => repo.AddAsync(It.IsAny<OperationRequestLogger>()))
-                    .Returns(Task.FromResult(new OperationRequestLogger("2025-01-01", "eletric", "operationTypeId", "doctorThatWillPerformId", "doctorThatRequestedId", operationRequest.Id.ToString(), "Update")));
+                    .Returns(Task.FromResult(new OperationRequestLogger("2025-12-01", "eletric", "operationTypeId", "doctorThatWillPerformId", "doctorThatRequestedId", operationRequest.Id.ToString(), "Update")));
 
             _unitOfWork.Setup(uow => uow.CommitAsync()).ReturnsAsync(1);
 
@@ -275,7 +275,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
         {
             // Arrange
             var operationRequest = new OperationRequest(
-                    "2025-01-01",
+                    "2025-12-01",
                     "eletric",
                     "patientId",
                     "operationTypeId",
@@ -309,7 +309,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
         {
             // Arrange
             var operationRequest = new OperationRequest(
-                    "2025-01-01",
+                    "2025-12-01",
                     "eletric",
                     "patientId",
                     "operationTypeId",
@@ -357,8 +357,8 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             var filters = new OperationRequestFilterDto { MedicalRecordNumber = "202410000001" };
             var patient = new Patient("Jane Doe", "1990-01-01", "female", "jane.doe@example.com", "+351 1234567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202410000001");
             var patient2 = new Patient("Jane Doe", "1990-01-01", "female", "jane.doe@example.com", "+351 1234567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202310000001");
-            OperationRequest op1 = new OperationRequest("2025-01-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
-            OperationRequest op2 = new OperationRequest("2025-01-01", "eletric", patient2.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
+            OperationRequest op1 = new OperationRequest("2025-12-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
+            OperationRequest op2 = new OperationRequest("2025-12-01", "eletric", patient2.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
             _patientRepository.Setup(repo => repo.GetByMedicalRecordNumberAsync(filters.MedicalRecordNumber))
                 .ReturnsAsync(patient);
             _operationRequestRepository.Setup(repo => repo.GetOperationRequestsByPatientId(patient.Id.AsString()))
@@ -380,8 +380,8 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             var filters = new OperationRequestFilterDto { PatientName = "Jane Doe" };
             var patient = new Patient("Jane Doe", "1990-01-01", "female", "jane.doe@example.com", "+351 1234567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202410000001");
             var patient2 = new Patient("Jane Doe2", "1990-01-01", "female", "jane.doe@example.com", "+351 1234567890", "123 Main St", "12345", "Anytown", "Anycountry", "Jane Doe", "jane.doe@example.com", "+351 0987654321", "202310000001");
-            OperationRequest op1 = new OperationRequest("2025-01-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
-            OperationRequest op2 = new OperationRequest("2025-01-01", "eletric", patient2.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
+            OperationRequest op1 = new OperationRequest("2025-12-01", "eletric", patient.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
+            OperationRequest op2 = new OperationRequest("2025-12-01", "eletric", patient2.Id.AsString(), "operationTypeId", "doctorId", "doctorThatWillPerformId");
 
 
             _patientRepository.Setup(repo => repo.GetByNameAsync(filters.PatientName))
@@ -406,12 +406,12 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             // Arrange
             var filters = new OperationRequestFilterDto
             {
-                StartDate = DateTime.Parse("2025-01-01"),
+                StartDate = DateTime.Parse("2025-12-01"),
                 EndDate = DateTime.Parse("2025-12-31")
             };
             var operationRequests = new List<OperationRequest>
             {
-                new OperationRequest("2025-01-01", "eletric", "patientId", "operationTypeId", "doctorId", "doctorThatWillPerformId"),
+                new OperationRequest("2025-12-01", "eletric", "patientId", "operationTypeId", "doctorId", "doctorThatWillPerformId"),
                 new OperationRequest("2025-06-01", "eletric", "patientId", "operationTypeId", "doctorId", "doctorThatWillPerformId")
             };
 
@@ -440,7 +440,7 @@ namespace DDDSample1.Tests.IntegrationTests.Controllers
             };
             var operationRequests = new List<OperationRequest>
             {
-                new OperationRequest("2025-01-01", "eletric", "patientId", "operationTypeId", "doctorId", "doctorThatWillPerformId"),
+                new OperationRequest("2025-12-01", "eletric", "patientId", "operationTypeId", "doctorId", "doctorThatWillPerformId"),
                 new OperationRequest("2025-06-01", "eletric", "patientId", "operationTypeId", "doctorId", "doctorThatWillPerformId")
             };
 
