@@ -169,7 +169,7 @@ namespace DDDSample1.Startup
                     options.AddPolicy("AllowAngularApp", builder =>
                     {
                         builder.WithOrigins("http://localhost:4200",
-                         "https://127.0.0.1:5501","http://127.0.0.1:5500","http://10.9.21.166") // Angular's URL
+                         "https://127.0.0.1:5501","http://127.0.0.1:5500","http://10.9.21.166","http://10.9.22.72") // Angular's URL
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });
