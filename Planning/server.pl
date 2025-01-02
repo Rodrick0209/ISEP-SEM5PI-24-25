@@ -220,7 +220,4 @@ getGeneticAlgorithmSchedule(Request) :-
 
 % Servidor HTTP
 server(Port) :-
-    http_server(http_dispatch, [port(Port)]).
-
-
-
+    http_server(http_dispatch, [port(Port), ip('0.0.0.0')]).
