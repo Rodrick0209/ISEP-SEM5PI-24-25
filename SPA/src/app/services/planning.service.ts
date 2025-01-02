@@ -34,7 +34,7 @@ export interface ScheduleData {
 })
 export class PlanningService {
   
-  private planningUrl = 'http://http://10.9.22.72:8080/planning'; // URL base para o módulo de planeamento
+  private planningUrl = 'http://10.9.22.72:8080/planning'; // URL base para o módulo de planeamento
 
   constructor(private http: HttpClient) {}
 
