@@ -6,7 +6,7 @@ import { Result } from '../../../src/core/logic/Result';
 import IAllergyCatalogService from "../../../src/services/IServices/IAllergyCatalogService";
 import AllergyCatalogController from "../../../src/controllers/allergyCatalogController";
 import IAllergyCathalogItemDTO from '../../../src/dto/IAllergyCatalogItemDTO';
-/*
+
 describe('AllergyCatalogController', function() {
     let allergyServiceInstance: IAllergyCatalogService;
     let ctrl: AllergyCatalogController;
@@ -66,44 +66,5 @@ describe('AllergyCatalogController', function() {
         sinon.assert.calledWith(res.status as sinon.SinonStub, 201); // Check if status is 201 (Created)
     });
 
-    /*
-    it('createAllergyCatalogItem: should return 400 on failure', async function () {
-        const body = { name: 'invalidAllergy' };
-        req.body = body;
-
-        // Mock service method to return failure
-        (allergyServiceInstance.createAllergyCatalogItem as sinon.SinonStub).rejects(Result.fail<IAllergyCathalogItemDTO>("Failed"));
-
-        // Call the controller method
-        await ctrl.createAllergyCatalogItem(<Request>req, <Response>res, <NextFunction>next);
-
-        // Check if status 400 was returned
-        sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
-    });
-
-    it('createAllergyCatalogItem: should return 402 on duplicate key error', async function () {
-        const body = {
-            code: "20241812",
-            designation: "aaaa",
-            description: "TesteABC123"
-        };
-        req.body = body;
-
-        // Simulate duplicate key error
-        const error = new Error() as MongoServerError;
-        error.code = 11000;
-        (allergyServiceInstance.createAllergyCatalogItem as sinon.SinonStub).rejects(error);
-
-        // Call the controller method
-        
-        await ctrl.createAllergyCatalogItem(<Request>req, <Response>res, <NextFunction>next);
-        await ctrl.createAllergyCatalogItem(<Request>req, <Response>res, <NextFunction>next);
-
-        // Check if status 409 was returned for duplicate key error
-
-        sinon.assert.calledWith(res.status as sinon.SinonStub, 402);
-        
-
-    });
     
-});*/
+});
