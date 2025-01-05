@@ -29,41 +29,30 @@ export class RequestDeletePatientDataComponent implements OnInit {
     }
   }
 
-  isConfirmed = false; // Track if the "X" mark has been clicked
-
-  // Toggle the confirmation mark state
-  onMarkClick(): void {
-    this.isConfirmed = !this.isConfirmed;
-  }
-
   // Method triggered on delete confirmation
   async onDelete(): Promise<void> {
-    if (this.isConfirmed) {
-      if (this.email) {
-        if(!this.password) {
-          this.errorMessage = 'Password is required to make request to delete your data.';
-          return;
-        }
-
-        const isValidPassword = await this.authService.validatePassword(this.email, this.password);
-        if (!isValidPassword) {
-          this.errorMessage = 'Invalid password. Please try again.';
-          return;
-        }
-
-        this.userService.requestDeletePatientData(this.email).subscribe({
-          next: (response: any) => {
-            console.log('Sucessfull sent an email confirmation', response);
-            this.successMessage = "An email will be sent to the data protection officer. You can close this window or click on the back button.";
-          },
-          error: (err: any) => {
-            console.error('Failed to delete patient', err);
-            this.errorMessage = 'Failed to delete your account.';
-          }
-        });
+    if (this.email) {
+      if (!this.password) {
+        this.errorMessage = 'Password is required to make request to delete your data.';
+        return;
       }
-    } else {
-      this.errorMessage = 'Please confirm by clicking in the mark.';
+
+      const isValidPassword = await this.authService.validatePassword(this.email, this.password);
+      if (!isValidPassword) {
+        this.errorMessage = 'Invalid password. Please try again.';
+        return;
+      }
+
+      this.userService.requestDeletePatientData(this.email).subscribe({
+        next: (response: any) => {
+          console.log('Sucessfull sent an email confirmation', response);
+          this.successMessage = "An email will be sent to the data protection officer. You can close this window or click on the back button.";
+        },
+        error: (err: any) => {
+          console.error('Failed to delete patient', err);
+          this.errorMessage = 'Failed to delete your account.';
+        }
+      });
     }
   }
 

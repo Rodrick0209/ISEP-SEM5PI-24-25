@@ -1,24 +1,18 @@
 <div class="request-delete-patient-data">
-    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
-    <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
-    <h3>Are you sure you want to send a request to delete your personal data?</h3>
+    <div class="download-medical-history">
+        <h3>Request Delete Personal Data</h3>
 
-    <p>
-        Note: The patient and associated user data will be permanently deleted in 30 days, and some data will be
-        retained
-        for analysis purposes.
-    </p>
+        <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+        <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
 
-    <app-mark-x [markText]="'I confirm'" (markClicked)="onMarkClick()" [ngClass]="{'active': isConfirmed}">
-    </app-mark-x>
+        <input type="password" [(ngModel)]="password" placeholder="Enter your password to verify..."
+            class="password-input" />
 
-    <input type="password" [(ngModel)]="password" placeholder="Enter your password to verify..."
-        class="password-input" />
-
-    <button (click)="onDelete()" [disabled]="!isConfirmed" class="delete-button">
-        Delete
-    </button>
-    <button (click)="onCancel()" class="cancel-button">
-        Back
-    </button>
+        <button (click)="onDelete()" class="delete-button">
+            Delete
+        </button>
+        <button (click)="onCancel()" class="cancel-button">
+            Back
+        </button>
+    </div>
 </div>
