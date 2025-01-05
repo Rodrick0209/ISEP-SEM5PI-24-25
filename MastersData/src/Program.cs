@@ -171,7 +171,8 @@ namespace DDDSample1.Startup
                         builder.WithOrigins("http://localhost:4200",
                          "https://127.0.0.1:5501","http://127.0.0.1:5500","http://10.9.21.166","http://10.9.22.72","http://10.9.22.225") // Angular's URL
                         .AllowAnyHeader()
-                        .AllowAnyMethod();
+                        .AllowAnyMethod()
+                        .AllowCredentials();
                     });
                 });
 
