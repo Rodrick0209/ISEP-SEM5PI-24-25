@@ -1,3 +1,13 @@
+# SEM5PI 2023-2024 Project
+
+Project for the follow classes:
+
+- ARQSI
+- LAPR5
+- ALGAV
+- SGRAI
+- ASIST
+
 # Surgical Appointment and Resource Management System
 
 ## Project Overview
