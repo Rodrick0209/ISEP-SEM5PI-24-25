@@ -152,8 +152,8 @@ namespace DDDSample1.Startup
                 })
             .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
                 {
-                    options.ClientId = "240475919297-mafpifo793qgthd1sat4ufn7gtfgfe8r.apps.googleusercontent.com";
-                    options.ClientSecret = "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";
+                    options.ClientId = "";
+                    options.ClientSecret = "";
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.CallbackPath = "/signin-google-callback";
                     options.Scope.Add("openid");
